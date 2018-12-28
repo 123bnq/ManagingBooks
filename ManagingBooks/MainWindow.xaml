@@ -5,8 +5,25 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ManagingBooks"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
+        Title="MainWindow" SizeToContent="WidthAndHeight" WindowStartupLocation="CenterScreen"
+        Background="WhiteSmoke" ResizeMode="CanMinimize">
+    <DockPanel>
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="_File">
+                <MenuItem Header="_Add..." Click="AddWindow_Click"/>
+                <MenuItem Header="_Edit..."/>
+                <MenuItem Header="_Delete..."/>
+                <MenuItem Header="_Exit"/>
+            </MenuItem>
+            <MenuItem Header="_Language">
+                <MenuItem Header="_English"/>
+                <MenuItem Header="_Deutsch"/>
+            </MenuItem>
+            <MenuItem Header="_Help">
+                <MenuItem Header="_Help"/>
+                <MenuItem Header="_About"/>
+            </MenuItem>
+        </Menu>
         
-    </Grid>
+    </DockPanel>
 </Window>

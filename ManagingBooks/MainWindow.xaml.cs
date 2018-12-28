@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using ManagingBooks.Windows;
 
 namespace ManagingBooks
 {
@@ -23,6 +24,11 @@ namespace ManagingBooks
         public MainWindow()
         {
             InitializeComponent();
+        }
+
+        private void AddWindow_Click(object sender, RoutedEventArgs e)
+        {
+            new AddBook() { Owner = this }.ShowDialog();
         }
     }
 }
