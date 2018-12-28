@@ -1,0 +1,84 @@
+﻿<Window x:Class="ManagingBooks.Windows.AddBook"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ManagingBooks.Windows"
+        mc:Ignorable="d"
+        Title="AddBook" SizeToContent="WidthAndHeight" Background="WhiteSmoke"
+        WindowStartupLocation="CenterOwner">
+    <StackPanel Width="1000" Height="600" Margin="10" >
+        <StackPanel Orientation="Horizontal">
+            <StackPanel Name="WindowToBeClear" Width="800">
+                <TextBlock Text="Number" Margin="0,0,0,5"/>
+                <TextBox Name="BoxNumber" Width="100" HorizontalAlignment="Left"  Margin="0,0,0,5"/>
+                <TextBlock Text="Signature" Margin="0,0,0,5"/>
+                <WrapPanel Margin="0,0,0,5">
+                    <TextBox Name="BoxSignature1" Margin="0,0,5,0" Width="100"/>
+                    <TextBox Name="BoxSignature2" Margin="0,0,5,0" Width="100"/>
+                    <TextBox Name="BoxSignature3" Margin="0,0,5,0" Width="100"/>
+                </WrapPanel>
+                <TextBlock Text="Authors" Margin="0,0,0,5"/>
+                <WrapPanel Margin="0,0,0,5">
+                    <TextBox Name="BoxAuthor1" Margin="0,0,5,0" Width="100"/>
+                    <TextBox Name="BoxAuthor2" Margin="0,0,5,0" Width="100"/>
+                    <TextBox Name="BoxAuthor3" Margin="0,0,5,0" Width="100"/>
+                </WrapPanel>
+                <TextBlock Text="Title" Margin="0,0,0,5"/>
+                <TextBox Name="BoxTitle" Margin="0,0,0,5"/>
+                <TextBlock Text="Publisher" Margin="0,0,0,5"/>
+                <ComboBox Name="BoxPublisher" Margin="0,0,0,5">
+                    <ComboBoxItem Content="Publisher 1"/>
+                    <ComboBoxItem Content="Publisher 2"/>
+                    <ComboBoxItem Content="Publisher 3"/>
+                </ComboBox>
+                <WrapPanel>
+                    <StackPanel>
+                        <TextBlock Text="Version" Margin="0,0,0,5"/>
+                        <TextBox Name="BoxVersion" Width="100" HorizontalAlignment="Left"/>
+                    </StackPanel>
+                    <StackPanel>
+                        <TextBlock Text="Year" Margin="0,0,0,5"/>
+                        <TextBox Name="BoxYear" Width="100" HorizontalAlignment="Left"/>
+                    </StackPanel>
+                    <StackPanel>
+                        <TextBlock Text="Medium" Margin="0,0,0,5"/>
+                        <ComboBox Name="BoxMedium" Width="100" HorizontalAlignment="Left">
+                            <ComboBoxItem Content="Book"/>
+                            <ComboBoxItem Content="CD"/>
+                            <ComboBoxItem Content="DVD"/>
+                            <ComboBoxItem Content="E-Book"/>
+                        </ComboBox>
+                    </StackPanel>
+                </WrapPanel>
+                <TextBlock Text="Place" Margin="0,0,0,5"/>
+                <ComboBox Name="BoxPlace" Margin="0,0,0,5">
+                    <ComboBoxItem Content="Frankurt"/>
+                    <ComboBoxItem Content="Darmstadt"/>
+                    <ComboBoxItem Content="Berlin"/>
+                    <ComboBoxItem Content="München"/>
+                </ComboBox>
+                <WrapPanel>
+                    <StackPanel>
+                        <TextBlock Text="Date Bought" Margin="0,0,0,5"/>
+                        <TextBox Name="BoxDate" Width="100" HorizontalAlignment="Left"/>
+                    </StackPanel>
+                    <StackPanel>
+                        <TextBlock Text="Pages" Margin="0,0,0,5"/>
+                        <TextBox Name="BoxPage" Width="100" HorizontalAlignment="Left"/>
+                    </StackPanel>
+                    <StackPanel>
+                        <TextBlock Text="Price" Margin="0,0,0,5"/>
+                        <TextBox Name="BoxPrice" Width="100" HorizontalAlignment="Left"/>
+                    </StackPanel>
+                </WrapPanel>
+            </StackPanel>
+            <ListBox Width="200"></ListBox>
+        </StackPanel>
+        <WrapPanel HorizontalAlignment="Right" Margin="0,10,0,0">
+            <Button Name="BtnAdd" Content="Add" MinWidth="70" Margin="5"/>
+            <Button Name="BtnClear" Content="Clear" MinWidth="70" Margin="5" Click="BtnClear_Click"/>
+            <Button Name="BtnCancel" Content="Cancel" MinWidth="70" Margin="5" Click="BtnCancel_Click"/>
+        </WrapPanel>
+    </StackPanel>
+</Window>
