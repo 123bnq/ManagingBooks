@@ -6,10 +6,11 @@
         xmlns:local="clr-namespace:ManagingBooks.Windows"
         mc:Ignorable="d"
         Title="AddBook" SizeToContent="WidthAndHeight" Background="WhiteSmoke"
-        WindowStartupLocation="CenterOwner">
+        WindowStartupLocation="CenterOwner"
+        Closing="AddBook_Closing">
     <StackPanel Width="1000" Height="600" Margin="10" >
         <StackPanel Orientation="Horizontal">
-            <StackPanel Name="WindowToBeClear" Width="800">
+            <StackPanel Name="WindowToBeClear" Width="800" Margin="0,0,5,0">
                 <TextBlock Text="Number" Margin="0,0,0,5"/>
                 <TextBox Name="BoxNumber" Width="100" HorizontalAlignment="Left"  Margin="0,0,0,5"/>
                 <TextBlock Text="Signature" Margin="0,0,0,5"/>
@@ -32,25 +33,28 @@
                     <ComboBoxItem Content="Publisher 2"/>
                     <ComboBoxItem Content="Publisher 3"/>
                 </ComboBox>
-                <WrapPanel>
-                    <StackPanel>
-                        <TextBlock Text="Version" Margin="0,0,0,5"/>
-                        <TextBox Name="BoxVersion" Width="100" HorizontalAlignment="Left"/>
-                    </StackPanel>
-                    <StackPanel>
-                        <TextBlock Text="Year" Margin="0,0,0,5"/>
-                        <TextBox Name="BoxYear" Width="100" HorizontalAlignment="Left"/>
-                    </StackPanel>
-                    <StackPanel>
-                        <TextBlock Text="Medium" Margin="0,0,0,5"/>
-                        <ComboBox Name="BoxMedium" Width="100" HorizontalAlignment="Left">
-                            <ComboBoxItem Content="Book"/>
-                            <ComboBoxItem Content="CD"/>
-                            <ComboBoxItem Content="DVD"/>
-                            <ComboBoxItem Content="E-Book"/>
-                        </ComboBox>
-                    </StackPanel>
-                </WrapPanel>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="Version" Margin="0,0,0,5"/>
+                    <TextBox Grid.Row="1" Name="BoxVersion" Width="100" Margin="0,0,5,0"/>
+                    <TextBlock Grid.Column="1" Text="Year" Margin="0,0,0,5"/>
+                    <TextBox Grid.Row="1" Grid.Column="1" Name="BoxYear" Width="100" Margin="0,0,5,0"/>
+                    <TextBlock Grid.Column="2" Text="Medium" Margin="0,0,0,5"/>
+                    <ComboBox Grid.Row="1" Grid.Column="2" Name="BoxMedium" Width="100" Margin="0,0,5,0">
+                        <ComboBoxItem Content="Book"/>
+                        <ComboBoxItem Content="CD"/>
+                        <ComboBoxItem Content="DVD"/>
+                        <ComboBoxItem Content="E-Book"/>
+                    </ComboBox>
+                </Grid>
                 <TextBlock Text="Place" Margin="0,0,0,5"/>
                 <ComboBox Name="BoxPlace" Margin="0,0,0,5">
                     <ComboBoxItem Content="Frankurt"/>
@@ -58,25 +62,28 @@
                     <ComboBoxItem Content="Berlin"/>
                     <ComboBoxItem Content="München"/>
                 </ComboBox>
-                <WrapPanel>
-                    <StackPanel>
-                        <TextBlock Text="Date Bought" Margin="0,0,0,5"/>
-                        <TextBox Name="BoxDate" Width="100" HorizontalAlignment="Left"/>
-                    </StackPanel>
-                    <StackPanel>
-                        <TextBlock Text="Pages" Margin="0,0,0,5"/>
-                        <TextBox Name="BoxPage" Width="100" HorizontalAlignment="Left"/>
-                    </StackPanel>
-                    <StackPanel>
-                        <TextBlock Text="Price" Margin="0,0,0,5"/>
-                        <TextBox Name="BoxPrice" Width="100" HorizontalAlignment="Left"/>
-                    </StackPanel>
-                </WrapPanel>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="Date Bought" Margin="0,0,0,5"/>
+                    <TextBox Name="BoxDate" Grid.Row="1" Width="100" Margin="0,0,5,5"/>
+                    <TextBlock Grid.Column="1" Text="Pages" Margin="0,0,0,5"/>
+                    <TextBox  Name="BoxPage" Grid.Row="1" Grid.Column="1" Width="100" Margin="0,0,5,5"/>
+                    <TextBlock Grid.Column="2" Text="Price" Margin="0,0,0,5"/>
+                    <TextBox Name="BoxPrice" Grid.Row="1" Grid.Column="2" Width="100" Margin="0,0,5,5"/>
+                </Grid>
             </StackPanel>
-            <ListBox Width="200"></ListBox>
+            <ListBox Width="195"></ListBox>
         </StackPanel>
         <WrapPanel HorizontalAlignment="Right" Margin="0,10,0,0">
-            <Button Name="BtnAdd" Content="Add" MinWidth="70" Margin="5"/>
+            <Button Name="BtnAdd" Content="Add" MinWidth="70" Margin="5" Click="BtnAdd_Click"/>
             <Button Name="BtnClear" Content="Clear" MinWidth="70" Margin="5" Click="BtnClear_Click"/>
             <Button Name="BtnCancel" Content="Cancel" MinWidth="70" Margin="5" Click="BtnCancel_Click"/>
         </WrapPanel>
