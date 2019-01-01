@@ -12,23 +12,23 @@
         <StackPanel Orientation="Horizontal">
             <StackPanel Name="WindowToBeClear" Width="800" Margin="0,0,5,0">
                 <TextBlock Text="Number" Margin="0,0,0,5"/>
-                <TextBox Name="BoxNumber" Width="100" HorizontalAlignment="Left"  Margin="0,0,0,5"/>
+                <TextBox Name="BoxNumber" Text="{Binding Number, StringFormat={}{0:#000000}}" Width="100" HorizontalAlignment="Left"  Margin="0,0,0,5"/>
                 <TextBlock Text="Signature" Margin="0,0,0,5"/>
-                <WrapPanel Margin="0,0,0,5">
-                    <TextBox Name="BoxSignature1" Margin="0,0,5,0" Width="100"/>
-                    <TextBox Name="BoxSignature2" Margin="0,0,5,0" Width="100"/>
-                    <TextBox Name="BoxSignature3" Margin="0,0,5,0" Width="100"/>
+                <WrapPanel Name="PnlSignatures" Margin="0,0,0,5">
+                    <TextBox Name="BoxSignature1" Text="{Binding Signature1}" Margin="0,0,5,0" Width="100"/>
+                    <TextBox Name="BoxSignature2" Text="{Binding Signature2}" Margin="0,0,5,0" Width="100"/>
+                    <TextBox Name="BoxSignature3" Text="{Binding Signature3}" Margin="0,0,5,0" Width="100"/>
                 </WrapPanel>
                 <TextBlock Text="Authors" Margin="0,0,0,5"/>
-                <WrapPanel Margin="0,0,0,5">
-                    <TextBox Name="BoxAuthor1" Margin="0,0,5,0" Width="100"/>
-                    <TextBox Name="BoxAuthor2" Margin="0,0,5,0" Width="100"/>
-                    <TextBox Name="BoxAuthor3" Margin="0,0,5,0" Width="100"/>
+                <WrapPanel Name="PnlAuthors" Margin="0,0,0,5">
+                    <TextBox Name="BoxAuthor1" Text="{Binding Author1}" Margin="0,0,5,0" Width="100"/>
+                    <TextBox Name="BoxAuthor2" Text="{Binding Author2}" Margin="0,0,5,0" Width="100"/>
+                    <TextBox Name="BoxAuthor3" Text="{Binding Author3}" Margin="0,0,5,0" Width="100"/>
                 </WrapPanel>
                 <TextBlock Text="Title" Margin="0,0,0,5"/>
-                <TextBox Name="BoxTitle" Margin="0,0,0,5"/>
+                <TextBox Name="BoxTitle" Text="{Binding Title}" Margin="0,0,0,5"/>
                 <TextBlock Text="Publisher" Margin="0,0,0,5"/>
-                <ComboBox Name="BoxPublisher" Margin="0,0,0,5">
+                <ComboBox Name="BoxPublisher" Text="{Binding Publisher}" Margin="0,0,0,5">
                     <ComboBoxItem Content="Publisher 1"/>
                     <ComboBoxItem Content="Publisher 2"/>
                     <ComboBoxItem Content="Publisher 3"/>
@@ -44,11 +44,11 @@
                         <ColumnDefinition Width="auto"/>
                     </Grid.ColumnDefinitions>
                     <TextBlock Text="Version" Margin="0,0,0,5"/>
-                    <TextBox Grid.Row="1" Name="BoxVersion" Width="100" Margin="0,0,5,0"/>
+                    <TextBox Grid.Row="1" Name="BoxVersion" Text="{Binding Version}" Width="100" Margin="0,0,5,0"/>
                     <TextBlock Grid.Column="1" Text="Year" Margin="0,0,0,5"/>
-                    <TextBox Grid.Row="1" Grid.Column="1" Name="BoxYear" Width="100" Margin="0,0,5,0"/>
+                    <TextBox Grid.Row="1" Grid.Column="1" Name="BoxYear" Text="{Binding Year}" Width="100" Margin="0,0,5,0"/>
                     <TextBlock Grid.Column="2" Text="Medium" Margin="0,0,0,5"/>
-                    <ComboBox Grid.Row="1" Grid.Column="2" Name="BoxMedium" Width="100" Margin="0,0,5,0">
+                    <ComboBox Grid.Row="1" Grid.Column="2" Name="BoxMedium" Text="{Binding Medium}" Width="100" Margin="0,0,5,0">
                         <ComboBoxItem Content="Book"/>
                         <ComboBoxItem Content="CD"/>
                         <ComboBoxItem Content="DVD"/>
@@ -56,7 +56,7 @@
                     </ComboBox>
                 </Grid>
                 <TextBlock Text="Place" Margin="0,0,0,5"/>
-                <ComboBox Name="BoxPlace" Margin="0,0,0,5">
+                <ComboBox Name="BoxPlace" Text="{Binding Place}" Margin="0,0,0,5">
                     <ComboBoxItem Content="Frankurt"/>
                     <ComboBoxItem Content="Darmstadt"/>
                     <ComboBoxItem Content="Berlin"/>
@@ -73,11 +73,11 @@
                         <ColumnDefinition Width="auto"/>
                     </Grid.ColumnDefinitions>
                     <TextBlock Text="Date Bought" Margin="0,0,0,5"/>
-                    <TextBox Name="BoxDate" Grid.Row="1" Width="100" Margin="0,0,5,5"/>
+                    <TextBox Name="BoxDate" Grid.Row="1" Text="{Binding Date}" Width="100" Margin="0,0,5,5"/>
                     <TextBlock Grid.Column="1" Text="Pages" Margin="0,0,0,5"/>
-                    <TextBox  Name="BoxPage" Grid.Row="1" Grid.Column="1" Width="100" Margin="0,0,5,5"/>
+                    <TextBox  Name="BoxPage" Grid.Row="1" Grid.Column="1" Text="{Binding Pages}" Width="100" Margin="0,0,5,5"/>
                     <TextBlock Grid.Column="2" Text="Price" Margin="0,0,0,5"/>
-                    <TextBox Name="BoxPrice" Grid.Row="1" Grid.Column="2" Width="100" Margin="0,0,5,5"/>
+                    <TextBox Name="BoxPrice" Grid.Row="1" Grid.Column="2" Text="{Binding Price}" Width="100" Margin="0,0,5,5"/>
                 </Grid>
             </StackPanel>
             <ListBox Width="195"></ListBox>
