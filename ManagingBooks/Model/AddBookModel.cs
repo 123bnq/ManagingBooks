@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -217,6 +218,8 @@ namespace ManagingBooks.Model
                 }
             }
         }
+
+        public ObservableCollection<int> ListBook { get; set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
 

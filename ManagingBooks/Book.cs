@@ -25,8 +25,6 @@ namespace ManagingBooks
 
         public int NoAuthor { get; }
 
-        public static int Count = 0;
-
         public Book()
         {
         }
@@ -45,7 +43,6 @@ namespace ManagingBooks
             Place = place;
             Pages = pages;
             Price = price;
-            Count++;
         }
     }
 }
