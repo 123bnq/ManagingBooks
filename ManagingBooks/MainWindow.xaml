@@ -9,6 +9,7 @@
         Background="WhiteSmoke" ResizeMode="CanMinimize">
     <Window.CommandBindings>
         <CommandBinding Command="local:CustomCommands.Exit" CanExecute="ExitCommand_CanExecute" Executed="ExitCommand_Executed"/>
+        <CommandBinding Command="local:CustomCommands.Search" CanExecute="SearchCommand_CanExecute" Executed="SearchCommand_Executed"/>
     </Window.CommandBindings>
     <DockPanel>
         <Menu DockPanel.Dock="Top">
@@ -27,6 +28,61 @@
                 <MenuItem Header="_About"/>
             </MenuItem>
         </Menu>
-        
+        <StackPanel Height="400">
+            <ListView x:Name="SearchList" Width="800" Height="200" Margin="10">
+                <ListView.Resources>
+                    <Style TargetType="{x:Type GridViewColumnHeader}">
+                        <Setter Property="HorizontalContentAlignment" Value="Left"/>
+                    </Style>
+                </ListView.Resources>
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="Number" Width="75">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Number, StringFormat=\{0:#000000\}}"/>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn Header="Signature" Width="150" DisplayMemberBinding="{Binding Signatures}"/>
+                        <GridViewColumn Header="Title" Width="300">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Title}" FontStyle="Italic"/>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn Header="Authors" Width="100" DisplayMemberBinding="{Binding Authors}"/>
+                        <GridViewColumn Header="Version" Width="50" DisplayMemberBinding="{Binding Version}"/>
+                        <GridViewColumn Header="Medium" Width="100" DisplayMemberBinding="{Binding Medium}"/>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+            <Grid Margin="20,0,40,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <TextBlock Text="Search:" Margin="0,0,0,5"/>
+                <TextBox Name="BoxSearchText" Grid.Column="1" Width="600" Margin="5,0,5,5" Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}">
+                    <TextBox.InputBindings>
+                        <KeyBinding Key="Return" Command="local:CustomCommands.Search"/>
+                    </TextBox.InputBindings>
+                </TextBox>
+                <Button Grid.Column="2" MinWidth="75" Content="Search" Margin="5,0,0,5" Command="local:CustomCommands.Search"/>
+                <TextBlock Grid.Row="1" Text="Search by:" Margin="0,0,10,0"/>
+                <ComboBox Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Margin="8,0,0,0" Text="{Binding SearchBy}">
+                    <ComboBoxItem Content="Number"/>
+                    <ComboBoxItem Content="Signature"/>
+                    <ComboBoxItem Content="Title"/>
+                    <ComboBoxItem Content="Authors"/>
+                </ComboBox>
+            </Grid>
+        </StackPanel>
     </DockPanel>
 </Window>
