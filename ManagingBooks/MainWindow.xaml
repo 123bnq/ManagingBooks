@@ -76,11 +76,12 @@
                 </TextBox>
                 <Button Grid.Column="2" MinWidth="75" Content="Search" Margin="5,0,0,5" Command="local:CustomCommands.Search"/>
                 <TextBlock Grid.Row="1" Text="Search by:" Margin="0,0,10,0"/>
-                <ComboBox Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Margin="8,0,0,0" Text="{Binding SearchBy}">
+                <ComboBox Name="BoxSearchBy" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Margin="8,0,0,0" Text="{Binding SearchBy}">
                     <ComboBoxItem Content="Number"/>
                     <ComboBoxItem Content="Signature"/>
                     <ComboBoxItem Content="Title"/>
                     <ComboBoxItem Content="Authors"/>
+                    <ComboBoxItem Content="All"/>
                 </ComboBox>
             </Grid>
         </StackPanel>

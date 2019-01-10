@@ -53,6 +53,7 @@ namespace ManagingBooks.Model
     
     class SearchBook
     {
+        public int BookId { get; set; }
         public int Number { get; set; }
         public string Signatures { get; set; }
         public string Title { get; set; }
