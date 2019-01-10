@@ -195,7 +195,7 @@ namespace ManagingBooks.Windows
                         book.Signatures[2] = context.Signature3;
                     }
                     SqliteConnection con;
-                    SqlConnect(out con);
+                    SqlMethods.SqlConnect(out con);
                     //book.Authors = new Author[noAuthor];
 
                     var transaction = con.BeginTransaction();
@@ -256,24 +256,7 @@ namespace ManagingBooks.Windows
             }
         }
 
-        public void SqlConnect(out SqliteConnection con)
-        {
-            string path = System.IO.Path.Combine(AppContext.BaseDirectory, "Database.db");
-            con = new SqliteConnection("" + new SqliteConnectionStringBuilder
-            {
-                DataSource = "Database.db"
-            });
-            con.Open();
-            //MessageBox.Show("Connection opened");
-            //var transaction = con.BeginTransaction();
-            //var insertCommand = con.CreateCommand();
-            //insertCommand.Transaction = transaction;
-            //insertCommand.CommandText = "INSERT INTO [Authors]([FirstName],[LastName]) VALUES ('James','Quin');";
-            //insertCommand.ExecuteNonQuery();
-            //transaction.Commit();
-            //con.Close();
-            //MessageBox.Show("Connection closed");
-        }
+        
 
         /// <summary>
         /// Check if all neccessary entries are filled
@@ -345,7 +328,7 @@ namespace ManagingBooks.Windows
         {
             context.ListBook.Clear();
             SqliteConnection con;
-            SqlConnect(out con);
+            SqlMethods.SqlConnect(out con);
             var updateCommand = con.CreateCommand();
             updateCommand.CommandText = "SELECT Number FROM Books ORDER BY BookId DESC";
             updateCommand.CommandType = System.Data.CommandType.Text;
@@ -360,6 +343,6 @@ namespace ManagingBooks.Windows
             con.Close();
         }
     }
-
-
+    
+    
 }
