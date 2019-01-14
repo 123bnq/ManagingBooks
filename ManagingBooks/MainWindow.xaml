@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ManagingBooks"
         mc:Ignorable="d"
-        Title="MainWindow" SizeToContent="WidthAndHeight" WindowStartupLocation="CenterScreen"
+        Title="Book Management" SizeToContent="WidthAndHeight" WindowStartupLocation="CenterScreen"
         Background="WhiteSmoke" ResizeMode="CanMinimize">
     <Window.CommandBindings>
         <CommandBinding Command="local:CustomCommands.Exit" CanExecute="ExitCommand_CanExecute" Executed="ExitCommand_Executed"/>
@@ -29,36 +29,58 @@
             </MenuItem>
         </Menu>
         <StackPanel Height="400">
-            <ListView x:Name="SearchList" Width="800" Height="200" Margin="10">
+            <ListView x:Name="SearchList" Width="1000" Height="200" Margin="10">
                 <ListView.Resources>
                     <Style TargetType="{x:Type GridViewColumnHeader}">
                         <Setter Property="HorizontalContentAlignment" Value="Left"/>
                     </Style>
+                    <Style TargetType="ListViewItem">
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                    </Style>
                 </ListView.Resources>
                 <ListView.View>
                     <GridView>
-                        <GridViewColumn Header="Number" Width="75">
+                        <GridViewColumn Header="Number" Width="60">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
-                                    <TextBlock Text="{Binding Number, StringFormat=\{0:#000000\}}"/>
+                                    <TextBlock Text="{Binding Number, StringFormat=\{0:#000000\}}" HorizontalAlignment="Right"/>
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
-                        <GridViewColumn Header="Signature" Width="150" DisplayMemberBinding="{Binding Signatures}"/>
-                        <GridViewColumn Header="Title" Width="300">
+                        <GridViewColumn Header="Signature" Width="120" DisplayMemberBinding="{Binding Signatures}"/>
+                        <GridViewColumn Header="Title" Width="150">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
-                                    <TextBlock Text="{Binding Title}" FontStyle="Italic"/>
+                                    <TextBlock Text="{Binding Title}" FontStyle="Italic" FontWeight="Bold" FontSize="14"/>
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
-                        <GridViewColumn Header="Authors" Width="100" DisplayMemberBinding="{Binding Authors}"/>
+                        <GridViewColumn Header="Authors" Width="150" DisplayMemberBinding="{Binding Authors}"/>
+                        <GridViewColumn Header="Publishers" Width="75" DisplayMemberBinding="{Binding Publishers}"/>
+                        <GridViewColumn Header="Year" Width="50" DisplayMemberBinding="{Binding Year}"/>
                         <GridViewColumn Header="Version" Width="50" DisplayMemberBinding="{Binding Version}"/>
                         <GridViewColumn Header="Medium" Width="100" DisplayMemberBinding="{Binding Medium}"/>
+                        <GridViewColumn Header="Place" Width="75" DisplayMemberBinding="{Binding Place}"/>
+                        <GridViewColumn Header="Date" Width="75" DisplayMemberBinding="{Binding Date}"/>
+                        <GridViewColumn Header="Pages" Width="40">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Pages}" HorizontalAlignment="Right"/>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn Header="Price" Width="40">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Price}" HorizontalAlignment="Right"/>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+
                     </GridView>
                 </ListView.View>
             </ListView>
-            <Grid Margin="20,0,40,0">
+            <Grid Margin="20,0,40,20">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
@@ -69,7 +91,7 @@
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
                 <TextBlock Text="Search:" Margin="0,0,0,5"/>
-                <TextBox Name="BoxSearchText" Grid.Column="1" Width="600" Margin="5,0,5,5" Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}">
+                <TextBox Name="BoxSearchText" Grid.Column="1" Width="600" Margin="5,0,5,5" Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}" TextChanged="BoxSearchText_TextChanged">
                     <TextBox.InputBindings>
                         <KeyBinding Key="Return" Command="local:CustomCommands.Search"/>
                     </TextBox.InputBindings>
@@ -84,6 +106,9 @@
                     <ComboBoxItem Content="All"/>
                 </ComboBox>
             </Grid>
+            <WrapPanel Margin="20,0,40,0" HorizontalAlignment="Right">
+                <Button Name="BtnPrint" Content="Print" MinWidth="75" Click="BtnPrint_Click"/>
+            </WrapPanel>
         </StackPanel>
     </DockPanel>
 </Window>
