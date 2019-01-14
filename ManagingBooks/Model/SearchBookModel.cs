@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Collections.ObjectModel;
@@ -57,8 +53,14 @@ namespace ManagingBooks.Model
         public int Number { get; set; }
         public string Signatures { get; set; }
         public string Title { get; set; }
+        public string Publishers { get; set; }
         public string Authors { get; set; }
         public int Version { get; set; }
+        public int Year { get; set; }
         public string Medium { get; set; }
+        public string Place { get; set; }
+        public string Date { get; set; }
+        public int Pages { get; set; }
+        public double Price { get; set; }
     }
 }
