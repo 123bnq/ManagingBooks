@@ -2,6 +2,7 @@
 {
     class Book
     {
+        public int BookId { get; set; }
         public int Number { get; set; }
         public string[] Signatures { get; set; }
         public string Title { get; set; }
@@ -21,10 +22,12 @@
 
         public Book()
         {
+            BookId = -1;
         }
 
         public Book(int noAuthor, int noSignature, int number, string title, string publisher, int version, int year, string medium, string date, string place, int pages, double price)
         {
+            BookId = -1;
             NoAuthor = noAuthor;
             NoSignature = noSignature;
             Number = number;

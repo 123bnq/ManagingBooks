@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ManagingBooks.Windows"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d"
         Title="Add Books" SizeToContent="WidthAndHeight" Background="WhiteSmoke"
         WindowStartupLocation="CenterOwner"
@@ -73,7 +74,7 @@
                         <ColumnDefinition Width="auto"/>
                     </Grid.ColumnDefinitions>
                     <TextBlock Text="Date Bought" Margin="0,0,0,5"/>
-                    <DatePicker Name="BoxDates" Grid.Row="1" FirstDayOfWeek="Monday" SelectedDateChanged="BoxDates_SelectedDateChanged" MinWidth="100" Margin="0,0,5,5">
+                    <DatePicker Name="BoxDates" Grid.Row="1" FirstDayOfWeek="Monday" SelectedDateChanged="BoxDates_SelectedDateChanged" DisplayDateEnd="{x:Static sys:DateTime.Today}" MinWidth="100" Margin="0,0,5,5">
                         <DatePicker.Resources>
                             <Style TargetType="DatePickerTextBox">
                                 <Setter Property="Control.Template">
@@ -87,25 +88,22 @@
                             </Style>
                         </DatePicker.Resources>
                     </DatePicker>
-                    <!--<TextBox Name="BoxDate" Grid.Row="1" Text="{Binding Date, StringFormat={}{0:ddMMyyyy}}" Width="100" Margin="0,0,5,5"/>-->
                     <TextBlock Grid.Column="1" Text="Pages" Margin="0,0,0,5"/>
                     <TextBox  Name="BoxPage" Grid.Row="1" Grid.Column="1" Text="{Binding Pages}" Width="100" Margin="0,0,5,5"/>
                     <TextBlock Grid.Column="2" Text="Price" Margin="0,0,0,5"/>
                     <TextBox Name="BoxPrice" Grid.Row="1" Grid.Column="2" Text="{Binding Price, StringFormat={}{0:#0.00}}" Width="100" Margin="0,0,5,5"/>
                 </Grid>
-                
             </StackPanel>
             <StackPanel Margin="35,0,0,0">
                 <TextBlock Text="Last 20 books:" Margin="0,0,0,10"/>
                 <ListBox Name="ListNumber" Width="120" Height="336" ItemsSource="{Binding ListBook}">
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <TextBlock Text="{Binding StringFormat={}{0:#000000}}"/>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding StringFormat={}{0:#000000}}"/>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
             </StackPanel>
-            
         </StackPanel>
         <WrapPanel HorizontalAlignment="Right" Margin="0,10,0,0">
             <Button Name="BtnAdd" Content="Add" MinWidth="70" Margin="5" Click="BtnAdd_Click"/>

@@ -10,12 +10,14 @@
     <Window.CommandBindings>
         <CommandBinding Command="local:CustomCommands.Exit" CanExecute="ExitCommand_CanExecute" Executed="ExitCommand_Executed"/>
         <CommandBinding Command="local:CustomCommands.Search" CanExecute="SearchCommand_CanExecute" Executed="SearchCommand_Executed"/>
+        <CommandBinding Command="local:CustomCommands.Edit" CanExecute="EditCommand_CanExecute" Executed="EditCommand_Executed"/>
+        <CommandBinding Command="local:CustomCommands.Print" CanExecute="EditCommand_CanExecute" Executed="PrintCommand_Executed"/>
     </Window.CommandBindings>
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="_File">
                 <MenuItem Header="_Add..." Click="AddWindow_Click"/>
-                <MenuItem Header="_Edit..."/>
+                <MenuItem Header="_Edit..." Command="local:CustomCommands.Edit"/>
                 <MenuItem Header="_Delete..."/>
                 <MenuItem Header="_Exit" Command="local:CustomCommands.Exit"/>
             </MenuItem>
@@ -37,7 +39,17 @@
                     <Style TargetType="ListViewItem">
                         <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
                     </Style>
+                    <ContextMenu x:Key="ItemContextMenu">
+                        <MenuItem Header="Edit..." Command="local:CustomCommands.Edit"/>
+                        <MenuItem Header="Delete..."/>
+                        <MenuItem Header="Print..." Command="local:CustomCommands.Print"/>
+                    </ContextMenu>
                 </ListView.Resources>
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="{x:Type ListViewItem}">
+                        <Setter Property="ContextMenu" Value="{StaticResource ItemContextMenu}"/>
+                    </Style>
+                </ListView.ItemContainerStyle>
                 <ListView.View>
                     <GridView>
                         <GridViewColumn Header="Number" Width="60">
@@ -76,7 +88,6 @@
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
-
                     </GridView>
                 </ListView.View>
             </ListView>
@@ -107,7 +118,7 @@
                 </ComboBox>
             </Grid>
             <WrapPanel Margin="20,0,40,0" HorizontalAlignment="Right">
-                <Button Name="BtnPrint" Content="Print" MinWidth="75" Click="BtnPrint_Click"/>
+                <Button Name="BtnPrint" Content="Print..." MinWidth="75" Command="local:CustomCommands.Print"/>
             </WrapPanel>
         </StackPanel>
     </DockPanel>

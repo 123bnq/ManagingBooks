@@ -173,6 +173,30 @@ namespace ManagingBooks
             }
         }
 
+        private void EditCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = (SearchList.SelectedItem != null);
+        }
+
+        private void EditCommand_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            int bookId = (SearchList.SelectedItem as SearchBook).BookId;
+            // open EditWindow
+            new EditBook(bookId) { Owner = this }.ShowDialog();
+        }
+
+        private void PrintCommand_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            if (SearchList.SelectedItem != null)
+            {
+                new BarcodeDisplay((SearchList.SelectedItem as SearchBook).Number.ToString().PadLeft(6, '0')) { Owner = this }.Show();
+            }
+            else
+            {
+                MessageBox.Show("No book is selected", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
         //private void Window_GotFocus(object sender, RoutedEventArgs e)
         //{
         //    SearchBookModel context = this.DataContext as SearchBookModel;
@@ -189,5 +213,7 @@ namespace ManagingBooks
         });
 
         public static readonly RoutedUICommand Search = new RoutedUICommand("Search", "Search", typeof(CustomCommands));
+        public static readonly RoutedUICommand Edit = new RoutedUICommand("Edit", "Edit", typeof(CustomCommands));
+        public static readonly RoutedUICommand Print = new RoutedUICommand("Print", "Print", typeof(CustomCommands));
     }
 }
