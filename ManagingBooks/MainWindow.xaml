@@ -30,6 +30,10 @@
                 <MenuItem Header="_About"/>
             </MenuItem>
         </Menu>
+        <StatusBar DockPanel.Dock="Bottom">
+            <TextBlock Margin="10,0,5,0" Text="{Binding Status}"/>
+            <ProgressBar Minimum="0" Maximum="100" Height="15" Width="200" Value="{Binding Progress}"/>
+        </StatusBar>
         <StackPanel Height="400">
             <ListView x:Name="SearchList" Width="1000" Height="200" Margin="10">
                 <ListView.Resources>

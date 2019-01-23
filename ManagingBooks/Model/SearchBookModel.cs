@@ -9,6 +9,8 @@ namespace ManagingBooks.Model
     {
         private string m_SearchText;
         private string m_SearchBy;
+        private string m_Status;
+        private int m_Progress;
 
         public string SearchText {
             get => m_SearchText;
@@ -29,6 +31,30 @@ namespace ManagingBooks.Model
                 if (value != m_SearchBy)
                 {
                     m_SearchBy = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+
+        public string Status {
+            get => m_Status;
+            set
+            {
+                if(value != m_Status)
+                {
+                    m_Status = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+
+        public int Progress {
+            get => m_Progress;
+            set
+            {
+                if(value != m_Progress)
+                {
+                    m_Progress = value;
                     NotifyPropertyChanged();
                 }
             }
