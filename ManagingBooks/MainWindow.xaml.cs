@@ -43,6 +43,7 @@ namespace ManagingBooks
         {
             int max = (int)e.Argument;
             int i = 0;
+            int progressPercentage;
 
             SqliteConnection con;
             SqlMethods.SqlConnect(out con);
@@ -82,6 +83,15 @@ namespace ManagingBooks
                 }
                 else
                 {
+                    finishedBook = true;
+                    if (finishedBook && (!string.IsNullOrEmpty(tempBook.Title)))
+                    {
+                        // report progress change
+                        progressPercentage = Convert.ToInt32(((double)i / max) * 100);
+                        (sender as BackgroundWorker).ReportProgress(progressPercentage, tempBook);
+
+                        finishedBook = false;
+                    }
                     tempBook = new SearchBook();
                     tempBook.BookId = result;
                     lastBookId = result;
@@ -105,11 +115,12 @@ namespace ManagingBooks
                     tempBook.Authors = Convert.ToString(r["Name"]);
                     tempBook.Signatures = Convert.ToString(r["Signature"]);
                     i++;
-                    int progressPercentage = Convert.ToInt32(((double)i / max) * 100);
-                    (sender as BackgroundWorker).ReportProgress(progressPercentage, tempBook);                  
+                                    
                 }
-                Thread.Sleep(20);
+                Thread.Sleep(1);
             }
+            progressPercentage = Convert.ToInt32(((double)i / max) * 100);
+            (sender as BackgroundWorker).ReportProgress(progressPercentage, tempBook);
             e.Result = i;
             con.Close();
 
@@ -129,7 +140,9 @@ namespace ManagingBooks
 
         void Search_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            (this.DataContext as SearchBookModel).Status = "Finished";
+            SearchBookModel context = this.DataContext as SearchBookModel;
+            context.Status = "Finished";
+            //context.DisplayBooks.RemoveAt(0);
             MessageBox.Show("Done");
         }
 
