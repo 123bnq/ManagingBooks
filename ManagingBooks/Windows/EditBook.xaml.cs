@@ -70,7 +70,7 @@ namespace ManagingBooks.Windows
             authors = authors.Distinct().ToList();
             signatures = signatures.Distinct().ToList();
             book.Authors = new Author[authors.Count];
-            
+
             for (int j = 0; j < book.Authors.Length; j++)
             {
                 book.Authors[j] = new Author();
@@ -81,9 +81,9 @@ namespace ManagingBooks.Windows
                 book.Authors[i++].Name = a;
             }
             i = 0;
-            
+
             book.Signatures = new string[signatures.Count];
-            
+
             foreach (var s in signatures)
             {
                 book.Signatures[i++] = s;
@@ -104,7 +104,8 @@ namespace ManagingBooks.Windows
             context.Medium = book.Medium;
             context.Place = book.Place;
             context.Year = book.Year;
-            BoxDates.SelectedDate = DateTime.Parse(book.DayBought, new CultureInfo("fr-FR", true));
+            context.Date = book.DayBought;
+            BoxDates.SelectedDate = DateTime.Parse(context.Date, new CultureInfo("fr-FR", true));
             context.Pages = book.Pages;
             context.Price = book.Price;
             if (noAuthor > 0)
@@ -169,7 +170,141 @@ namespace ManagingBooks.Windows
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
+            // update book if the change condition is sufficient
+
+            AddBookModel context = this.DataContext as AddBookModel;
+            Book tempBook;
             bool isChanged = false;
+
+            if (IsDataToAdd(context))
+            {
+                int noAuthor = NumberOfAuthor(context);
+                int noSignature = NumberOfSignature(context);
+
+                if (noAuthor != 0 && noSignature != 0)
+                {
+                    tempBook = new Book();
+                    tempBook.BookId = book.BookId;
+                    tempBook.Number = context.Number;
+                    tempBook.Title = context.Title;
+                    tempBook.Publisher = context.Publisher;
+                    tempBook.Version = context.Version;
+                    tempBook.Medium = context.Medium;
+                    tempBook.Place = context.Place;
+                    tempBook.Year = context.Year;
+                    tempBook.DayBought = context.Date;
+                    tempBook.Pages = context.Pages;
+                    tempBook.Price = context.Price;
+
+                    tempBook.Authors = new Author[noAuthor];
+                    for (int i = 0; i < noAuthor; i++)
+                    {
+                        tempBook.Authors[i] = new Author();
+                    }
+                    tempBook.Signatures = new string[noSignature];
+                    if (noAuthor > 0)
+                    {
+                        tempBook.Authors[0].Name = context.Author1;
+                    }
+                    if (noAuthor > 1)
+                    {
+                        tempBook.Authors[1].Name = context.Author2;
+                    }
+                    if (noAuthor > 2)
+                    {
+                        tempBook.Authors[2].Name = context.Author3;
+                    }
+                    if (noSignature > 0)
+                    {
+                        tempBook.Signatures[0] = context.Signature1;
+                    }
+                    if (noSignature > 1)
+                    {
+                        tempBook.Signatures[1] = context.Signature2;
+                    }
+                    if (noSignature > 2)
+                    {
+                        tempBook.Signatures[2] = context.Signature3;
+                    }
+                    isChanged = !Book.Compare(tempBook, book);
+                }
+
+                if (!isChanged)
+                {
+                    var result = MessageBox.Show("Nothing is changed. Do you want to modify?", "Information", MessageBoxButton.YesNo, MessageBoxImage.Information);
+                    if(result == MessageBoxResult.Yes)
+                    {
+                        e.Cancel = true;
+                    }
+                }
+                else
+                {
+                    var result = MessageBox.Show("Content is changed. Do you want to discard?", "Warning", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                    if (result == MessageBoxResult.No)
+                    {
+                        e.Cancel = true;
+                    }
+                }
+
+
+            }
+
+
+        }
+
+        /// <summary>
+        /// Check if all neccessary entries are filled
+        /// </summary>
+        /// <param name="context"></param>
+        /// <returns></returns>
+        private bool IsDataToAdd(AddBookModel context)
+        {
+            return !string.IsNullOrWhiteSpace(BoxNumber.Text)
+                && !string.IsNullOrWhiteSpace(context.Signature1)
+                && !string.IsNullOrWhiteSpace(context.Author1)
+                && !string.IsNullOrWhiteSpace(context.Title)
+                && !string.IsNullOrWhiteSpace(context.Publisher)
+                && !string.IsNullOrWhiteSpace(BoxVersion.Text)
+                && !string.IsNullOrWhiteSpace(BoxYear.Text)
+                && !string.IsNullOrWhiteSpace(context.Medium)
+                && !string.IsNullOrWhiteSpace(context.Place)
+                && !string.IsNullOrWhiteSpace(context.Date)
+                && !string.IsNullOrWhiteSpace(BoxPage.Text)
+                && !string.IsNullOrWhiteSpace(BoxPrice.Text);
+        }
+
+        private int NumberOfAuthor(AddBookModel context)
+        {
+            if (!string.IsNullOrWhiteSpace(context.Author3) && !string.IsNullOrWhiteSpace(context.Author2))
+            {
+                return 3;
+            }
+            else if (!string.IsNullOrWhiteSpace(context.Author2))
+            {
+                return 2;
+            }
+            else if (string.IsNullOrWhiteSpace(context.Author3) && string.IsNullOrWhiteSpace(context.Author2))
+            {
+                return 1;
+            }
+            return 0;
+        }
+
+        private int NumberOfSignature(AddBookModel context)
+        {
+            if (!string.IsNullOrWhiteSpace(context.Signature3) && !string.IsNullOrWhiteSpace(context.Signature2))
+            {
+                return 3;
+            }
+            else if (!string.IsNullOrWhiteSpace(context.Signature2))
+            {
+                return 2;
+            }
+            else if (string.IsNullOrWhiteSpace(context.Signature3) && string.IsNullOrWhiteSpace(context.Signature2))
+            {
+                return 1;
+            }
+            return 0;
         }
     }
 }

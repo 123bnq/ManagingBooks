@@ -331,7 +331,6 @@ namespace ManagingBooks.Windows
             {
                 (this.DataContext as AddBookModel).Date = BoxDates.SelectedDate.Value.ToString("d", dtfi);
             }
-
         }
 
         private void UpdateListBook(AddBookModel context)
