@@ -27,11 +27,6 @@ namespace ManagingBooks.Windows
 
         private void BoxDates_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
-            //DateTime now = DateTime.Now;
-            //if (DateTime.Compare(BoxDates.SelectedDate.Value, now) > 0)
-            //{
-            //    MessageBox.Show("Not accepted");
-            //}
             DateTimeFormatInfo dtfi = CultureInfo.CreateSpecificCulture("fr-FR").DateTimeFormat;
             if (BoxDates.SelectedDate != null)
             {
@@ -116,28 +111,65 @@ namespace ManagingBooks.Windows
             {
                 context.Author1 = book.Authors[0].Name;
             }
+            else
+            {
+                context.Author1 = string.Empty;
+            }
             if (noAuthor > 1)
             {
                 context.Author2 = book.Authors[1].Name;
+            }
+            else
+            {
+                context.Author2 = string.Empty;
             }
             if (noAuthor > 2)
             {
                 context.Author3 = book.Authors[2].Name;
             }
+            else
+            {
+                context.Author3 = string.Empty;
+            }
             if (noSignature > 0)
             {
                 context.Signature1 = book.Signatures[0];
+            }
+            else
+            {
+                context.Signature1 = string.Empty;
             }
             if (noSignature > 1)
             {
                 context.Signature2 = book.Signatures[1];
             }
+            else
+            {
+                context.Signature2 = string.Empty;
+            }
             if (noSignature > 2)
             {
                 context.Signature3 = book.Signatures[2];
             }
+            else
+            {
+                context.Signature3 = string.Empty;
+            }
         }
 
-        // Update changes
+        private void BtnUndo_Click(object sender, RoutedEventArgs e)
+        {
+            CopyBookToView(this.DataContext as AddBookModel);
+        }
+
+        private void BtnCancel_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            bool isChanged = false;
+        }
     }
 }

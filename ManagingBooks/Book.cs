@@ -41,5 +41,11 @@
             Pages = pages;
             Price = price;
         }
+
+        public static bool Compare(Book b1, Book b2)
+        {
+
+            return true;
+        }
     }
 }
