@@ -52,7 +52,8 @@ namespace ManagingBooks
                 "FROM Books b " +
                 "LEFT JOIN Books_Authors ba ON (b.BookId = ba.BookId) " +
                 "LEFT JOIN Authors a ON (ba.AuthorId = a.AuthorId) " +
-                "LEFT JOIN Signatures s ON (s.BookId = b.BookId) ORDER BY ba.Id";
+                "LEFT JOIN Books_Signatures bs ON (bs.BookId = b.BookId) " +
+                "LEFT JOIN Signatures s ON (bs.SignatureId = s.SignatureId) ORDER BY b.BookId";
             SqliteDataReader r = selectCommand.ExecuteReader();
             int lastBookId = -1;
             int lastAuthorId = -1;
@@ -60,7 +61,6 @@ namespace ManagingBooks
             SearchBook tempBook = new SearchBook();
             while (r.Read())
             {
-
                 int result;
                 int.TryParse(Convert.ToString(r["BookId"]), out result);
                 if (result == lastBookId)
@@ -114,13 +114,15 @@ namespace ManagingBooks
                     lastAuthorId = result;
                     tempBook.Authors = Convert.ToString(r["Name"]);
                     tempBook.Signatures = Convert.ToString(r["Signature"]);
-                    i++;
-                                    
+                    i++;         
                 }
                 Thread.Sleep(1);
             }
-            progressPercentage = Convert.ToInt32(((double)i / max) * 100);
-            (sender as BackgroundWorker).ReportProgress(progressPercentage, tempBook);
+            if (i != 0)
+            {
+                progressPercentage = Convert.ToInt32(((double)i / max) * 100);
+                (sender as BackgroundWorker).ReportProgress(progressPercentage, tempBook); 
+            }
             e.Result = i;
             con.Close();
 
@@ -142,7 +144,6 @@ namespace ManagingBooks
         {
             SearchBookModel context = this.DataContext as SearchBookModel;
             context.Status = "Finished";
-            //context.DisplayBooks.RemoveAt(0);
             MessageBox.Show("Done");
         }
 
@@ -177,13 +178,7 @@ namespace ManagingBooks
             if (!new AddBook() { Owner = this }.ShowDialog().Value)
             {
                 (DataContext as SearchBookModel).DisplayBooks.Clear();
-                //BackgroundWorker search = new BackgroundWorker();
-                //search.WorkerReportsProgress = true;
-                //search.DoWork += Search_DoWork;
-                //search.ProgressChanged += Search_ProgressChanged;
-                //search.RunWorkerCompleted += Search_RunWorkerCompleted;
                 search.RunWorkerAsync(NumberOfBooks());
-                //SearchAll(this.DataContext as SearchBookModel);
             }
         }
         private void ExitCommand_Executed(object sender, ExecutedRoutedEventArgs e)
@@ -223,7 +218,8 @@ namespace ManagingBooks
                 "FROM Books b " +
                 "LEFT JOIN Books_Authors ba ON (b.BookId = ba.BookId) " +
                 "LEFT JOIN Authors a ON (ba.AuthorId = a.AuthorId) " +
-                "LEFT JOIN Signatures s ON (s.BookId = b.BookId) ORDER BY ba.Id";
+                "LEFT JOIN Books_Signatures bs ON (b.BookId = bs.BookId) " +
+                "LEFT JOIN Signatures s ON (bs.SignatureId = s.SignatureId) ORDER BY b.BookId";
             SqliteDataReader r = selectCommand.ExecuteReader();
             int lastBookId = -1;
             int lastAuthorId = -1;
@@ -307,7 +303,12 @@ namespace ManagingBooks
         {
             int bookId = (SearchList.SelectedItem as SearchBook).BookId;
             // open EditWindow
-            new EditBook(bookId) { Owner = this }.ShowDialog();
+            //new EditBook(bookId) { Owner = this }.ShowDialog();
+            if (!new EditBook(bookId) { Owner = this }.ShowDialog().Value)
+            {
+                (DataContext as SearchBookModel).DisplayBooks.Clear();
+                search.RunWorkerAsync(NumberOfBooks());
+            }
         }
 
         private void PrintCommand_Executed(object sender, ExecutedRoutedEventArgs e)

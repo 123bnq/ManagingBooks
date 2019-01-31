@@ -92,7 +92,7 @@
             <TextBox Name="BoxPrice" Grid.Row="1" Grid.Column="2" Text="{Binding Price, StringFormat={}{0:#0.00}}" Width="100" Margin="0,0,5,5"/>
         </Grid>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-            <Button Name="BtnOk" Content="OK" MinWidth="75" Margin="0,0,5,0"/>
+            <Button Name="BtnOk" Content="OK" MinWidth="75" Margin="0,0,5,0" Click="BtnOk_Click"/>
             <Button Name="BtnUndo" Content="Undo" MinWidth="75" Margin="5,0,5,0" Click="BtnUndo_Click"/>
             <Button Name="BtnCancel" Content="Cancel" MinWidth="75" Margin="5,0,0,0" Click="BtnCancel_Click"/>
         </StackPanel>

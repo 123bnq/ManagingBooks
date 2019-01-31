@@ -15,6 +15,7 @@ namespace ManagingBooks.Windows
     public partial class EditBook : Window
     {
         private Book book;
+        private bool updateRequest = false;
 
         public EditBook(int bookId)
         {
@@ -38,7 +39,13 @@ namespace ManagingBooks.Windows
         {
             SqlMethods.SqlConnect(out SqliteConnection con);
             var selectCommmand = con.CreateCommand();
-            selectCommmand.CommandText = $"SELECT b.Number,b.Title,b.Publisher,b.Version,b.Year,b.Medium,b.Place,b.DayBought,b.Pages,b.Price,a.AuthorId,a.Name,s.Signature FROM Books b LEFT JOIN Books_Authors ba ON (ba.BookId = b.BookId) LEFT JOIN Authors a ON (a.AuthorId = ba.AuthorId) LEFT JOIN Signatures s ON (s.BookId = b.BookId) WHERE b.BookId = '{book.BookId}' ORDER BY ba.Id";
+            selectCommmand.CommandText = $"SELECT b.Number,b.Title,b.Publisher,b.Version,b.Year,b.Medium,b.Place,b.DayBought,b.Pages,b.Price,a.AuthorId,a.Name,s.Signature " +
+                $"FROM Books b " +
+                $"LEFT JOIN Books_Authors ba ON (ba.BookId = b.BookId) " +
+                $"LEFT JOIN Authors a ON (a.AuthorId = ba.AuthorId) " +
+                $"LEFT JOIN Books_Signatures bs ON (bs.BookId = b.BookId) " +
+                $"LEFT JOIN Signatures s ON (s.SignatureId = bs.SignatureId) " +
+                $"WHERE b.BookId = '{book.BookId}' ORDER BY ba.Id";
             SqliteDataReader r = selectCommmand.ExecuteReader();
             int result;
             List<string> authors = new List<string>();
@@ -158,6 +165,12 @@ namespace ManagingBooks.Windows
             }
         }
 
+        private void BtnOk_Click(object sender, RoutedEventArgs e)
+        {
+            updateRequest = true;
+            this.Close();
+        }
+
         private void BtnUndo_Click(object sender, RoutedEventArgs e)
         {
             CopyBookToView(this.DataContext as AddBookModel);
@@ -173,7 +186,7 @@ namespace ManagingBooks.Windows
             // update book if the change condition is sufficient
 
             AddBookModel context = this.DataContext as AddBookModel;
-            Book tempBook;
+            Book tempBook = new Book();
             bool isChanged = false;
 
             if (IsDataToAdd(context))
@@ -183,7 +196,6 @@ namespace ManagingBooks.Windows
 
                 if (noAuthor != 0 && noSignature != 0)
                 {
-                    tempBook = new Book();
                     tempBook.BookId = book.BookId;
                     tempBook.Number = context.Number;
                     tempBook.Title = context.Title;
@@ -228,25 +240,98 @@ namespace ManagingBooks.Windows
                     }
                     isChanged = !Book.Compare(tempBook, book);
                 }
-
                 if (!isChanged)
                 {
                     var result = MessageBox.Show("Nothing is changed. Do you want to modify?", "Information", MessageBoxButton.YesNo, MessageBoxImage.Information);
-                    if(result == MessageBoxResult.Yes)
+                    if (result == MessageBoxResult.Yes)
                     {
                         e.Cancel = true;
                     }
                 }
                 else
                 {
-                    var result = MessageBox.Show("Content is changed. Do you want to discard?", "Warning", MessageBoxButton.YesNo, MessageBoxImage.Warning);
-                    if (result == MessageBoxResult.No)
+                    if (updateRequest)
                     {
-                        e.Cancel = true;
+                        updateRequest = false;
+
+                        // update book
+
+                        SqlMethods.SqlConnect(out SqliteConnection con);
+                        var updateCommand = con.CreateCommand();
+                        updateCommand.CommandText = $"UPDATE Books SET Number={tempBook.Number}, Title='{tempBook.Title}', Publisher='{tempBook.Publisher}', Version={tempBook.Version}, Year={tempBook.Year}, Medium='{tempBook.Medium}', Place='{tempBook.Place}', DayBought='{tempBook.DayBought}', Pages={tempBook.Pages}, Price={tempBook.Price} WHERE BookId={tempBook.BookId}";
+                        updateCommand.ExecuteNonQuery();
+
+                        //clear the binding from book and author and the signature
+
+                        var deleteCommand = con.CreateCommand();
+                        deleteCommand.CommandText = $"DELETE FROM Books_Authors WHERE BookId={tempBook.BookId}";
+                        deleteCommand.ExecuteNonQuery();
+
+                        deleteCommand = con.CreateCommand();
+                        deleteCommand.CommandText = $"DELETE FROM Books_Signatures WHERE BookId={tempBook.BookId}";
+                        deleteCommand.ExecuteNonQuery();
+
+                        var selectCommand = con.CreateCommand();
+                        var insertCommand = con.CreateCommand();
+
+                        for (int i = 0; i < noAuthor; i++)
+                        {
+                            // check if there is existing Author
+                            selectCommand = con.CreateCommand();
+                            selectCommand.CommandText = $"SELECT * FROM Authors WHERE Name = '{tempBook.Authors[i].Name}'";
+                            SqliteDataReader r = selectCommand.ExecuteReader();
+                            // if no, add Author
+                            if (!r.Read())
+                            {
+                                insertCommand = con.CreateCommand();
+                                insertCommand.CommandText = "INSERT INTO Authors (Name) VALUES (@Name)";
+                                insertCommand.Parameters.AddWithValue("Name", tempBook.Authors[i].Name);
+                                insertCommand.ExecuteNonQuery();
+                            }
+
+                            insertCommand = con.CreateCommand();
+                            insertCommand.CommandText = $"INSERT INTO Books_Authors (BookId, AuthorId, Priority) VALUES ((SELECT BookId FROM Books " +
+                                $"WHERE Title = '{book.Title}' AND Version = '{tempBook.Version}' AND Medium = '{tempBook.Medium}')," +
+                                $"(SELECT AuthorId FROM Authors WHERE Name = '{tempBook.Authors[i].Name}'),{i + 1})";
+                            insertCommand.ExecuteNonQuery();
+                        }
+
+                        for (int i = 0; i < noSignature; i++)
+                        {
+                            selectCommand = con.CreateCommand();
+                            selectCommand.CommandText = $"SELECT * FROM Signatures WHERE Signature = '{tempBook.Signatures[i]}'";
+                            SqliteDataReader r = selectCommand.ExecuteReader();
+                            if (!r.Read())
+                            {
+                                insertCommand = con.CreateCommand();
+                                insertCommand.CommandText = "INSERT INTO Signatures (Signature) VALUES (@Signature)";
+                                insertCommand.Parameters.AddWithValue("Signature", tempBook.Signatures[i]);
+                                insertCommand.ExecuteNonQuery();
+                            }
+
+                            insertCommand = con.CreateCommand();
+                            insertCommand.CommandText = $"INSERT INTO Books_Signatures (BookId, SignatureId, Priority) VALUES ((SELECT BookId FROM Books " +
+                                $"WHERE Title = '{tempBook.Title}' AND Version = '{tempBook.Version}' AND Medium = '{tempBook.Medium}')," +
+                                $"(SELECT SignatureId FROM Signatures WHERE Signature = '{tempBook.Signatures[i]}'), {i + 1})";
+                            insertCommand.ExecuteNonQuery();
+                        }
+
+                        MessageBox.Show("Book is changed successfully.", "Infomation", MessageBoxButton.OK, MessageBoxImage.Information);
+                    }
+                    else
+                    {
+                        var result = MessageBox.Show("Content is changed. Do you want to discard?", "Warning", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                        if (result == MessageBoxResult.No)
+                        {
+                            e.Cancel = true;
+                        }
                     }
                 }
-
-
+            }
+            else
+            {
+                var result = MessageBox.Show("Not sufficient. Please provide every required field (*).", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                e.Cancel = true;
             }
 
 
@@ -306,5 +391,7 @@ namespace ManagingBooks.Windows
             }
             return 0;
         }
+
+
     }
 }

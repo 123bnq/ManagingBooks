@@ -44,7 +44,7 @@
 
         public static bool Compare(Book b1, Book b2)
         {
-            if(b1.Authors.Length != b2.Authors.Length || b1.Signatures.Length != b2.Authors.Length)
+            if(b1.Authors.Length != b2.Authors.Length || b1.Signatures.Length != b2.Signatures.Length)
             {
                 return false;
             }

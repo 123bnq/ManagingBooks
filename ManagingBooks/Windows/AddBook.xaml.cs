@@ -227,18 +227,29 @@ namespace ManagingBooks.Windows
 
                             }
                             insertCommand = con.CreateCommand();
-                            insertCommand.CommandText = $"INSERT INTO Books_Authors (BookId, AuthorId) VALUES ((SELECT BookId FROM Books " +
+                            insertCommand.CommandText = $"INSERT INTO Books_Authors (BookId, AuthorId, Priority) VALUES ((SELECT BookId FROM Books " +
                                 $"WHERE Title = '{book.Title}' AND Version = '{book.Version}' AND Medium = '{book.Medium}')," +
-                                $"(SELECT AuthorId FROM Authors WHERE Name = '{book.Authors[i].Name}'))";
+                                $"(SELECT AuthorId FROM Authors WHERE Name = '{book.Authors[i].Name}'),{i + 1})";
                             insertCommand.ExecuteNonQuery();
                         }
 
                         for (int i = 0; i < noSignature; i++)
                         {
+                            selectCommand = con.CreateCommand();
+                            selectCommand.CommandText = $"SELECT * FROM Signatures WHERE Signature = '{book.Signatures[i]}'";
+                            r = selectCommand.ExecuteReader();
+                            if (!r.Read())
+                            {
+                                insertCommand = con.CreateCommand();
+                                insertCommand.CommandText = "INSERT INTO Signatures (Signature) VALUES (@Signature)";
+                                insertCommand.Parameters.AddWithValue("Signature", book.Signatures[i]);
+                                insertCommand.ExecuteNonQuery();
+
+                            }
                             insertCommand = con.CreateCommand();
-                            insertCommand.CommandText = $"INSERT INTO Signatures (BookId, Signature) VALUES ((SELECT BookId FROM Books " +
-                                $"WHERE Title = '{book.Title}' AND Version = '{book.Version}' AND Medium = '{book.Medium}'),@Signature)";
-                            insertCommand.Parameters.AddWithValue("Signature", book.Signatures[i]);
+                            insertCommand.CommandText = $"INSERT INTO Books_Signatures (BookId, SignatureId, Priority) VALUES ((SELECT BookId FROM Books " +
+                                $"WHERE Title = '{book.Title}' AND Version = '{book.Version}' AND Medium = '{book.Medium}')," +
+                                $"(SELECT SignatureId FROM Signatures WHERE Signature = '{book.Signatures[i]}'), {i + 1})";
                             insertCommand.ExecuteNonQuery();
                         }
 
