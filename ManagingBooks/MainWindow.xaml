@@ -12,13 +12,14 @@
         <CommandBinding Command="local:CustomCommands.Search" CanExecute="SearchCommand_CanExecute" Executed="SearchCommand_Executed"/>
         <CommandBinding Command="local:CustomCommands.Edit" CanExecute="EditCommand_CanExecute" Executed="EditCommand_Executed"/>
         <CommandBinding Command="local:CustomCommands.Print" CanExecute="EditCommand_CanExecute" Executed="PrintCommand_Executed"/>
+        <CommandBinding Command="local:CustomCommands.Delete" CanExecute="DeleteCommand_CanExecute" Executed="DeleteCommand_Executed"/>
     </Window.CommandBindings>
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="_File">
                 <MenuItem Header="_Add..." Click="AddWindow_Click"/>
                 <MenuItem Header="_Edit..." Command="local:CustomCommands.Edit"/>
-                <MenuItem Header="_Delete..."/>
+                <MenuItem Header="_Delete..." Command="local:CustomCommands.Delete"/>
                 <MenuItem Header="_Exit" Command="local:CustomCommands.Exit"/>
             </MenuItem>
             <MenuItem Header="_Language">
@@ -37,33 +38,29 @@
         <StackPanel Height="400">
             <ListView x:Name="SearchList" Width="1000" Height="200" Margin="10">
                 <ListView.Resources>
+                    <ContextMenu x:Key="ItemContextMenu">
+                        <MenuItem Header="Edit..." Command="local:CustomCommands.Edit"/>
+                        <MenuItem Header="Delete..." Command="local:CustomCommands.Delete"/>
+                        <MenuItem Header="Print..." Command="local:CustomCommands.Print"/>
+                    </ContextMenu>
                     <Style TargetType="{x:Type GridViewColumnHeader}">
                         <Setter Property="HorizontalContentAlignment" Value="Left"/>
                     </Style>
                     <Style TargetType="ListViewItem">
                         <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-                    </Style>
-                    <ContextMenu x:Key="ItemContextMenu">
-                        <MenuItem Header="Edit..." Command="local:CustomCommands.Edit"/>
-                        <MenuItem Header="Delete..."/>
-                        <MenuItem Header="Print..." Command="local:CustomCommands.Print"/>
-                    </ContextMenu>
-                </ListView.Resources>
-                <ListView.ItemContainerStyle>
-                    <Style TargetType="{x:Type ListViewItem}">
                         <Setter Property="ContextMenu" Value="{StaticResource ItemContextMenu}"/>
                     </Style>
-                </ListView.ItemContainerStyle>
+                </ListView.Resources>
                 <ListView.View>
                     <GridView>
-                        <GridViewColumn Header="Number" Width="60">
+                        <GridViewColumn Header="Number" Width="Auto">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
-                                    <TextBlock Text="{Binding Number, StringFormat=\{0:#000000\}}" HorizontalAlignment="Right"/>
+                                    <TextBlock Text="{Binding Number, StringFormat={}{0:#000000}}" TextAlignment="Right"/>
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
-                        <GridViewColumn Header="Signature" Width="120" DisplayMemberBinding="{Binding Signatures}"/>
+                        <GridViewColumn Header="Signature" Width="Auto" DisplayMemberBinding="{Binding Signatures}"/>
                         <GridViewColumn Header="Title" Width="150">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
@@ -81,14 +78,14 @@
                         <GridViewColumn Header="Pages" Width="40">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
-                                    <TextBlock Text="{Binding Pages}" HorizontalAlignment="Right"/>
+                                    <TextBlock Text="{Binding Pages}" TextAlignment="Right"/>
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
                         <GridViewColumn Header="Price" Width="40">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
-                                    <TextBlock Text="{Binding Price}" HorizontalAlignment="Right"/>
+                                    <TextBlock Text="{Binding Price, StringFormat={}{0:#0.00}}" TextAlignment="Right"/>
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>

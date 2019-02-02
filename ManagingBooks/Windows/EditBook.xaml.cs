@@ -45,7 +45,7 @@ namespace ManagingBooks.Windows
                 $"LEFT JOIN Authors a ON (a.AuthorId = ba.AuthorId) " +
                 $"LEFT JOIN Books_Signatures bs ON (bs.BookId = b.BookId) " +
                 $"LEFT JOIN Signatures s ON (s.SignatureId = bs.SignatureId) " +
-                $"WHERE b.BookId = '{book.BookId}' ORDER BY ba.Id";
+                $"WHERE b.BookId = '{book.BookId}' ORDER BY ba.Priority,bs.Priority";
             SqliteDataReader r = selectCommmand.ExecuteReader();
             int result;
             List<string> authors = new List<string>();
@@ -188,6 +188,7 @@ namespace ManagingBooks.Windows
             AddBookModel context = this.DataContext as AddBookModel;
             Book tempBook = new Book();
             bool isChanged = false;
+            bool sufficient = true;
 
             if (IsDataToAdd(context))
             {
@@ -240,7 +241,12 @@ namespace ManagingBooks.Windows
                     }
                     isChanged = !Book.Compare(tempBook, book);
                 }
-                if (!isChanged)
+                else
+                {
+                    sufficient = false;
+                }
+
+                if (!isChanged && sufficient)
                 {
                     var result = MessageBox.Show("Nothing is changed. Do you want to modify?", "Information", MessageBoxButton.YesNo, MessageBoxImage.Information);
                     if (result == MessageBoxResult.Yes)
@@ -248,7 +254,7 @@ namespace ManagingBooks.Windows
                         e.Cancel = true;
                     }
                 }
-                else
+                else if (isChanged && sufficient)
                 {
                     if (updateRequest)
                     {
@@ -315,22 +321,28 @@ namespace ManagingBooks.Windows
                                 $"(SELECT SignatureId FROM Signatures WHERE Signature = '{tempBook.Signatures[i]}'), {i + 1})";
                             insertCommand.ExecuteNonQuery();
                         }
+                        con.Close();
 
                         MessageBox.Show("Book is changed successfully.", "Infomation", MessageBoxButton.OK, MessageBoxImage.Information);
                     }
                     else
                     {
-                        var result = MessageBox.Show("Content is changed. Do you want to discard?", "Warning", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                        var result = MessageBox.Show("Content is changed. Do you want to discard?", "Warning", MessageBoxButton.YesNo, MessageBoxImage.Warning, MessageBoxResult.No);
                         if (result == MessageBoxResult.No)
                         {
                             e.Cancel = true;
                         }
                     }
                 }
+                else
+                {
+                    var result = MessageBox.Show("Next author or next signature should be put correctly :) :)", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    e.Cancel = true;
+                }
             }
             else
             {
-                var result = MessageBox.Show("Not sufficient. Please provide every required field (*).", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                var result = MessageBox.Show("Not sufficient. Please provide all required fields.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 e.Cancel = true;
             }
 

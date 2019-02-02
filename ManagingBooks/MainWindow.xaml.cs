@@ -16,8 +16,9 @@ namespace ManagingBooks
     /// </summary>
     public partial class MainWindow : Window
     {
-        BackgroundWorker search = new BackgroundWorker();
+        BackgroundWorker Search = new BackgroundWorker();
 
+        SearchBook DeleteBook;
 
         public MainWindow()
         {
@@ -26,11 +27,11 @@ namespace ManagingBooks
             (DataContext as SearchBookModel).DisplayBooks = new ObservableCollection<SearchBook>();
             SearchList.ItemsSource = (DataContext as SearchBookModel).DisplayBooks;
             (DataContext as SearchBookModel).DisplayBooks.Clear();
-            search.WorkerReportsProgress = true;
-            search.DoWork += Search_DoWork;
-            search.ProgressChanged += Search_ProgressChanged;
-            search.RunWorkerCompleted += Search_RunWorkerCompleted;
-            search.RunWorkerAsync(NumberOfBooks());
+            Search.WorkerReportsProgress = true;
+            Search.DoWork += Search_DoWork;
+            Search.ProgressChanged += Search_ProgressChanged;
+            Search.RunWorkerCompleted += Search_RunWorkerCompleted;
+            Search.RunWorkerAsync(NumberOfBooks());
 
             //(DataContext as SearchBookModel).DisplayBooks.Clear();
             //SearchAll(this.DataContext as SearchBookModel);
@@ -53,7 +54,7 @@ namespace ManagingBooks
                 "LEFT JOIN Books_Authors ba ON (b.BookId = ba.BookId) " +
                 "LEFT JOIN Authors a ON (ba.AuthorId = a.AuthorId) " +
                 "LEFT JOIN Books_Signatures bs ON (bs.BookId = b.BookId) " +
-                "LEFT JOIN Signatures s ON (bs.SignatureId = s.SignatureId) ORDER BY b.BookId";
+                "LEFT JOIN Signatures s ON (bs.SignatureId = s.SignatureId) ORDER BY b.BookId,ba.Priority,bs.Priority";
             SqliteDataReader r = selectCommand.ExecuteReader();
             int lastBookId = -1;
             int lastAuthorId = -1;
@@ -114,14 +115,14 @@ namespace ManagingBooks
                     lastAuthorId = result;
                     tempBook.Authors = Convert.ToString(r["Name"]);
                     tempBook.Signatures = Convert.ToString(r["Signature"]);
-                    i++;         
+                    i++;
                 }
                 Thread.Sleep(1);
             }
             if (i != 0)
             {
                 progressPercentage = Convert.ToInt32(((double)i / max) * 100);
-                (sender as BackgroundWorker).ReportProgress(progressPercentage, tempBook); 
+                (sender as BackgroundWorker).ReportProgress(progressPercentage, tempBook);
             }
             e.Result = i;
             con.Close();
@@ -133,11 +134,10 @@ namespace ManagingBooks
             SearchBookModel temp = this.DataContext as SearchBookModel;
             temp.Progress = e.ProgressPercentage;
             temp.Status = "Running";
-            if(e.UserState != null)
+            if (e.UserState != null)
             {
                 temp.DisplayBooks.Add(e.UserState as SearchBook);
             }
-
         }
 
         void Search_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
@@ -149,7 +149,6 @@ namespace ManagingBooks
 
         private bool UserFilter(object item)
         {
-
             var context = this.DataContext as SearchBookModel;
             if (string.IsNullOrWhiteSpace(context.SearchText))
             {
@@ -162,7 +161,8 @@ namespace ManagingBooks
                     case "Number":
                         return (item as SearchBook).Number.ToString().IndexOf(context.SearchText, StringComparison.OrdinalIgnoreCase) >= 0;
                     case "Signature":
-                        return (item as SearchBook).Signatures.IndexOf(context.SearchText, StringComparison.OrdinalIgnoreCase) >= 0;
+                        return (item as SearchBook).Signatures.StartsWith(context.SearchText, StringComparison.OrdinalIgnoreCase);
+                    //return (item as SearchBook).Signatures.IndexOf(context.SearchText, 0, StringComparison.OrdinalIgnoreCase) >= 0;
                     case "Title":
                         return (item as SearchBook).Title.IndexOf(context.SearchText, StringComparison.OrdinalIgnoreCase) >= 0;
                     case "Authors":
@@ -178,9 +178,10 @@ namespace ManagingBooks
             if (!new AddBook() { Owner = this }.ShowDialog().Value)
             {
                 (DataContext as SearchBookModel).DisplayBooks.Clear();
-                search.RunWorkerAsync(NumberOfBooks());
+                Search.RunWorkerAsync(NumberOfBooks());
             }
         }
+
         private void ExitCommand_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             Application.Current.Shutdown();
@@ -286,7 +287,7 @@ namespace ManagingBooks
         {
             if (SearchList.SelectedItem != null)
             {
-                new BarcodeDisplay((SearchList.SelectedItem as SearchBook).Number.ToString().PadLeft(6, '0')) { Owner = this }.Show(); 
+                new BarcodeDisplay((SearchList.SelectedItem as SearchBook).Number.ToString().PadLeft(6, '0')) { Owner = this }.Show();
             }
             else
             {
@@ -302,12 +303,10 @@ namespace ManagingBooks
         private void EditCommand_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             int bookId = (SearchList.SelectedItem as SearchBook).BookId;
-            // open EditWindow
-            //new EditBook(bookId) { Owner = this }.ShowDialog();
             if (!new EditBook(bookId) { Owner = this }.ShowDialog().Value)
             {
                 (DataContext as SearchBookModel).DisplayBooks.Clear();
-                search.RunWorkerAsync(NumberOfBooks());
+                Search.RunWorkerAsync(NumberOfBooks());
             }
         }
 
@@ -332,15 +331,42 @@ namespace ManagingBooks
             SqliteDataReader r = selectCommand.ExecuteReader();
             while (r.Read())
             {
-                int temp = 0;
-                int.TryParse(Convert.ToString(r["BookId"]), out temp);
-                if(temp > numBook)
-                {
-                    numBook = temp;
-                }
+                numBook++;
             }
             con.Close();
             return numBook;
+        }
+
+        private void DeleteCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = (SearchList.SelectedItem != null);
+        }
+
+        private void DeleteCommand_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            MessageBoxResult result = MessageBox.Show("Do you want to delete selected book?", "Warning", MessageBoxButton.YesNo, MessageBoxImage.Warning, MessageBoxResult.No);
+            if (result == MessageBoxResult.Yes)
+            {
+                SearchBookModel context = this.DataContext as SearchBookModel;
+                var tempBook = SearchList.SelectedItem as SearchBook;
+                int bookId = tempBook.BookId;
+
+                DeleteBook = tempBook;
+
+                SqlMethods.SqlConnect(out SqliteConnection con);
+                var deleteCommand = con.CreateCommand();
+                deleteCommand.CommandText = $"DELETE FROM Books_Authors WHERE BookId={bookId}";
+                deleteCommand.ExecuteNonQuery();
+                deleteCommand = con.CreateCommand();
+                deleteCommand.CommandText = $"DELETE FROM Books_Signatures WHERE BookId={bookId}";
+                deleteCommand.ExecuteNonQuery();
+                deleteCommand = con.CreateCommand();
+                deleteCommand.CommandText = $"DELETE FROM Books WHERE BookId={bookId}";
+                deleteCommand.ExecuteNonQuery();
+                con.Close();
+
+                context.DisplayBooks.Remove(tempBook);
+            }
         }
     }
 
@@ -350,9 +376,14 @@ namespace ManagingBooks
         {
             new KeyGesture(Key.Q, ModifierKeys.Control)
         });
+        public static readonly RoutedUICommand Undelete = new RoutedUICommand("Undelete", "Undelete", typeof(CustomCommands), new InputGestureCollection()
+        {
+            new KeyGesture(Key.Z, ModifierKeys.Control)
+        });
 
         public static readonly RoutedUICommand Search = new RoutedUICommand("Search", "Search", typeof(CustomCommands));
         public static readonly RoutedUICommand Edit = new RoutedUICommand("Edit", "Edit", typeof(CustomCommands));
+        public static readonly RoutedUICommand Delete = new RoutedUICommand("Delete", "Delete", typeof(CustomCommands));
         public static readonly RoutedUICommand Print = new RoutedUICommand("Print", "Print", typeof(CustomCommands));
     }
 }
