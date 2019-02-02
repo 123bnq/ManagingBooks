@@ -197,7 +197,6 @@ namespace ManagingBooks.Windows
                     }
                     else
                     {
-                        var transaction = con.BeginTransaction();
                         var insertCommand = con.CreateCommand();
                         insertCommand.CommandText = "INSERT INTO Books (Number, Title, Publisher, Version, Year, Medium, Place, DayBought, Pages, Price) " +
                             "VALUES (@Number,@Title,@Publisher,@Version,@Year,@Medium,@Place,@Date,@Pages,@Price)";
@@ -252,8 +251,6 @@ namespace ManagingBooks.Windows
                                 $"(SELECT SignatureId FROM Signatures WHERE Signature = '{book.Signatures[i]}'), {i + 1})";
                             insertCommand.ExecuteNonQuery();
                         }
-
-                        transaction.Commit();
                         con.Close();
                         message = "Book is successfully added";
                         caption = "Information";
