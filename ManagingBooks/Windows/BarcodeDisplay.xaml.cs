@@ -1,19 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using NetBarcode;
 
 namespace ManagingBooks.Windows
@@ -32,11 +22,9 @@ namespace ManagingBooks.Windows
         {
             InitializeComponent();
             Barcode barcode = new Barcode(barcodeString, true);
-            ImageConverter ic = new ImageConverter();
-            System.Drawing.Image img = (System.Drawing.Image)ic.ConvertFrom(barcode.GetByteArray(ImageFormat.Bmp));
-            Bitmap bitmap = new Bitmap(img);
+            TypeConverter tc = TypeDescriptor.GetConverter(typeof(Bitmap));
+            Bitmap bitmap = tc.ConvertFrom(barcode.GetByteArray(ImageFormat.Bmp)) as Bitmap;
             BarcodeShow.Source = BitmapToImageSource(bitmap);
-            
         }
 
         BitmapImage BitmapToImageSource(Bitmap bitmap)
