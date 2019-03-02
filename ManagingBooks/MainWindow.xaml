@@ -115,7 +115,7 @@
                     <ComboBoxItem Content="Signature"/>
                     <ComboBoxItem Content="Title"/>
                     <ComboBoxItem Content="Authors"/>
-                    <ComboBoxItem Content="All"/>
+                    <ComboBoxItem Content="Place"/>
                 </ComboBox>
             </Grid>
             <WrapPanel Margin="20,0,40,0" HorizontalAlignment="Right">

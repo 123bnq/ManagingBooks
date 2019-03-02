@@ -8,6 +8,8 @@ using System.Collections.ObjectModel;
 using System.Windows.Data;
 using System.ComponentModel;
 using System.Threading;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace ManagingBooks
 {
@@ -17,8 +19,9 @@ namespace ManagingBooks
     public partial class MainWindow : Window
     {
         BackgroundWorker Search = new BackgroundWorker();
+        BackgroundWorker Delete = new BackgroundWorker();
 
-        SearchBook DeleteBook;
+        //SearchBook DeleteBook;
 
         public MainWindow()
         {
@@ -32,13 +35,14 @@ namespace ManagingBooks
             Search.ProgressChanged += Search_ProgressChanged;
             Search.RunWorkerCompleted += Search_RunWorkerCompleted;
             Search.RunWorkerAsync(NumberOfBooks());
-
-            //(DataContext as SearchBookModel).DisplayBooks.Clear();
-            //SearchAll(this.DataContext as SearchBookModel);
             CollectionView view = CollectionViewSource.GetDefaultView(SearchList.ItemsSource) as CollectionView;
             view.Filter = UserFilter;
-
+            Delete.WorkerReportsProgress = true;
+            Delete.DoWork += Delete_DoWork;
+            Delete.ProgressChanged += Delete_ProgressChanged;
+            Delete.RunWorkerCompleted += Delete_RunWorkerCompleted;
         }
+
 
         void Search_DoWork(object sender, DoWorkEventArgs e)
         {
@@ -117,7 +121,7 @@ namespace ManagingBooks
                     tempBook.Signatures = Convert.ToString(r["Signature"]);
                     i++;
                 }
-                Thread.Sleep(1);
+                Thread.Sleep(TimeSpan.FromTicks(500));
             }
             if (i != 0)
             {
@@ -143,7 +147,7 @@ namespace ManagingBooks
         void Search_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             SearchBookModel context = this.DataContext as SearchBookModel;
-            context.Status = "Finished";
+            context.Status = "Load Finished";
             MessageBox.Show("Done");
         }
 
@@ -162,11 +166,12 @@ namespace ManagingBooks
                         return (item as SearchBook).Number.ToString().IndexOf(context.SearchText, StringComparison.OrdinalIgnoreCase) >= 0;
                     case "Signature":
                         return (item as SearchBook).Signatures.StartsWith(context.SearchText, StringComparison.OrdinalIgnoreCase);
-                    //return (item as SearchBook).Signatures.IndexOf(context.SearchText, 0, StringComparison.OrdinalIgnoreCase) >= 0;
                     case "Title":
                         return (item as SearchBook).Title.IndexOf(context.SearchText, StringComparison.OrdinalIgnoreCase) >= 0;
                     case "Authors":
                         return (item as SearchBook).Authors.IndexOf(context.SearchText, StringComparison.OrdinalIgnoreCase) >= 0;
+                    case "Place":
+                        return (item as SearchBook).Place.IndexOf(context.SearchText, StringComparison.OrdinalIgnoreCase) >= 0;
                     default:
                         return true;
                 }
@@ -342,30 +347,113 @@ namespace ManagingBooks
             e.CanExecute = (SearchList.SelectedItem != null);
         }
 
-        private void DeleteCommand_Executed(object sender, ExecutedRoutedEventArgs e)
+        private async void DeleteCommand_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            MessageBoxResult result = MessageBox.Show("Do you want to delete selected book?", "Warning", MessageBoxButton.YesNo, MessageBoxImage.Warning, MessageBoxResult.No);
+            SearchBookModel context = this.DataContext as SearchBookModel;
+            var deleteList = SearchList.SelectedItems;
+            MessageBoxResult result = MessageBox.Show("Do you want to delete selected book(s)?", "Warning", MessageBoxButton.YesNo, MessageBoxImage.Warning, MessageBoxResult.No);
+
+            var max = deleteList.Count;
+            var progressHandler = new Progress<int>(value =>
+            {
+                context.Progress = value;
+            });
+            IProgress<int> progress = progressHandler as IProgress<int>;
             if (result == MessageBoxResult.Yes)
             {
-                SearchBookModel context = this.DataContext as SearchBookModel;
-                var tempBook = SearchList.SelectedItem as SearchBook;
-                int bookId = tempBook.BookId;
+                SearchList.IsEnabled = false;
+                if (SearchList.SelectedIndex != -1)
+                {
+                    await Task.Run(() =>
+                    {
+                        for (int i = deleteList.Count - 1; i >= 0; i--)
+                        {
+                            var tempBook = deleteList[i] as SearchBook;
+                            int bookId = tempBook.BookId;
+                            SqlMethods.SqlConnect(out SqliteConnection con);
+                            var tr = con.BeginTransaction();
+                            var deleteCommand = con.CreateCommand();
+                            deleteCommand.Transaction = tr;
+                            deleteCommand.CommandText = $"DELETE FROM Books_Authors WHERE BookId={bookId}";
+                            deleteCommand.ExecuteNonQuery();
+                            deleteCommand = con.CreateCommand();
+                            deleteCommand.CommandText = $"DELETE FROM Books_Signatures WHERE BookId={bookId}";
+                            deleteCommand.ExecuteNonQuery();
+                            deleteCommand = con.CreateCommand();
+                            deleteCommand.CommandText = $"DELETE FROM Books WHERE BookId={bookId}";
+                            deleteCommand.ExecuteNonQuery();
+                            tr.Commit();
+                            con.Close();
 
-                DeleteBook = tempBook;
 
-                SqlMethods.SqlConnect(out SqliteConnection con);
-                var deleteCommand = con.CreateCommand();
-                deleteCommand.CommandText = $"DELETE FROM Books_Authors WHERE BookId={bookId}";
-                deleteCommand.ExecuteNonQuery();
-                deleteCommand = con.CreateCommand();
-                deleteCommand.CommandText = $"DELETE FROM Books_Signatures WHERE BookId={bookId}";
-                deleteCommand.ExecuteNonQuery();
-                deleteCommand = con.CreateCommand();
-                deleteCommand.CommandText = $"DELETE FROM Books WHERE BookId={bookId}";
-                deleteCommand.ExecuteNonQuery();
-                con.Close();
+                            progress.Report(Convert.ToInt32((double)(max - i) / max * 100));
+                            context.Status = "Deleting";
 
-                context.DisplayBooks.Remove(tempBook);
+                            App.Current.Dispatcher.Invoke((Action)delegate
+                            {
+                                context.DisplayBooks.Remove(tempBook);
+                            });
+
+                            Thread.Sleep(TimeSpan.FromTicks(5));
+                        }
+                    });
+                    context.Status = "Finished delete";
+                }
+            }
+            SearchList.IsEnabled = true;
+        }
+
+        private void Delete_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            SearchBookModel context = this.DataContext as SearchBookModel;
+            context.Status = "Finished delete";
+        }
+
+        private void Delete_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            SearchBookModel context = this.DataContext as SearchBookModel;
+            context.DisplayBooks.Remove(e.UserState as SearchBook);
+            context.Progress = e.ProgressPercentage;
+            context.Status = "Deleting";
+        }
+
+        private void Delete_DoWork(object sender, DoWorkEventArgs e)
+        {
+            {
+                this.Dispatcher.Invoke(() =>
+                {
+                    var deleteList = SearchList.SelectedItems;
+                    //var deleteList = e.Argument as List;
+                    int progressPercentage;
+                    if (SearchList.SelectedIndex != -1)
+                    {
+                        for (int i = deleteList.Count - 1; i >= 0; i--)
+                        {
+                            var tempBook = deleteList[i] as SearchBook;
+                            int bookId = tempBook.BookId;
+                            SqlMethods.SqlConnect(out SqliteConnection con);
+                            var tr = con.BeginTransaction();
+                            var deleteCommand = con.CreateCommand();
+                            deleteCommand.Transaction = tr;
+                            deleteCommand.CommandText = $"DELETE FROM Books_Authors WHERE BookId={bookId}";
+                            deleteCommand.ExecuteNonQuery();
+                            deleteCommand = con.CreateCommand();
+                            deleteCommand.CommandText = $"DELETE FROM Books_Signatures WHERE BookId={bookId}";
+                            deleteCommand.ExecuteNonQuery();
+                            deleteCommand = con.CreateCommand();
+                            deleteCommand.CommandText = $"DELETE FROM Books WHERE BookId={bookId}";
+                            deleteCommand.ExecuteNonQuery();
+                            tr.Commit();
+                            con.Close();
+                            Thread.Sleep(1);
+                            progressPercentage = Convert.ToInt32((double)(deleteList.Count - i) / deleteList.Count * 100);
+                            (sender as BackgroundWorker).ReportProgress(progressPercentage, tempBook);
+
+
+                            //context.DisplayBooks.Remove(tempBook);
+                        }
+                    }
+                });
             }
         }
     }

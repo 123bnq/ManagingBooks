@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Globalization;
 using System.Runtime.CompilerServices;
+using System.Windows.Data;
 
 namespace ManagingBooks.Model
 {
     class AddBookModel : INotifyPropertyChanged
     {
+        public static readonly ValueConverter Converter = new ValueConverter();
         private int m_Number;
         private string m_Signature1;
         private string m_Signature2;
@@ -225,6 +228,24 @@ namespace ManagingBooks.Model
             {
                 PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
             }
+        }
+    }
+
+    public class ValueConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            return value;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            if (value is string && String.IsNullOrEmpty(value as string))
+            {
+                return 0;
+            }
+
+            return value;
         }
     }
 }

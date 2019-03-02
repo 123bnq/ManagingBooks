@@ -16,9 +16,9 @@
         public int Pages { get; set; }
         public double Price { get; set; }
 
-        public int NoSignature { get; }
+        public int NoSignature { get; set; }
 
-        public int NoAuthor { get; }
+        public int NoAuthor { get; set; }
 
         public Book()
         {

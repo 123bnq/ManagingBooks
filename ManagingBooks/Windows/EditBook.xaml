@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ManagingBooks.Windows"
+        xmlns:model="clr-namespace:ManagingBooks.Model"
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d"
         Title="Edit Book"
@@ -11,7 +12,7 @@
         Closing="Window_Closing">
     <StackPanel Name="WindowToBeClear" Width="500" Margin="10">
         <TextBlock Text="Number" Margin="0,0,0,5"/>
-        <TextBox Name="BoxNumber" Text="{Binding Number, StringFormat={}{0:#000000}}" Width="100" HorizontalAlignment="Left"  Margin="0,0,0,5"/>
+        <TextBox Name="BoxNumber" Text="{Binding Number, StringFormat={}{0:#000000}, Converter={x:Static model:AddBookModel.Converter}}" Width="100" HorizontalAlignment="Left"  Margin="0,0,0,5"/>
         <TextBlock Text="Signature" Margin="0,0,0,5"/>
         <WrapPanel Name="PnlSignatures" Margin="0,0,0,5">
             <TextBox Name="BoxSignature1" Text="{Binding Signature1}" Margin="0,0,5,0" Width="100"/>
@@ -43,9 +44,9 @@
                 <ColumnDefinition Width="auto"/>
             </Grid.ColumnDefinitions>
             <TextBlock Text="Version" Margin="0,0,0,5"/>
-            <TextBox Grid.Row="1" Name="BoxVersion" Text="{Binding Version}" Width="100" Margin="0,0,5,0"/>
+            <TextBox Grid.Row="1" Name="BoxVersion" Text="{Binding Version, Converter={x:Static model:AddBookModel.Converter}}" Width="100" Margin="0,0,5,0"/>
             <TextBlock Grid.Column="1" Text="Year" Margin="0,0,0,5"/>
-            <TextBox Grid.Row="1" Grid.Column="1" Name="BoxYear" Text="{Binding Year}" Width="100" Margin="0,0,5,0"/>
+            <TextBox Grid.Row="1" Grid.Column="1" Name="BoxYear" Text="{Binding Year, Converter={x:Static model:AddBookModel.Converter}}" Width="100" Margin="0,0,5,0"/>
             <TextBlock Grid.Column="2" Text="Medium" Margin="0,0,0,5"/>
             <ComboBox Grid.Row="1" Grid.Column="2" Name="BoxMedium" Text="{Binding Medium}" Width="100" Margin="0,0,5,0">
                 <ComboBoxItem Content="Book"/>
@@ -87,9 +88,9 @@
                 </DatePicker.Resources>
             </DatePicker>
             <TextBlock Grid.Column="1" Text="Pages" Margin="0,0,0,5"/>
-            <TextBox  Name="BoxPage" Grid.Row="1" Grid.Column="1" Text="{Binding Pages}" Width="100" Margin="0,0,5,5"/>
+            <TextBox  Name="BoxPage" Grid.Row="1" Grid.Column="1" Text="{Binding Pages, Converter={x:Static model:AddBookModel.Converter}}" Width="100" Margin="0,0,5,5"/>
             <TextBlock Grid.Column="2" Text="Price" Margin="0,0,0,5"/>
-            <TextBox Name="BoxPrice" Grid.Row="1" Grid.Column="2" Text="{Binding Price, StringFormat={}{0:#0.00}}" Width="100" Margin="0,0,5,5"/>
+            <TextBox Name="BoxPrice" Grid.Row="1" Grid.Column="2" Text="{Binding Price, StringFormat={}{0:#0.00}, Converter={x:Static model:AddBookModel.Converter}}" Width="100" Margin="0,0,5,5"/>
         </Grid>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
             <Button Name="BtnOk" Content="OK" MinWidth="75" Margin="0,0,5,0" Click="BtnOk_Click"/>

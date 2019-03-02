@@ -20,7 +20,6 @@ namespace ManagingBooks.Windows
             this.DataContext = new AddBookModel();
             (this.DataContext as AddBookModel).ListBook = new ObservableCollection<int>();
             InitializeComponent();
-            //ListNumber.ItemsSource = ListBook;
             UpdateListBook(this.DataContext as AddBookModel);
             ClearEntries();
         }
@@ -152,33 +151,33 @@ namespace ManagingBooks.Windows
                 {
                     Book book = new Book(noAuthor, noSignature, context.Number, context.Title, context.Publisher, context.Version,
                         context.Year, context.Medium, context.Date, context.Place, context.Pages, context.Price);
-                    book.Authors = new Author[noAuthor];
-                    for (int i = 0; i < noAuthor; i++)
+                    book.Authors = new Author[book.NoAuthor];
+                    for (int i = 0; i < book.NoAuthor; i++)
                     {
                         book.Authors[i] = new Author();
                     }
-                    book.Signatures = new string[noSignature];
-                    if (noAuthor > 0)
+                    book.Signatures = new string[book.NoSignature];
+                    if (book.NoAuthor > 0)
                     {
                         book.Authors[0].Name = context.Author1;
                     }
-                    if (noAuthor > 1)
+                    if (book.NoAuthor > 1)
                     {
                         book.Authors[1].Name = context.Author2;
                     }
-                    if (noAuthor > 2)
+                    if (book.NoAuthor > 2)
                     {
                         book.Authors[2].Name = context.Author3;
                     }
-                    if (noSignature > 0)
+                    if (book.NoSignature > 0)
                     {
                         book.Signatures[0] = context.Signature1;
                     }
-                    if (noSignature > 1)
+                    if (book.NoSignature > 1)
                     {
                         book.Signatures[1] = context.Signature2;
                     }
-                    if (noSignature > 2)
+                    if (book.NoSignature > 2)
                     {
                         book.Signatures[2] = context.Signature3;
                     }
@@ -197,67 +196,77 @@ namespace ManagingBooks.Windows
                     }
                     else
                     {
-                        var insertCommand = con.CreateCommand();
-                        insertCommand.CommandText = "INSERT INTO Books (Number, Title, Publisher, Version, Year, Medium, Place, DayBought, Pages, Price) " +
-                            "VALUES (@Number,@Title,@Publisher,@Version,@Year,@Medium,@Place,@Date,@Pages,@Price)";
-                        insertCommand.Parameters.AddWithValue("Number", book.Number);
-                        insertCommand.Parameters.AddWithValue("Title", book.Title);
-                        insertCommand.Parameters.AddWithValue("Publisher", book.Publisher);
-                        insertCommand.Parameters.AddWithValue("Version", book.Version);
-                        insertCommand.Parameters.AddWithValue("Year", book.Year);
-                        insertCommand.Parameters.AddWithValue("Medium", book.Medium);
-                        insertCommand.Parameters.AddWithValue("Place", book.Place);
-                        insertCommand.Parameters.AddWithValue("Date", book.DayBought);
-                        insertCommand.Parameters.AddWithValue("Pages", book.Pages);
-                        insertCommand.Parameters.AddWithValue("Price", book.Price);
-                        insertCommand.ExecuteNonQuery();
+                        var tr = con.BeginTransaction();
+                        AddBookToDatabase(ref con, ref tr, book);
 
-                        for (int i = 0; i < noAuthor; i++)
-                        {
-                            selectCommand = con.CreateCommand();
-                            selectCommand.CommandText = $"SELECT * FROM Authors WHERE Name = '{book.Authors[i].Name}'";
-                            r = selectCommand.ExecuteReader();
-                            if (!r.Read())
-                            {
-                                insertCommand = con.CreateCommand();
-                                insertCommand.CommandText = "INSERT INTO Authors (Name) VALUES (@Name)";
-                                insertCommand.Parameters.AddWithValue("Name", book.Authors[i].Name);
-                                insertCommand.ExecuteNonQuery();
+                        //var insertCommand = con.CreateCommand();
+                        //insertCommand.Transaction = tr;
+                        //insertCommand.CommandText = "INSERT INTO Books (Number, Title, Publisher, Version, Year, Medium, Place, DayBought, Pages, Price) " +
+                        //    "VALUES (@Number,@Title,@Publisher,@Version,@Year,@Medium,@Place,@Date,@Pages,@Price)";
+                        //insertCommand.Parameters.AddWithValue("Number", book.Number);
+                        //insertCommand.Parameters.AddWithValue("Title", book.Title);
+                        //insertCommand.Parameters.AddWithValue("Publisher", book.Publisher);
+                        //insertCommand.Parameters.AddWithValue("Version", book.Version);
+                        //insertCommand.Parameters.AddWithValue("Year", book.Year);
+                        //insertCommand.Parameters.AddWithValue("Medium", book.Medium);
+                        //insertCommand.Parameters.AddWithValue("Place", book.Place);
+                        //insertCommand.Parameters.AddWithValue("Date", book.DayBought);
+                        //insertCommand.Parameters.AddWithValue("Pages", book.Pages);
+                        //insertCommand.Parameters.AddWithValue("Price", book.Price);
+                        //insertCommand.ExecuteNonQuery();
+                        //insertCommand.Parameters.Clear();
 
-                            }
-                            insertCommand = con.CreateCommand();
-                            insertCommand.CommandText = $"INSERT INTO Books_Authors (BookId, AuthorId, Priority) VALUES ((SELECT BookId FROM Books " +
-                                $"WHERE Title = '{book.Title}' AND Version = '{book.Version}' AND Medium = '{book.Medium}')," +
-                                $"(SELECT AuthorId FROM Authors WHERE Name = '{book.Authors[i].Name}'),{i + 1})";
-                            insertCommand.ExecuteNonQuery();
-                        }
+                        //for (int i = 0; i < book.NoAuthor; i++)
+                        //{
+                        //    selectCommand = con.CreateCommand();
+                        //    selectCommand.CommandText = $"SELECT * FROM Authors WHERE Name = '{book.Authors[i].Name}'";
+                        //    r = selectCommand.ExecuteReader();
+                        //    if (!r.Read())
+                        //    {
+                        //        //insertCommand = con.CreateCommand();
+                        //        insertCommand.CommandText = "INSERT INTO Authors (Name) VALUES (@Name)";
+                        //        insertCommand.Parameters.AddWithValue("Name", book.Authors[i].Name);
+                        //        insertCommand.ExecuteNonQuery();
+                        //        insertCommand.Parameters.Clear();
 
-                        for (int i = 0; i < noSignature; i++)
-                        {
-                            selectCommand = con.CreateCommand();
-                            selectCommand.CommandText = $"SELECT * FROM Signatures WHERE Signature = '{book.Signatures[i]}'";
-                            r = selectCommand.ExecuteReader();
-                            if (!r.Read())
-                            {
-                                insertCommand = con.CreateCommand();
-                                insertCommand.CommandText = "INSERT INTO Signatures (Signature) VALUES (@Signature)";
-                                insertCommand.Parameters.AddWithValue("Signature", book.Signatures[i]);
-                                insertCommand.ExecuteNonQuery();
+                        //    }
+                        //    //insertCommand = con.CreateCommand();
+                        //    insertCommand.CommandText = $"INSERT INTO Books_Authors (BookId, AuthorId, Priority) VALUES ((SELECT BookId FROM Books " +
+                        //        $"WHERE Title = '{book.Title}' AND Version = '{book.Version}' AND Medium = '{book.Medium}')," +
+                        //        $"(SELECT AuthorId FROM Authors WHERE Name = '{book.Authors[i].Name}'),{i + 1})";
+                        //    insertCommand.ExecuteNonQuery();
+                        //    insertCommand.Parameters.Clear();
+                        //}
 
-                            }
-                            insertCommand = con.CreateCommand();
-                            insertCommand.CommandText = $"INSERT INTO Books_Signatures (BookId, SignatureId, Priority) VALUES ((SELECT BookId FROM Books " +
-                                $"WHERE Title = '{book.Title}' AND Version = '{book.Version}' AND Medium = '{book.Medium}')," +
-                                $"(SELECT SignatureId FROM Signatures WHERE Signature = '{book.Signatures[i]}'), {i + 1})";
-                            insertCommand.ExecuteNonQuery();
-                        }
+                        //for (int i = 0; i < book.NoSignature; i++)
+                        //{
+                        //    selectCommand = con.CreateCommand();
+                        //    selectCommand.CommandText = $"SELECT * FROM Signatures WHERE Signature = '{book.Signatures[i]}'";
+                        //    r = selectCommand.ExecuteReader();
+                        //    if (!r.Read())
+                        //    {
+                        //        //insertCommand = con.CreateCommand();
+                        //        insertCommand.CommandText = "INSERT INTO Signatures (Signature) VALUES (@Signature)";
+                        //        insertCommand.Parameters.AddWithValue("Signature", book.Signatures[i]);
+                        //        insertCommand.ExecuteNonQuery();
+                        //        insertCommand.Parameters.Clear();
+
+                        //    }
+                        //    //insertCommand = con.CreateCommand();
+                        //    insertCommand.CommandText = $"INSERT INTO Books_Signatures (BookId, SignatureId, Priority) VALUES ((SELECT BookId FROM Books " +
+                        //        $"WHERE Title = '{book.Title}' AND Version = '{book.Version}' AND Medium = '{book.Medium}')," +
+                        //        $"(SELECT SignatureId FROM Signatures WHERE Signature = '{book.Signatures[i]}'), {i + 1})";
+                        //    insertCommand.ExecuteNonQuery();
+                        //    insertCommand.Parameters.Clear();
+                        //}
+                        tr.Commit();
                         con.Close();
                         message = "Book is successfully added";
                         caption = "Information";
                         MessageBox.Show(message, caption, MessageBoxButton.OK, MessageBoxImage.Information);
+                        UpdateListBook(context);
+                        ClearEntries();
                     }
-                    ClearEntries();
-                    UpdateListBook(context);
                 }
                 else
                 {
@@ -283,18 +292,18 @@ namespace ManagingBooks.Windows
         /// <returns></returns>
         private bool IsDataToAdd(AddBookModel context)
         {
-            return !string.IsNullOrWhiteSpace(BoxNumber.Text)
+            return !(context.Number == 0)
                 && !string.IsNullOrWhiteSpace(context.Signature1)
                 && !string.IsNullOrWhiteSpace(context.Author1)
                 && !string.IsNullOrWhiteSpace(context.Title)
                 && !string.IsNullOrWhiteSpace(context.Publisher)
-                && !string.IsNullOrWhiteSpace(BoxVersion.Text)
-                && !string.IsNullOrWhiteSpace(BoxYear.Text)
+                && !(context.Version == 0)
+                && !(context.Year == 0)
                 && !string.IsNullOrWhiteSpace(context.Medium)
                 && !string.IsNullOrWhiteSpace(context.Place)
                 && !string.IsNullOrWhiteSpace(context.Date)
-                && !string.IsNullOrWhiteSpace(BoxPage.Text)
-                && !string.IsNullOrWhiteSpace(BoxPrice.Text);
+                && !(context.Pages == 0)
+                && !(context.Price == 0.00);
         }
 
         private int NumberOfAuthor(AddBookModel context)
@@ -358,7 +367,117 @@ namespace ManagingBooks.Windows
             }
             con.Close();
         }
+
+        private void BtnAddTest_Click(object sender, RoutedEventArgs e)
+        {
+            AddBookModel context = this.DataContext as AddBookModel;
+            string[] place = { "Frankfurt", "Darmstadt", "Muenchen", "Berlin" };
+            string date = "01/01/2019";
+            string[] medium = { "Text book", "CD", "DVD", "E-book" };
+            Random rnd = new Random();
+            for (int i = 0; i < 100; i++)
+            {
+                Book book = new Book() { Number = i };
+                book.NoAuthor = rnd.Next(1, 4);
+                book.NoSignature = rnd.Next(1, 4);
+                if(book.NoAuthor > 3 || book.NoSignature > 3)
+                {
+                    MessageBox.Show("Error");
+                }
+                book.Authors = new Author[book.NoAuthor];
+                for (int j = 0; j < book.NoAuthor; j++)
+                {
+                    book.Authors[j] = new Author() { Name = $"Author {rnd.Next(1,100)}" };
+                }
+                book.Signatures = new string[book.NoSignature];
+                for (int j = 0; j < book.NoSignature; j++)
+                {
+                    char c = (char)rnd.Next(65, 91);
+                    char[] str = { c, c, c, c };
+                    book.Signatures[j] = new string(str);
+                }
+
+                book.Title = $"Book {i}";
+                book.Publisher = $"Publisher {rnd.Next(1, 100)}";
+                book.Version = rnd.Next(1, 11);
+                book.Year = rnd.Next(1900, 2020);
+                book.Medium = medium[rnd.Next(0, 4)];
+                book.Place = place[rnd.Next(0, 4)];
+                book.DayBought = date;
+                book.Pages = rnd.Next(10, 501);
+                book.Price = Math.Round(rnd.NextDouble() * 100, 2);
+
+                SqliteConnection con;
+                SqlMethods.SqlConnect(out con);
+                var tr = con.BeginTransaction();
+                AddBookToDatabase(ref con, ref tr, book);
+                tr.Commit();
+                con.Close();
+            }
+            string message = "100 Books are successfully added";
+            string caption = "Information";
+            MessageBox.Show(message, caption, MessageBoxButton.OK, MessageBoxImage.Information);
+            UpdateListBook(context);
+        }
+
+        private void AddBookToDatabase(ref SqliteConnection con, ref SqliteTransaction tr, Book book)
+        {
+            var insertCommand = con.CreateCommand();
+            insertCommand.Transaction = tr;
+            insertCommand.CommandText = "INSERT INTO Books (Number, Title, Publisher, Version, Year, Medium, Place, DayBought, Pages, Price) " +
+                "VALUES (@Number,@Title,@Publisher,@Version,@Year,@Medium,@Place,@Date,@Pages,@Price)";
+            insertCommand.Parameters.AddWithValue("Number", book.Number);
+            insertCommand.Parameters.AddWithValue("Title", book.Title);
+            insertCommand.Parameters.AddWithValue("Publisher", book.Publisher);
+            insertCommand.Parameters.AddWithValue("Version", book.Version);
+            insertCommand.Parameters.AddWithValue("Year", book.Year);
+            insertCommand.Parameters.AddWithValue("Medium", book.Medium);
+            insertCommand.Parameters.AddWithValue("Place", book.Place);
+            insertCommand.Parameters.AddWithValue("Date", book.DayBought);
+            insertCommand.Parameters.AddWithValue("Pages", book.Pages);
+            insertCommand.Parameters.AddWithValue("Price", book.Price);
+            insertCommand.ExecuteNonQuery();
+            insertCommand.Parameters.Clear();
+            SqliteCommand selectCommand;
+            SqliteDataReader r;
+            for (int i = 0; i < book.NoAuthor; i++)
+            {
+                selectCommand = con.CreateCommand();
+                selectCommand.CommandText = $"SELECT * FROM Authors WHERE Name = '{book.Authors[i].Name}'";
+                r = selectCommand.ExecuteReader();
+                if (!r.Read())
+                {
+                    insertCommand.CommandText = "INSERT INTO Authors (Name) VALUES (@Name)";
+                    insertCommand.Parameters.AddWithValue("Name", book.Authors[i].Name);
+                    insertCommand.ExecuteNonQuery();
+                    insertCommand.Parameters.Clear();
+
+                }
+                insertCommand.CommandText = $"INSERT INTO Books_Authors (BookId, AuthorId, Priority) VALUES ((SELECT BookId FROM Books " +
+                    $"WHERE Title = '{book.Title}' AND Version = '{book.Version}' AND Medium = '{book.Medium}')," +
+                    $"(SELECT AuthorId FROM Authors WHERE Name = '{book.Authors[i].Name}'),{i + 1})";
+                insertCommand.ExecuteNonQuery();
+                insertCommand.Parameters.Clear();
+            }
+
+            for (int i = 0; i < book.NoSignature; i++)
+            {
+                selectCommand = con.CreateCommand();
+                selectCommand.CommandText = $"SELECT * FROM Signatures WHERE Signature = '{book.Signatures[i]}'";
+                r = selectCommand.ExecuteReader();
+                if (!r.Read())
+                {
+                    insertCommand.CommandText = "INSERT INTO Signatures (Signature) VALUES (@Signature)";
+                    insertCommand.Parameters.AddWithValue("Signature", book.Signatures[i]);
+                    insertCommand.ExecuteNonQuery();
+                    insertCommand.Parameters.Clear();
+                }
+                insertCommand.CommandText = $"INSERT INTO Books_Signatures (BookId, SignatureId, Priority) VALUES ((SELECT BookId FROM Books " +
+                    $"WHERE Title = '{book.Title}' AND Version = '{book.Version}' AND Medium = '{book.Medium}')," +
+                    $"(SELECT SignatureId FROM Signatures WHERE Signature = '{book.Signatures[i]}'), {i + 1})";
+                insertCommand.ExecuteNonQuery();
+                insertCommand.Parameters.Clear();
+            }
+        }
     }
-
-
 }
