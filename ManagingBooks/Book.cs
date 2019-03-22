@@ -1,6 +1,6 @@
 ﻿namespace ManagingBooks
 {
-    class Book
+    public class Book
     {
         public int BookId { get; set; }
         public int Number { get; set; }
@@ -23,6 +23,7 @@
         public Book()
         {
             BookId = -1;
+            Number = -1;
         }
 
         public Book(int noAuthor, int noSignature, int number, string title, string publisher, int version, int year, string medium, string date, string place, int pages, double price)
@@ -44,12 +45,12 @@
 
         public static bool Compare(Book b1, Book b2)
         {
-            if(b1.Authors.Length != b2.Authors.Length || b1.Signatures.Length != b2.Signatures.Length)
+            if(b1.NoAuthor != b2.NoAuthor || b1.NoSignature != b2.NoSignature)
             {
                 return false;
             }
 
-            for (int i = 0; i < b1.Authors.Length; i++)
+            for (int i = 0; i < b1.NoAuthor; i++)
             {
                 if (!b1.Authors[i].Name.Equals(b2.Authors[i].Name))
                 {
@@ -57,7 +58,7 @@
                 }
             }
 
-            for (int i = 0; i < b1.Signatures.Length; i++)
+            for (int i = 0; i < b1.NoSignature; i++)
             {
                 if (!b1.Signatures[i].Equals(b2.Signatures[i]))
                 {

@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:ManagingBooks.Windows"
         mc:Ignorable="d"
         Title="Barcode Display" Height="300" Width="500"
+        ShowInTaskbar="False"
         WindowStartupLocation="CenterOwner">
     <StackPanel>
         <Image Name="BarcodeShow" Height="100" Width="150"/>

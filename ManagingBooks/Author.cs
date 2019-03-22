@@ -1,6 +1,6 @@
 ﻿namespace ManagingBooks
 {
-    class Author
+    public class Author
     {
         public string Name { get; set; }
     }

@@ -8,6 +8,7 @@
         xmlns:model="clr-namespace:ManagingBooks.Model"
         mc:Ignorable="d"
         Title="Add Books" SizeToContent="WidthAndHeight" Background="WhiteSmoke"
+        ShowInTaskbar="False"
         WindowStartupLocation="CenterOwner"
         Closing="AddBook_Closing">
     <StackPanel Width="660" Height="400" Margin="10" >
@@ -30,11 +31,7 @@
                 <TextBlock Text="Title" Margin="0,0,0,5"/>
                 <TextBox Name="BoxTitle" Text="{Binding Title, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,5"/>
                 <TextBlock Text="Publisher" Margin="0,0,0,5"/>
-                <ComboBox Name="BoxPublisher" Text="{Binding Publisher}" Margin="0,0,0,5">
-                    <ComboBoxItem Content="Publisher 1"/>
-                    <ComboBoxItem Content="Publisher 2"/>
-                    <ComboBoxItem Content="Publisher 3"/>
-                </ComboBox>
+                <ComboBox Name="BoxPublisher" Text="{Binding Publisher}" Margin="0,0,0,5"/>
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="auto"/>
@@ -50,20 +47,10 @@
                     <TextBlock Grid.Column="1" Text="Year" Margin="0,0,0,5"/>
                     <TextBox Grid.Row="1" Grid.Column="1" Name="BoxYear" Text="{Binding Year, Converter={x:Static model:AddBookModel.Converter}}" Width="100" Margin="0,0,5,0"/>
                     <TextBlock Grid.Column="2" Text="Medium" Margin="0,0,0,5"/>
-                    <ComboBox Grid.Row="1" Grid.Column="2" Name="BoxMedium" Text="{Binding Medium}" Width="100" Margin="0,0,5,0">
-                        <ComboBoxItem Content="Book"/>
-                        <ComboBoxItem Content="CD"/>
-                        <ComboBoxItem Content="DVD"/>
-                        <ComboBoxItem Content="E-Book"/>
-                    </ComboBox>
+                    <ComboBox Grid.Row="1" Grid.Column="2" Name="BoxMedium" Text="{Binding Medium}" Width="100" Margin="0,0,5,0"/>
                 </Grid>
                 <TextBlock Text="Place" Margin="0,0,0,5"/>
-                <ComboBox Name="BoxPlace" Text="{Binding Place}" Margin="0,0,0,5">
-                    <ComboBoxItem Content="Frankurt"/>
-                    <ComboBoxItem Content="Darmstadt"/>
-                    <ComboBoxItem Content="Berlin"/>
-                    <ComboBoxItem Content="München"/>
-                </ComboBox>
+                <ComboBox Name="BoxPlace" Text="{Binding Place}" Margin="0,0,0,5"/>
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="auto"/>

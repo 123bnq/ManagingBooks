@@ -20,6 +20,7 @@ namespace ManagingBooks
     {
         BackgroundWorker Search = new BackgroundWorker();
         BackgroundWorker Delete = new BackgroundWorker();
+        int LastIndex = -1;
 
         //SearchBook DeleteBook;
 
@@ -148,7 +149,12 @@ namespace ManagingBooks
         {
             SearchBookModel context = this.DataContext as SearchBookModel;
             context.Status = "Load Finished";
-            MessageBox.Show("Done");
+            if (LastIndex != -1)
+            {
+                SearchList.SelectedIndex = LastIndex;
+                LastIndex = -1;
+                SearchList.ScrollIntoView(SearchList.SelectedItem);
+            }
         }
 
         private bool UserFilter(object item)
@@ -308,8 +314,14 @@ namespace ManagingBooks
         private void EditCommand_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             int bookId = (SearchList.SelectedItem as SearchBook).BookId;
-            if (!new EditBook(bookId) { Owner = this }.ShowDialog().Value)
+            LastIndex = SearchList.SelectedIndex;
+            EditBook editWindow = new EditBook(bookId) { Owner = this };
+            if (!editWindow.ShowDialog().Value)
             {
+                if (editWindow.IsNew)
+                {
+                    LastIndex = SearchList.Items.Count;
+                }
                 (DataContext as SearchBookModel).DisplayBooks.Clear();
                 Search.RunWorkerAsync(NumberOfBooks());
             }
@@ -362,6 +374,7 @@ namespace ManagingBooks
             if (result == MessageBoxResult.Yes)
             {
                 SearchList.IsEnabled = false;
+                BoxSearchText.IsEnabled = false;
                 if (SearchList.SelectedIndex != -1)
                 {
                     await Task.Run(() =>
@@ -401,6 +414,7 @@ namespace ManagingBooks
                 }
             }
             SearchList.IsEnabled = true;
+            BoxSearchText.IsEnabled = true;
         }
 
         private void Delete_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)

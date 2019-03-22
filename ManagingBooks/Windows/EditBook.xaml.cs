@@ -6,6 +6,8 @@ using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
 using System.Linq;
+using System.IO;
+using System.Collections.ObjectModel;
 
 namespace ManagingBooks.Windows
 {
@@ -17,10 +19,20 @@ namespace ManagingBooks.Windows
         private Book book;
         private bool updateRequest = false;
         private bool isCancelled = false;
+        private bool copied = false;
+        public bool IsNew = false;
+
+        ObservableCollection<string> ListPublisher = new ObservableCollection<string>();
+        ObservableCollection<string> ListMedium = new ObservableCollection<string>();
+        ObservableCollection<string> ListPlace = new ObservableCollection<string>();
 
         public EditBook(int bookId)
         {
             InitializeComponent();
+            BoxPublisher.ItemsSource = ListPublisher;
+            BoxMedium.ItemsSource = ListMedium;
+            BoxPlace.ItemsSource = ListPlace;
+            ReadPublisherMediumPlace();
             this.DataContext = new AddBookModel();
             book = new Book();
             book.BookId = bookId;
@@ -77,7 +89,8 @@ namespace ManagingBooks.Windows
             }
             authors = authors.Distinct().ToList();
             signatures = signatures.Distinct().ToList();
-            book.Authors = new Author[authors.Count];
+            book.NoAuthor = authors.Count;
+            book.Authors = new Author[book.NoAuthor];
 
             for (int j = 0; j < book.Authors.Length; j++)
             {
@@ -90,17 +103,18 @@ namespace ManagingBooks.Windows
             }
             i = 0;
 
-            book.Signatures = new string[signatures.Count];
+            book.NoSignature = signatures.Count;
+            book.Signatures = new string[book.NoSignature];
 
             foreach (var s in signatures)
             {
                 book.Signatures[i++] = s;
             }
-            CopyBookToView(this.DataContext as AddBookModel);
+            CopyBookToView(this.DataContext as AddBookModel, book);
             con.Close();
         }
 
-        private void CopyBookToView(AddBookModel context)
+        private void CopyBookToView(AddBookModel context, Book book)
         {
             int noAuthor = book.Authors.Length;
             int noSignature = book.Signatures.Length;
@@ -174,7 +188,7 @@ namespace ManagingBooks.Windows
 
         private void BtnUndo_Click(object sender, RoutedEventArgs e)
         {
-            CopyBookToView(this.DataContext as AddBookModel);
+            CopyBookToView(this.DataContext as AddBookModel, book);
         }
 
         private void BtnCancel_Click(object sender, RoutedEventArgs e)
@@ -203,6 +217,8 @@ namespace ManagingBooks.Windows
                     {
                         tempBook.BookId = book.BookId;
                         tempBook.Number = context.Number;
+                        tempBook.NoAuthor = noAuthor;
+                        tempBook.NoSignature = noSignature;
                         tempBook.Title = context.Title;
                         tempBook.Publisher = context.Publisher;
                         tempBook.Version = context.Version;
@@ -213,12 +229,12 @@ namespace ManagingBooks.Windows
                         tempBook.Pages = context.Pages;
                         tempBook.Price = context.Price;
 
-                        tempBook.Authors = new Author[noAuthor];
+                        tempBook.Authors = new Author[tempBook.NoAuthor];
                         for (int i = 0; i < noAuthor; i++)
                         {
                             tempBook.Authors[i] = new Author();
                         }
-                        tempBook.Signatures = new string[noSignature];
+                        tempBook.Signatures = new string[tempBook.NoSignature];
                         if (noAuthor > 0)
                         {
                             tempBook.Authors[0].Name = context.Author1;
@@ -252,7 +268,16 @@ namespace ManagingBooks.Windows
 
                     if (!isChanged && sufficient)
                     {
-                        var result = MessageBox.Show("Nothing is changed. Do you want to modify?", "Information", MessageBoxButton.YesNo, MessageBoxImage.Information);
+                        MessageBoxResult result;
+                        if (copied)
+                        {
+                            copied = false;
+                            result = MessageBox.Show("Nothing is changed. Book will not be added. Continue?", "Information", MessageBoxButton.YesNo, MessageBoxImage.Information);
+                        }
+                        else
+                        {
+                            result = MessageBox.Show("Nothing is changed. Do you want to modify?", "Information", MessageBoxButton.YesNo, MessageBoxImage.Information);
+                        }
                         if (result == MessageBoxResult.Yes)
                         {
                             e.Cancel = true;
@@ -296,14 +321,12 @@ namespace ManagingBooks.Windows
                                 // if no, add Author
                                 if (!r.Read())
                                 {
-                                    //insertCommand = con.CreateCommand();
                                     insertCommand.CommandText = "INSERT INTO Authors (Name) VALUES (@Name)";
                                     insertCommand.Parameters.AddWithValue("Name", tempBook.Authors[i].Name);
                                     insertCommand.ExecuteNonQuery();
                                     insertCommand.Parameters.Clear();
                                 }
 
-                                //insertCommand = con.CreateCommand();
                                 insertCommand.CommandText = $"INSERT INTO Books_Authors (BookId, AuthorId, Priority) VALUES ((SELECT BookId FROM Books " +
                                     $"WHERE Title = '{book.Title}' AND Version = '{tempBook.Version}' AND Medium = '{tempBook.Medium}')," +
                                     $"(SELECT AuthorId FROM Authors WHERE Name = '{tempBook.Authors[i].Name}'),{i + 1})";
@@ -317,14 +340,12 @@ namespace ManagingBooks.Windows
                                 SqliteDataReader r = selectCommand.ExecuteReader();
                                 if (!r.Read())
                                 {
-                                    //insertCommand = con.CreateCommand();
                                     insertCommand.CommandText = "INSERT INTO Signatures (Signature) VALUES (@Signature)";
                                     insertCommand.Parameters.AddWithValue("Signature", tempBook.Signatures[i]);
                                     insertCommand.ExecuteNonQuery();
                                     insertCommand.Parameters.Clear();
                                 }
 
-                                //insertCommand = con.CreateCommand();
                                 insertCommand.CommandText = $"INSERT INTO Books_Signatures (BookId, SignatureId, Priority) VALUES ((SELECT BookId FROM Books " +
                                     $"WHERE Title = '{tempBook.Title}' AND Version = '{tempBook.Version}' AND Medium = '{tempBook.Medium}')," +
                                     $"(SELECT SignatureId FROM Signatures WHERE Signature = '{tempBook.Signatures[i]}'), {i + 1})";
@@ -334,6 +355,18 @@ namespace ManagingBooks.Windows
                             con.Close();
 
                             MessageBox.Show("Book is changed successfully.", "Infomation", MessageBoxButton.OK, MessageBoxImage.Information);
+                        }
+                        else if (copied)
+                        {
+                            copied = false;
+                            IsNew = true;
+                            SqliteConnection con;
+                            SqlMethods.SqlConnect(out con);
+                            var tr = con.BeginTransaction();
+                            AddBook.AddBookToDatabase(ref con, ref tr, tempBook);
+                            tr.Commit();
+                            con.Close();
+                            MessageBox.Show("A copy is created successfully.", "Infomation", MessageBoxButton.OK, MessageBoxImage.Information);
                         }
                         else
                         {
@@ -414,6 +447,44 @@ namespace ManagingBooks.Windows
                 return 1;
             }
             return 0;
+        }
+
+        private void BtnCopy_Click(object sender, RoutedEventArgs e)
+        {
+            copied = true;
+            this.Close();
+        }
+
+        private async void ReadPublisherMediumPlace()
+        {
+            string dataFolder = Path.Combine(AppContext.BaseDirectory, "Data");
+            string publisherPath = Path.Combine(dataFolder, "Publishers.dat");
+            string mediumPath = Path.Combine(dataFolder, "Mediums.dat");
+            string placePath = Path.Combine(dataFolder, "Places.dat");
+
+            using (StreamReader sr = new StreamReader(publisherPath))
+            {
+                while (!sr.EndOfStream)
+                {
+                    ListPublisher.Add(await sr.ReadLineAsync());
+                }
+            }
+
+            using (StreamReader sr = new StreamReader(mediumPath))
+            {
+                while (!sr.EndOfStream)
+                {
+                    ListMedium.Add(await sr.ReadLineAsync());
+                }
+            }
+
+            using (StreamReader sr = new StreamReader(placePath))
+            {
+                while (!sr.EndOfStream)
+                {
+                    ListPlace.Add(await sr.ReadLineAsync());
+                }
+            }
         }
     }
 }
