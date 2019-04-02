@@ -32,7 +32,8 @@ namespace ManagingBooks.Windows
             BoxPublisher.ItemsSource = ListPublisher;
             BoxMedium.ItemsSource = ListMedium;
             BoxPlace.ItemsSource = ListPlace;
-            ReadPublisherMediumPlace();
+            AddBook.ReadPublisherMediumPlace(ListPublisher, ListMedium, ListPlace);
+            //ReadPublisherMediumPlace();
             this.DataContext = new AddBookModel();
             book = new Book();
             book.BookId = bookId;
@@ -455,7 +456,7 @@ namespace ManagingBooks.Windows
             this.Close();
         }
 
-        private async void ReadPublisherMediumPlace()
+        private void ReadPublisherMediumPlace()
         {
             string dataFolder = Path.Combine(AppContext.BaseDirectory, "Data");
             string publisherPath = Path.Combine(dataFolder, "Publishers.dat");
@@ -466,15 +467,7 @@ namespace ManagingBooks.Windows
             {
                 while (!sr.EndOfStream)
                 {
-                    ListPublisher.Add(await sr.ReadLineAsync());
-                }
-            }
-
-            using (StreamReader sr = new StreamReader(mediumPath))
-            {
-                while (!sr.EndOfStream)
-                {
-                    ListMedium.Add(await sr.ReadLineAsync());
+                    ListPublisher.Add(sr.ReadLine());
                 }
             }
 
@@ -482,9 +475,19 @@ namespace ManagingBooks.Windows
             {
                 while (!sr.EndOfStream)
                 {
-                    ListPlace.Add(await sr.ReadLineAsync());
+                    ListPlace.Add(sr.ReadLine());
                 }
             }
+
+            using (StreamReader sr = new StreamReader(mediumPath))
+            {
+                while (!sr.EndOfStream)
+                {
+                    ListMedium.Add(sr.ReadLine());
+                }
+            }
+
+            
         }
     }
 }

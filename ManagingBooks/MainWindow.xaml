@@ -22,6 +22,11 @@
                 <MenuItem Header="_Delete..." Command="local:CustomCommands.Delete"/>
                 <MenuItem Header="_Exit" Command="local:CustomCommands.Exit"/>
             </MenuItem>
+            <MenuItem Header="_Data">
+                <MenuItem Header="Edit _Publisher" Click="EditPublisher_Click"/>
+                <MenuItem Header="Edit P_lace" Click="EditPlace_Click"/>
+                <MenuItem Header="Edit _Medium" Click="EditMedium_Click"/>
+            </MenuItem>
             <MenuItem Header="_Language">
                 <MenuItem Header="_English"/>
                 <MenuItem Header="_Deutsch"/>

@@ -28,7 +28,7 @@ namespace ManagingBooks.Windows
             BoxPublisher.ItemsSource = ListPublisher;
             BoxMedium.ItemsSource = ListMedium;
             BoxPlace.ItemsSource = ListPlace;
-            ReadPublisherMediumPlace();
+            ReadPublisherMediumPlace(ListPublisher, ListMedium, ListPlace);
             UpdateListBook(this.DataContext as AddBookModel);
             ClearEntries();
         }
@@ -440,34 +440,48 @@ namespace ManagingBooks.Windows
             }
         }
 
-        private async void ReadPublisherMediumPlace()
+        public static void ReadPublisherMediumPlace(ObservableCollection<string> listPubl, ObservableCollection<string> listMedi, ObservableCollection<string> listPlace)
         {
-            string dataFolder = Path.Combine(AppContext.BaseDirectory, "Data");
-            string publisherPath = Path.Combine(dataFolder, "Publishers.dat");
-            string mediumPath = Path.Combine(dataFolder, "Mediums.dat");
-            string placePath = Path.Combine(dataFolder, "Places.dat");
-
-            using (StreamReader sr = new StreamReader(publisherPath))
+            SqlMethods.SqlConnect(out SqliteConnection con);
+            var selectCommand = con.CreateCommand();
+            selectCommand.CommandText = "SELECT Name FROM Publishers ORDER BY Name";
+            SqliteDataReader r = selectCommand.ExecuteReader();
+            while (r.Read())
             {
-                while (!sr.EndOfStream)
-                {
-                    ListPublisher.Add(await sr.ReadLineAsync());
-                }
+                listPubl.Add(Convert.ToString(r["Name"]));
             }
+            r.Close();
 
-            using (StreamReader sr = new StreamReader(mediumPath))
+            selectCommand.CommandText = "SELECT Name FROM Mediums ORDER BY Name";
+            r = selectCommand.ExecuteReader();
+            while (r.Read())
             {
-                while (!sr.EndOfStream)
-                {
-                    ListMedium.Add(await sr.ReadLineAsync());
-                }
+                listMedi.Add(Convert.ToString(r["Name"]));
             }
+            r.Close();
 
-            using (StreamReader sr = new StreamReader(placePath))
+            selectCommand.CommandText = "SELECT City, State, Country FROM Places";
+            r = selectCommand.ExecuteReader();
+            while (r.Read())
             {
-                while (!sr.EndOfStream)
+                string city = Convert.ToString(r["City"]);
+                string state = Convert.ToString(r["State"]);
+                string country = Convert.ToString(r["Country"]);
+                if(string.IsNullOrEmpty(state) && string.IsNullOrEmpty(city))
                 {
-                    ListPlace.Add(await sr.ReadLineAsync());
+                    listPlace.Add(city);
+                }
+                else if (string.IsNullOrEmpty(state))
+                {
+                    listPlace.Add($"{city}, {country}");
+                }
+                else if (string.IsNullOrEmpty(country))
+                {
+                    listPlace.Add($"{city} ({state})");
+                }
+                else
+                {
+                    listPlace.Add($"{city}, {state}, {country}");
                 }
             }
         }

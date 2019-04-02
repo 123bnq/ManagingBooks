@@ -470,6 +470,19 @@ namespace ManagingBooks
                 });
             }
         }
+
+        private void EditPublisher_Click(object sender, RoutedEventArgs e)
+        {
+            new EditPublisher() { Owner = this }.ShowDialog();
+        }
+
+        private void EditPlace_Click(object sender, RoutedEventArgs e)
+        {
+        }
+
+        private void EditMedium_Click(object sender, RoutedEventArgs e)
+        {
+        }
     }
 
     public static class CustomCommands
@@ -487,5 +500,8 @@ namespace ManagingBooks
         public static readonly RoutedUICommand Edit = new RoutedUICommand("Edit", "Edit", typeof(CustomCommands));
         public static readonly RoutedUICommand Delete = new RoutedUICommand("Delete", "Delete", typeof(CustomCommands));
         public static readonly RoutedUICommand Print = new RoutedUICommand("Print", "Print", typeof(CustomCommands));
+
+        public static readonly RoutedUICommand RemovePub = new RoutedUICommand("RemovePublisher", "RemovePublisher", typeof(CustomCommands));
+        public static readonly RoutedUICommand SavePub = new RoutedUICommand("SavePublisher", "SavePublisher", typeof(CustomCommands));
     }
 }

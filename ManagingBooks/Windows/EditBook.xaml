@@ -29,7 +29,7 @@
         <TextBlock Text="Title" Margin="0,0,0,5"/>
         <TextBox Name="BoxTitle" Text="{Binding Title}" Margin="0,0,0,5"/>
         <TextBlock Text="Publisher" Margin="0,0,0,5"/>
-        <ComboBox Name="BoxPublisher" Text="{Binding Publisher}" Margin="0,0,0,5"/>
+        <ComboBox Name="BoxPublisher" Text="{Binding Publisher}" Margin="0,0,0,5" MaxDropDownHeight="150"/>
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto"/>
@@ -45,10 +45,10 @@
             <TextBlock Grid.Column="1" Text="Year" Margin="0,0,0,5"/>
             <TextBox Grid.Row="1" Grid.Column="1" Name="BoxYear" Text="{Binding Year, Converter={x:Static model:AddBookModel.Converter}}" Width="100" Margin="0,0,5,0"/>
             <TextBlock Grid.Column="2" Text="Medium" Margin="0,0,0,5"/>
-            <ComboBox Grid.Row="1" Grid.Column="2" Name="BoxMedium" Text="{Binding Medium}" Width="100" Margin="0,0,5,0"/>
+            <ComboBox Grid.Row="1" Grid.Column="2" Name="BoxMedium" Text="{Binding Medium}" Width="100" Margin="0,0,5,0" MaxDropDownHeight="150"/>
         </Grid>
         <TextBlock Text="Place" Margin="0,0,0,5"/>
-        <ComboBox Name="BoxPlace" Text="{Binding Place}" Margin="0,0,0,5"/>
+        <ComboBox Name="BoxPlace" Text="{Binding Place}" Margin="0,0,0,5" MaxDropDownHeight="150"/>
         <Grid Margin="0,0,0,10">
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto"/>
