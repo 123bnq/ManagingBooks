@@ -2,6 +2,7 @@
 using Microsoft.Data.Sqlite;
 using System;
 using System.Collections.ObjectModel;
+using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -18,6 +19,7 @@ namespace ManagingBooks.Windows
         public EditPublisher()
         {
             EditPublisherModel context = new EditPublisherModel();
+            ClearEntries(context);
             context.ListPublisher = new ObservableCollection<Publisher>();
             DataContext = context;
             GetPublisher();
@@ -30,11 +32,14 @@ namespace ManagingBooks.Windows
             context.ListPublisher.Clear();
             SqlMethods.SqlConnect(out SqliteConnection con);
             var selectCommand = con.CreateCommand();
-            selectCommand.CommandText = "SELECT Name, City, Country FROM Publishers ORDER BY Name";
+            selectCommand.CommandText = "SELECT Id, Name, City, Country FROM Publishers ORDER BY Name";
             SqliteDataReader r = selectCommand.ExecuteReader();
             while (r.Read())
             {
                 Publisher pub = new Publisher();
+                int tempNum;
+                int.TryParse(Convert.ToString(r["Id"]), out tempNum);
+                pub.Id = tempNum;
                 pub.Name = Convert.ToString(r["Name"]);
                 pub.City = Convert.ToString(r["City"]);
                 pub.Country = Convert.ToString(r["Country"]);
@@ -43,7 +48,7 @@ namespace ManagingBooks.Windows
             r.Close();
         }
 
-        private void BtnCancel_Click(object sender, RoutedEventArgs e)
+        private void BtnClose_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
         }
@@ -60,18 +65,29 @@ namespace ManagingBooks.Windows
 
         private void BtnClear_Click(object sender, RoutedEventArgs e)
         {
-            ClearEntries();
+            EditPublisherModel context = this.DataContext as EditPublisherModel;
+            ClearEntries(context);
+            PubList.SelectedIndex = -1;
         }
 
-        private void ClearEntries()
+        private void ClearEntries(EditPublisherModel context)
         {
-            foreach (var ctrl in MainContent.Children)
+            PropertyInfo[] properties = context.GetType().GetProperties();
+
+            foreach (var propertyInfo in properties)
             {
-                if (ctrl.GetType() == typeof(TextBox))
+                if (propertyInfo.PropertyType == typeof(string))
                 {
-                    (ctrl as TextBox).Clear();
+                    propertyInfo.SetValue(context, string.Empty, null);
+                }
+                if (propertyInfo.PropertyType == typeof(int))
+                {
+                    propertyInfo.SetValue(context, 0, null);
                 }
             }
+            context.LabelName = "Name:";
+            context.LabelCity = "City:";
+            context.LabelCountry = "Country:";
         }
 
         private void RemovePubCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
@@ -95,13 +111,13 @@ namespace ManagingBooks.Windows
                         Publisher temp = removingItems[i] as Publisher;
                         removeCommand.CommandText = $"DELETE FROM Publishers WHERE Name='{temp.Name}'";
                         removeCommand.ExecuteNonQueryAsync();
-                        Thread.Sleep(TimeSpan.FromTicks(500));
                     }
                     tr.Commit();
                     con.Close();
                 });
                 GetPublisher();
             }
+            ClearEntries(this.DataContext as EditPublisherModel);
         }
 
         private void SavePubCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
@@ -119,30 +135,66 @@ namespace ManagingBooks.Windows
             SqliteDataReader r = selectCommand.ExecuteReader();
             if (!r.Read())
             {
-                SqliteCommand insertCommand = con.CreateCommand();
-                if (!string.IsNullOrWhiteSpace(context.City) && !string.IsNullOrWhiteSpace(context.Country))
+                if (context.Id == 0)
                 {
-                    insertCommand.CommandText = "INSERT INTO Publishers (Name,City,Country) VALUES (@Name,@City,@Country)";
-                    insertCommand.Parameters.AddWithValue("Name", context.Name);
-                    insertCommand.Parameters.AddWithValue("City", context.City);
-                    insertCommand.Parameters.AddWithValue("Country", context.Country);
+                    SqliteCommand insertCommand = con.CreateCommand();
+                    if (!string.IsNullOrWhiteSpace(context.City) && !string.IsNullOrWhiteSpace(context.Country))
+                    {
+                        insertCommand.CommandText = "INSERT INTO Publishers (Name,City,Country) VALUES (@Name,@City,@Country)";
+                        insertCommand.Parameters.AddWithValue("Name", context.Name);
+                        insertCommand.Parameters.AddWithValue("City", context.City);
+                        insertCommand.Parameters.AddWithValue("Country", context.Country);
+                    }
+                    else
+                    {
+                        insertCommand.CommandText = "INSERT INTO Publishers (Name,City) VALUES (@Name,@City)";
+                        insertCommand.Parameters.AddWithValue("Name", context.Name);
+                        insertCommand.Parameters.AddWithValue("City", context.City);
+                    }
+                    insertCommand.ExecuteNonQuery();
                 }
                 else
                 {
-                    insertCommand.CommandText = "INSERT INTO Publishers (Name,City) VALUES (@Name,@City)";
-                    insertCommand.Parameters.AddWithValue("Name", context.Name);
-                    insertCommand.Parameters.AddWithValue("City", context.City);
+                    SqliteCommand updateCommand = con.CreateCommand();
+                    updateCommand.CommandText = $"UPDATE Publishers SET Name='{context.Name}', City='{context.City}', Country='{context.Country}' WHERE Id={context.Id}";
+                    updateCommand.ExecuteNonQuery();
                 }
-                insertCommand.ExecuteNonQuery();
                 con.Close();
-                ClearEntries();
+                ClearEntries(context);
                 GetPublisher();
             }
             else
             {
-                MessageBox.Show("Publisher exists!", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBoxResult result = MessageBox.Show("Publisher exists!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
-            
+        }
+
+        private void PubList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            EditPublisherModel context = this.DataContext as EditPublisherModel;
+            Publisher pub = PubList.SelectedItem as Publisher;
+            if (pub != null)
+            {
+                context.LabelName = "Edit Name:";
+                context.LabelCity = "Edit City:";
+                context.LabelCountry = "Edit Country:";
+                context.Id = pub.Id;
+                context.Name = pub.Name;
+                context.City = pub.City;
+                context.Country = pub.Country;
+                //    SqlMethods.SqlConnect(out SqliteConnection con);
+                //    SqliteCommand selectCommand = con.CreateCommand();
+                //    selectCommand.CommandText = $"SELECT Name, City, Country FROM Publishers WHERE Id={pub.Id}";
+                //    SqliteDataReader r = selectCommand.ExecuteReader();
+                //    while (r.Read())
+                //    {
+                //        context.Id = pub.Id;
+                //        context.Name = Convert.ToString(r["Name"]);
+                //        context.City = Convert.ToString(r["City"]);
+                //        context.Country = Convert.ToString(r["Country"]);
+                //    }
+                //    r.Close(); 
+            }
         }
     }
 }

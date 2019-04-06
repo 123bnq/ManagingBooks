@@ -100,6 +100,7 @@
     <Compile Include="Book.cs" />
     <Compile Include="Author.cs" />
     <Compile Include="Model\AddBookModel.cs" />
+    <Compile Include="Model\EditMediumModel.cs" />
     <Compile Include="Model\EditPublisherModel.cs" />
     <Compile Include="Model\SearchBookModel.cs" />
     <Compile Include="SqlMethods.cs" />
@@ -111,6 +112,9 @@
     </Compile>
     <Compile Include="Windows\EditBook.xaml.cs">
       <DependentUpon>EditBook.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\EditMedium.xaml.cs">
+      <DependentUpon>EditMedium.xaml</DependentUpon>
     </Compile>
     <Compile Include="Windows\EditPublisher.xaml.cs">
       <DependentUpon>EditPublisher.xaml</DependentUpon>
@@ -134,6 +138,9 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Windows\EditBook.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\EditMedium.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Windows\EditPublisher.xaml">

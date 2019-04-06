@@ -482,6 +482,7 @@ namespace ManagingBooks
 
         private void EditMedium_Click(object sender, RoutedEventArgs e)
         {
+            new EditMedium() { Owner = this }.ShowDialog();
         }
     }
 
@@ -503,5 +504,7 @@ namespace ManagingBooks
 
         public static readonly RoutedUICommand RemovePub = new RoutedUICommand("RemovePublisher", "RemovePublisher", typeof(CustomCommands));
         public static readonly RoutedUICommand SavePub = new RoutedUICommand("SavePublisher", "SavePublisher", typeof(CustomCommands));
+        public static readonly RoutedUICommand RemoveMedium = new RoutedUICommand("RemoveMedium", "RemoveMedium", typeof(CustomCommands));
+        public static readonly RoutedUICommand SaveMedium = new RoutedUICommand("SaveMedium", "SaveMedium", typeof(CustomCommands));
     }
 }
