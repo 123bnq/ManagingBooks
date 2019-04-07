@@ -182,18 +182,6 @@ namespace ManagingBooks.Windows
                 context.Name = pub.Name;
                 context.City = pub.City;
                 context.Country = pub.Country;
-                //    SqlMethods.SqlConnect(out SqliteConnection con);
-                //    SqliteCommand selectCommand = con.CreateCommand();
-                //    selectCommand.CommandText = $"SELECT Name, City, Country FROM Publishers WHERE Id={pub.Id}";
-                //    SqliteDataReader r = selectCommand.ExecuteReader();
-                //    while (r.Read())
-                //    {
-                //        context.Id = pub.Id;
-                //        context.Name = Convert.ToString(r["Name"]);
-                //        context.City = Convert.ToString(r["City"]);
-                //        context.Country = Convert.ToString(r["Country"]);
-                //    }
-                //    r.Close(); 
             }
         }
     }
