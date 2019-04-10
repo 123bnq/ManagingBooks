@@ -5,14 +5,15 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ManagingBooks"
         mc:Ignorable="d"
-        Title="Book Management" SizeToContent="WidthAndHeight" WindowStartupLocation="CenterScreen"
-        Background="WhiteSmoke" ResizeMode="CanMinimize">
+        Title="Book Management" MinWidth="1200" MinHeight="700" Height="700" WindowStartupLocation="CenterScreen"
+        Background="WhiteSmoke">
     <Window.CommandBindings>
         <CommandBinding Command="local:CustomCommands.Exit" CanExecute="ExitCommand_CanExecute" Executed="ExitCommand_Executed"/>
         <CommandBinding Command="local:CustomCommands.Search" CanExecute="SearchCommand_CanExecute" Executed="SearchCommand_Executed"/>
         <CommandBinding Command="local:CustomCommands.Edit" CanExecute="EditCommand_CanExecute" Executed="EditCommand_Executed"/>
         <CommandBinding Command="local:CustomCommands.Print" CanExecute="EditCommand_CanExecute" Executed="PrintCommand_Executed"/>
         <CommandBinding Command="local:CustomCommands.Delete" CanExecute="DeleteCommand_CanExecute" Executed="DeleteCommand_Executed"/>
+        <CommandBinding Command="local:CustomCommands.ClearBookInfo" CanExecute="EditCommand_CanExecute" Executed="ClearBookInfoCommand_Executed"/>
     </Window.CommandBindings>
     <DockPanel>
         <Menu DockPanel.Dock="Top">
@@ -40,8 +41,8 @@
             <TextBlock Margin="10,0,5,0" Text="{Binding Status}"/>
             <ProgressBar Minimum="0" Maximum="100" Height="15" Width="200" Value="{Binding Progress}"/>
         </StatusBar>
-        <StackPanel Height="400">
-            <ListView x:Name="SearchList" Width="1000" Height="200" Margin="10">
+        <StackPanel Margin="10">
+            <ListView x:Name="SearchList" Height="400" Margin="0,0,0,5" SelectionChanged="SearchList_SelectionChanged">
                 <ListView.Resources>
                     <ContextMenu x:Key="ItemContextMenu">
                         <MenuItem Header="Edit..." Command="local:CustomCommands.Edit"/>
@@ -58,7 +59,7 @@
                 </ListView.Resources>
                 <ListView.View>
                     <GridView>
-                        <GridViewColumn Header="BookId" Width="Auto" DisplayMemberBinding="{Binding BookId}"/>
+                        <GridViewColumn Header="BookId" Width="0" DisplayMemberBinding="{Binding BookId}"/>
                         <GridViewColumn Header="Number" Width="Auto">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
@@ -98,7 +99,7 @@
                     </GridView>
                 </ListView.View>
             </ListView>
-            <Grid Margin="20,0,40,20">
+            <Grid Margin="40,5">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
@@ -121,12 +122,80 @@
                     <ComboBoxItem Content="Signature"/>
                     <ComboBoxItem Content="Title"/>
                     <ComboBoxItem Content="Authors"/>
+                    <ComboBoxItem Content="Medium"/>
                     <ComboBoxItem Content="Place"/>
                 </ComboBox>
             </Grid>
-            <WrapPanel Margin="20,0,40,0" HorizontalAlignment="Right">
-                <Button Name="BtnPrint" Content="Print..." MinWidth="75" Command="local:CustomCommands.Print"/>
-            </WrapPanel>
+            <Button Name="BtnPrint" Content="Print..." MinWidth="75" Command="local:CustomCommands.Print" HorizontalAlignment="Right" Margin="40,5"/>
+            <GroupBox Margin="30,5" FontFamily="Consolas">
+                <GroupBox.Header>
+                    Book Information
+                </GroupBox.Header>
+                <Grid Margin="5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <WrapPanel>
+                        <TextBlock Text="Book Number: "/>
+                        <TextBlock Text="{Binding ViewNumber}" Background="White"/>
+                    </WrapPanel>
+                    <WrapPanel Grid.Column="1">
+                        <TextBlock Text="Signatures: "/>
+                        <TextBlock Text="{Binding ViewSignatures}" Background="White"/>
+                    </WrapPanel>
+                    <WrapPanel Grid.Column="2">
+                        <TextBlock Text="Title: "/>
+                        <TextBlock Text="{Binding ViewTitle}" Background="White"/>
+                    </WrapPanel>
+                    <WrapPanel Grid.Column="3">
+                        <TextBlock Text="Authors: "/>
+                        <TextBlock Text="{Binding ViewAuthors}" Background="White"/>
+                    </WrapPanel>
+                    <WrapPanel Grid.Row="1">
+                        <TextBlock Text="Publisher: "/>
+                        <TextBlock Text="{Binding ViewPublisher}" Background="White"/>
+                    </WrapPanel>
+                    <WrapPanel Grid.Row="1" Grid.Column="1">
+                        <TextBlock Text="Year: "/>
+                        <TextBlock Text="{Binding ViewYear}" Background="White"/>
+                    </WrapPanel>
+                    <WrapPanel Grid.Row="1" Grid.Column="2">
+                        <TextBlock Text="Version: "/>
+                        <TextBlock Text="{Binding ViewVersion}" Background="White"/>
+                    </WrapPanel>
+                    <WrapPanel Grid.Row="1" Grid.Column="3">
+                        <TextBlock Text="Medium: "/>
+                        <TextBlock Text="{Binding ViewMedium}" Background="White"/>
+                    </WrapPanel>
+                    <WrapPanel Grid.Row="2">
+                        <TextBlock Text="Place: "/>
+                        <TextBlock Text="{Binding ViewPlace}" Background="White"/>
+                    </WrapPanel>
+                    <WrapPanel Grid.Row="2" Grid.Column="1">
+                        <TextBlock Text="Date: "/>
+                        <TextBlock Text="{Binding ViewDate}" Background="White"/>
+                    </WrapPanel>
+                    <WrapPanel Grid.Row="2" Grid.Column="2">
+                        <TextBlock Text="Pages: "/>
+                        <TextBlock Text="{Binding ViewPages}" Background="White"/>
+                    </WrapPanel>
+                    <WrapPanel Grid.Row="2" Grid.Column="3">
+                        <TextBlock Text="Price: "/>
+                        <TextBlock Text="{Binding ViewPrice}" Background="White"/>
+                    </WrapPanel>
+                    <Button Name="BtnClearBookInfo" Grid.Row="3" Grid.Column="3" Content="Clear" MinWidth="75" HorizontalAlignment="Right" Command="local:CustomCommands.ClearBookInfo"/>
+                </Grid>
+            </GroupBox>
+
         </StackPanel>
     </DockPanel>
 </Window>

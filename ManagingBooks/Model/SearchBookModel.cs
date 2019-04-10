@@ -12,6 +12,19 @@ namespace ManagingBooks.Model
         private string m_Status;
         private int m_Progress;
 
+        private string m_ViewNumber;
+        private string m_ViewSignatures;
+        private string m_ViewTitle;
+        private string m_ViewAuthors;
+        private string m_ViewPublisher;
+        private string m_ViewYear;
+        private string m_ViewVersion;
+        private string m_ViewMedium;
+        private string m_ViewPlace;
+        private string m_ViewDate;
+        private string m_ViewPages;
+        private string m_ViewPrice;
+
         public string SearchText {
             get => m_SearchText;
             set
@@ -35,7 +48,6 @@ namespace ManagingBooks.Model
                 }
             }
         }
-
         public string Status {
             get => m_Status;
             set
@@ -47,7 +59,6 @@ namespace ManagingBooks.Model
                 }
             }
         }
-
         public int Progress {
             get => m_Progress;
             set
@@ -55,6 +66,151 @@ namespace ManagingBooks.Model
                 if(value != m_Progress)
                 {
                     m_Progress = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+
+        public string ViewNumber
+        {
+            get => m_ViewNumber;
+            set
+            {
+                if (value != m_ViewNumber)
+                {
+                    m_ViewNumber = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+        public string ViewSignatures
+        {
+            get => m_ViewSignatures;
+            set
+            {
+                if (value != m_ViewSignatures)
+                {
+                    m_ViewSignatures = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+        public string ViewTitle
+        {
+            get => m_ViewTitle;
+            set
+            {
+                if (value != m_ViewTitle)
+                {
+                    m_ViewTitle = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+        public string ViewAuthors
+        {
+            get => m_ViewAuthors;
+            set
+            {
+                if (value != m_ViewAuthors)
+                {
+                    m_ViewAuthors = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+        public string ViewPublisher
+        {
+            get => m_ViewPublisher;
+            set
+            {
+                if (value != m_ViewPublisher)
+                {
+                    m_ViewPublisher = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+        public string ViewYear
+        {
+            get => m_ViewYear;
+            set
+            {
+                if (value != m_ViewYear)
+                {
+                    m_ViewYear = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+        public string ViewVersion
+        {
+            get => m_ViewVersion;
+            set
+            {
+                if (value != m_ViewVersion)
+                {
+                    m_ViewVersion = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+        public string ViewMedium
+        {
+            get => m_ViewMedium;
+            set
+            {
+                if (value != m_ViewMedium)
+                {
+                    m_ViewMedium = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+        public string ViewPlace
+        {
+            get => m_ViewPlace;
+            set
+            {
+                if (value != m_ViewPlace)
+                {
+                    m_ViewPlace = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+        public string ViewDate
+        {
+            get => m_ViewDate;
+            set
+            {
+                if (value != m_ViewDate)
+                {
+                    m_ViewDate = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+        public string ViewPages
+        {
+            get => m_ViewPages;
+            set
+            {
+                if (value != m_ViewPages)
+                {
+                    m_ViewPages = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+        public string ViewPrice
+        {
+            get => m_ViewPrice;
+            set
+            {
+                if (value != m_ViewPrice)
+                {
+                    m_ViewPrice = value;
                     NotifyPropertyChanged();
                 }
             }

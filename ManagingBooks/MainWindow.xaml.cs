@@ -10,6 +10,7 @@ using System.ComponentModel;
 using System.Threading;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Reflection;
 
 namespace ManagingBooks
 {
@@ -27,10 +28,11 @@ namespace ManagingBooks
         public MainWindow()
         {
             InitializeComponent();
-            this.DataContext = new SearchBookModel();
-            (DataContext as SearchBookModel).DisplayBooks = new ObservableCollection<SearchBook>();
-            SearchList.ItemsSource = (DataContext as SearchBookModel).DisplayBooks;
-            (DataContext as SearchBookModel).DisplayBooks.Clear();
+            SearchBookModel context = new SearchBookModel();
+            this.DataContext = context;
+            context.DisplayBooks = new ObservableCollection<SearchBook>();
+            SearchList.ItemsSource = context.DisplayBooks;
+            context.DisplayBooks.Clear();
             Search.WorkerReportsProgress = true;
             Search.DoWork += Search_DoWork;
             Search.ProgressChanged += Search_ProgressChanged;
@@ -42,6 +44,7 @@ namespace ManagingBooks
             Delete.DoWork += Delete_DoWork;
             Delete.ProgressChanged += Delete_ProgressChanged;
             Delete.RunWorkerCompleted += Delete_RunWorkerCompleted;
+            ClearEntries(context);
         }
 
 
@@ -178,6 +181,8 @@ namespace ManagingBooks
                         return (item as SearchBook).Authors.IndexOf(context.SearchText, StringComparison.OrdinalIgnoreCase) >= 0;
                     case "Place":
                         return (item as SearchBook).Place.IndexOf(context.SearchText, StringComparison.OrdinalIgnoreCase) >= 0;
+                    case "Medium":
+                        return (item as SearchBook).Medium.StartsWith(context.SearchText, StringComparison.OrdinalIgnoreCase);
                     default:
                         return true;
                 }
@@ -429,6 +434,7 @@ namespace ManagingBooks
             context.DisplayBooks.Remove(e.UserState as SearchBook);
             context.Progress = e.ProgressPercentage;
             context.Status = "Deleting";
+            ClearEntries(context);
         }
 
         private void Delete_DoWork(object sender, DoWorkEventArgs e)
@@ -485,6 +491,49 @@ namespace ManagingBooks
         {
             new EditMedium() { Owner = this }.ShowDialog();
         }
+
+        private void SearchList_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        {
+            SearchBookModel context = this.DataContext as SearchBookModel;
+            SearchBook viewBook = SearchList.SelectedItem as SearchBook;
+            if(viewBook != null)
+            {
+                context.ViewNumber = viewBook.Number.ToString();
+                context.ViewSignatures = viewBook.Signatures;
+                context.ViewTitle = viewBook.Title;
+                context.ViewAuthors = viewBook.Authors;
+                context.ViewPublisher = viewBook.Publishers;
+                context.ViewYear = viewBook.Year.ToString();
+                context.ViewVersion = viewBook.Version.ToString();
+                context.ViewMedium = viewBook.Medium;
+                context.ViewPlace = viewBook.Place;
+                context.ViewDate = viewBook.Date;
+                context.ViewPages = viewBook.Pages.ToString();
+                context.ViewPrice = viewBook.Price.ToString();
+            }
+        }
+
+        private void ClearEntries(SearchBookModel context)
+        {
+            context.ViewNumber = string.Empty;
+            context.ViewSignatures = string.Empty;
+            context.ViewTitle = string.Empty;
+            context.ViewAuthors = string.Empty;
+            context.ViewPublisher = string.Empty;
+            context.ViewYear = string.Empty;
+            context.ViewVersion = string.Empty;
+            context.ViewMedium = string.Empty;
+            context.ViewPlace = string.Empty;
+            context.ViewDate = string.Empty;
+            context.ViewPages = string.Empty;
+            context.ViewPrice = string.Empty;
+        }
+
+        private void ClearBookInfoCommand_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            SearchList.SelectedIndex = -1;
+            ClearEntries(this.DataContext as SearchBookModel);
+        }
     }
 
     public static class CustomCommands
@@ -502,6 +551,7 @@ namespace ManagingBooks
         public static readonly RoutedUICommand Edit = new RoutedUICommand("Edit", "Edit", typeof(CustomCommands));
         public static readonly RoutedUICommand Delete = new RoutedUICommand("Delete", "Delete", typeof(CustomCommands));
         public static readonly RoutedUICommand Print = new RoutedUICommand("Print", "Print", typeof(CustomCommands));
+        public static readonly RoutedUICommand ClearBookInfo = new RoutedUICommand("ClearBookInfo", "ClearBookInfo", typeof(CustomCommands));
 
         public static readonly RoutedUICommand RemovePub = new RoutedUICommand("RemovePublisher", "RemovePublisher", typeof(CustomCommands));
         public static readonly RoutedUICommand SavePub = new RoutedUICommand("SavePublisher", "SavePublisher", typeof(CustomCommands));

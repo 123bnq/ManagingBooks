@@ -399,6 +399,14 @@ namespace ManagingBooks.Windows
             Thread.Sleep(TimeSpan.FromTicks(5));
             SqliteCommand selectCommand;
             SqliteDataReader r;
+            int maxId = 0;
+            selectCommand = con.CreateCommand();
+            selectCommand.CommandText = $"SELECT BookId FROM Books WHERE Title = '{book.Title}'";
+            r = selectCommand.ExecuteReader();
+            while (r.Read())
+            {
+                int.TryParse(Convert.ToString(r["BookId"]), out maxId);
+            }
             for (int i = 0; i < book.NoAuthor; i++)
             {
                 selectCommand = con.CreateCommand();
@@ -411,9 +419,11 @@ namespace ManagingBooks.Windows
                     insertCommand.ExecuteNonQuery();
                     insertCommand.Parameters.Clear();
                 }
-                insertCommand.CommandText = $"INSERT INTO Books_Authors (BookId, AuthorId, Priority) VALUES ((SELECT BookId FROM Books " +
-                    $"WHERE Title = '{book.Title}' AND Version = '{book.Version}' AND Medium = '{book.Medium}' " +
-                    $"AND Publisher = '{book.Publisher}' AND Year = '{book.Year}' AND Pages = {book.Pages})," +
+                //insertCommand.CommandText = $"INSERT INTO Books_Authors (BookId, AuthorId, Priority) VALUES ((SELECT BookId FROM Books " +
+                //    $"WHERE Title = '{book.Title}' AND Version = '{book.Version}' AND Medium = '{book.Medium}' " +
+                //    $"AND Publisher = '{book.Publisher}' AND Year = '{book.Year}' AND Pages = {book.Pages})," +
+                //    $"(SELECT AuthorId FROM Authors WHERE Name = '{book.Authors[i].Name}'),{i + 1})";
+                insertCommand.CommandText = $"INSERT INTO Books_Authors (BookId, AuthorId, Priority) VALUES ({maxId}," +
                     $"(SELECT AuthorId FROM Authors WHERE Name = '{book.Authors[i].Name}'),{i + 1})";
                 insertCommand.ExecuteNonQuery();
                 Thread.Sleep(TimeSpan.FromTicks(50));
@@ -431,9 +441,11 @@ namespace ManagingBooks.Windows
                     insertCommand.ExecuteNonQuery();
                     insertCommand.Parameters.Clear();
                 }
-                insertCommand.CommandText = $"INSERT INTO Books_Signatures (BookId, SignatureId, Priority) VALUES ((SELECT BookId FROM Books " +
-                    $"WHERE Title = '{book.Title}' AND Version = '{book.Version}' AND Medium = '{book.Medium}' " +
-                    $"AND Publisher = '{book.Publisher}' AND Year = '{book.Year}' AND Pages = {book.Pages})," +
+                //insertCommand.CommandText = $"INSERT INTO Books_Signatures (BookId, SignatureId, Priority) VALUES ((SELECT BookId FROM Books " +
+                //    $"WHERE Title = '{book.Title}' AND Version = '{book.Version}' AND Medium = '{book.Medium}' " +
+                //    $"AND Publisher = '{book.Publisher}' AND Year = '{book.Year}' AND Pages = {book.Pages})," +
+                //    $"(SELECT SignatureId FROM Signatures WHERE Signature = '{book.Signatures[i]}'), {i + 1})";
+                insertCommand.CommandText = $"INSERT INTO Books_Signatures (BookId, SignatureId, Priority) VALUES ({maxId}," +
                     $"(SELECT SignatureId FROM Signatures WHERE Signature = '{book.Signatures[i]}'), {i + 1})";
                 insertCommand.ExecuteNonQuery();
                 Thread.Sleep(TimeSpan.FromTicks(50));
