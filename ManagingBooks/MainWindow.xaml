@@ -192,7 +192,7 @@
                         <TextBlock Text="Price: "/>
                         <TextBlock Text="{Binding ViewPrice}" Background="White"/>
                     </WrapPanel>
-                    <Button Name="BtnClearBookInfo" Grid.Row="3" Grid.Column="3" Content="Clear" MinWidth="75" HorizontalAlignment="Right" Command="local:CustomCommands.ClearBookInfo"/>
+                    <Button Name="BtnClearBookInfo" Grid.Row="3" Grid.Column="3" Content="Clear" MinWidth="75" FontFamily="Default" HorizontalAlignment="Right" Command="local:CustomCommands.ClearBookInfo"/>
                 </Grid>
             </GroupBox>
 
