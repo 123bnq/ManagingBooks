@@ -7,7 +7,7 @@ using System.Windows.Data;
 
 namespace ManagingBooks.Model
 {
-    class AddBookModel : INotifyPropertyChanged
+    public class AddBookModel : INotifyPropertyChanged
     {
         public static readonly ValueConverter Converter = new ValueConverter();
         private int m_Number;

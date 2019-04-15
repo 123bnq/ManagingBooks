@@ -497,5 +497,14 @@ namespace ManagingBooks.Windows
                 }
             }
         }
+
+        private void BtnTest_Click(object sender, RoutedEventArgs e)
+        {
+            AddBookModel context = this.DataContext as AddBookModel;
+            context.Signature1 = string.Empty;
+            context.Signature2 = string.Empty;
+            context.Signature3 = string.Empty;
+            new ChooseSignatures(context) { Owner = this }.ShowDialog();
+        }
     }
 }

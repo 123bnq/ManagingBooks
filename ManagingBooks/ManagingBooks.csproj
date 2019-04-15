@@ -100,6 +100,7 @@
     <Compile Include="Book.cs" />
     <Compile Include="Author.cs" />
     <Compile Include="Model\AddBookModel.cs" />
+    <Compile Include="Model\ChooseSignaturesModel.cs" />
     <Compile Include="Model\EditMediumModel.cs" />
     <Compile Include="Model\EditPlaceModel.cs" />
     <Compile Include="Model\EditPublisherModel.cs" />
@@ -110,6 +111,9 @@
     </Compile>
     <Compile Include="Windows\BarcodeDisplay.xaml.cs">
       <DependentUpon>BarcodeDisplay.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\ChooseSignatures.xaml.cs">
+      <DependentUpon>ChooseSignatures.xaml</DependentUpon>
     </Compile>
     <Compile Include="Windows\EditBook.xaml.cs">
       <DependentUpon>EditBook.xaml</DependentUpon>
@@ -139,6 +143,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Windows\BarcodeDisplay.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\ChooseSignatures.xaml">
+      <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Windows\EditBook.xaml">
