@@ -375,7 +375,7 @@ namespace ManagingBooks.Windows
             string message = "100 Books are successfully added";
             string caption = "Information";
             MessageBox.Show(message, caption, MessageBoxButton.OK, MessageBoxImage.Information);
-            
+
         }
 
         public static void AddBookToDatabase(ref SqliteConnection con, ref SqliteTransaction tr, Book book)
@@ -479,7 +479,7 @@ namespace ManagingBooks.Windows
                 string city = Convert.ToString(r["City"]);
                 string state = Convert.ToString(r["State"]);
                 string country = Convert.ToString(r["Country"]);
-                if(string.IsNullOrEmpty(state) && string.IsNullOrEmpty(city))
+                if (string.IsNullOrEmpty(state) && string.IsNullOrEmpty(city))
                 {
                     listPlace.Add(city);
                 }
@@ -504,7 +504,12 @@ namespace ManagingBooks.Windows
             context.Signature1 = string.Empty;
             context.Signature2 = string.Empty;
             context.Signature3 = string.Empty;
-            new ChooseSignatures(context) { Owner = this }.ShowDialog();
+            new ChooseSignatures(context)
+            {
+                Owner = this,
+                Left = this.Left + this.Width - 15,
+                Top = this.Top
+            }.ShowDialog();
         }
     }
 }

@@ -102,18 +102,23 @@ namespace ManagingBooks.Windows
         }
 
         private void MainList_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            //Signature sig = MainList.SelectedItem as Signature;
+        { 
             ChooseSignaturesModel context = this.DataContext as ChooseSignaturesModel;
             if (context.MainSig != null)
             {
+                preContext.Signature1 = context.MainSig.Name;
                 ReadSubSignature(context.MainSig.Id);
+                preContext.Signature2 = string.Empty;
             }
         }
 
         private void SubList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
+            ChooseSignaturesModel context = this.DataContext as ChooseSignaturesModel;
+            if (context.SubSig != null)
+            {
+                preContext.Signature2 = context.SubSig.Name;
+            }
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)

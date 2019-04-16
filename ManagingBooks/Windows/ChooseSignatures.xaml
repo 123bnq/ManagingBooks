@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:ManagingBooks.Windows"
         mc:Ignorable="d"
         Title="Choose Signatures" Height="450" Width="700"
-        Background="WhiteSmoke" WindowStartupLocation="CenterOwner" Closing="Window_Closing">
+        Background="WhiteSmoke" WindowStartupLocation="Manual" Closing="Window_Closing">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>

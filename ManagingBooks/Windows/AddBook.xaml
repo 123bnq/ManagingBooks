@@ -21,7 +21,7 @@
                     <TextBox Name="BoxSignature1" Text="{Binding Signature1, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,5,0" Width="100"/>
                     <TextBox Name="BoxSignature2" Text="{Binding Signature2, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,5,0" Width="100"/>
                     <TextBox Name="BoxSignature3" Text="{Binding Signature3, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,5,0" Width="100"/>
-                    <Button Name="BtnTest" Content="Test" Margin="0,0,5,0" MinWidth="75" Click="BtnTest_Click"/>
+                    <Button Name="BtnTest" Content="..." Margin="0,0,5,0" MinWidth="50" Click="BtnTest_Click"/>
                 </WrapPanel>
                 <TextBlock Text="Authors" Margin="0,0,0,5"/>
                 <WrapPanel Name="PnlAuthors" Margin="0,0,0,5">
