@@ -479,7 +479,7 @@ namespace ManagingBooks.Windows
                 string city = Convert.ToString(r["City"]);
                 string state = Convert.ToString(r["State"]);
                 string country = Convert.ToString(r["Country"]);
-                if (string.IsNullOrEmpty(state) && string.IsNullOrEmpty(city))
+                if (string.IsNullOrEmpty(state) && string.IsNullOrEmpty(country))
                 {
                     listPlace.Add(city);
                 }

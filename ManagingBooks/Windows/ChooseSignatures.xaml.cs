@@ -64,7 +64,7 @@ namespace ManagingBooks.Windows
             ChooseSignaturesModel context = this.DataContext as ChooseSignaturesModel;
             SqlMethods.SqlConnect(out SqliteConnection con);
             SqliteCommand selectCommand = con.CreateCommand();
-            selectCommand.CommandText = "SELECT SignatureId, Signature, Info FROM Signatures";
+            selectCommand.CommandText = "SELECT SignatureId, Signature, Info FROM Signatures WHERE ParentId IS NULL";
             SqliteDataReader r = selectCommand.ExecuteReader();
             while (r.Read())
             {
@@ -85,13 +85,13 @@ namespace ManagingBooks.Windows
             context.SubSignatures.Clear();
             SqlMethods.SqlConnect(out SqliteConnection con);
             SqliteCommand selectCommand = con.CreateCommand();
-            selectCommand.CommandText = $"SELECT Id, Signature, Info, Sort FROM SubSignatures Where ParentId={SignatureId} ORDER BY Sort,Signature";
+            selectCommand.CommandText = $"SELECT SignatureId, Signature, Info, Sort FROM Signatures Where ParentId={SignatureId} ORDER BY Sort,Signature";
             SqliteDataReader r = selectCommand.ExecuteReader();
             while (r.Read())
             {
                 Signature sig = new Signature();
                 int resultNum;
-                int.TryParse(Convert.ToString(r["Id"]), out resultNum);
+                int.TryParse(Convert.ToString(r["SignatureId"]), out resultNum);
                 sig.Id = resultNum;
                 sig.Name = Convert.ToString(r["Signature"]);
                 sig.Info = Convert.ToString(r["Info"]);
