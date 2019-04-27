@@ -1,0 +1,71 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:system="clr-namespace:System;assembly=mscorlib"
+                    xmlns:local="clr-namespace:ManagingBooks.Resources">
+    <system:String x:Key="MainWindow.Title">Book Management</system:String>
+    
+    <system:String x:Key="MainWindow.Menu.File">_File</system:String>
+    <system:String x:Key="MainWindow.Menu.File.Add">_Add...</system:String>
+    <system:String x:Key="MainWindow.Menu.File.Edit">_Edit...</system:String>
+    <system:String x:Key="MainWindow.Menu.File.Delete">_Delete</system:String>
+    <system:String x:Key="MainWindow.Menu.File.Exit">_Exit</system:String>
+    <system:String x:Key="MainWindow.Menu.Data">_Data</system:String>
+    <system:String x:Key="MainWindow.Menu.Data.Publisher">Edit _Publishers...</system:String>
+    <system:String x:Key="MainWindow.Menu.Data.Place">Edit P_laces...</system:String>
+    <system:String x:Key="MainWindow.Menu.Data.Medium">Edit _Mediums...</system:String>
+    <system:String x:Key="MainWindow.Menu.Language">_Languange</system:String>
+    <system:String x:Key="MainWindow.Menu.Language.English">_English</system:String>
+    <system:String x:Key="MainWindow.Menu.Language.German">_Deutsch</system:String>
+    <system:String x:Key="MainWindow.Menu.Help">_Help</system:String>
+    <system:String x:Key="MainWindow.Menu.Help.ViewHelp">_View Help</system:String>
+    <system:String x:Key="MainWindow.Menu.Help.About">_About</system:String>
+
+    <system:String x:Key="MainWindow.SearchList.ContextMenu.Edit">_Edit...</system:String>
+    <system:String x:Key="MainWindow.SearchList.ContextMenu.Delete">_Delete</system:String>
+    <system:String x:Key="MainWindow.SearchList.ContextMenu.Print">_Print</system:String>
+    <system:String x:Key="MainWindow.SearchList.BookId">BookId</system:String>
+    <system:String x:Key="MainWindow.SearchList.Number">Number</system:String>
+    <system:String x:Key="MainWindow.SearchList.Signature">Signatures</system:String>
+    <system:String x:Key="MainWindow.SearchList.Title">Book Title</system:String>
+    <system:String x:Key="MainWindow.SearchList.Authors">Authors</system:String>
+    <system:String x:Key="MainWindow.SearchList.Publisher">Publisher</system:String>
+    <system:String x:Key="MainWindow.SearchList.Year">Year</system:String>
+    <system:String x:Key="MainWindow.SearchList.Version">Version</system:String>
+    <system:String x:Key="MainWindow.SearchList.Medium">Medium</system:String>
+    <system:String x:Key="MainWindow.SearchList.Place">Place</system:String>
+    <system:String x:Key="MainWindow.SearchList.Date">Date</system:String>
+    <system:String x:Key="MainWindow.SearchList.Pages">Pages</system:String>
+    <system:String x:Key="MainWindow.SearchList.Price">Price</system:String>
+    
+    <system:String x:Key="MainWindow.Search">Search:</system:String>
+    <system:String x:Key="MainWindow.SearchBtn">Search</system:String>
+    <system:String x:Key="MainWindow.SearchBy">Search by:</system:String>
+    <system:String x:Key="MainWindow.SearchBy.Number">Number</system:String>
+    <system:String x:Key="MainWindow.SearchBy.Signatures">Signatures</system:String>
+    <system:String x:Key="MainWindow.SearchBy.Title">Title</system:String>
+    <system:String x:Key="MainWindow.SearchBy.Authors">Authors</system:String>
+    <system:String x:Key="MainWindow.SearchBy.Medium">Medium</system:String>
+    <system:String x:Key="MainWindow.SearchBy.Place">Place</system:String>
+    <system:String x:Key="MainWindow.PrintBtn">Print</system:String>
+
+    <system:String x:Key="MainWindow.BookInfo">Book Information</system:String>
+    <system:String x:Key="MainWindow.BookInfo.Number">Book Number:</system:String>
+    <system:String x:Key="MainWindow.BookInfo.Signatures">Signatures:</system:String>
+    <system:String x:Key="MainWindow.BookInfo.Title">Title:</system:String>
+    <system:String x:Key="MainWindow.BookInfo.Authors">Authors:</system:String>
+    <system:String x:Key="MainWindow.BookInfo.Publisher">Publisher:</system:String>
+    <system:String x:Key="MainWindow.BookInfo.Year">Year:</system:String>
+    <system:String x:Key="MainWindow.BookInfo.Version">Version:</system:String>
+    <system:String x:Key="MainWindow.BookInfo.Medium">Medium:</system:String>
+    <system:String x:Key="MainWindow.BookInfo.Place">Place:</system:String>
+    <system:String x:Key="MainWindow.BookInfo.Date">Date:</system:String>
+    <system:String x:Key="MainWindow.BookInfo.Pages">Pages:</system:String>
+    <system:String x:Key="MainWindow.BookInfo.Price">Price:</system:String>
+    <system:String x:Key="MainWindow.BookInfo.ClearBtn">Clear</system:String>
+
+    <system:String x:Key="MainWindow.CodeBehind.Status.Running">Running...</system:String>
+    <system:String x:Key="MainWindow.CodeBehind.Status.Completed">Load Finished</system:String>
+    <system:String x:Key="MainWindow.CodeBehind.Status.Deleting">Deleting...</system:String>
+    <system:String x:Key="MainWindow.CodeBehind.Status.DeleteCompleted">Delete Finished</system:String>
+    <system:String x:Key="MainWindow.CodeBehind.DeleteNotifyMessage">Do you want to delete selected book(s)?</system:String>    
+</ResourceDictionary>

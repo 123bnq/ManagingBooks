@@ -141,7 +141,7 @@ namespace ManagingBooks
         {
             SearchBookModel temp = this.DataContext as SearchBookModel;
             temp.Progress = e.ProgressPercentage;
-            temp.Status = "Running";
+            temp.Status = Application.Current.FindResource("MainWindow.CodeBehind.Status.Running") as string;
             if (e.UserState != null)
             {
                 temp.DisplayBooks.Add(e.UserState as SearchBook);
@@ -151,7 +151,7 @@ namespace ManagingBooks
         void Search_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             SearchBookModel context = this.DataContext as SearchBookModel;
-            context.Status = "Load Finished";
+            context.Status = Application.Current.FindResource("MainWindow.CodeBehind.Status.Completed") as string;
             if (LastIndex != -1)
             {
                 SearchList.SelectedIndex = LastIndex;
@@ -169,23 +169,37 @@ namespace ManagingBooks
             }
             else
             {
-                switch (context.SearchBy)
-                {
-                    case "Number":
-                        return (item as SearchBook).Number.ToString().IndexOf(context.SearchText, StringComparison.OrdinalIgnoreCase) >= 0;
-                    case "Signature":
-                        return (item as SearchBook).Signatures.StartsWith(context.SearchText, StringComparison.OrdinalIgnoreCase);
-                    case "Title":
-                        return (item as SearchBook).Title.IndexOf(context.SearchText, StringComparison.OrdinalIgnoreCase) >= 0;
-                    case "Authors":
-                        return (item as SearchBook).Authors.IndexOf(context.SearchText, StringComparison.OrdinalIgnoreCase) >= 0;
-                    case "Place":
-                        return (item as SearchBook).Place.IndexOf(context.SearchText, StringComparison.OrdinalIgnoreCase) >= 0;
-                    case "Medium":
-                        return (item as SearchBook).Medium.StartsWith(context.SearchText, StringComparison.OrdinalIgnoreCase);
-                    default:
-                        return true;
-                }
+                //switch (context.SearchBy)
+                //{
+                //    case "Number":
+                //        return (item as SearchBook).Number.ToString().IndexOf(context.SearchText, StringComparison.OrdinalIgnoreCase) >= 0;
+                //    case "Signature":
+                //        return (item as SearchBook).Signatures.StartsWith(context.SearchText, StringComparison.OrdinalIgnoreCase);
+                //    case "Title":
+                //        return (item as SearchBook).Title.IndexOf(context.SearchText, StringComparison.OrdinalIgnoreCase) >= 0;
+                //    case "Authors":
+                //        return (item as SearchBook).Authors.IndexOf(context.SearchText, StringComparison.OrdinalIgnoreCase) >= 0;
+                //    case "Place":
+                //        return (item as SearchBook).Place.IndexOf(context.SearchText, StringComparison.OrdinalIgnoreCase) >= 0;
+                //    case "Medium":
+                //        return (item as SearchBook).Medium.StartsWith(context.SearchText, StringComparison.OrdinalIgnoreCase);
+                //    default:
+                //        return true;
+                //}
+                if (context.SearchBy.Equals(Application.Current.FindResource("MainWindow.SearchBy.Number")))
+                    return (item as SearchBook).Number.ToString().IndexOf(context.SearchText, StringComparison.OrdinalIgnoreCase) >= 0;
+                else if (context.SearchBy.Equals(Application.Current.FindResource("MainWindow.SearchBy.Signatures")))
+                    return (item as SearchBook).Signatures.StartsWith(context.SearchText, StringComparison.OrdinalIgnoreCase);
+                else if (context.SearchBy.Equals(Application.Current.FindResource("MainWindow.SearchBy.Title")))
+                    return (item as SearchBook).Title.IndexOf(context.SearchText, StringComparison.OrdinalIgnoreCase) >= 0;
+                else if (context.SearchBy.Equals(Application.Current.FindResource("MainWindow.SearchBy.Authors")))
+                    return (item as SearchBook).Authors.IndexOf(context.SearchText, StringComparison.OrdinalIgnoreCase) >= 0;
+                else if (context.SearchBy.Equals(Application.Current.FindResource("MainWindow.SearchBy.Place")))
+                    return (item as SearchBook).Place.IndexOf(context.SearchText, StringComparison.OrdinalIgnoreCase) >= 0;
+                else if (context.SearchBy.Equals(Application.Current.FindResource("MainWindow.SearchBy.Medium")))
+                    return (item as SearchBook).Medium.StartsWith(context.SearchText, StringComparison.OrdinalIgnoreCase);
+                else
+                    return true;
             }
         }
 
@@ -299,18 +313,6 @@ namespace ManagingBooks
             CollectionViewSource.GetDefaultView(SearchList.ItemsSource).Refresh();
         }
 
-        private void BtnPrint_Click(object sender, RoutedEventArgs e)
-        {
-            if (SearchList.SelectedItem != null)
-            {
-                new BarcodeDisplay((SearchList.SelectedItem as SearchBook).Number.ToString().PadLeft(6, '0')) { Owner = this }.Show();
-            }
-            else
-            {
-                MessageBox.Show("No book is selected", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-        }
-
         private void EditCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
             e.CanExecute = (SearchList.SelectedItem != null);
@@ -334,14 +336,7 @@ namespace ManagingBooks
 
         private void PrintCommand_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            if (SearchList.SelectedItem != null)
-            {
-                new BarcodeDisplay((SearchList.SelectedItem as SearchBook).Number.ToString().PadLeft(6, '0')) { Owner = this }.Show();
-            }
-            else
-            {
-                MessageBox.Show("No book is selected", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
+            new BarcodeDisplay((SearchList.SelectedItem as SearchBook).Number.ToString().PadLeft(6, '0')) { Owner = this }.Show();
         }
 
         private int NumberOfBooks()
@@ -368,7 +363,8 @@ namespace ManagingBooks
         {
             SearchBookModel context = this.DataContext as SearchBookModel;
             var deleteList = SearchList.SelectedItems;
-            MessageBoxResult result = MessageBox.Show("Do you want to delete selected book(s)?", "Warning", MessageBoxButton.YesNo, MessageBoxImage.Warning, MessageBoxResult.No);
+            string message = Application.Current.FindResource("MainWindow.CodeBehind.DeleteNotifyMessage") as string;
+            MessageBoxResult result = MessageBox.Show(message, "Warning", MessageBoxButton.YesNo, MessageBoxImage.Warning, MessageBoxResult.No);
 
             var max = deleteList.Count;
             var progressHandler = new Progress<int>(value =>
@@ -405,7 +401,7 @@ namespace ManagingBooks
 
 
                             progress.Report(Convert.ToInt32((double)(max - i) / max * 100));
-                            context.Status = "Deleting";
+                            context.Status = Application.Current.FindResource("MainWindow.CodeBehind.Status.Deleting") as string;
 
                             App.Current.Dispatcher.Invoke((Action)delegate
                             {
@@ -415,7 +411,7 @@ namespace ManagingBooks
                             Thread.Sleep(TimeSpan.FromTicks(5));
                         }
                     });
-                    context.Status = "Finished delete";
+                    context.Status = Application.Current.FindResource("MainWindow.CodeBehind.Status.DeleteCompleted") as string;
                 }
             }
             SearchList.IsEnabled = true;
@@ -425,7 +421,7 @@ namespace ManagingBooks
         private void Delete_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             SearchBookModel context = this.DataContext as SearchBookModel;
-            context.Status = "Finished delete";
+            context.Status = Application.Current.FindResource("MainWindow.CodeBehind.Status.DeleteCompleted") as string;
         }
 
         private void Delete_ProgressChanged(object sender, ProgressChangedEventArgs e)
@@ -433,7 +429,7 @@ namespace ManagingBooks
             SearchBookModel context = this.DataContext as SearchBookModel;
             context.DisplayBooks.Remove(e.UserState as SearchBook);
             context.Progress = e.ProgressPercentage;
-            context.Status = "Deleting";
+            context.Status = Application.Current.FindResource("MainWindow.CodeBehind.Status.Deleting") as string;
             ClearEntries(context);
         }
 
