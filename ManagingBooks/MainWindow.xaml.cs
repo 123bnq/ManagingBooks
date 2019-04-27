@@ -23,6 +23,9 @@ namespace ManagingBooks
         BackgroundWorker Delete = new BackgroundWorker();
         int LastIndex = -1;
 
+        Uri English = new Uri(".\\Resources\\Resources.xaml", UriKind.Relative);
+        Uri German = new Uri(".\\Resources\\Resources.de.xaml", UriKind.Relative);
+
         //SearchBook DeleteBook;
 
         public MainWindow()
@@ -141,7 +144,7 @@ namespace ManagingBooks
         {
             SearchBookModel temp = this.DataContext as SearchBookModel;
             temp.Progress = e.ProgressPercentage;
-            temp.Status = Application.Current.FindResource("MainWindow.CodeBehind.Status.Running") as string;
+            temp.Status = Application.Current.FindResource("MainWindow.CodeBehind.Status.Running").ToString();
             if (e.UserState != null)
             {
                 temp.DisplayBooks.Add(e.UserState as SearchBook);
@@ -151,7 +154,7 @@ namespace ManagingBooks
         void Search_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             SearchBookModel context = this.DataContext as SearchBookModel;
-            context.Status = Application.Current.FindResource("MainWindow.CodeBehind.Status.Completed") as string;
+            context.Status = Application.Current.FindResource("MainWindow.CodeBehind.Status.Completed").ToString();
             if (LastIndex != -1)
             {
                 SearchList.SelectedIndex = LastIndex;
@@ -363,8 +366,9 @@ namespace ManagingBooks
         {
             SearchBookModel context = this.DataContext as SearchBookModel;
             var deleteList = SearchList.SelectedItems;
-            string message = Application.Current.FindResource("MainWindow.CodeBehind.DeleteNotifyMessage") as string;
-            MessageBoxResult result = MessageBox.Show(message, "Warning", MessageBoxButton.YesNo, MessageBoxImage.Warning, MessageBoxResult.No);
+            string msg = Application.Current.FindResource("MainWindow.CodeBehind.DeleteNotify.Message").ToString();
+            string caption = Application.Current.FindResource("MainWindow.CodeBehind.DeleteNotify.Caption").ToString();
+            MessageBoxResult result = MessageBox.Show(msg, caption, MessageBoxButton.YesNo, MessageBoxImage.Warning, MessageBoxResult.No);
 
             var max = deleteList.Count;
             var progressHandler = new Progress<int>(value =>
@@ -401,7 +405,7 @@ namespace ManagingBooks
 
 
                             progress.Report(Convert.ToInt32((double)(max - i) / max * 100));
-                            context.Status = Application.Current.FindResource("MainWindow.CodeBehind.Status.Deleting") as string;
+                            context.Status = Application.Current.FindResource("MainWindow.CodeBehind.Status.Deleting").ToString();
 
                             App.Current.Dispatcher.Invoke((Action)delegate
                             {
@@ -411,7 +415,7 @@ namespace ManagingBooks
                             Thread.Sleep(TimeSpan.FromTicks(5));
                         }
                     });
-                    context.Status = Application.Current.FindResource("MainWindow.CodeBehind.Status.DeleteCompleted") as string;
+                    context.Status = Application.Current.FindResource("MainWindow.CodeBehind.Status.DeleteCompleted").ToString();
                 }
             }
             SearchList.IsEnabled = true;
@@ -421,7 +425,7 @@ namespace ManagingBooks
         private void Delete_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             SearchBookModel context = this.DataContext as SearchBookModel;
-            context.Status = Application.Current.FindResource("MainWindow.CodeBehind.Status.DeleteCompleted") as string;
+            context.Status = Application.Current.FindResource("MainWindow.CodeBehind.Status.DeleteCompleted").ToString();
         }
 
         private void Delete_ProgressChanged(object sender, ProgressChangedEventArgs e)
@@ -429,7 +433,7 @@ namespace ManagingBooks
             SearchBookModel context = this.DataContext as SearchBookModel;
             context.DisplayBooks.Remove(e.UserState as SearchBook);
             context.Progress = e.ProgressPercentage;
-            context.Status = Application.Current.FindResource("MainWindow.CodeBehind.Status.Deleting") as string;
+            context.Status = Application.Current.FindResource("MainWindow.CodeBehind.Status.Deleting").ToString();
             ClearEntries(context);
         }
 
@@ -530,6 +534,32 @@ namespace ManagingBooks
             SearchList.SelectedIndex = -1;
             ClearEntries(this.DataContext as SearchBookModel);
         }
+
+        private void EnglishCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = !Application.Current.Resources.MergedDictionaries[0].Source.ToString().Equals(English.OriginalString);
+        }
+
+        private void EnglishCommand_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            ResourceDictionary dict = new ResourceDictionary();
+            dict.Source = English;
+            Application.Current.Resources.MergedDictionaries.Clear();
+            Application.Current.Resources.MergedDictionaries.Add(dict);
+        }
+
+        private void GermanCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = !Application.Current.Resources.MergedDictionaries[0].Source.ToString().Equals(German.OriginalString);
+        }
+
+        private void GermanCommand_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            ResourceDictionary dict = new ResourceDictionary();
+            dict.Source = German;
+            Application.Current.Resources.MergedDictionaries.Clear();
+            Application.Current.Resources.MergedDictionaries.Add(dict);
+        }
     }
 
     public static class CustomCommands
@@ -548,6 +578,9 @@ namespace ManagingBooks
         public static readonly RoutedUICommand Delete = new RoutedUICommand("Delete", "Delete", typeof(CustomCommands));
         public static readonly RoutedUICommand Print = new RoutedUICommand("Print", "Print", typeof(CustomCommands));
         public static readonly RoutedUICommand ClearBookInfo = new RoutedUICommand("ClearBookInfo", "ClearBookInfo", typeof(CustomCommands));
+
+        public static readonly RoutedUICommand English = new RoutedUICommand("English", "English", typeof(CustomCommands));
+        public static readonly RoutedUICommand German = new RoutedUICommand("German", "German", typeof(CustomCommands));
 
         public static readonly RoutedUICommand RemovePub = new RoutedUICommand("RemovePublisher", "RemovePublisher", typeof(CustomCommands));
         public static readonly RoutedUICommand SavePub = new RoutedUICommand("SavePublisher", "SavePublisher", typeof(CustomCommands));

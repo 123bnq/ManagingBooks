@@ -58,7 +58,9 @@ namespace ManagingBooks.Windows
             EditPublisherModel context = this.DataContext as EditPublisherModel;
             if (!string.IsNullOrWhiteSpace(context.Name) || !string.IsNullOrWhiteSpace(context.City) || !string.IsNullOrWhiteSpace(context.Country))
             {
-                MessageBoxResult result = MessageBox.Show("Do you want to discard?", "Warning", MessageBoxButton.YesNo, MessageBoxImage.Warning, MessageBoxResult.No);
+                string message = Application.Current.FindResource("EditPublisher.CodeBehind.WarningClose.Message").ToString();
+                string caption = Application.Current.FindResource("EditPublisher.CodeBehind.WarningClose.Caption").ToString();
+                MessageBoxResult result = MessageBox.Show(message, caption, MessageBoxButton.YesNo, MessageBoxImage.Warning, MessageBoxResult.No);
                 e.Cancel = result == MessageBoxResult.No;
             }
         }
@@ -85,9 +87,9 @@ namespace ManagingBooks.Windows
                     propertyInfo.SetValue(context, 0, null);
                 }
             }
-            context.LabelName = "Name:";
-            context.LabelCity = "City:";
-            context.LabelCountry = "Country:";
+            context.LabelName = Application.Current.FindResource("EditPublisher.Label.Name").ToString();
+            context.LabelCity = Application.Current.FindResource("EditPublisher.Label.City").ToString();
+            context.LabelCountry = Application.Current.FindResource("EditPublisher.Label.Country").ToString();
         }
 
         private void RemovePubCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
@@ -165,7 +167,9 @@ namespace ManagingBooks.Windows
             }
             else
             {
-                MessageBoxResult result = MessageBox.Show("Publisher exists!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                string message = Application.Current.FindResource("EditPublisher.CodeBehind.ErrorSave.Message").ToString();
+                string caption = Application.Current.FindResource("EditPublisher.CodeBehind.ErrorSave.Caption").ToString();
+                MessageBoxResult result = MessageBox.Show(message, caption, MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -175,9 +179,9 @@ namespace ManagingBooks.Windows
             Publisher pub = PubList.SelectedItem as Publisher;
             if (pub != null)
             {
-                context.LabelName = "Edit Name:";
-                context.LabelCity = "Edit City:";
-                context.LabelCountry = "Edit Country:";
+                context.LabelName = Application.Current.FindResource("EditPublisher.Label.EditName").ToString();
+                context.LabelCity = Application.Current.FindResource("EditPublisher.Label.EditCity").ToString();
+                context.LabelCountry = Application.Current.FindResource("EditPublisher.Label.EditCountry").ToString();
                 context.Id = pub.Id;
                 context.Name = pub.Name;
                 context.City = pub.City;

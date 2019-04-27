@@ -7,31 +7,31 @@
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
         xmlns:model="clr-namespace:ManagingBooks.Model"
         mc:Ignorable="d"
-        Title="Add Books" SizeToContent="WidthAndHeight" Background="WhiteSmoke"
+        Title="{DynamicResource AddBook.Title}" SizeToContent="WidthAndHeight" Background="WhiteSmoke"
         ShowInTaskbar="False"
         WindowStartupLocation="CenterOwner"
         Closing="AddBook_Closing">
     <StackPanel Margin="10" >
         <StackPanel Orientation="Horizontal">
             <StackPanel Name="WindowToBeClear" Width="500" Margin="0,0,5,0">
-                <TextBlock Text="Number" Margin="0,0,0,5"/>
+                <TextBlock Text="{DynamicResource AddBook.Number}" Margin="0,0,0,5"/>
                 <TextBox Name="BoxNumber" Text="{Binding Number, StringFormat={}{0:#000000}, Converter={x:Static model:AddBookModel.Converter}}" Width="100" HorizontalAlignment="Left"  Margin="0,0,0,5"/>
-                <TextBlock Text="Signature" Margin="0,0,0,5"/>
+                <TextBlock Text="{DynamicResource AddBook.Signature}" Margin="0,0,0,5"/>
                 <WrapPanel Name="PnlSignatures" Margin="0,0,0,5">
                     <TextBox Name="BoxSignature1" Text="{Binding Signature1, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,5,0" Width="100"/>
                     <TextBox Name="BoxSignature2" Text="{Binding Signature2, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,5,0" Width="100"/>
                     <TextBox Name="BoxSignature3" Text="{Binding Signature3, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,5,0" Width="100"/>
-                    <Button Name="BtnTest" Content="..." Margin="0,0,5,0" MinWidth="50" Click="BtnTest_Click"/>
+                    <Button Name="BtnSelectSignature" Content="..." Margin="0,0,5,0" MinWidth="50" Click="BtnSelectSignature_Click"/>
                 </WrapPanel>
-                <TextBlock Text="Authors" Margin="0,0,0,5"/>
+                <TextBlock Text="{DynamicResource AddBook.Authors}" Margin="0,0,0,5"/>
                 <WrapPanel Name="PnlAuthors" Margin="0,0,0,5">
                     <TextBox Name="BoxAuthor1" Text="{Binding Author1, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,5,0" Width="100"/>
                     <TextBox Name="BoxAuthor2" Text="{Binding Author2, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,5,0" Width="100"/>
                     <TextBox Name="BoxAuthor3" Text="{Binding Author3, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,5,0" Width="100"/>
                 </WrapPanel>
-                <TextBlock Text="Title" Margin="0,0,0,5"/>
+                <TextBlock Text="{DynamicResource AddBook.BookTitle}" Margin="0,0,0,5"/>
                 <TextBox Name="BoxTitle" Text="{Binding Title, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,5"/>
-                <TextBlock Text="Publisher" Margin="0,0,0,5"/>
+                <TextBlock Text="{DynamicResource AddBook.Publisher}" Margin="0,0,0,5"/>
                 <ComboBox Name="BoxPublisher" Text="{Binding Publisher}" Margin="0,0,0,5" MaxDropDownHeight="150"/>
                 <Grid>
                     <Grid.RowDefinitions>
@@ -43,14 +43,14 @@
                         <ColumnDefinition Width="auto"/>
                         <ColumnDefinition Width="auto"/>
                     </Grid.ColumnDefinitions>
-                    <TextBlock Text="Version" Margin="0,0,0,5"/>
+                    <TextBlock Text="{DynamicResource AddBook.Version}" Margin="0,0,0,5"/>
                     <TextBox Grid.Row="1" Name="BoxVersion" Text="{Binding Version, Converter={x:Static model:AddBookModel.Converter}}" Width="100" Margin="0,0,5,0"/>
-                    <TextBlock Grid.Column="1" Text="Year" Margin="0,0,0,5"/>
+                    <TextBlock Grid.Column="1" Text="{DynamicResource AddBook.Year}" Margin="0,0,0,5"/>
                     <TextBox Grid.Row="1" Grid.Column="1" Name="BoxYear" Text="{Binding Year, Converter={x:Static model:AddBookModel.Converter}}" Width="100" Margin="0,0,5,0"/>
-                    <TextBlock Grid.Column="2" Text="Medium" Margin="0,0,0,5"/>
+                    <TextBlock Grid.Column="2" Text="{DynamicResource AddBook.Medium}" Margin="0,0,0,5"/>
                     <ComboBox Grid.Row="1" Grid.Column="2" Name="BoxMedium" Text="{Binding Medium}" Width="100" Margin="0,0,5,0" MaxDropDownHeight="150"/>
                 </Grid>
-                <TextBlock Text="Place" Margin="0,0,0,5"/>
+                <TextBlock Text="{DynamicResource AddBook.Place}" Margin="0,0,0,5"/>
                 <ComboBox Name="BoxPlace" Text="{Binding Place}" Margin="0,0,0,5" MaxDropDownHeight="150"/>
                 <Grid>
                     <Grid.RowDefinitions>
@@ -62,7 +62,7 @@
                         <ColumnDefinition Width="auto"/>
                         <ColumnDefinition Width="auto"/>
                     </Grid.ColumnDefinitions>
-                    <TextBlock Text="Date Bought" Margin="0,0,0,5"/>
+                    <TextBlock Text="{DynamicResource AddBook.Date}" Margin="0,0,0,5"/>
                     <DatePicker Name="BoxDates" Grid.Row="1" FirstDayOfWeek="Monday" SelectedDateChanged="BoxDates_SelectedDateChanged" DisplayDateEnd="{x:Static sys:DateTime.Today}" MinWidth="100" Margin="0,0,5,5">
                         <DatePicker.Resources>
                             <Style TargetType="DatePickerTextBox">
@@ -77,14 +77,14 @@
                             </Style>
                         </DatePicker.Resources>
                     </DatePicker>
-                    <TextBlock Grid.Column="1" Text="Pages" Margin="0,0,0,5"/>
+                    <TextBlock Grid.Column="1" Text="{DynamicResource AddBook.Pages}" Margin="0,0,0,5"/>
                     <TextBox  Name="BoxPage" Grid.Row="1" Grid.Column="1" Text="{Binding Pages, Converter={x:Static model:AddBookModel.Converter}}" Width="100" Margin="0,0,5,5"/>
-                    <TextBlock Grid.Column="2" Text="Price" Margin="0,0,0,5"/>
+                    <TextBlock Grid.Column="2" Text="{DynamicResource AddBook.Price}" Margin="0,0,0,5"/>
                     <TextBox Name="BoxPrice" Grid.Row="1" Grid.Column="2" Text="{Binding Price, StringFormat={}{0:#0.00}, Converter={x:Static model:AddBookModel.Converter}}" Width="100" Margin="0,0,5,5"/>
                 </Grid>
             </StackPanel>
             <StackPanel Margin="35,0,0,0">
-                <TextBlock Text="Last 20 books:" Margin="0,0,0,10"/>
+                <TextBlock Text="{DynamicResource AddBook.Last20}" Margin="0,0,0,10"/>
                 <ListBox Name="ListNumber" Width="120" Height="336" ItemsSource="{Binding ListBook}">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
@@ -96,9 +96,9 @@
         </StackPanel>
         <WrapPanel HorizontalAlignment="Right" Margin="0,10,0,0">
             <Button Name="BtnAddTest" Content="Add Demo" MinWidth="70" Margin="5" Click="BtnAddTest_Click"/>
-            <Button Name="BtnAdd" Content="Add" MinWidth="70" Margin="5" Click="BtnAdd_Click"/>
-            <Button Name="BtnClear" Content="Clear" MinWidth="70" Margin="5" Click="BtnClear_Click"/>
-            <Button Name="BtnCancel" Content="Cancel" MinWidth="70" Margin="5" Click="BtnCancel_Click"/>
+            <Button Name="BtnAdd" Content="{DynamicResource AddBook.AddBtn}" MinWidth="70" Margin="5" Click="BtnAdd_Click"/>
+            <Button Name="BtnClear" Content="{DynamicResource AddBook.ClearBtn}" MinWidth="70" Margin="5" Click="BtnClear_Click"/>
+            <Button Name="BtnCancel" Content="{DynamicResource AddBook.CancelBtn}" MinWidth="70" Margin="5" Click="BtnCancel_Click"/>
         </WrapPanel>
     </StackPanel>
 </Window>

@@ -9,6 +9,9 @@
         Background="WhiteSmoke">
     <Window.CommandBindings>
         <CommandBinding Command="local:CustomCommands.Exit" CanExecute="ExitCommand_CanExecute" Executed="ExitCommand_Executed"/>
+        <CommandBinding Command="local:CustomCommands.English" CanExecute="EnglishCommand_CanExecute" Executed="EnglishCommand_Executed"/>
+        <CommandBinding Command="local:CustomCommands.German" CanExecute="GermanCommand_CanExecute" Executed="GermanCommand_Executed"/>
+
         <CommandBinding Command="local:CustomCommands.Search" CanExecute="SearchCommand_CanExecute" Executed="SearchCommand_Executed"/>
         <CommandBinding Command="local:CustomCommands.Edit" CanExecute="EditCommand_CanExecute" Executed="EditCommand_Executed"/>
         <CommandBinding Command="local:CustomCommands.Print" CanExecute="EditCommand_CanExecute" Executed="PrintCommand_Executed"/>
@@ -29,8 +32,8 @@
                 <MenuItem Header="{DynamicResource MainWindow.Menu.Data.Medium}" Click="EditMedium_Click"/>
             </MenuItem>
             <MenuItem Header="{DynamicResource MainWindow.Menu.Language}">
-                <MenuItem Header="{DynamicResource MainWindow.Menu.Language.English}"/>
-                <MenuItem Header="{DynamicResource MainWindow.Menu.Language.German}"/>
+                <MenuItem Header="{DynamicResource MainWindow.Menu.Language.English}" Command="local:CustomCommands.English"/>
+                <MenuItem Header="{DynamicResource MainWindow.Menu.Language.German}" Command="local:CustomCommands.German"/>
             </MenuItem>
             <MenuItem Header="{DynamicResource MainWindow.Menu.Help}">
                 <MenuItem Header="{DynamicResource MainWindow.Menu.Help.ViewHelp}"/>

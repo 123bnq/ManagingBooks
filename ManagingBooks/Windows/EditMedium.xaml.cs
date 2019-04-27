@@ -38,7 +38,7 @@ namespace ManagingBooks.Windows
                     propertyInfo.SetValue(context, 0, null);
                 }
             }
-            context.LabelName = "Name:";
+            context.LabelName = Application.Current.FindResource("EditMedium.Label.Name").ToString();
         }
 
         private void GetMedium()
@@ -71,7 +71,9 @@ namespace ManagingBooks.Windows
             EditMediumModel context = this.DataContext as EditMediumModel;
             if (!string.IsNullOrWhiteSpace(context.Name))
             {
-                MessageBoxResult result = MessageBox.Show("Do you want to discard?", "Warning", MessageBoxButton.YesNo, MessageBoxImage.Warning, MessageBoxResult.No);
+                string message = Application.Current.FindResource("EditMeidum.CodeBehind.WarningClose.Message").ToString();
+                string caption = Application.Current.FindResource("EditMeidum.CodeBehind.WarningClose.Caption").ToString();
+                MessageBoxResult result = MessageBox.Show(message, caption, MessageBoxButton.YesNo, MessageBoxImage.Warning, MessageBoxResult.No);
                 e.Cancel = result == MessageBoxResult.No;
             }
         }
@@ -146,7 +148,9 @@ namespace ManagingBooks.Windows
             }
             else
             {
-                MessageBox.Show("Item already exists!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                string message = Application.Current.FindResource("EditMeidum.CodeBehind.ErrorSave.Message").ToString();
+                string caption = Application.Current.FindResource("EditMeidum.CodeBehind.ErrorSave.Caption").ToString();
+                MessageBox.Show(message, caption, MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -156,7 +160,7 @@ namespace ManagingBooks.Windows
             Medium med = MediumList.SelectedItem as Medium;
             if (med != null)
             {
-                context.LabelName = "Edit Name:";
+                context.LabelName = Application.Current.FindResource("EditMedium.Label.EditName").ToString();
                 context.Id = med.Id;
                 context.Name = med.Name;
             }

@@ -48,9 +48,9 @@ namespace ManagingBooks.Windows
                     propertyInfo.SetValue(context, 0, null);
                 }
             }
-            context.LabelCity = "City:";
-            context.LabelState = "State:";
-            context.LabelCountry = "Country:";
+            context.LabelCity = Application.Current.FindResource("EditPlace.Label.City").ToString();
+            context.LabelState = Application.Current.FindResource("EditPlace.Label.State").ToString();
+            context.LabelCountry = Application.Current.FindResource("EditPlace.Label.Country").ToString();
         }
 
         private void GetPlace()
@@ -161,7 +161,9 @@ namespace ManagingBooks.Windows
             }
             else
             {
-                MessageBoxResult result = MessageBox.Show("Place exists!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                string message = Application.Current.FindResource("EditPlace.CodeBehind.ErrorSave.Message").ToString();
+                string caption = Application.Current.FindResource("EditPlace.CodeBehind.ErrorSave.Caption").ToString();
+                MessageBoxResult result = MessageBox.Show(message, caption, MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -175,7 +177,9 @@ namespace ManagingBooks.Windows
             EditPlaceModel context = this.DataContext as EditPlaceModel;
             if(!string.IsNullOrWhiteSpace(context.City) || !string.IsNullOrWhiteSpace(context.State) || !string.IsNullOrWhiteSpace(context.Country))
             {
-                MessageBoxResult result = MessageBox.Show("Do you want to discard?", "Warning", MessageBoxButton.YesNo, MessageBoxImage.Warning, MessageBoxResult.No);
+                string message = Application.Current.FindResource("EditPlace.CodeBehind.WarningClose.Message").ToString();
+                string caption = Application.Current.FindResource("EditPlace.CodeBehind.WarningClose.Caption").ToString();
+                MessageBoxResult result = MessageBox.Show(message, caption, MessageBoxButton.YesNo, MessageBoxImage.Warning, MessageBoxResult.No);
                 e.Cancel = result == MessageBoxResult.No;
             }
         }
@@ -186,9 +190,9 @@ namespace ManagingBooks.Windows
             Place place = PlaceList.SelectedItem as Place;
             if(place != null)
             {
-                context.LabelCity = "Edit City:";
-                context.LabelState = "Edit State:";
-                context.LabelCountry = "Edit Country:";
+                context.LabelCity = Application.Current.FindResource("EditPlace.Label.EditCity").ToString();
+                context.LabelState = Application.Current.FindResource("EditPlace.Label.EditState").ToString();
+                context.LabelCountry = Application.Current.FindResource("EditPlace.Label.EditCountry").ToString();
                 context.Id = place.Id;
                 context.City = place.City;
                 context.State = place.State;

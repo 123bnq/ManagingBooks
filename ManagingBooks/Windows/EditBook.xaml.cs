@@ -206,6 +206,8 @@ namespace ManagingBooks.Windows
             Book tempBook = new Book();
             bool isChanged = false;
             bool sufficient = true;
+            string message;
+            string caption;
 
             if (!isCancelled)
             {
@@ -273,11 +275,15 @@ namespace ManagingBooks.Windows
                         if (copied)
                         {
                             copied = false;
-                            result = MessageBox.Show("Nothing is changed. Book will not be added. Continue?", "Information", MessageBoxButton.YesNo, MessageBoxImage.Information);
+                            message = Application.Current.FindResource("EditBook.CodeBehind.InfoCopy.Unsuccessful.Message").ToString();
+                            caption = Application.Current.FindResource("EditBook.CodeBehind.InfoCopy.Unsuccessful.Caption").ToString();
+                            result = MessageBox.Show(message, caption, MessageBoxButton.YesNo, MessageBoxImage.Information);
                         }
                         else
                         {
-                            result = MessageBox.Show("Nothing is changed. Do you want to modify?", "Information", MessageBoxButton.YesNo, MessageBoxImage.Information);
+                            message = Application.Current.FindResource("EditBook.CodeBehind.InfoOK.Unsuccessful.Message").ToString();
+                            caption = Application.Current.FindResource("EditBook.CodeBehind.InfoOK.Unsuccessful.Caption").ToString();
+                            result = MessageBox.Show(message, caption, MessageBoxButton.YesNo, MessageBoxImage.Information);
                         }
                         if (result == MessageBoxResult.Yes)
                         {
@@ -355,7 +361,9 @@ namespace ManagingBooks.Windows
                             tr.Commit();
                             con.Close();
 
-                            MessageBox.Show("Book is changed successfully.", "Infomation", MessageBoxButton.OK, MessageBoxImage.Information);
+                            message = Application.Current.FindResource("EditBook.CodeBehind.InfoOK.Successful.Message").ToString();
+                            caption = Application.Current.FindResource("EditBook.CodeBehind.InfoOK.Successful.Caption").ToString();
+                            MessageBox.Show(message, caption, MessageBoxButton.OK, MessageBoxImage.Information);
                         }
                         else if (copied)
                         {
@@ -367,29 +375,39 @@ namespace ManagingBooks.Windows
                             AddBook.AddBookToDatabase(ref con, ref tr, tempBook);
                             tr.Commit();
                             con.Close();
-                            MessageBox.Show("A copy is created successfully.", "Infomation", MessageBoxButton.OK, MessageBoxImage.Information);
+                            message = Application.Current.FindResource("EditBook.CodeBehind.InfoCopy.Successful.Message").ToString();
+                            caption = Application.Current.FindResource("EditBook.CodeBehind.InfoCopy.Successful.Caption").ToString();
+                            MessageBox.Show(message, caption, MessageBoxButton.OK, MessageBoxImage.Information);
                         }
-                        else
-                        {
-                            var result = MessageBox.Show("Content is changed. Do you want to discard?", "Warning", MessageBoxButton.YesNo, MessageBoxImage.Warning, MessageBoxResult.No);
-                            e.Cancel = result == MessageBoxResult.No;
-                        }
+                        //else
+                        //{
+                        //    message = "Content is changed. Do you want to discard?";
+                        //    caption = "Warning";
+                        //    var result = MessageBox.Show(message, caption, MessageBoxButton.YesNo, MessageBoxImage.Warning, MessageBoxResult.No);
+                        //    e.Cancel = result == MessageBoxResult.No;
+                        //}
                     }
-                    else
-                    {
-                        var result = MessageBox.Show("Next author or next signature should be put correctly :) :)", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                        e.Cancel = true;
-                    }
+                    //else
+                    //{
+                    //    message = "Next author or next signature should be put correctly :) :)";
+                    //    caption = "Error";
+                    //    var result = MessageBox.Show(message, caption, MessageBoxButton.OK, MessageBoxImage.Error);
+                    //    e.Cancel = true;
+                    //}
                 }
                 else
                 {
-                    var result = MessageBox.Show("Not sufficient. Please provide all required fields.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    message = Application.Current.FindResource("EditBook.CodeBehind.Error.Message").ToString();
+                    caption = Application.Current.FindResource("EditBook.CodeBehind.Error.Caption").ToString();
+                    var result = MessageBox.Show(message, caption, MessageBoxButton.OK, MessageBoxImage.Error);
                     e.Cancel = true;
                 }
             }
             else
             {
-                var result = MessageBox.Show("Do you want to cancel the editing process?", "Warning", MessageBoxButton.YesNo, MessageBoxImage.Warning, MessageBoxResult.No);
+                message = Application.Current.FindResource("EditBook.CodeBehind.WarningCancel.Message").ToString();
+                caption = Application.Current.FindResource("EditBook.CodeBehind.WarningCancel.Caption").ToString();
+                var result = MessageBox.Show(message, caption, MessageBoxButton.YesNo, MessageBoxImage.Warning, MessageBoxResult.No);
                 isCancelled = false;
                 e.Cancel = result == MessageBoxResult.No;
             }
@@ -488,6 +506,20 @@ namespace ManagingBooks.Windows
             }
 
             
+        }
+
+        private void BtnSelectSignature_Click(object sender, RoutedEventArgs e)
+        {
+            AddBookModel context = this.DataContext as AddBookModel;
+            //context.Signature1 = string.Empty;
+            //context.Signature2 = string.Empty;
+            //context.Signature3 = string.Empty;
+            new ChooseSignatures(context)
+            {
+                Owner = this,
+                Left = this.Left + this.Width - 15,
+                Top = this.Top
+            }.ShowDialog();
         }
     }
 }

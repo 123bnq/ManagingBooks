@@ -138,8 +138,9 @@ namespace ManagingBooks.Windows
 
             if (containData)
             {
-                string msg = "Book is not completely added. Discard?";
-                MessageBoxResult result = MessageBox.Show(msg, "Cancel?", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                string message = Application.Current.FindResource("AddBook.CodeBehind.WarningCancel.Message").ToString();
+                string caption = Application.Current.FindResource("AddBook.CodeBehind.WarningCancel.Caption").ToString();
+                MessageBoxResult result = MessageBox.Show(message, caption, MessageBoxButton.YesNo, MessageBoxImage.Warning);
                 if (result == MessageBoxResult.No)
                 {
                     e.Cancel = true;
@@ -194,13 +195,14 @@ namespace ManagingBooks.Windows
                     SqliteConnection con;
                     SqlMethods.SqlConnect(out con);
                     var selectCommand = con.CreateCommand();
-                    selectCommand.CommandText = $"SELECT * FROM Books WHERE Title = '{book.Title}' AND Version = {book.Version} AND Medium = '{book.Medium}' AND DayBought = '{book.DayBought}'";
+                    //selectCommand.CommandText = $"SELECT * FROM Books WHERE Number = {book.Number} OR Title = '{book.Title}' AND Version = {book.Version} AND Medium = '{book.Medium}' AND DayBought = '{book.DayBought}'";
+                    selectCommand.CommandText = $"SELECT * FROM Books WHERE Number = {book.Number} OR Title = '{book.Title}'";
                     SqliteDataReader r = selectCommand.ExecuteReader();
 
                     if (r.Read())
                     {
-                        message = "Book is already added! :) :)";
-                        caption = "Warning";
+                        message = Application.Current.FindResource("AddBook.CodeBehind.WarningAdd.Message").ToString();
+                        caption = Application.Current.FindResource("AddBook.CodeBehind.WarningAdd.Caption").ToString();
                         MessageBox.Show(message, caption, MessageBoxButton.OK, MessageBoxImage.Warning);
                     }
                     else
@@ -212,8 +214,8 @@ namespace ManagingBooks.Windows
                             tr.Commit();
                             con.Close();
                         });
-                        message = "Book is successfully added";
-                        caption = "Information";
+                        message = Application.Current.FindResource("AddBook.CodeBehind.InfoAdd.Message").ToString();
+                        caption = Application.Current.FindResource("AddBook.CodeBehind.InfoAdd.Caption").ToString();
                         MessageBox.Show(message, caption, MessageBoxButton.OK, MessageBoxImage.Information);
                         UpdateListBook(context);
                         ClearEntries();
@@ -221,15 +223,15 @@ namespace ManagingBooks.Windows
                 }
                 else
                 {
-                    message = "Next author or next signature should be put correctly :) :)";
-                    caption = "Error";
+                    message = Application.Current.FindResource("AddBook.CodeBehind.ErrorAdd.IncorrectOrder.Message").ToString();
+                    caption = Application.Current.FindResource("AddBook.CodeBehind.ErrorAdd.IncorrectOrder.Caption").ToString();
                     MessageBox.Show(message, caption, MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
             else
             {
-                message = "Book does not have enough information!";
-                caption = "Error";
+                message = Application.Current.FindResource("AddBook.CodeBehind.ErrorAdd.NotEnough.Message").ToString();
+                caption = Application.Current.FindResource("AddBook.CodeBehind.ErrorAdd.NotEnough.Caption").ToString();
                 MessageBox.Show(message, caption, MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
@@ -332,6 +334,27 @@ namespace ManagingBooks.Windows
             string date = "01/01/2019";
             string[] medium = { "Text book", "CD", "DVD", "E-book" };
             Random rnd = new Random();
+            SqlMethods.SqlConnect(out SqliteConnection connect);
+            SqliteCommand selectCommand = connect.CreateCommand();
+            selectCommand.CommandText = "SELECT count(*) FROM Mediums";
+            SqliteDataReader reader = selectCommand.ExecuteReader();
+            reader.Read();
+            int temp;
+            int.TryParse(Convert.ToString(reader["count(*)"]), out temp);
+            int maxMedium = temp;
+            reader.Close();
+            selectCommand.CommandText = "SELECT count(*) FROM Places";
+            reader = selectCommand.ExecuteReader();
+            reader.Read();
+            int.TryParse(Convert.ToString(reader["count(*)"]), out temp);
+            int maxPlace = temp;
+            reader.Close();
+            selectCommand.CommandText = "SELECT count(*) FROM Signatures";
+            reader = selectCommand.ExecuteReader();
+            reader.Read();
+            int.TryParse(Convert.ToString(reader["count(*)"]), out temp);
+            int maxSig = temp;
+            reader.Close();
             Book book;
             await Task.Run(() =>
             {
@@ -498,7 +521,7 @@ namespace ManagingBooks.Windows
             }
         }
 
-        private void BtnTest_Click(object sender, RoutedEventArgs e)
+        private void BtnSelectSignature_Click(object sender, RoutedEventArgs e)
         {
             AddBookModel context = this.DataContext as AddBookModel;
             context.Signature1 = string.Empty;

@@ -30,10 +30,10 @@
     <system:String x:Key="MainWindow.SearchList.Authors">Authors</system:String>
     <system:String x:Key="MainWindow.SearchList.Publisher">Publisher</system:String>
     <system:String x:Key="MainWindow.SearchList.Year">Year</system:String>
-    <system:String x:Key="MainWindow.SearchList.Version">Version</system:String>
+    <system:String x:Key="MainWindow.SearchList.Version">Edition</system:String>
     <system:String x:Key="MainWindow.SearchList.Medium">Medium</system:String>
     <system:String x:Key="MainWindow.SearchList.Place">Place</system:String>
-    <system:String x:Key="MainWindow.SearchList.Date">Date</system:String>
+    <system:String x:Key="MainWindow.SearchList.Date">Date bought</system:String>
     <system:String x:Key="MainWindow.SearchList.Pages">Pages</system:String>
     <system:String x:Key="MainWindow.SearchList.Price">Price</system:String>
     
@@ -55,10 +55,10 @@
     <system:String x:Key="MainWindow.BookInfo.Authors">Authors:</system:String>
     <system:String x:Key="MainWindow.BookInfo.Publisher">Publisher:</system:String>
     <system:String x:Key="MainWindow.BookInfo.Year">Year:</system:String>
-    <system:String x:Key="MainWindow.BookInfo.Version">Version:</system:String>
+    <system:String x:Key="MainWindow.BookInfo.Version">Edition:</system:String>
     <system:String x:Key="MainWindow.BookInfo.Medium">Medium:</system:String>
     <system:String x:Key="MainWindow.BookInfo.Place">Place:</system:String>
-    <system:String x:Key="MainWindow.BookInfo.Date">Date:</system:String>
+    <system:String x:Key="MainWindow.BookInfo.Date">Date bought:</system:String>
     <system:String x:Key="MainWindow.BookInfo.Pages">Pages:</system:String>
     <system:String x:Key="MainWindow.BookInfo.Price">Price:</system:String>
     <system:String x:Key="MainWindow.BookInfo.ClearBtn">Clear</system:String>
@@ -67,5 +67,137 @@
     <system:String x:Key="MainWindow.CodeBehind.Status.Completed">Load Finished</system:String>
     <system:String x:Key="MainWindow.CodeBehind.Status.Deleting">Deleting...</system:String>
     <system:String x:Key="MainWindow.CodeBehind.Status.DeleteCompleted">Delete Finished</system:String>
-    <system:String x:Key="MainWindow.CodeBehind.DeleteNotifyMessage">Do you want to delete selected book(s)?</system:String>    
+    <system:String x:Key="MainWindow.CodeBehind.DeleteNotify.Message">Do you want to delete the selected book(s)?</system:String>
+    <system:String x:Key="MainWindow.CodeBehind.DeleteNotify.Caption">Warning</system:String>
+
+
+    <system:String x:Key="AddBook.Title">Add Book</system:String>
+    <system:String x:Key="AddBook.Number">Number</system:String>
+    <system:String x:Key="AddBook.Signature">Signature</system:String>
+    <system:String x:Key="AddBook.Authors">Authors</system:String>
+    <system:String x:Key="AddBook.BookTitle">Title</system:String>
+    <system:String x:Key="AddBook.Publisher">Publisher</system:String>
+    <system:String x:Key="AddBook.Version">Edition</system:String>
+    <system:String x:Key="AddBook.Year">Year</system:String>
+    <system:String x:Key="AddBook.Medium">Medium</system:String>
+    <system:String x:Key="AddBook.Place">Place</system:String>
+    <system:String x:Key="AddBook.Date">Date bought</system:String>
+    <system:String x:Key="AddBook.Pages">Pages</system:String>
+    <system:String x:Key="AddBook.Price">Price</system:String>
+
+    <system:String x:Key="AddBook.Last20">Last 20 books:</system:String>
+    <system:String x:Key="AddBook.AddBtn">Add</system:String>
+    <system:String x:Key="AddBook.ClearBtn">Clear</system:String>
+    <system:String x:Key="AddBook.CancelBtn">Cancel</system:String>
+
+    <system:String x:Key="AddBook.CodeBehind.WarningCancel.Message">Book is not completely added. Discard?</system:String>
+    <system:String x:Key="AddBook.CodeBehind.WarningCancel.Caption">Warning</system:String>
+    <system:String x:Key="AddBook.CodeBehind.WarningAdd.Message">Book is already added.</system:String>
+    <system:String x:Key="AddBook.CodeBehind.WarningAdd.Caption">Warning</system:String>
+    <system:String x:Key="AddBook.CodeBehind.InfoAdd.Message">Book is successfully added.</system:String>
+    <system:String x:Key="AddBook.CodeBehind.InfoAdd.Caption">Information</system:String>
+    <system:String x:Key="AddBook.CodeBehind.ErrorAdd.IncorrectOrder.Message">Next author or next signature should be put correctly :) :)</system:String>
+    <system:String x:Key="AddBook.CodeBehind.ErrorAdd.IncorrectOrder.Caption">Error</system:String>
+    <system:String x:Key="AddBook.CodeBehind.ErrorAdd.NotEnough.Message">Book does not have enough information!</system:String>
+    <system:String x:Key="AddBook.CodeBehind.ErrorAdd.NotEnough.Caption">Error</system:String>
+
+
+    <system:String x:Key="EditBook.Title">Edit Book</system:String>
+    <system:String x:Key="EditBook.Number">Number</system:String>
+    <system:String x:Key="EditBook.Signature">Signature</system:String>
+    <system:String x:Key="EditBook.Authors">Authors</system:String>
+    <system:String x:Key="EditBook.BookTitle">Title</system:String>
+    <system:String x:Key="EditBook.Publisher">Publisher</system:String>
+    <system:String x:Key="EditBook.Version">Edition</system:String>
+    <system:String x:Key="EditBook.Year">Year</system:String>
+    <system:String x:Key="EditBook.Medium">Medium</system:String>
+    <system:String x:Key="EditBook.Place">Place</system:String>
+    <system:String x:Key="EditBook.Date">Date bought</system:String>
+    <system:String x:Key="EditBook.Pages">Pages</system:String>
+    <system:String x:Key="EditBook.Price">Price</system:String>
+
+    <system:String x:Key="EditBook.OkBtn">OK</system:String>
+    <system:String x:Key="EditBook.CopyBtn">Add a copy</system:String>
+    <system:String x:Key="EditBook.UndoBtn">Undo</system:String>
+    <system:String x:Key="EditBook.CancelBtn">Cancel</system:String>
+
+    <system:String x:Key="EditBook.CodeBehind.InfoCopy.Unsuccessful.Message">Nothing is changed. Book will not be added. Continue editing?</system:String>
+    <system:String x:Key="EditBook.CodeBehind.InfoCopy.Unsuccessful.Caption">Information</system:String>
+    <system:String x:Key="EditBook.CodeBehind.InfoOK.Unsuccessful.Message">Nothing is changed. Do you want to modify?</system:String>
+    <system:String x:Key="EditBook.CodeBehind.InfoOK.Unsuccessful.Caption">Information</system:String>
+    <system:String x:Key="EditBook.CodeBehind.InfoOK.Successful.Message">Book is changed successfully.</system:String>
+    <system:String x:Key="EditBook.CodeBehind.InfoOK.Successful.Caption">Information</system:String>
+    <system:String x:Key="EditBook.CodeBehind.InfoCopy.Successful.Message">A copy is created successfully.</system:String>
+    <system:String x:Key="EditBook.CodeBehind.InfoCopy.Successful.Caption">Information</system:String>
+    <system:String x:Key="EditBook.CodeBehind.Error.Message">Not sufficient. Please provide all required fields.</system:String>
+    <system:String x:Key="EditBook.CodeBehind.Error.Caption">Error</system:String>
+    <system:String x:Key="EditBook.CodeBehind.WarningCancel.Message">Do you want to cancel the editing process?</system:String>
+    <system:String x:Key="EditBook.CodeBehind.WarningCancel.Caption">Warning</system:String>
+
+
+    <system:String x:Key="ChooseSignature.Title">Select Signature</system:String>
+    <system:String x:Key="ChooseSignature.Signatures.Name">Signature</system:String>
+    <system:String x:Key="ChooseSignature.Signatures.Info">Information</system:String>
+    <system:String x:Key="ChooseSignature.SubSignatures.Name">Signature</system:String>
+    <system:String x:Key="ChooseSignature.SubSignatures.Info">Information</system:String>
+
+
+    <system:String x:Key="EditMedium.Title">Edit Medium</system:String>
+    <system:String x:Key="EditMedium.Label.Name">Name:</system:String>
+    <system:String x:Key="EditMedium.Label.EditName">Edit name:</system:String>
+    <system:String x:Key="EditMedium.Name">Name</system:String>
+
+    <system:String x:Key="EditMedium.SaveBtn">Save</system:String>
+    <system:String x:Key="EditMedium.ClearBtn">Clear</system:String>
+    <system:String x:Key="EditMedium.RemoveBtn">Remove</system:String>
+    <system:String x:Key="EditMedium.CloseBtn">Close</system:String>
+
+    <system:String x:Key="EditMeidum.CodeBehind.WarningClose.Message">Do you want to discard?</system:String>
+    <system:String x:Key="EditMeidum.CodeBehind.WarningClose.Caption">Warning</system:String>
+    <system:String x:Key="EditMeidum.CodeBehind.ErrorSave.Message">Item already exists!</system:String>
+    <system:String x:Key="EditMeidum.CodeBehind.ErrorSave.Caption">Error</system:String>
+
+
+    <system:String x:Key="EditPlace.Title">Edit Place</system:String>
+    <system:String x:Key="EditPlace.City">City</system:String>
+    <system:String x:Key="EditPlace.State">State</system:String>
+    <system:String x:Key="EditPlace.Country">Country</system:String>
+    <system:String x:Key="EditPlace.Label.City">City:</system:String>
+    <system:String x:Key="EditPlace.Label.State">State:</system:String>
+    <system:String x:Key="EditPlace.Label.Country">Country:</system:String>
+    <system:String x:Key="EditPlace.Label.EditCity">Edit city:</system:String>
+    <system:String x:Key="EditPlace.Label.EditState">Edit state:</system:String>
+    <system:String x:Key="EditPlace.Label.EditCountry">Edit country:</system:String>
+
+    <system:String x:Key="EditPlace.SaveBtn">Save</system:String>
+    <system:String x:Key="EditPlace.ClearBtn">Clear</system:String>
+    <system:String x:Key="EditPlace.RemoveBtn">Remove</system:String>
+    <system:String x:Key="EditPlace.CloseBtn">Close</system:String>
+
+    <system:String x:Key="EditPlace.CodeBehind.ErrorSave.Message">Place exists!</system:String>
+    <system:String x:Key="EditPlace.CodeBehind.ErrorSave.Caption">Error</system:String>
+    <system:String x:Key="EditPlace.CodeBehind.WarningClose.Message">Do you want to discard?</system:String>
+    <system:String x:Key="EditPlace.CodeBehind.WarningClose.Caption">Warning</system:String>
+
+
+    <system:String x:Key="EditPublisher.Title">Edit Publisher</system:String>
+    <system:String x:Key="EditPublisher.Name">Publisher</system:String>
+    <system:String x:Key="EditPublisher.City">City</system:String>
+    <system:String x:Key="EditPublisher.Country">Country</system:String>
+    <system:String x:Key="EditPublisher.Label.Name">Publisher:</system:String>
+    <system:String x:Key="EditPublisher.Label.City">City:</system:String>
+    <system:String x:Key="EditPublisher.Label.Country">Country:</system:String>
+    <system:String x:Key="EditPublisher.Label.EditName">Edit publisher:</system:String>
+    <system:String x:Key="EditPublisher.Label.EditCity">Edit city:</system:String>
+    <system:String x:Key="EditPublisher.Label.EditCountry">Edit country:</system:String>
+
+    <system:String x:Key="EditPublisher.SaveBtn">Save</system:String>
+    <system:String x:Key="EditPublisher.ClearBtn">Clear</system:String>
+    <system:String x:Key="EditPublisher.RemoveBtn">Remove</system:String>
+    <system:String x:Key="EditPublisher.CloseBtn">Close</system:String>
+
+    <system:String x:Key="EditPublisher.CodeBehind.ErrorSave.Message">Publisher exists!</system:String>
+    <system:String x:Key="EditPublisher.CodeBehind.ErrorSave.Caption">Error</system:String>
+    <system:String x:Key="EditPublisher.CodeBehind.WarningClose.Message">Do you want to discard?</system:String>
+    <system:String x:Key="EditPublisher.CodeBehind.WarningClose.Caption">Warning</system:String>
 </ResourceDictionary>

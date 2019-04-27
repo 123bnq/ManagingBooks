@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ManagingBooks.Windows"
         mc:Ignorable="d"
-        Title="Choose Signatures" Height="450" Width="700"
+        Title="{DynamicResource ChooseSignature.Title}" Height="450" Width="700"
         ShowInTaskbar="False"
         Background="WhiteSmoke" WindowStartupLocation="Manual" Closing="Window_Closing">
     <Grid>
@@ -25,8 +25,8 @@
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="Id" Width="Auto" DisplayMemberBinding="{Binding Id}"/>
-                    <GridViewColumn Header="Signature" Width="Auto" DisplayMemberBinding="{Binding Name}"/>
-                    <GridViewColumn Header="Information" Width="Auto" DisplayMemberBinding="{Binding Info}"/>
+                    <GridViewColumn Header="{DynamicResource ChooseSignature.Signatures.Name}" Width="Auto" DisplayMemberBinding="{Binding Name}"/>
+                    <GridViewColumn Header="{DynamicResource ChooseSignature.Signatures.Info}" Width="Auto" DisplayMemberBinding="{Binding Info}"/>
                 </GridView>
             </ListView.View>
         </ListView>
@@ -42,8 +42,8 @@
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="Id" Width="Auto" DisplayMemberBinding="{Binding Id}"/>
-                    <GridViewColumn Header="Signature" Width="Auto" DisplayMemberBinding="{Binding Name}"/>
-                    <GridViewColumn Header="Information" Width="Auto" DisplayMemberBinding="{Binding Info}"/>
+                    <GridViewColumn Header="{DynamicResource ChooseSignature.SubSignatures.Name}" Width="Auto" DisplayMemberBinding="{Binding Name}"/>
+                    <GridViewColumn Header="{DynamicResource ChooseSignature.SubSignatures.Info}" Width="Auto" DisplayMemberBinding="{Binding Info}"/>
                     <GridViewColumn Header="Sort" Width="Auto" DisplayMemberBinding="{Binding Sort}"/>
                 </GridView>
             </ListView.View>

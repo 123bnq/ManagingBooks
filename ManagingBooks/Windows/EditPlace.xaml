@@ -8,7 +8,7 @@
         mc:Ignorable="d"
         WindowStartupLocation="CenterOwner"  Background="WhiteSmoke"
         Closing="Window_Closing"
-        Title="Edit Place" SizeToContent="WidthAndHeight">
+        Title="{DynamicResource EditPlace.Title}" SizeToContent="WidthAndHeight">
     <Window.CommandBindings>
         <CommandBinding Command="main:CustomCommands.RemovePlace" CanExecute="RemovePlaceCommand_CanExecute" Executed="RemovePlaceCommand_Executed"/>
         <CommandBinding Command="main:CustomCommands.SavePlace" CanExecute="SavePlaceCommand_CanExecute" Executed="SavePlaceCommand_Executed"/>
@@ -43,16 +43,16 @@
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="Id" Width="Auto" DisplayMemberBinding="{Binding Id}"/>
-                    <GridViewColumn Header="City" Width="Auto" DisplayMemberBinding="{Binding City}"/>
-                    <GridViewColumn Header="State" Width="Auto" DisplayMemberBinding="{Binding State}"/>
-                    <GridViewColumn Header="Country" Width="Auto" DisplayMemberBinding="{Binding Country}"/>
+                    <GridViewColumn Header="{DynamicResource EditPlace.City}" Width="Auto" DisplayMemberBinding="{Binding City}"/>
+                    <GridViewColumn Header="{DynamicResource EditPlace.State}" Width="Auto" DisplayMemberBinding="{Binding State}"/>
+                    <GridViewColumn Header="{DynamicResource EditPlace.Country}" Width="Auto" DisplayMemberBinding="{Binding Country}"/>
                 </GridView>
             </ListView.View>
         </ListView>
 
-        <Button Grid.Column="2" Name="BtnSave" MinWidth="75" Margin="5" Content="Save" Command="main:CustomCommands.SavePlace"/>
-        <Button Grid.Column="2" Grid.Row="1" Name="BtnClear" MinWidth="75" Margin="5" Content="Clear" Click="BtnClear_Click"/>
-        <Button Grid.Column="2" Grid.Row="2" Name="BtnRemove" MinWidth="75" Margin="5" Content="Remove" Command="main:CustomCommands.RemovePlace"/>
-        <Button Grid.Column="2" Grid.Row="3" VerticalAlignment="Top" Name="BtnClose" MinWidth="75" Margin="5" Content="Close" Click="BtnClose_Click"/>
+        <Button Grid.Column="2" Name="BtnSave" MinWidth="75" Margin="5" Content="{DynamicResource EditPlace.SaveBtn}" Command="main:CustomCommands.SavePlace"/>
+        <Button Grid.Column="2" Grid.Row="1" Name="BtnClear" MinWidth="75" Margin="5" Content="{DynamicResource EditPlace.ClearBtn}" Click="BtnClear_Click"/>
+        <Button Grid.Column="2" Grid.Row="2" Name="BtnRemove" MinWidth="75" Margin="5" Content="{DynamicResource EditPlace.RemoveBtn}" Command="main:CustomCommands.RemovePlace"/>
+        <Button Grid.Column="2" Grid.Row="3" VerticalAlignment="Top" Name="BtnClose" MinWidth="75" Margin="5" Content="{DynamicResource EditPlace.CloseBtn}" Click="BtnClose_Click"/>
     </Grid>
 </Window>
