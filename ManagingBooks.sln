@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28010.2050
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28803.202
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ManagingBooks", "ManagingBooks\ManagingBooks.csproj", "{24E4F4B2-4DED-42FC-973D-FE5F0A337C38}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Demo_iTextDotnetCore", "Demo_iTextDotnetCore\Demo_iTextDotnetCore.csproj", "{A5B2B236-7A29-48C7-BD22-14B36C6C6F46}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{24E4F4B2-4DED-42FC-973D-FE5F0A337C38}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{24E4F4B2-4DED-42FC-973D-FE5F0A337C38}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{24E4F4B2-4DED-42FC-973D-FE5F0A337C38}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A5B2B236-7A29-48C7-BD22-14B36C6C6F46}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A5B2B236-7A29-48C7-BD22-14B36C6C6F46}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A5B2B236-7A29-48C7-BD22-14B36C6C6F46}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A5B2B236-7A29-48C7-BD22-14B36C6C6F46}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

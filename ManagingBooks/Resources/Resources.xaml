@@ -36,6 +36,12 @@
     <system:String x:Key="MainWindow.SearchList.Date">Date bought</system:String>
     <system:String x:Key="MainWindow.SearchList.Pages">Pages</system:String>
     <system:String x:Key="MainWindow.SearchList.Price">Price</system:String>
+
+    <system:String x:Key="MainWindow.PrintList.Title">Print list</system:String>
+    <system:String x:Key="MainWindow.PrintList.AddBtn">Add</system:String>
+    <system:String x:Key="MainWindow.PrintList.RemoveBtn">Remove</system:String>
+    <system:String x:Key="MainWindow.PrintList.ClearBtn">Clear List</system:String>
+    <system:String x:Key="MainWindow.PrintList.PrintBtn">Print</system:String>
     
     <system:String x:Key="MainWindow.Search">Search:</system:String>
     <system:String x:Key="MainWindow.SearchBtn">Search</system:String>
@@ -46,8 +52,7 @@
     <system:String x:Key="MainWindow.SearchBy.Authors">Authors</system:String>
     <system:String x:Key="MainWindow.SearchBy.Medium">Medium</system:String>
     <system:String x:Key="MainWindow.SearchBy.Place">Place</system:String>
-    <system:String x:Key="MainWindow.PrintBtn">Print</system:String>
-
+    
     <system:String x:Key="MainWindow.BookInfo">Book Information</system:String>
     <system:String x:Key="MainWindow.BookInfo.Number">Book Number:</system:String>
     <system:String x:Key="MainWindow.BookInfo.Signatures">Signatures:</system:String>

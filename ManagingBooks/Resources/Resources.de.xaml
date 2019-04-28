@@ -27,7 +27,7 @@
     <system:String x:Key="MainWindow.SearchList.Number">Nummer</system:String>
     <system:String x:Key="MainWindow.SearchList.Signature">Signatur</system:String>
     <system:String x:Key="MainWindow.SearchList.Title">Buchtitel</system:String>
-    <system:String x:Key="MainWindow.SearchList.Authors">Autoren</system:String>
+    <system:String x:Key="MainWindow.SearchList.Authors">Autor</system:String>
     <system:String x:Key="MainWindow.SearchList.Publisher">Verlag</system:String>
     <system:String x:Key="MainWindow.SearchList.Year">Jahr</system:String>
     <system:String x:Key="MainWindow.SearchList.Version">Auflage</system:String>
@@ -36,6 +36,12 @@
     <system:String x:Key="MainWindow.SearchList.Date">Einkauf</system:String>
     <system:String x:Key="MainWindow.SearchList.Pages">Seiten</system:String>
     <system:String x:Key="MainWindow.SearchList.Price">Preis</system:String>
+
+    <system:String x:Key="MainWindow.PrintList.Title">Druckliste</system:String>
+    <system:String x:Key="MainWindow.PrintList.AddBtn">Hinzufügen</system:String>
+    <system:String x:Key="MainWindow.PrintList.RemoveBtn">Entfernen</system:String>
+    <system:String x:Key="MainWindow.PrintList.ClearBtn">Löschen</system:String>
+    <system:String x:Key="MainWindow.PrintList.PrintBtn">Drucken</system:String>
 
     <system:String x:Key="MainWindow.Search">Suchen:</system:String>
     <system:String x:Key="MainWindow.SearchBtn">Suchen</system:String>
@@ -46,7 +52,6 @@
     <system:String x:Key="MainWindow.SearchBy.Authors">Autoren</system:String>
     <system:String x:Key="MainWindow.SearchBy.Medium">Medium</system:String>
     <system:String x:Key="MainWindow.SearchBy.Place">Standort</system:String>
-    <system:String x:Key="MainWindow.PrintBtn">Drucken</system:String>
 
     <system:String x:Key="MainWindow.BookInfo">Buchinformationen</system:String>
     <system:String x:Key="MainWindow.BookInfo.Number">Buchnummer:</system:String>

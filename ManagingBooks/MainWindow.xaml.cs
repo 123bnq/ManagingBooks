@@ -11,6 +11,12 @@ using System.Threading;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Reflection;
+using iText.Kernel.Pdf;
+using iText.Layout;
+using iText.Layout.Element;
+using iText.Barcodes;
+using Microsoft.Win32;
+using System.Diagnostics;
 
 namespace ManagingBooks
 {
@@ -34,6 +40,7 @@ namespace ManagingBooks
             SearchBookModel context = new SearchBookModel();
             this.DataContext = context;
             context.DisplayBooks = new ObservableCollection<SearchBook>();
+            context.ListBookPrint = new ObservableCollection<int>();
             SearchList.ItemsSource = context.DisplayBooks;
             context.DisplayBooks.Clear();
             Search.WorkerReportsProgress = true;
@@ -339,7 +346,49 @@ namespace ManagingBooks
 
         private void PrintCommand_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            new BarcodeDisplay((SearchList.SelectedItem as SearchBook).Number.ToString().PadLeft(6, '0')) { Owner = this }.Show();
+            //new BarcodeDisplay((SearchList.SelectedItem as SearchBook).Number.ToString().PadLeft(6, '0')) { Owner = this }.Show();
+            SearchBookModel context = this.DataContext as SearchBookModel;
+            string pdfPath;
+            SaveFileDialog dialog = new SaveFileDialog();
+            dialog.Filter = "PDF (*.pdf)|*.pdf";
+            dialog.InitialDirectory = AppContext.BaseDirectory;
+            if (dialog.ShowDialog(this) == true)
+            {
+                pdfPath = dialog.FileName;
+                using (PdfWriter writer = new PdfWriter(pdfPath))
+                {
+                    using (PdfDocument pdf = new PdfDocument(writer))
+                    {
+                        Document document = new Document(pdf);
+                        Barcode128 barcode = new Barcode128(pdf);
+                        barcode.SetCodeType(Barcode128.CODE_C);
+                        Table table = new Table(5, false);
+                        table.SetWidth(iText.Layout.Properties.UnitValue.CreatePercentValue(100));
+                        foreach (var book in context.ListBookPrint)
+                        {
+                            string codeNr = book.ToString();
+                            int length = codeNr.Length;
+                            for (int i = 6; i > length; i--)
+                            {
+                                codeNr = String.Concat("0", codeNr);
+                            }
+                            barcode.SetCode(codeNr);
+                            Image barcodeImage = new Image(barcode.CreateFormXObject(pdf));
+                            barcodeImage.SetHorizontalAlignment(iText.Layout.Properties.HorizontalAlignment.CENTER);
+                            //barcodeImage.Scale(1.5F, 1.5F);
+                            Cell cell = new Cell();
+                            cell.Add(barcodeImage);
+                            table.AddCell(cell);
+                        }
+                        document.Add(table);
+                    }
+                }
+                Process proc = new Process();
+                proc.StartInfo.FileName = pdfPath;
+                proc.StartInfo.UseShellExecute = true;
+                proc.Start();
+            }
+
         }
 
         private int NumberOfBooks()
@@ -496,7 +545,7 @@ namespace ManagingBooks
         {
             SearchBookModel context = this.DataContext as SearchBookModel;
             SearchBook viewBook = SearchList.SelectedItem as SearchBook;
-            if(viewBook != null)
+            if (viewBook != null)
             {
                 context.ViewNumber = viewBook.Number.ToString();
                 context.ViewSignatures = viewBook.Signatures;
@@ -560,6 +609,42 @@ namespace ManagingBooks
             Application.Current.Resources.MergedDictionaries.Clear();
             Application.Current.Resources.MergedDictionaries.Add(dict);
         }
+
+        private void PrintCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = ListPrint.Items.Count != 0;
+        }
+
+        private void RemoveFromPrintCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = ListPrint.SelectedItem != null;
+        }
+
+        private void RemoveFromPrint_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            SearchBookModel context = this.DataContext as SearchBookModel;
+            int bookToRemove = (int)ListPrint.SelectedItem;
+            context.ListBookPrint.Remove(bookToRemove);
+        }
+
+        private void ClearPrintListCommand_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            SearchBookModel context = this.DataContext as SearchBookModel;
+            context.ListBookPrint.Clear();
+        }
+
+        private void AddToPrintCommand_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            SearchBookModel context = this.DataContext as SearchBookModel;
+            SearchBook book = SearchList.SelectedItem as SearchBook;
+            if (!context.ListBookPrint.Contains(book.Number))
+                context.ListBookPrint.Add(book.Number);
+            else
+            {
+                MessageBox.Show("Already added");
+            }
+
+        }
     }
 
     public static class CustomCommands
@@ -577,6 +662,10 @@ namespace ManagingBooks
         public static readonly RoutedUICommand Edit = new RoutedUICommand("Edit", "Edit", typeof(CustomCommands));
         public static readonly RoutedUICommand Delete = new RoutedUICommand("Delete", "Delete", typeof(CustomCommands));
         public static readonly RoutedUICommand Print = new RoutedUICommand("Print", "Print", typeof(CustomCommands));
+        public static readonly RoutedUICommand AddToPrint = new RoutedUICommand("AddToPrint", "AddToPrint", typeof(CustomCommands));
+        public static readonly RoutedUICommand RemoveFromPrint = new RoutedUICommand("RemoveFromPrint", "RemoveFromPrint", typeof(CustomCommands));
+        public static readonly RoutedUICommand ClearPrintList = new RoutedUICommand("ClearPrintList", "ClearPrintList", typeof(CustomCommands));
+
         public static readonly RoutedUICommand ClearBookInfo = new RoutedUICommand("ClearBookInfo", "ClearBookInfo", typeof(CustomCommands));
 
         public static readonly RoutedUICommand English = new RoutedUICommand("English", "English", typeof(CustomCommands));
