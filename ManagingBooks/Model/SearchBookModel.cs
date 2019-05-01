@@ -25,7 +25,8 @@ namespace ManagingBooks.Model
         private string m_ViewPages;
         private string m_ViewPrice;
 
-        public string SearchText {
+        public string SearchText
+        {
             get => m_SearchText;
             set
             {
@@ -48,22 +49,24 @@ namespace ManagingBooks.Model
                 }
             }
         }
-        public string Status {
+        public string Status
+        {
             get => m_Status;
             set
             {
-                if(value != m_Status)
+                if (value != m_Status)
                 {
                     m_Status = value;
                     NotifyPropertyChanged();
                 }
             }
         }
-        public int Progress {
+        public int Progress
+        {
             get => m_Progress;
             set
             {
-                if(value != m_Progress)
+                if (value != m_Progress)
                 {
                     m_Progress = value;
                     NotifyPropertyChanged();
@@ -78,7 +81,20 @@ namespace ManagingBooks.Model
             {
                 if (value != m_ViewNumber)
                 {
-                    m_ViewNumber = value;
+                    if (int.TryParse(value, out int n))
+                    {
+                        string temp = value;
+                        int length = temp.Length;
+                        for (int i = 6; i > length; i--)
+                        {
+                            temp = String.Concat("0", temp);
+                        }
+                        m_ViewNumber = temp;
+                    }
+                    else
+                    {
+                        m_ViewNumber = value;
+                    }
                     NotifyPropertyChanged();
                 }
             }
@@ -210,7 +226,14 @@ namespace ManagingBooks.Model
             {
                 if (value != m_ViewPrice)
                 {
-                    m_ViewPrice = value;
+                    if(double.TryParse(value, out double d))
+                    {
+                        m_ViewPrice = d.ToString("0.00");
+                    }
+                    else
+                    {
+                        m_ViewPrice = value;
+                    }
                     NotifyPropertyChanged();
                 }
             }
@@ -229,7 +252,7 @@ namespace ManagingBooks.Model
             }
         }
     }
-    
+
     class SearchBook
     {
         public int BookId { get; set; }
