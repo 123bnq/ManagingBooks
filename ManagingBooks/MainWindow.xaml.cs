@@ -17,6 +17,8 @@ using iText.Layout.Element;
 using iText.Barcodes;
 using Microsoft.Win32;
 using System.Diagnostics;
+using System.Linq;
+using WPFCustomMessageBox;
 
 namespace ManagingBooks
 {
@@ -417,7 +419,8 @@ namespace ManagingBooks
             var deleteList = SearchList.SelectedItems;
             string msg = Application.Current.FindResource("MainWindow.CodeBehind.DeleteNotify.Message").ToString();
             string caption = Application.Current.FindResource("MainWindow.CodeBehind.DeleteNotify.Caption").ToString();
-            MessageBoxResult result = MessageBox.Show(msg, caption, MessageBoxButton.YesNo, MessageBoxImage.Warning, MessageBoxResult.No);
+            MessageBoxResult result = CustomMessageBox.ShowYesNo(msg, caption, Application.Current.FindResource("MessageBox.YesBtn").ToString(), Application.Current.FindResource("MessageBox.NoBtn").ToString(), MessageBoxImage.Warning);
+            //MessageBoxResult result = MessageBox.Show(msg, caption, MessageBoxButton.YesNo, MessageBoxImage.Warning, MessageBoxResult.No);
 
             var max = deleteList.Count;
             var progressHandler = new Progress<int>(value =>
@@ -633,16 +636,33 @@ namespace ManagingBooks
             context.ListBookPrint.Clear();
         }
 
-        private void AddToPrintCommand_Executed(object sender, ExecutedRoutedEventArgs e)
+        private async void AddToPrintCommand_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             SearchBookModel context = this.DataContext as SearchBookModel;
-            SearchBook book = SearchList.SelectedItem as SearchBook;
-            if (!context.ListBookPrint.Contains(book.Number))
-                context.ListBookPrint.Add(book.Number);
-            else
+            List<SearchBook> addList = SearchList.SelectedItems.Cast<SearchBook>().ToList();
+            addList.Sort((x, y) => x.BookId.CompareTo(y.BookId));
+            await Task.Run(() =>
             {
-                MessageBox.Show("Already added");
-            }
+                foreach (var book in addList)
+                {
+                    if (!context.ListBookPrint.Contains((book as SearchBook).Number))
+                    {
+                        App.Current.Dispatcher.Invoke((Action)delegate
+                        {
+                            context.ListBookPrint.Add((book as SearchBook).Number);
+                        });
+                        Thread.Sleep(TimeSpan.FromTicks(5));
+                    }
+
+                    //else
+                    //{
+                    //    MessageBox.Show("Already added");
+                    //}
+                }
+            });
+
+            //SearchBook book = SearchList.SelectedItem as SearchBook;
+
 
         }
     }

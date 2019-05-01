@@ -205,4 +205,11 @@
     <system:String x:Key="EditPublisher.CodeBehind.ErrorSave.Caption">Error</system:String>
     <system:String x:Key="EditPublisher.CodeBehind.WarningClose.Message">Do you want to discard?</system:String>
     <system:String x:Key="EditPublisher.CodeBehind.WarningClose.Caption">Warning</system:String>
+
+
+    
+    <system:String x:Key="MessageBox.YesBtn">Yes</system:String>
+    <system:String x:Key="MessageBox.NoBtn">No</system:String>
+    <system:String x:Key="MessageBox.CancelBtn">Cancel</system:String>
+    <system:String x:Key="MessageBox.OkBtn">OK</system:String>
 </ResourceDictionary>
