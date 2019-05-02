@@ -212,4 +212,8 @@
     <system:String x:Key="MessageBox.NoBtn">No</system:String>
     <system:String x:Key="MessageBox.CancelBtn">Cancel</system:String>
     <system:String x:Key="MessageBox.OkBtn">OK</system:String>
+
+
+
+    <system:String x:Key="ComboBox.PleaseSelect">Please Select</system:String>
 </ResourceDictionary>

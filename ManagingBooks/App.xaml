@@ -8,6 +8,15 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source=".\Resources\Resources.xaml"/>
             </ResourceDictionary.MergedDictionaries>
+            <Style x:Key="ComboBoxNull" TargetType="TextBlock">
+                <Setter Property="Visibility" Value="Hidden"/>
+                <Setter Property="Text" Value="{DynamicResource ComboBox.PleaseSelect}"/>
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding}" Value="{x:Null}">
+                        <Setter Property="Visibility" Value="Visible"/>
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

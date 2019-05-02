@@ -11,12 +11,12 @@
         <CommandBinding Command="local:CustomCommands.Exit" CanExecute="ExitCommand_CanExecute" Executed="ExitCommand_Executed"/>
         <CommandBinding Command="local:CustomCommands.English" CanExecute="EnglishCommand_CanExecute" Executed="EnglishCommand_Executed"/>
         <CommandBinding Command="local:CustomCommands.German" CanExecute="GermanCommand_CanExecute" Executed="GermanCommand_Executed"/>
-        
+
         <CommandBinding Command="local:CustomCommands.Print" CanExecute="PrintCommand_CanExecute" Executed="PrintCommand_Executed"/>
         <CommandBinding Command="local:CustomCommands.AddToPrint" CanExecute="EditCommand_CanExecute" Executed="AddToPrintCommand_Executed"/>
         <CommandBinding Command="local:CustomCommands.RemoveFromPrint" CanExecute="RemoveFromPrintCommand_CanExecute" Executed="RemoveFromPrint_Executed"/>
         <CommandBinding Command="local:CustomCommands.ClearPrintList" CanExecute="PrintCommand_CanExecute" Executed="ClearPrintListCommand_Executed"/>
-        
+
         <CommandBinding Command="local:CustomCommands.Search" CanExecute="SearchCommand_CanExecute" Executed="SearchCommand_Executed"/>
         <CommandBinding Command="local:CustomCommands.Edit" CanExecute="EditCommand_CanExecute" Executed="EditCommand_Executed"/>
         <CommandBinding Command="local:CustomCommands.Delete" CanExecute="DeleteCommand_CanExecute" Executed="DeleteCommand_Executed"/>
@@ -154,14 +154,14 @@
                     <ComboBoxItem Content="{DynamicResource MainWindow.SearchBy.Place}"/>
                 </ComboBox>
             </Grid>
-            
-            <GroupBox Margin="30,5" FontFamily="Consolas" Header="{DynamicResource MainWindow.BookInfo}">
+
+            <GroupBox Margin="30,5" FontFamily="Consolas" FontSize="14" Header="{DynamicResource MainWindow.BookInfo}">
                 <Grid Margin="5">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="7*"/>
+                        <ColumnDefinition Width="212*"/>
+                        <ColumnDefinition Width="220*"/>
+                        <ColumnDefinition Width="219*"/>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
@@ -169,55 +169,55 @@
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
-                    <WrapPanel>
+                    <WrapPanel Grid.ColumnSpan="2">
                         <TextBlock Text="{DynamicResource MainWindow.BookInfo.Number}" Margin="0,0,5,0"/>
                         <TextBlock Text="{Binding ViewNumber}" Background="White"/>
                     </WrapPanel>
-                    <WrapPanel Grid.Column="1">
+                    <WrapPanel Grid.Column="2">
                         <TextBlock Text="{DynamicResource MainWindow.BookInfo.Signatures}" Margin="0,0,5,0"/>
                         <TextBlock Text="{Binding ViewSignatures}" Background="White"/>
                     </WrapPanel>
-                    <WrapPanel Grid.Column="2">
+                    <WrapPanel Grid.Column="3">
                         <TextBlock Text="{DynamicResource MainWindow.BookInfo.Title}" Margin="0,0,5,0"/>
                         <TextBlock Text="{Binding ViewTitle}" Background="White"/>
                     </WrapPanel>
-                    <WrapPanel Grid.Column="3">
+                    <WrapPanel Grid.Row="1" Grid.ColumnSpan="2">
                         <TextBlock Text="{DynamicResource MainWindow.BookInfo.Authors}" Margin="0,0,5,0"/>
                         <TextBlock Text="{Binding ViewAuthors}" Background="White"/>
                     </WrapPanel>
-                    <WrapPanel Grid.Row="1">
+                    <WrapPanel Grid.Row="1" Grid.Column="2">
                         <TextBlock Text="{DynamicResource MainWindow.BookInfo.Publisher}" Margin="0,0,5,0"/>
                         <TextBlock Text="{Binding ViewPublisher}" Background="White"/>
                     </WrapPanel>
-                    <WrapPanel Grid.Row="1" Grid.Column="1">
+                    <WrapPanel Grid.Row="1" Grid.Column="3">
                         <TextBlock Text="{DynamicResource MainWindow.BookInfo.Year}" Margin="0,0,5,0"/>
                         <TextBlock Text="{Binding ViewYear}" Background="White"/>
                     </WrapPanel>
-                    <WrapPanel Grid.Row="1" Grid.Column="2">
+                    <WrapPanel Grid.Row="2" Grid.ColumnSpan="2">
                         <TextBlock Text="{DynamicResource MainWindow.BookInfo.Version}" Margin="0,0,5,0"/>
                         <TextBlock Text="{Binding ViewVersion}" Background="White"/>
                     </WrapPanel>
-                    <WrapPanel Grid.Row="1" Grid.Column="3">
+                    <WrapPanel Grid.Row="2" Grid.Column="2">
                         <TextBlock Text="{DynamicResource MainWindow.BookInfo.Medium}" Margin="0,0,5,0"/>
                         <TextBlock Text="{Binding ViewMedium}" Background="White"/>
                     </WrapPanel>
-                    <WrapPanel Grid.Row="2">
+                    <WrapPanel Grid.Row="2" Grid.Column="3">
                         <TextBlock Text="{DynamicResource MainWindow.BookInfo.Place}" Margin="0,0,5,0"/>
                         <TextBlock Text="{Binding ViewPlace}" Background="White"/>
                     </WrapPanel>
-                    <WrapPanel Grid.Row="2" Grid.Column="1">
+                    <WrapPanel Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2">
                         <TextBlock Text="{DynamicResource MainWindow.BookInfo.Date}" Margin="0,0,5,0"/>
                         <TextBlock Text="{Binding ViewDate}" Background="White"/>
                     </WrapPanel>
-                    <WrapPanel Grid.Row="2" Grid.Column="2">
+                    <WrapPanel Grid.Row="3" Grid.Column="2">
                         <TextBlock Text="{DynamicResource MainWindow.BookInfo.Pages}" Margin="0,0,5,0"/>
                         <TextBlock Text="{Binding ViewPages}" Background="White"/>
                     </WrapPanel>
-                    <WrapPanel Grid.Row="2" Grid.Column="3">
+                    <WrapPanel Grid.Row="3" Grid.Column="3">
                         <TextBlock Text="{DynamicResource MainWindow.BookInfo.Price}" Margin="0,0,5,0"/>
                         <TextBlock Text="{Binding ViewPrice, StringFormat={}{0:#0.00}}" Background="White"/>
                     </WrapPanel>
-                    <Button Name="BtnClearBookInfo" Grid.Row="3" Grid.Column="3" Content="{DynamicResource MainWindow.BookInfo.ClearBtn}" MinWidth="75" FontFamily="Default" HorizontalAlignment="Right" Command="local:CustomCommands.ClearBookInfo"/>
+                    <Button FontSize="12" Name="BtnClearBookInfo" Grid.Row="3" Grid.Column="3" Content="{DynamicResource MainWindow.BookInfo.ClearBtn}" MinWidth="75" FontFamily="Default" HorizontalAlignment="Right" Command="local:CustomCommands.ClearBookInfo"/>
                 </Grid>
             </GroupBox>
 

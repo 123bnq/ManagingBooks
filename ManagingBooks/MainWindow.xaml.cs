@@ -57,6 +57,7 @@ namespace ManagingBooks
             Delete.ProgressChanged += Delete_ProgressChanged;
             Delete.RunWorkerCompleted += Delete_RunWorkerCompleted;
             ClearEntries(context);
+            context.SearchBy = Application.Current.FindResource("MainWindow.SearchBy.Number").ToString();
         }
 
 
@@ -419,7 +420,7 @@ namespace ManagingBooks
             var deleteList = SearchList.SelectedItems;
             string msg = Application.Current.FindResource("MainWindow.CodeBehind.DeleteNotify.Message").ToString();
             string caption = Application.Current.FindResource("MainWindow.CodeBehind.DeleteNotify.Caption").ToString();
-            MessageBoxResult result = CustomMessageBox.ShowYesNo(msg, caption, Application.Current.FindResource("MessageBox.YesBtn").ToString(), Application.Current.FindResource("MessageBox.NoBtn").ToString(), MessageBoxImage.Warning);
+            MessageBoxResult result = CustomMessageBox.ShowYesNo(msg, caption, CustomMessageBoxButton.Yes, CustomMessageBoxButton.No, MessageBoxImage.Warning);
             //MessageBoxResult result = MessageBox.Show(msg, caption, MessageBoxButton.YesNo, MessageBoxImage.Warning, MessageBoxResult.No);
 
             var max = deleteList.Count;
@@ -697,5 +698,14 @@ namespace ManagingBooks
         public static readonly RoutedUICommand SaveMedium = new RoutedUICommand("SaveMedium", "SaveMedium", typeof(CustomCommands));
         public static readonly RoutedUICommand RemovePlace = new RoutedUICommand("RemovePlace", "RemovePlace", typeof(CustomCommands));
         public static readonly RoutedUICommand SavePlace = new RoutedUICommand("SavePlace", "SavePlace", typeof(CustomCommands));
+    }
+
+    public static class CustomMessageBoxButton
+    {
+        public static string Yes { get => Application.Current.FindResource("MessageBox.YesBtn").ToString(); }
+        public static string No { get => Application.Current.FindResource("MessageBox.NoBtn").ToString(); }
+        public static string Cancel { get => Application.Current.FindResource("MessageBox.CancelBtn").ToString(); }
+        public static string OK { get => Application.Current.FindResource("MessageBox.OkBtn").ToString(); }
+
     }
 }
