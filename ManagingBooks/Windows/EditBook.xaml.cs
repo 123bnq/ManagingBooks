@@ -8,6 +8,7 @@ using System.Windows.Controls;
 using System.Linq;
 using System.IO;
 using System.Collections.ObjectModel;
+using WPFCustomMessageBox;
 
 namespace ManagingBooks.Windows
 {
@@ -277,13 +278,15 @@ namespace ManagingBooks.Windows
                             copied = false;
                             message = Application.Current.FindResource("EditBook.CodeBehind.InfoCopy.Unsuccessful.Message").ToString();
                             caption = Application.Current.FindResource("EditBook.CodeBehind.InfoCopy.Unsuccessful.Caption").ToString();
-                            result = MessageBox.Show(message, caption, MessageBoxButton.YesNo, MessageBoxImage.Information);
+                            result = CustomMessageBox.ShowYesNo(message, caption, CustomMessageBoxButton.Yes, CustomMessageBoxButton.No, MessageBoxImage.Information);
+                            //result = MessageBox.Show(message, caption, MessageBoxButton.YesNo, MessageBoxImage.Information);
                         }
                         else
                         {
                             message = Application.Current.FindResource("EditBook.CodeBehind.InfoOK.Unsuccessful.Message").ToString();
                             caption = Application.Current.FindResource("EditBook.CodeBehind.InfoOK.Unsuccessful.Caption").ToString();
-                            result = MessageBox.Show(message, caption, MessageBoxButton.YesNo, MessageBoxImage.Information);
+                            result = CustomMessageBox.ShowYesNo(message, caption, CustomMessageBoxButton.Yes, CustomMessageBoxButton.No, MessageBoxImage.Information);
+                            //result = MessageBox.Show(message, caption, MessageBoxButton.YesNo, MessageBoxImage.Information);
                         }
                         if (result == MessageBoxResult.Yes)
                         {
@@ -363,7 +366,8 @@ namespace ManagingBooks.Windows
 
                             message = Application.Current.FindResource("EditBook.CodeBehind.InfoOK.Successful.Message").ToString();
                             caption = Application.Current.FindResource("EditBook.CodeBehind.InfoOK.Successful.Caption").ToString();
-                            MessageBox.Show(message, caption, MessageBoxButton.OK, MessageBoxImage.Information);
+                            CustomMessageBox.ShowOK(message, caption, CustomMessageBoxButton.OK, MessageBoxImage.Information);
+                            //MessageBox.Show(message, caption, MessageBoxButton.OK, MessageBoxImage.Information);
                         }
                         else if (copied)
                         {
@@ -377,7 +381,8 @@ namespace ManagingBooks.Windows
                             con.Close();
                             message = Application.Current.FindResource("EditBook.CodeBehind.InfoCopy.Successful.Message").ToString();
                             caption = Application.Current.FindResource("EditBook.CodeBehind.InfoCopy.Successful.Caption").ToString();
-                            MessageBox.Show(message, caption, MessageBoxButton.OK, MessageBoxImage.Information);
+                            CustomMessageBox.ShowOK(message, caption, CustomMessageBoxButton.OK, MessageBoxImage.Information);
+                            //MessageBox.Show(message, caption, MessageBoxButton.OK, MessageBoxImage.Information);
                         }
                         //else
                         //{
@@ -399,7 +404,8 @@ namespace ManagingBooks.Windows
                 {
                     message = Application.Current.FindResource("EditBook.CodeBehind.Error.Message").ToString();
                     caption = Application.Current.FindResource("EditBook.CodeBehind.Error.Caption").ToString();
-                    var result = MessageBox.Show(message, caption, MessageBoxButton.OK, MessageBoxImage.Error);
+                    var result = CustomMessageBox.ShowOK(message, caption, CustomMessageBoxButton.OK, MessageBoxImage.Error);
+                    //var result = MessageBox.Show(message, caption, MessageBoxButton.OK, MessageBoxImage.Error);
                     e.Cancel = true;
                 }
             }
@@ -407,7 +413,8 @@ namespace ManagingBooks.Windows
             {
                 message = Application.Current.FindResource("EditBook.CodeBehind.WarningCancel.Message").ToString();
                 caption = Application.Current.FindResource("EditBook.CodeBehind.WarningCancel.Caption").ToString();
-                var result = MessageBox.Show(message, caption, MessageBoxButton.YesNo, MessageBoxImage.Warning, MessageBoxResult.No);
+                var result = CustomMessageBox.ShowYesNo(message, caption, CustomMessageBoxButton.Yes, CustomMessageBoxButton.No, MessageBoxImage.Warning);
+                //var result = MessageBox.Show(message, caption, MessageBoxButton.YesNo, MessageBoxImage.Warning, MessageBoxResult.No);
                 isCancelled = false;
                 e.Cancel = result == MessageBoxResult.No;
             }

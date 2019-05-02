@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using WPFCustomMessageBox;
 
 namespace ManagingBooks.Windows
 {
@@ -60,7 +61,8 @@ namespace ManagingBooks.Windows
             {
                 string message = Application.Current.FindResource("EditPublisher.CodeBehind.WarningClose.Message").ToString();
                 string caption = Application.Current.FindResource("EditPublisher.CodeBehind.WarningClose.Caption").ToString();
-                MessageBoxResult result = MessageBox.Show(message, caption, MessageBoxButton.YesNo, MessageBoxImage.Warning, MessageBoxResult.No);
+                MessageBoxResult result = CustomMessageBox.ShowYesNo(message, caption, CustomMessageBoxButton.Yes, CustomMessageBoxButton.No, MessageBoxImage.Warning);
+                //MessageBoxResult result = MessageBox.Show(message, caption, MessageBoxButton.YesNo, MessageBoxImage.Warning, MessageBoxResult.No);
                 e.Cancel = result == MessageBoxResult.No;
             }
         }
@@ -69,7 +71,7 @@ namespace ManagingBooks.Windows
         {
             EditPublisherModel context = this.DataContext as EditPublisherModel;
             ClearEntries(context);
-            PubList.SelectedIndex = -1;
+            PubList.SelectedItem = null;
         }
 
         private void ClearEntries(EditPublisherModel context)
@@ -90,6 +92,7 @@ namespace ManagingBooks.Windows
             context.LabelName = Application.Current.FindResource("EditPublisher.Label.Name").ToString();
             context.LabelCity = Application.Current.FindResource("EditPublisher.Label.City").ToString();
             context.LabelCountry = Application.Current.FindResource("EditPublisher.Label.Country").ToString();
+            CommandManager.InvalidateRequerySuggested();
         }
 
         private void RemovePubCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
@@ -118,8 +121,9 @@ namespace ManagingBooks.Windows
                     con.Close();
                 });
                 GetPublisher();
+                ClearEntries(this.DataContext as EditPublisherModel);
             }
-            ClearEntries(this.DataContext as EditPublisherModel);
+
         }
 
         private void SavePubCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
@@ -169,7 +173,8 @@ namespace ManagingBooks.Windows
             {
                 string message = Application.Current.FindResource("EditPublisher.CodeBehind.ErrorSave.Message").ToString();
                 string caption = Application.Current.FindResource("EditPublisher.CodeBehind.ErrorSave.Caption").ToString();
-                MessageBoxResult result = MessageBox.Show(message, caption, MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBoxResult result = CustomMessageBox.ShowOK(message, caption, CustomMessageBoxButton.OK, MessageBoxImage.Error);
+                //MessageBoxResult result = MessageBox.Show(message, caption, MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 

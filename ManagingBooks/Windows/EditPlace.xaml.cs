@@ -15,6 +15,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using WPFCustomMessageBox;
 
 namespace ManagingBooks.Windows
 {
@@ -51,6 +52,7 @@ namespace ManagingBooks.Windows
             context.LabelCity = Application.Current.FindResource("EditPlace.Label.City").ToString();
             context.LabelState = Application.Current.FindResource("EditPlace.Label.State").ToString();
             context.LabelCountry = Application.Current.FindResource("EditPlace.Label.Country").ToString();
+            CommandManager.InvalidateRequerySuggested();
         }
 
         private void GetPlace()
@@ -163,7 +165,8 @@ namespace ManagingBooks.Windows
             {
                 string message = Application.Current.FindResource("EditPlace.CodeBehind.ErrorSave.Message").ToString();
                 string caption = Application.Current.FindResource("EditPlace.CodeBehind.ErrorSave.Caption").ToString();
-                MessageBoxResult result = MessageBox.Show(message, caption, MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBoxResult result = CustomMessageBox.ShowOK(message, caption, CustomMessageBoxButton.OK, MessageBoxImage.Error);
+                //MessageBoxResult result = MessageBox.Show(message, caption, MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -179,7 +182,8 @@ namespace ManagingBooks.Windows
             {
                 string message = Application.Current.FindResource("EditPlace.CodeBehind.WarningClose.Message").ToString();
                 string caption = Application.Current.FindResource("EditPlace.CodeBehind.WarningClose.Caption").ToString();
-                MessageBoxResult result = MessageBox.Show(message, caption, MessageBoxButton.YesNo, MessageBoxImage.Warning, MessageBoxResult.No);
+                MessageBoxResult result = CustomMessageBox.ShowYesNo(message, caption, CustomMessageBoxButton.Yes, CustomMessageBoxButton.No, MessageBoxImage.Warning);
+                //MessageBoxResult result = MessageBox.Show(message, caption, MessageBoxButton.YesNo, MessageBoxImage.Warning, MessageBoxResult.No);
                 e.Cancel = result == MessageBoxResult.No;
             }
         }
@@ -203,7 +207,7 @@ namespace ManagingBooks.Windows
         private void BtnClear_Click(object sender, RoutedEventArgs e)
         {
             ClearEntries(this.DataContext as EditPlaceModel);
-            PlaceList.SelectedIndex = -1;
+            PlaceList.SelectedItem = null;
         }
     }
 }

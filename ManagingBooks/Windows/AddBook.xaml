@@ -15,24 +15,27 @@
         <StackPanel Orientation="Horizontal">
             <StackPanel Name="WindowToBeClear" Width="500" Margin="0,0,5,0">
                 <TextBlock Text="{DynamicResource AddBook.Number}" Margin="0,0,0,5"/>
-                <TextBox Name="BoxNumber" Text="{Binding Number, StringFormat={}{0:#000000}, Converter={x:Static model:AddBookModel.Converter}}" Width="100" HorizontalAlignment="Left"  Margin="0,0,0,5"/>
+                <TextBox Name="BoxNumber" Text="{Binding Number, StringFormat={}{0:#000000}, Converter={x:Static model:AddBookModel.Converter}}" Width="110" HorizontalAlignment="Left"  Margin="0,0,0,5"/>
                 <TextBlock Text="{DynamicResource AddBook.Signature}" Margin="0,0,0,5"/>
                 <WrapPanel Name="PnlSignatures" Margin="0,0,0,5">
-                    <TextBox Name="BoxSignature1" Text="{Binding Signature1, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,5,0" Width="100"/>
-                    <TextBox Name="BoxSignature2" Text="{Binding Signature2, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,5,0" Width="100"/>
-                    <TextBox Name="BoxSignature3" Text="{Binding Signature3, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,5,0" Width="100"/>
+                    <TextBox Name="BoxSignature1" Text="{Binding Signature1, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,5,0" Width="110"/>
+                    <TextBox Name="BoxSignature2" Text="{Binding Signature2, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,5,0" Width="110"/>
+                    <TextBox Name="BoxSignature3" Text="{Binding Signature3, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,5,0" Width="110"/>
                     <Button Name="BtnSelectSignature" Content="..." Margin="0,0,5,0" MinWidth="50" Click="BtnSelectSignature_Click"/>
                 </WrapPanel>
                 <TextBlock Text="{DynamicResource AddBook.Authors}" Margin="0,0,0,5"/>
                 <WrapPanel Name="PnlAuthors" Margin="0,0,0,5">
-                    <TextBox Name="BoxAuthor1" Text="{Binding Author1, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,5,0" Width="100"/>
-                    <TextBox Name="BoxAuthor2" Text="{Binding Author2, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,5,0" Width="100"/>
-                    <TextBox Name="BoxAuthor3" Text="{Binding Author3, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,5,0" Width="100"/>
+                    <TextBox Name="BoxAuthor1" Text="{Binding Author1, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,5,0" Width="110"/>
+                    <TextBox Name="BoxAuthor2" Text="{Binding Author2, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,5,0" Width="110"/>
+                    <TextBox Name="BoxAuthor3" Text="{Binding Author3, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,5,0" Width="110"/>
                 </WrapPanel>
                 <TextBlock Text="{DynamicResource AddBook.BookTitle}" Margin="0,0,0,5"/>
                 <TextBox Name="BoxTitle" Text="{Binding Title, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,5"/>
                 <TextBlock Text="{DynamicResource AddBook.Publisher}" Margin="0,0,0,5"/>
-                <ComboBox Name="BoxPublisher" Text="{Binding Publisher}" Margin="0,0,0,5" MaxDropDownHeight="150"/>
+                <Grid>
+                    <ComboBox Name="BoxPublisher" Text="{Binding Publisher}" Margin="0,0,0,5" MaxDropDownHeight="150"/>
+                    <TextBlock DataContext="{Binding ElementName=BoxPublisher, Path=SelectedItem}" Margin="5,3,0,0" IsHitTestVisible="False" Style="{StaticResource ComboBoxNull}"/>
+                </Grid>
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="auto"/>
@@ -44,14 +47,20 @@
                         <ColumnDefinition Width="auto"/>
                     </Grid.ColumnDefinitions>
                     <TextBlock Text="{DynamicResource AddBook.Version}" Margin="0,0,0,5"/>
-                    <TextBox Grid.Row="1" Name="BoxVersion" Text="{Binding Version, Converter={x:Static model:AddBookModel.Converter}}" Width="100" Margin="0,0,5,0"/>
+                    <TextBox Grid.Row="1" Name="BoxVersion" Text="{Binding Version, Converter={x:Static model:AddBookModel.Converter}}" Width="110" Margin="0,0,5,0"/>
                     <TextBlock Grid.Column="1" Text="{DynamicResource AddBook.Year}" Margin="0,0,0,5"/>
-                    <TextBox Grid.Row="1" Grid.Column="1" Name="BoxYear" Text="{Binding Year, Converter={x:Static model:AddBookModel.Converter}}" Width="100" Margin="0,0,5,0"/>
+                    <TextBox Grid.Row="1" Grid.Column="1" Name="BoxYear" Text="{Binding Year, Converter={x:Static model:AddBookModel.Converter}}" Width="110" Margin="0,0,5,0"/>
                     <TextBlock Grid.Column="2" Text="{DynamicResource AddBook.Medium}" Margin="0,0,0,5"/>
-                    <ComboBox Grid.Row="1" Grid.Column="2" Name="BoxMedium" Text="{Binding Medium}" Width="100" Margin="0,0,5,0" MaxDropDownHeight="150"/>
+                    <Grid  Grid.Row="1" Grid.Column="2">
+                        <ComboBox Name="BoxMedium" Text="{Binding Medium}" Width="110" Margin="0,0,5,0" MaxDropDownHeight="150"/>
+                        <TextBlock DataContext="{Binding ElementName=BoxMedium, Path=SelectedItem}" Margin="5,3,0,0" IsHitTestVisible="False" Style="{StaticResource ComboBoxNull}"/>
+                    </Grid>
                 </Grid>
                 <TextBlock Text="{DynamicResource AddBook.Place}" Margin="0,0,0,5"/>
-                <ComboBox Name="BoxPlace" Text="{Binding Place}" Margin="0,0,0,5" MaxDropDownHeight="150"/>
+                <Grid>
+                    <ComboBox Name="BoxPlace" Text="{Binding Place}" Margin="0,0,0,5" MaxDropDownHeight="150"/>
+                    <TextBlock DataContext="{Binding ElementName=BoxPlace, Path=SelectedItem}" Margin="5,3,0,0" IsHitTestVisible="False" Style="{StaticResource ComboBoxNull}"/>
+                </Grid>
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="auto"/>
@@ -73,7 +82,7 @@
                                         </ControlTemplate>
                                     </Setter.Value>
                                 </Setter>
-                                <Setter Property="IsReadOnly" Value="True"/>
+                                <Setter Property="IsReadOnly" Value="False"/>
                             </Style>
                         </DatePicker.Resources>
                     </DatePicker>

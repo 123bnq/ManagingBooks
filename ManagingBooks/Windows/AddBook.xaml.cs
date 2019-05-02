@@ -9,6 +9,7 @@ using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Threading;
 using System.IO;
+using WPFCustomMessageBox;
 
 namespace ManagingBooks.Windows
 {
@@ -74,6 +75,16 @@ namespace ManagingBooks.Windows
                         {
                             (childCtrl as DatePicker).SelectedDate = null;
                         }
+                        if (childCtrl.GetType().IsSubclassOf(typeof(Panel)))
+                        {
+                            foreach(var ccCtrl in (childCtrl as Panel).Children)
+                            {
+                                if (ccCtrl.GetType() == typeof(ComboBox))
+                                {
+                                    (ccCtrl as ComboBox).SelectedItem = null;
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -128,6 +139,24 @@ namespace ManagingBooks.Windows
                                 break;
                             }
                         }
+                        if (childCtrl.GetType().IsSubclassOf(typeof(Panel)))
+                        {
+                            foreach (var ccCtrl in (childCtrl as Panel).Children)
+                            {
+                                if (ccCtrl.GetType() == typeof(ComboBox))
+                                {
+                                    if((ccCtrl as ComboBox).SelectedItem != null)
+                                    {
+                                        containData |= true;
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                        if (containData)
+                        {
+                            break;
+                        }
                     }
                     if (containData)
                     {
@@ -140,7 +169,8 @@ namespace ManagingBooks.Windows
             {
                 string message = Application.Current.FindResource("AddBook.CodeBehind.WarningCancel.Message").ToString();
                 string caption = Application.Current.FindResource("AddBook.CodeBehind.WarningCancel.Caption").ToString();
-                MessageBoxResult result = MessageBox.Show(message, caption, MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                MessageBoxResult result = CustomMessageBox.ShowYesNo(message, caption, CustomMessageBoxButton.Yes, CustomMessageBoxButton.No, MessageBoxImage.Warning);
+                //MessageBoxResult result = MessageBox.Show(message, caption, MessageBoxButton.YesNo, MessageBoxImage.Warning);
                 if (result == MessageBoxResult.No)
                 {
                     e.Cancel = true;
@@ -203,7 +233,8 @@ namespace ManagingBooks.Windows
                     {
                         message = Application.Current.FindResource("AddBook.CodeBehind.WarningAdd.Message").ToString();
                         caption = Application.Current.FindResource("AddBook.CodeBehind.WarningAdd.Caption").ToString();
-                        MessageBox.Show(message, caption, MessageBoxButton.OK, MessageBoxImage.Warning);
+                        CustomMessageBox.ShowOK(message, caption, CustomMessageBoxButton.OK, MessageBoxImage.Warning);
+                        //MessageBox.Show(message, caption, MessageBoxButton.OK, MessageBoxImage.Warning);
                     }
                     else
                     {
@@ -216,7 +247,8 @@ namespace ManagingBooks.Windows
                         });
                         message = Application.Current.FindResource("AddBook.CodeBehind.InfoAdd.Message").ToString();
                         caption = Application.Current.FindResource("AddBook.CodeBehind.InfoAdd.Caption").ToString();
-                        MessageBox.Show(message, caption, MessageBoxButton.OK, MessageBoxImage.Information);
+                        CustomMessageBox.ShowOK(message, caption, CustomMessageBoxButton.OK, MessageBoxImage.Information);
+                        //MessageBox.Show(message, caption, MessageBoxButton.OK, MessageBoxImage.Information);
                         UpdateListBook(context);
                         ClearEntries();
                     }
@@ -225,14 +257,16 @@ namespace ManagingBooks.Windows
                 {
                     message = Application.Current.FindResource("AddBook.CodeBehind.ErrorAdd.IncorrectOrder.Message").ToString();
                     caption = Application.Current.FindResource("AddBook.CodeBehind.ErrorAdd.IncorrectOrder.Caption").ToString();
-                    MessageBox.Show(message, caption, MessageBoxButton.OK, MessageBoxImage.Error);
+                    CustomMessageBox.ShowOK(message, caption, CustomMessageBoxButton.OK, MessageBoxImage.Error);
+                    //MessageBox.Show(message, caption, MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
             else
             {
                 message = Application.Current.FindResource("AddBook.CodeBehind.ErrorAdd.NotEnough.Message").ToString();
                 caption = Application.Current.FindResource("AddBook.CodeBehind.ErrorAdd.NotEnough.Caption").ToString();
-                MessageBox.Show(message, caption, MessageBoxButton.OK, MessageBoxImage.Error);
+                CustomMessageBox.ShowOK(message, caption, CustomMessageBoxButton.OK, MessageBoxImage.Error);
+                //MessageBox.Show(message, caption, MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -397,7 +431,8 @@ namespace ManagingBooks.Windows
             });
             string message = "100 Books are successfully added";
             string caption = "Information";
-            MessageBox.Show(message, caption, MessageBoxButton.OK, MessageBoxImage.Information);
+            CustomMessageBox.ShowOK(message, caption, CustomMessageBoxButton.OK, MessageBoxImage.Information);
+            //MessageBox.Show(message, caption, MessageBoxButton.OK, MessageBoxImage.Information);
 
         }
 

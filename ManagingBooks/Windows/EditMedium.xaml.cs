@@ -5,6 +5,8 @@ using System.Collections.ObjectModel;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Input;
+using WPFCustomMessageBox;
 
 namespace ManagingBooks.Windows
 {
@@ -39,6 +41,7 @@ namespace ManagingBooks.Windows
                 }
             }
             context.LabelName = Application.Current.FindResource("EditMedium.Label.Name").ToString();
+            CommandManager.InvalidateRequerySuggested();
         }
 
         private void GetMedium()
@@ -73,7 +76,8 @@ namespace ManagingBooks.Windows
             {
                 string message = Application.Current.FindResource("EditMeidum.CodeBehind.WarningClose.Message").ToString();
                 string caption = Application.Current.FindResource("EditMeidum.CodeBehind.WarningClose.Caption").ToString();
-                MessageBoxResult result = MessageBox.Show(message, caption, MessageBoxButton.YesNo, MessageBoxImage.Warning, MessageBoxResult.No);
+                MessageBoxResult result = CustomMessageBox.ShowYesNo(message, caption, CustomMessageBoxButton.Yes, CustomMessageBoxButton.No, MessageBoxImage.Warning);
+                //MessageBoxResult result = MessageBox.Show(message, caption, MessageBoxButton.YesNo, MessageBoxImage.Warning, MessageBoxResult.No);
                 e.Cancel = result == MessageBoxResult.No;
             }
         }
@@ -82,7 +86,7 @@ namespace ManagingBooks.Windows
         {
             EditMediumModel context = this.DataContext as EditMediumModel;
             ClearEntries(context);
-            MediumList.SelectedIndex = -1;
+            MediumList.SelectedItem = null;
         }
 
         private void RemoveMediumCommand_CanExecute(object sender, System.Windows.Input.CanExecuteRoutedEventArgs e)
@@ -150,7 +154,8 @@ namespace ManagingBooks.Windows
             {
                 string message = Application.Current.FindResource("EditMeidum.CodeBehind.ErrorSave.Message").ToString();
                 string caption = Application.Current.FindResource("EditMeidum.CodeBehind.ErrorSave.Caption").ToString();
-                MessageBox.Show(message, caption, MessageBoxButton.OK, MessageBoxImage.Error);
+                CustomMessageBox.ShowOK(message, caption, CustomMessageBoxButton.OK, MessageBoxImage.Error);
+                //MessageBox.Show(message, caption, MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
