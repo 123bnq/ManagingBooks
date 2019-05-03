@@ -165,17 +165,26 @@ namespace ManagingBooks.Windows
                     updateCommand.CommandText = $"UPDATE Publishers SET Name='{context.Name}', City='{context.City}', Country='{context.Country}' WHERE Id={context.Id}";
                     updateCommand.ExecuteNonQuery();
                 }
-                con.Close();
-                ClearEntries(context);
-                GetPublisher();
             }
             else
             {
-                string message = Application.Current.FindResource("EditPublisher.CodeBehind.ErrorSave.Message").ToString();
-                string caption = Application.Current.FindResource("EditPublisher.CodeBehind.ErrorSave.Caption").ToString();
-                MessageBoxResult result = CustomMessageBox.ShowOK(message, caption, CustomMessageBoxButton.OK, MessageBoxImage.Error);
-                //MessageBoxResult result = MessageBox.Show(message, caption, MessageBoxButton.OK, MessageBoxImage.Error);
+                if (context.Id == 0)
+                {
+                    SqliteCommand updateCommand = con.CreateCommand();
+                    updateCommand.CommandText = $"UPDATE Publishers SET Name='{context.Name}', City='{context.City}', Country='{context.Country}' WHERE Id={context.Id}";
+                    updateCommand.ExecuteNonQuery();
+                }
+                else
+                {
+                    string message = Application.Current.FindResource("EditPublisher.CodeBehind.ErrorSave.Message").ToString();
+                    string caption = Application.Current.FindResource("EditPublisher.CodeBehind.ErrorSave.Caption").ToString();
+                    MessageBoxResult result = CustomMessageBox.ShowOK(message, caption, CustomMessageBoxButton.OK, MessageBoxImage.Error);
+                    //MessageBoxResult result = MessageBox.Show(message, caption, MessageBoxButton.OK, MessageBoxImage.Error);
+                }
             }
+            con.Close();
+            ClearEntries(context);
+            GetPublisher();
         }
 
         private void PubList_SelectionChanged(object sender, SelectionChangedEventArgs e)

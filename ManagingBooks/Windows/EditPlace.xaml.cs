@@ -157,17 +157,26 @@ namespace ManagingBooks.Windows
                     updateCommand.CommandText = $"UPDATE Places SET City='{context.City}', State='{context.State}', Country='{context.Country}' WHERE Id={context.Id}";
                     updateCommand.ExecuteNonQuery();
                 }
-                con.Close();
-                ClearEntries(context);
-                GetPlace();
             }
             else
             {
-                string message = Application.Current.FindResource("EditPlace.CodeBehind.ErrorSave.Message").ToString();
-                string caption = Application.Current.FindResource("EditPlace.CodeBehind.ErrorSave.Caption").ToString();
-                MessageBoxResult result = CustomMessageBox.ShowOK(message, caption, CustomMessageBoxButton.OK, MessageBoxImage.Error);
-                //MessageBoxResult result = MessageBox.Show(message, caption, MessageBoxButton.OK, MessageBoxImage.Error);
+                if (context.Id != 0)
+                {
+                    SqliteCommand updateCommand = con.CreateCommand();
+                    updateCommand.CommandText = $"UPDATE Places SET City='{context.City}', State='{context.State}', Country='{context.Country}' WHERE Id={context.Id}";
+                    updateCommand.ExecuteNonQuery();
+                }
+                else
+                {
+                    string message = Application.Current.FindResource("EditPlace.CodeBehind.ErrorSave.Message").ToString();
+                    string caption = Application.Current.FindResource("EditPlace.CodeBehind.ErrorSave.Caption").ToString();
+                    MessageBoxResult result = CustomMessageBox.ShowOK(message, caption, CustomMessageBoxButton.OK, MessageBoxImage.Error);
+                    //MessageBoxResult result = MessageBox.Show(message, caption, MessageBoxButton.OK, MessageBoxImage.Error);
+                }
             }
+            con.Close();
+            ClearEntries(context);
+            GetPlace();
         }
 
         private void BtnClose_Click(object sender, RoutedEventArgs e)
@@ -178,7 +187,7 @@ namespace ManagingBooks.Windows
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             EditPlaceModel context = this.DataContext as EditPlaceModel;
-            if(!string.IsNullOrWhiteSpace(context.City) || !string.IsNullOrWhiteSpace(context.State) || !string.IsNullOrWhiteSpace(context.Country))
+            if (!string.IsNullOrWhiteSpace(context.City) || !string.IsNullOrWhiteSpace(context.State) || !string.IsNullOrWhiteSpace(context.Country))
             {
                 string message = Application.Current.FindResource("EditPlace.CodeBehind.WarningClose.Message").ToString();
                 string caption = Application.Current.FindResource("EditPlace.CodeBehind.WarningClose.Caption").ToString();
@@ -192,7 +201,7 @@ namespace ManagingBooks.Windows
         {
             EditPlaceModel context = this.DataContext as EditPlaceModel;
             Place place = PlaceList.SelectedItem as Place;
-            if(place != null)
+            if (place != null)
             {
                 context.LabelCity = Application.Current.FindResource("EditPlace.Label.EditCity").ToString();
                 context.LabelState = Application.Current.FindResource("EditPlace.Label.EditState").ToString();

@@ -146,17 +146,26 @@ namespace ManagingBooks.Windows
                     updateCommand.CommandText = $"UPDATE Mediums SET Name='{context.Name}' WHERE MediumId={context.Id}";
                     updateCommand.ExecuteNonQuery();
                 }
-                con.Close();
-                ClearEntries(context);
-                GetMedium();
             }
             else
             {
-                string message = Application.Current.FindResource("EditMeidum.CodeBehind.ErrorSave.Message").ToString();
-                string caption = Application.Current.FindResource("EditMeidum.CodeBehind.ErrorSave.Caption").ToString();
-                CustomMessageBox.ShowOK(message, caption, CustomMessageBoxButton.OK, MessageBoxImage.Error);
-                //MessageBox.Show(message, caption, MessageBoxButton.OK, MessageBoxImage.Error);
+                if (context.Id != 0)
+                {
+                    SqliteCommand updateCommand = con.CreateCommand();
+                    updateCommand.CommandText = $"UPDATE Mediums SET Name='{context.Name}' WHERE MediumId={context.Id}";
+                    updateCommand.ExecuteNonQuery();
+                }
+                else
+                {
+                    string message = Application.Current.FindResource("EditMeidum.CodeBehind.ErrorSave.Message").ToString();
+                    string caption = Application.Current.FindResource("EditMeidum.CodeBehind.ErrorSave.Caption").ToString();
+                    CustomMessageBox.ShowOK(message, caption, CustomMessageBoxButton.OK, MessageBoxImage.Error);
+                    //MessageBox.Show(message, caption, MessageBoxButton.OK, MessageBoxImage.Error);
+                }
             }
+            con.Close();
+            ClearEntries(context);
+            GetMedium();
         }
 
         private void MediumList_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
