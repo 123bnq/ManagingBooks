@@ -143,7 +143,7 @@
                         <KeyBinding Key="Return" Command="local:CustomCommands.Search"/>
                     </TextBox.InputBindings>
                 </TextBox>
-                <Button Grid.Column="2" MinWidth="75" Content="{DynamicResource MainWindow.SearchBtn}" Margin="5,0,0,5" Command="local:CustomCommands.Search"/>
+                <Button x:Name="Test" Grid.Column="2" MinWidth="75" Content="Test" Margin="5,0,0,5" Click="Test_Click" />
                 <TextBlock Grid.Row="1" Text="{DynamicResource MainWindow.SearchBy}" Margin="0,0,10,0"/>
                 <ComboBox Name="BoxSearchBy" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Margin="8,0,0,0" Text="{Binding SearchBy}">
                     <ComboBoxItem Content="{DynamicResource MainWindow.SearchBy.Number}"/>

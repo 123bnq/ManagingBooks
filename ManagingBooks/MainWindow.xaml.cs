@@ -19,6 +19,9 @@ using Microsoft.Win32;
 using System.Diagnostics;
 using System.Linq;
 using WPFCustomMessageBox;
+using System.Data.OleDb;
+using System.Data;
+using System.IO;
 
 namespace ManagingBooks
 {
@@ -665,6 +668,31 @@ namespace ManagingBooks
             //SearchBook book = SearchList.SelectedItem as SearchBook;
 
 
+        }
+
+        private void Test_Click(object sender, RoutedEventArgs e)
+        {
+            var myDataTable = new DataTable();
+            string mdbPath = Path.Combine(AppContext.BaseDirectory, "Data\\ProNoskoDatenbank_160717.mdb");
+            using (var conection = new OleDbConnection($"Provider=Microsoft.JET.OLEDB.4.0;data source={mdbPath};"))
+            {
+                conection.Open();
+                OleDbDataReader reader = null;
+
+                OleDbCommand command = new OleDbCommand("SELECT * from books", conection);
+                reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    Book book = new Book();
+                    int temp;
+                    int.TryParse(reader["Nr"].ToString(), out temp);
+                    book.Number = temp;
+                    
+                }
+            }
+            //SqlMethods.SqlConnect(out SqliteConnection con);
+            //SqliteTransaction tr = con.BeginTransaction();
+            //AddBook.AddBookToDatabase(ref con, ref tr, new Book());
         }
     }
 
