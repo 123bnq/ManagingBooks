@@ -54,7 +54,7 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
-                <ListView x:Name="SearchList" MinHeight="400" Margin="0,0,0,5" SelectionChanged="SearchList_SelectionChanged">
+                <ListView x:Name="SearchList" MinHeight="400" MaxHeight="600" Margin="0,0,0,5" SelectionChanged="SearchList_SelectionChanged">
                     <ListView.Resources>
                         <ContextMenu x:Key="ItemContextMenu">
                             <MenuItem Header="{DynamicResource MainWindow.SearchList.ContextMenu.Edit}" Command="local:CustomCommands.Edit"/>
