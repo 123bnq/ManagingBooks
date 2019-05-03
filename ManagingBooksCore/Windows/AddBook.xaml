@@ -1,0 +1,113 @@
+﻿<Window x:Class="ManagingBooks.Windows.AddBook"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ManagingBooks.Windows"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        xmlns:model="clr-namespace:ManagingBooks.Model"
+        mc:Ignorable="d"
+        Title="{DynamicResource AddBook.Title}" SizeToContent="WidthAndHeight" Background="WhiteSmoke"
+        ShowInTaskbar="False"
+        WindowStartupLocation="CenterOwner"
+        Closing="AddBook_Closing">
+    <StackPanel Margin="10" >
+        <StackPanel Orientation="Horizontal">
+            <StackPanel Name="WindowToBeClear" Width="500" Margin="0,0,5,0">
+                <TextBlock Text="{DynamicResource AddBook.Number}" Margin="0,0,0,5"/>
+                <TextBox Name="BoxNumber" Text="{Binding Number, StringFormat={}{0:#000000}, Converter={x:Static model:AddBookModel.NumberConverter}}" MaxLength="6" PreviewTextInput="IntNumberValidationTextBox"  Width="110" HorizontalAlignment="Left"  Margin="0,0,0,5"/>
+                <TextBlock Text="{DynamicResource AddBook.Signature}" Margin="0,0,0,5"/>
+                <WrapPanel Name="PnlSignatures" Margin="0,0,0,5">
+                    <TextBox Name="BoxSignature1" Text="{Binding Signature1, UpdateSourceTrigger=PropertyChanged, Converter={x:Static model:AddBookModel.StringConverter}, ConverterParameter='N/A'}" Margin="0,0,5,0" Width="110"/>
+                    <TextBox Name="BoxSignature2" Text="{Binding Signature2, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,5,0" Width="110"/>
+                    <TextBox Name="BoxSignature3" Text="{Binding Signature3, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,5,0" Width="110"/>
+                    <Button Name="BtnSelectSignature" Content="..." Margin="0,0,5,0" MinWidth="50" Click="BtnSelectSignature_Click"/>
+                </WrapPanel>
+                <TextBlock Text="{DynamicResource AddBook.Authors}" Margin="0,0,0,5"/>
+                <WrapPanel Name="PnlAuthors" Margin="0,0,0,5">
+                    <TextBox Name="BoxAuthor1" Text="{Binding Author1, UpdateSourceTrigger=PropertyChanged, Converter={x:Static model:AddBookModel.StringConverter}, ConverterParameter='N/A'}" Margin="0,0,5,0" Width="110"/>
+                    <TextBox Name="BoxAuthor2" Text="{Binding Author2, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,5,0" Width="110"/>
+                    <TextBox Name="BoxAuthor3" Text="{Binding Author3, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,5,0" Width="110"/>
+                </WrapPanel>
+                <TextBlock Text="{DynamicResource AddBook.BookTitle}" Margin="0,0,0,5"/>
+                <TextBox Name="BoxTitle" Text="{Binding Title, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,5"/>
+                <TextBlock Text="{DynamicResource AddBook.Publisher}" Margin="0,0,0,5"/>
+                <Grid>
+                    <ComboBox Name="BoxPublisher" Text="{Binding Publisher}" Margin="0,0,0,5" MaxDropDownHeight="150"/>
+                    <TextBlock DataContext="{Binding ElementName=BoxPublisher, Path=SelectedItem}" Margin="5,3,0,0" IsHitTestVisible="False" Style="{StaticResource ComboBoxNull}"/>
+                </Grid>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="{DynamicResource AddBook.Version}" Margin="0,0,0,5"/>
+                    <TextBox Grid.Row="1" Name="BoxVersion" Text="{Binding Version, Converter={x:Static model:AddBookModel.NumberConverter}}" PreviewTextInput="IntNumberValidationTextBox" Width="110" Margin="0,0,5,0"/>
+                    <TextBlock Grid.Column="1" Text="{DynamicResource AddBook.Year}" Margin="0,0,0,5"/>
+                    <TextBox Grid.Row="1" Grid.Column="1" Name="BoxYear" Text="{Binding Year, Converter={x:Static model:AddBookModel.NumberConverter}}" MaxLength="4" PreviewTextInput="IntNumberValidationTextBox" Width="110" Margin="0,0,5,0"/>
+                    <TextBlock Grid.Column="2" Text="{DynamicResource AddBook.Medium}" Margin="0,0,0,5"/>
+                    <Grid  Grid.Row="1" Grid.Column="2">
+                        <ComboBox Name="BoxMedium" Text="{Binding Medium}" Width="110" Margin="0,0,5,0" MaxDropDownHeight="150"/>
+                        <TextBlock DataContext="{Binding ElementName=BoxMedium, Path=SelectedItem}" Margin="5,3,0,0" IsHitTestVisible="False" Style="{StaticResource ComboBoxNull}"/>
+                    </Grid>
+                </Grid>
+                <TextBlock Text="{DynamicResource AddBook.Place}" Margin="0,0,0,5"/>
+                <Grid>
+                    <ComboBox Name="BoxPlace" Text="{Binding Place}" Margin="0,0,0,5" MaxDropDownHeight="150"/>
+                    <TextBlock DataContext="{Binding ElementName=BoxPlace, Path=SelectedItem}" Margin="5,3,0,0" IsHitTestVisible="False" Style="{StaticResource ComboBoxNull}"/>
+                </Grid>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="{DynamicResource AddBook.Date}" Margin="0,0,0,5"/>
+                    <DatePicker Name="BoxDates" Grid.Row="1" FirstDayOfWeek="Monday" SelectedDate="1/1/1970" DisplayDate="{x:Static sys:DateTime.Today}" SelectedDateChanged="BoxDates_SelectedDateChanged" DisplayDateEnd="{x:Static sys:DateTime.Today}" MinWidth="100" Margin="0,0,5,5">
+                        <DatePicker.Resources>
+                            <Style TargetType="DatePickerTextBox">
+                                <Setter Property="Control.Template">
+                                    <Setter.Value>
+                                        <ControlTemplate>
+                                            <TextBox x:Name="PART_TextBox" Text="{Binding Path=SelectedDate, StringFormat={}{0:dd/MM/yyyy}, RelativeSource={RelativeSource AncestorType={x:Type DatePicker}}}"/>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                                <Setter Property="IsReadOnly" Value="False"/>
+                            </Style>
+                        </DatePicker.Resources>
+                    </DatePicker>
+                    <TextBlock Grid.Column="1" Text="{DynamicResource AddBook.Pages}" Margin="0,0,0,5"/>
+                    <TextBox  Name="BoxPage" Grid.Row="1" Grid.Column="1" Text="{Binding Pages, Converter={x:Static model:AddBookModel.NumberConverter}}" PreviewTextInput="IntNumberValidationTextBox" Width="100" Margin="0,0,5,5"/>
+                    <TextBlock Grid.Column="2" Text="{DynamicResource AddBook.Price}" Margin="0,0,0,5"/>
+                    <TextBox Name="BoxPrice" Grid.Row="1" Grid.Column="2" Text="{Binding Price, StringFormat={}{0:#0.00}, Converter={x:Static model:AddBookModel.NumberConverter}}" PreviewTextInput="DecimalNumberValidationTextBox" Width="100" Margin="0,0,5,5"/>
+                </Grid>
+            </StackPanel>
+            <StackPanel Margin="35,0,0,0">
+                <TextBlock Text="{DynamicResource AddBook.Last20}" Margin="0,0,0,10"/>
+                <ListBox Name="ListNumber" Width="120" Height="336" ItemsSource="{Binding ListBook}">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding StringFormat={}{0:#000000}}"/>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </StackPanel>
+        </StackPanel>
+        <WrapPanel HorizontalAlignment="Right" Margin="0,10,0,0">
+            <Button Name="BtnAddTest" Content="Add Demo" MinWidth="70" Margin="5" Click="BtnAddTest_Click"/>
+            <Button Name="BtnAdd" Content="{DynamicResource AddBook.AddBtn}" MinWidth="70" Margin="5" Click="BtnAdd_Click"/>
+            <Button Name="BtnClear" Content="{DynamicResource AddBook.ClearBtn}" MinWidth="70" Margin="5" Click="BtnClear_Click"/>
+            <Button Name="BtnCancel" Content="{DynamicResource AddBook.CancelBtn}" MinWidth="70" Margin="5" Click="BtnCancel_Click"/>
+        </WrapPanel>
+    </StackPanel>
+</Window>

@@ -1,0 +1,157 @@
+SignatureId,ParentId,Signature,Info,Sort
+1,,AGRA,Agrarwissenschaften,
+2,,ALLG,"Allgemeines, Lexika, Nachschlagewerke",
+3,,ALTE,"Altertumswissenschaft, Arch‰ˆlogie",
+4,,ARCH,Architektur,
+5,,ASTR,Astronomie,
+6,,BETR,Betriebswirtschaft,
+7,,BIOL,Biologie,
+8,,CHEM,Chemie,
+9,,ERNƒ,Ern‰hrung,
+10,,EROT,Erotika,
+11,,FRSP,Fremdsprachen,
+12,,GEOL,Geologie,
+13,,GEOG,Geografie,
+14,,GESC,Geschichte,
+15,,GESU,Gesundheitswesen,
+16,,HOBB,"Freizeit, Hobby",
+17,,INFO,Informatik,
+18,,JAGD,Jagd,
+19,,KUNS,Kunst,
+20,,LITE,Literatur,
+21,,LITF,Fremdsprachige Literatur,
+22,,LITW,Literaturwissenschaft,
+23,,MATH,Mathematik,
+24,,MEDI,Medizin,
+25,,MILI,Milit‰r,
+26,,MUSI,Musik,
+27,,PƒDA,P‰dagogik,
+28,,PHAR,Pharmazie,
+29,,PHIL,Philosophie,
+30,,PHYS,Physik,
+31,,POLI,Politik,
+32,,PSYC,Psychologie,
+33,,RECH,Rechtswissenschaft,
+34,,REIS,"Reisen, ReisefÅhrer",
+35,,SOZI,Sozialwissenschaften,
+36,,SPOR,Sport,
+37,,SPRA,Sprachwissenschaft / Linguistik,
+38,,STEU,Steuern,
+39,,TECH,Technik,
+40,,THEA,Theaterwissenschaften,
+41,,THEO,Theologie,
+42,,VETE,Tiermedizin,
+43,,VOLK,Volkswirtschaft,
+44,,WIRT,Wirtschaft (Allgemein; Ohne BWL und VWL),
+45,,CDXX,CD,
+46,,DVDX,DVD,
+47,,FOTO,Fotographie,
+48,4,ARCH,Architekten,A
+49,4,GART,Gartenarchitektur / Gartengestaltung,A
+50,4,INDU,Industriebau,A
+51,4,INNE,Innenarchitektur,A
+52,4,VERK,"Verkehrsbau, Flugh‰fen, Bahnhˆfe",A
+53,4,WOHN,Wohnbau,A
+54,6,ALLG,Allgemeines,A
+55,6,BANK,Bankbetriebslehre,A
+56,6,BUCH,Buchf¸hrung,A
+57,6,FALL,Fallstudien,A
+58,6,FINA,Finanzwirtschaft,A
+59,6,INDU,industriebetriebslehre,A
+60,6,INVE,Investition,A
+61,6,INNO,Innovation,A
+62,6,KORE,Kostenrechnung,A
+63,6,LOGI,Logistik,A
+64,6,MARK,Marketing,A
+65,6,OPER,Operative Planung,A
+66,6,PERS,Personalwirtschaft,A
+67,6,PROD,Produktionswirtschaft,A
+68,6,RECH,Rechnungslegung / Bilanzen,A
+69,6,STRA,Strategische Planung,A
+70,6,UNTE,Unternehmensf¸hrung,A
+71,7,ALLG,Allgemeines,A
+72,7,BOTA,Botanik,A
+73,7,ZOOL,Zoologie,A
+74,8,ALLG,Allgemeies,A
+75,8,ANOR,Anorganische Chemie,A
+76,8,EXPE,Experimentelle Chemie,A
+77,8,ORGA,Organische Chemie,A
+78,9,ALLG,Allgemeines,A
+79,9,GETR,Getr‰nke,A
+80,9,KOCH,Kochb¸cher,A
+81,11,ALLG,Allgemeines,A
+82,11,AFRI,Afrikaans,A
+83,11,AENG,Amerikanisches Englisch,A
+84,11,BULG,Bulgarisch,A
+85,11,CHIN,Chinesisch,A
+86,11,DANI,D‰nisch,A
+87,11,ENGL,Englisch,A
+88,11,FINN,Finnisch,A
+89,11,FRAN,Franzˆsisch,A
+90,11,GRIE,Griechisch,A
+91,11,HABR,Hebr‰isch,A
+92,11,INDI,Indisch,A
+93,11,ITAL,Italienisch,A
+94,11,JAPA,Japanisch,A
+95,11,NORW,Norwegisch,A
+96,11,POLN,Polnisch,A
+97,11,RUSS,Russisch,A
+98,11,SCHW,Schwedisch,A
+99,11,SPAN,Spanisch,A
+100,11,TURK,T¸rkisch,A
+101,11,TSCH,Tscgechisch,A
+102,11,THAI,Thail‰ndisch,A
+103,11,UNGA,Ungarisch,A
+104,11,VIET,Vietnamesisch,A
+105,15,ALLG,Allgemeines,A
+106,15,AKKU,Akupunktur,A
+107,19,ALLG,Allgemeines,A
+108,19,AUSS,Aussstellungskataloge,A
+109,20,BELL,"Belletristik, Neue Literatur, Fiction",A
+110,20,BIOG,Biographien,A
+111,20,GRIE,Griechische Literatur,A
+112,20,KLAS,Klassiker der Weltliteratur,A
+113,20,KRIM,Kriminalromane,A
+114,20,MITT,Literatur Mittelalter,A
+115,20,REIH,Reihen,A
+116,20,SZBI,S¸ddeutsche Zeitung Bibliothek,A
+117,20,SZME,S¸ddeutsche Zeitung Metropolen,A
+118,20,R÷MI,Rˆmische Literatur,A
+119,21,ENGL,Englische Literatur,A
+120,21,FRAN,Franzˆsische Literatur,A
+121,21,SPAN,Spanische Literatur,A
+122,23,ALLG,Allgemeines,A
+123,23,ALGE,Algebra,A
+124,23,DIFF,Differentialrechnung,A
+125,23,STAT,Statistik,A
+126,24,ALLG,Allgemeines,A
+127,24,DIAG,Diagnostik,A
+128,24,INNE,Innere Medizin,B
+129,24,HIST,Histologie,A
+130,24,ANƒS,An‰sthesie,B
+131,24,MEDS,Medizinische Statistik,A
+132,24,KARD,Kardiologie,B
+133,24,SONO,Sonographie,B
+134,24,NOTF,Notfallmedizin,B
+135,24,GYNƒ,Gyn‰kologie,B
+136,4,UMBA,Umbau / Renovierung,A
+137,4,ALLG,Allgemeines,A
+138,31,ALLG,Allgemeines,A
+139,31,QUER,Querschnittsbereiche,A
+140,31,ERNƒ,Ern‰hrungsfragen,B
+141,31,GLOB,Globalisierung,B
+142,20,ALLG,Allgemeines,A
+143,24,INNE,Innere Medizin,B
+144,14,LƒND,L‰nder,A
+145,20,REIS,Reiseberichte,A
+146,13,BILD,Bildband,A
+147,33,STRA,Strafrecht,A
+148,6,INDU,Industriebetriebslehre,A
+149,6,INDU,industriebetriebslehre,A
+150,33,÷FFE,÷ffentliches Recht,A
+151,33,ZIVI,Zivilrecht,A
+152,33,HAND,Handelsrecht,A
+153,36,WALK,Walking,A
+154,36,WAND,Wandern,A
+155,13,WAND,Wanderf¸hrer,A
+156,47,FOTO,Fotographieren,A

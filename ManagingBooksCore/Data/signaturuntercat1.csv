@@ -1,0 +1,110 @@
+Id,ParentId,Signature,Info,Sort
+1,4,ARCH,Architekten,A
+2,4,GART,Gartenarchitektur / Gartengestaltung,A
+3,4,INDU,Industriebau,A
+4,4,INNE,Innenarchitektur,A
+5,4,VERK,"Verkehrsbau, Flughäfen, Bahnhöfe",A
+6,4,WOHN,Wohnbau,A
+7,6,ALLG,Allgemeines,A
+8,6,BANK,Bankbetriebslehre,A
+9,6,BUCH,Buchführung,A
+10,6,FALL,Fallstudien,A
+11,6,FINA,Finanzwirtschaft,A
+12,6,INDU,industriebetriebslehre,A
+13,6,INVE,Investition,A
+14,6,INNO,Innovation,A
+15,6,KORE,Kostenrechnung,A
+16,6,LOGI,Logistik,A
+17,6,MARK,Marketing,A
+18,6,OPER,Operative Planung,A
+19,6,PERS,Personalwirtschaft,A
+20,6,PROD,Produktionswirtschaft,A
+21,6,RECH,Rechnungslegung / Bilanzen,A
+22,6,STRA,Strategische Planung,A
+23,6,UNTE,Unternehmensführung,A
+24,7,ALLG,Allgemeines,A
+25,7,BOTA,Botanik,A
+26,7,ZOOL,Zoologie,A
+27,8,ALLG,Allgemeies,A
+28,8,ANOR,Anorganische Chemie,A
+29,8,EXPE,Experimentelle Chemie,A
+30,8,ORGA,Organische Chemie,A
+31,9,ALLG,Allgemeines,A
+32,9,GETR,Getränke,A
+33,9,KOCH,Kochbücher,A
+34,11,ALLG,Allgemeines,A
+35,11,AFRI,Afrikaans,A
+36,11,AENG,Amerikanisches Englisch,A
+37,11,BULG,Bulgarisch,A
+38,11,CHIN,Chinesisch,A
+39,11,DANI,Dänisch,A
+40,11,ENGL,Englisch,A
+41,11,FINN,Finnisch,A
+42,11,FRAN,Französisch,A
+43,11,GRIE,Griechisch,A
+44,11,HABR,Hebräisch,A
+45,11,INDI,Indisch,A
+46,11,ITAL,Italienisch,A
+47,11,JAPA,Japanisch,A
+48,11,NORW,Norwegisch,A
+49,11,POLN,Polnisch,A
+50,11,RUSS,Russisch,A
+51,11,SCHW,Schwedisch,A
+52,11,SPAN,Spanisch,A
+53,11,TURK,Türkisch,A
+54,11,TSCH,Tscgechisch,A
+55,11,THAI,Thailändisch,A
+56,11,UNGA,Ungarisch,A
+57,11,VIET,Vietnamesisch,A
+58,15,ALLG,Allgemeines,A
+59,15,AKKU,Akupunktur,A
+60,19,ALLG,Allgemeines,A
+61,19,AUSS,Aussstellungskataloge,A
+62,20,BELL,"Belletristik, Neue Literatur, Fiction",A
+63,20,BIOG,Biographien,A
+64,20,GRIE,Griechische Literatur,A
+65,20,KLAS,Klassiker der Weltliteratur,A
+66,20,KRIM,Kriminalromane,A
+67,20,MITT,Literatur Mittelalter,A
+68,20,REIH,Reihen,A
+69,20,SZBI,Süddeutsche Zeitung Bibliothek,A
+70,20,SZME,Süddeutsche Zeitung Metropolen,A
+71,20,RÖMI,Römische Literatur,A
+72,21,ENGL,Englische Literatur,A
+73,21,FRAN,Französische Literatur,A
+74,21,SPAN,Spanische Literatur,A
+75,23,ALLG,Allgemeines,A
+76,23,ALGE,Algebra,A
+77,23,DIFF,Differentialrechnung,A
+78,23,STAT,Statistik,A
+79,24,ALLG,Allgemeines,A
+80,24,DIAG,Diagnostik,A
+81,24,INNE,Innere Medizin,B
+82,24,HIST,Histologie,A
+83,24,ANÄS,Anästhesie,B
+84,24,MEDS,Medizinische Statistik,A
+85,24,KARD,Kardiologie,B
+86,24,SONO,Sonographie,B
+87,24,NOTF,Notfallmedizin,B
+88,24,GYNÄ,Gynäkologie,B
+89,4,UMBA,Umbau / Renovierung,A
+90,4,ALLG,Allgemeines,A
+91,31,ALLG,Allgemeines,A
+92,31,QUER,Querschnittsbereiche,A
+93,31,ERNÄ,Ernährungsfragen,B
+94,31,GLOB,Globalisierung,B
+95,20,ALLG,Allgemeines,A
+96,24,INNE,Innere Medizin,B
+97,14,LÄND,Länder,A
+98,20,REIS,Reiseberichte,A
+99,13,BILD,Bildband,A
+100,33,STRA,Strafrecht,A
+101,6,INDU,Industriebetriebslehre,A
+102,6,INDU,industriebetriebslehre,A
+103,33,ÖFFE,Öffentliches Recht,A
+104,33,ZIVI,Zivilrecht,A
+105,33,HAND,Handelsrecht,A
+106,36,WALK,Walking,A
+107,36,WAND,Wandern,A
+108,13,WAND,Wanderführer,A
+109,47,FOTO,Fotographieren,A

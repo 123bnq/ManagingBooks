@@ -1,0 +1,48 @@
+SignatureId,Signature,Info
+1,AGRA,Agrarwissenschaften
+2,ALLG,"Allgemeines, Lexika, Nachschlagewerke"
+3,ALTE,"Altertumswissenschaft, Arch‰ˆlogie"
+4,ARCH,Architektur
+5,ASTR,Astronomie
+6,BETR,Betriebswirtschaft
+7,BIOL,Biologie
+8,CHEM,Chemie
+9,ERNƒ,Ern‰hrung
+10,EROT,Erotika
+11,FRSP,Fremdsprachen
+12,GEOL,Geologie
+13,GEOG,Geografie
+14,GESC,Geschichte
+15,GESU,Gesundheitswesen
+16,HOBB,"Freizeit, Hobby"
+17,INFO,Informatik
+18,JAGD,Jagd
+19,KUNS,Kunst
+20,LITE,Literatur
+21,LITF,Fremdsprachige Literatur
+22,LITW,Literaturwissenschaft
+23,MATH,Mathematik
+24,MEDI,Medizin
+25,MILI,Milit‰r
+26,MUSI,Musik
+27,PƒDA,P‰dagogik
+28,PHAR,Pharmazie
+29,PHIL,Philosophie
+30,PHYS,Physik
+31,POLI,Politik
+32,PSYC,Psychologie
+33,RECH,Rechtswissenschaft
+34,REIS,"Reisen, ReisefÅhrer"
+35,SOZI,Sozialwissenschaften
+36,SPOR,Sport
+37,SPRA,Sprachwissenschaft / Linguistik
+38,STEU,Steuern
+39,TECH,Technik
+40,THEA,Theaterwissenschaften
+41,THEO,Theologie
+42,VETE,Tiermedizin
+43,VOLK,Volkswirtschaft
+44,WIRT,Wirtschaft (Allgemein; Ohne BWL und VWL)
+45,CDXX,CD
+46,DVDX,DVD
+47,FOTO,Fotographie

@@ -1,0 +1,522 @@
+﻿SignatureId,ParentId,Signature,Info,Sort
+1,,AGRA,Agrarwissenschaften,
+2,,ALLG,Allgemeines; Lexika; Nachschlagewerke;,
+3,,ALTE,Altertumswissenschaft; Archäologie,
+4,,ARCH,Architektur,
+5,,ASTR,Astronomie,
+6,,BETR,Betriebswirtschaft,
+7,,BIOL,Biologie,
+8,,CHEM,Chemie,
+9,,ERNÄ,Ernährung,
+10,,EROT,Erotika,
+11,,ESOT,Esoterik,
+12,,FRSP,Fremdsprachen,
+13,,GEOL,Geologie,
+14,,GEOG,Geografie,
+15,,GESC,Geschichte,
+16,,GESU,Gesundheitswesen,
+17,,HOBB,Freizeit; Hobby,
+18,,INFO,Informatik,
+19,,INGE,Ingenieurwissenschaften,
+20,,JAGD,Jagd,
+21,,KIND,Kinderbücher,
+22,,KUNS,Kunst,
+23,,LITE,Literatur,
+24,,LITF,Fremdsprachige Literatur,
+25,,LITW,Literaturwissenschaft,
+26,,LUFT,Luftfahrt,
+27,,MATH,Mathematik,
+28,,MEDI,Medizin,
+29,,MILI,Militär,
+30,,MUSI,Musik,
+31,,PÄDA,Pädagogik,
+32,,PHAR,Pharmazie,
+33,,PHIL,Philosophie,
+34,,PHYS,Physik,
+35,,POLI,Politik,
+36,,PSYC,Psychologie,
+37,,RATG,Ratgeber,
+38,,RECH,Rechtswissenschaft,
+39,,REIS,Reisen; Reiseführer,
+40,,RELI,Religionen,
+41,,SOZI,Sozialwissenschaften,
+42,,SPOR,Sport,
+43,,SPRA,Sprachwissenschaft / Linguistik,
+44,,STEU,Steuern,
+45,,TECH,Technik,
+46,,THEA,Theaterwissenschaften,
+47,,TIER,Tiere,
+48,,VETE,Tiermedizin,
+49,,VOLK,Volkswirtschaft,
+50,,WIRT,Wirtschaft (Allgemein; Ohne BWL und VWL),
+51,,CDXX,CD,
+52,,DVDX,DVD,
+53,1,ALLG,Allgemeines,A
+54,1,BIOL,Biologische Landwirtschaft,A
+55,1,LAND,Landwirtschaft,A
+56,1,OBSB,Obstbau/Obstbaumschnitt,A
+57,1,VIEH,Viehwirtschaft,A
+58,2,NACH,Nachschlagewerke,A
+59,2,LEXI,Lexika,A
+60,3,ALLG,Allgemeines,A
+61,3,ACHÄ,Archäologie,A
+62,4,ALLG,Allgemeines,A
+63,4,ARCH,Architekten,A
+64,4,ARCE,Architektur-Entwicklung,A
+65,4,BILD,Bildbände,A
+66,4,ENTW,Entwurfslehre,A
+67,4,GART,Gartenarchitektur / Gartengestaltung,A
+68,4,HAUS,Haustechnik,A
+69,4,INDU,Industriebau,A
+70,4,INNE,Innenarchitektur,A
+71,4,SAKR,Sakralbau,A
+72,4,SCHL,Schlösser,A
+73,4,UMBA,Umbau; Renovierung,A
+74,4,VERK,Verkehrsbau; Flughäfen; Bahnhöfe;,A
+75,4,WOHN,Wohnbau,A
+76,5,ALLG,Allgemeines,A
+77,6,ALLG,Allgemeines,A
+78,6,BANK,Bankbetriebslehre,A
+79,6,BILA,Bilanzen,A
+80,6,BUCH,Buchführung,A
+81,6,CHAN,Change Management,A
+82,6,ENTS,Entscheidungslehre,A
+83,6,FALL,Fallstudien,A
+84,6,FINA,Finanzwirtschaft,A
+85,6,HAND,Handelsbetriebslehre,A
+86,6,INDU,Industriebetriebslehre,A
+87,6,INVE,Investition,A
+88,6,INNO,Innovation,A
+89,6,KORE,Kostenrechnung,A
+90,6,LOGI,Logistik,A
+91,6,MARK,Marketing,A
+92,6,MATE,Materialwirtschaft,A
+93,6,OPER,Operative Planung,A
+94,6,PERS,Personalwirtschaft,A
+95,6,PROD,Produktionswirtschaft,A
+96,6,QUAL,Qualitätsmanagement,A
+97,6,RECH,Rechnungslegung/Bilanzen,A
+98,6,RISI,Risikomanagement,A
+99,6,STRA,Strategische Führung,A
+100,6,UNTE,Unternehmensführung,A
+101,7,ALLG,Allgemeines,A
+102,7,BOTA,Botanik,A
+103,7,ZOOL,Zoologie,A
+104,8,ALLG,Allgemeines,A
+105,8,ANOR,Anorganische Chemie,A
+106,8,BIOC,Biochemie,A
+107,8,EXPE,Experimentelle Chemie,A
+108,8,ORGA,Organische Chemie,A
+109,9,ALLG,Allgemeines,A
+110,9,BIER,Bier,A
+111,9,DIÄT,Diäten,A
+112,9,ERNÄ,Ernährungslehre,A
+113,9,FETT,Fett,A
+114,9,GEMÜ,Gemüse/Gemüsesorten,A
+115,9,GETR,Getränke ,A
+116,9,GRILL,Grillen,A
+117,9,KOCH,Kochbücher,A
+118,9,OBST,Obst,A
+119,9,PILZ,Pilze,A
+120,9,TABE,Tabellen,A
+121,9,WEIN,Wein,A
+122,9,WHIS,Whisky,A
+123,10,ALLG,Allgemeines,A
+124,10,BILD,Bildbände,A
+125,10,LITE,Erotische Literatur,A
+126,11,ASTR,Astrologie,A
+127,11,ESOT,Esoterik,A
+128,11,HEXE,Hexen,A
+129,11,HORO,Horoskope,A
+130,11,MEDI,Meditation,A
+131,11,MYTH,Mythologie,A
+132,11,SCHA,Schamanimus,A
+133,11,STER,Sternzeichen,A
+134,12,ALLG,Allgemeines,A
+135,12,AFRI,Afrikaans,A
+136,12,AENG,Amerikanisches Englisch,A
+137,12,BULG,Bulgarisch,A
+138,12,CHIN,Chinesisch,A
+139,12,DANI,Dänisch,A
+140,12,ENGL,Englisch,A
+141,12,FINN,Finnisch,A
+142,12,FRAN,Französisch,A
+143,12,GRIE,Griechisch,A
+144,12,HÄBR,Hebräisch,A
+145,12,INDI,Indisch,A
+146,12,ITAL,Italienisch,A
+147,12,JAPA,Japanisch,A
+148,12,NORW,Norwegisch,A
+149,12,POLN,Polnisch,A
+150,12,PORT,Portugiesisch,A
+151,12,RUSS,Russisch,A
+152,12,SCHW,Schwedisch,A
+153,12,SPAN,Spanisch,A
+154,12,TÜRK,Türkisch,A
+155,12,TSCH,Tschechisch,A
+156,12,THAI,Thailändisch,A
+157,12,UNGA,Ungarisch,A
+158,12,VIET,Vietnamesisch,A
+159,13,ALLG,Allgemeines,A
+160,13,BILD,Bildbände,A
+161,14,ALLG,Allgemeines,A
+162,14,HÖHL,Höhlen,A
+163,14,MINE,Mineralien,A
+164,15,ALLG,Allgemeines,A
+165,15,ANTI,Antike,A
+166,15,AUFK,Aufklärung (Epoche),A
+167,15,BARO,Barock,A
+168,15,ERST,Erster Weltkrieg,A
+169,15,EURO,Europäische Geschichte,A
+170,15,FRÜH,Ur- und Frühgeschichte,A
+171,15,KAIS,Kaiserreich,A
+172,15,KOLO,Kolonialgeschichte,A
+173,15,KULT,Kulturgeschichte,A
+174,15,KRIE,Kriege,A
+175,15,LUFT,Luftfahrtgeschichte: s. LUFT,A
+176,15,MILI,Militärgeschichte: s. MILI,A
+177,15,MITT,Mittelalter,A
+178,15,NATI,Nationalsozialismus,A
+179,15,RENA,Renaissance,A
+180,15,NEUE,Neue Geschichte ab 1945,A
+181,15,STAD,Stadtgeschichte,A
+182,15,SEEF,Geschichte Seefahrt,A
+183,15,WELT,Weltgeschichte,A
+184,15,WEIM,Weimarer Republik,A
+185,15,ZWEI,Zweiter Weltkrieg,A
+186,16,ALLG,Allgemeines,A
+187,16,AKKU,Akupunktur,A
+188,16,ARZT,Arztpraxis,A
+189,16,GESU,"Gesundheit, Allg.",A
+190,16,JOGA,Joga,A
+191,16,KRAN,Krankenhaus,A
+192,16,KÖRP,Körper; Evolution,A
+193,16,PHYS,Physiotherapie; Pilates,A
+194,16,QUAL,Qualitätsmanagement ,A
+195,16,RÜCK,"Rücken, Wirbelsäule",A
+196,16,WIRT,Gesundheitswirtschaft,A
+197,17,ALLG,Allgemeines,A
+198,17,ANGE,Angeln,A
+199,17,AQUA,Aquaristik,A
+200,17,EISE,Eisenbahn,A
+201,17,FOTO,Fotografieren,A
+202,17,HAND,Handarbeiten; Basteln,A
+203,17,MALE,Malen; Zeichnen,A
+204,17,MODL,Modellbau,A
+205,17,PHIL,Philatelie,A
+206,17,RÄTS,Rätsel; Quizbücher,A
+207,17,SAMM,Sammeln,A
+208,17,TERR,Terrarien,A
+209,18,ALLG,Allgemeines,A
+210,18,PROG,Programmiersprachen,A
+211,19,ALLG,Allgemeines,A
+212,19,ELEK,Elektrotechnik,A
+213,19,KRAF,Kraftfahrzeugtechnik,A
+214,19,MASC,Maschinenbau,A
+215,19,NACH,Nachrichtentechnik,A
+216,19,SERV,Service-Engineering,A
+217,19,VERF,Verfahrenstechnik,A
+218,19,VERK,Verkehrstechnik,A
+219,20,ALLG,Allgemeines,A
+220,20,AUSB,Ausbildung/Jägerprüfung,A
+221,20,JAGH,Jagdhunde,A
+222,20,REVI,Revier,A
+223,20,WAFF,Jagdwaffenkunde,A
+224,21,BILD,Bilderbücher,A
+225,22,ALLG,Allgemeines,A
+226,22,AUSS,Ausstellungskataloge,A
+227,22,DESI,Design,A
+228,22,FOTO,Fotographen,A
+229,22,KUEP,Epochen der Kunst,A
+230,22,TEXD,Textildesign,A
+231,23,BELL,"Belletristik, Neue Literatur, Fiction",A
+232,23,BIOG,Biographien,A
+233,23,DRAM,Drama,A
+234,23,DZWK,Die Zeit Reihe Wissenschaftskrimi,A
+235,23,DZWR,Die Zeit Reihe Wissenschaftsromane,A
+236,23,GRIE,Griechische Literatur,A
+237,23,INTE,Interpretationen/Erläuterungen/Materialien,A
+238,23,KMAY,Karl May,A
+239,23,KLAS,Klassiker der Weltliteratur,A
+240,23,KRIM,Kriminalromane/Thriller/Psychothriller,A
+241,23,LYRI,Lyrik,A
+242,23,MITT ,Literatur Mittelalter,A
+243,23,REISE,Reiseerzählungen,A
+244,23,REIH,Reihen ,A
+245,23,RÖMI,Römische Literatur,A
+246,23,SCIE,Science Fiction,A
+247,23,SZBI,Süddeutsche Zeitung Bibliothek,A
+248,23,SZME,Süddeutsche Zeitung Metropolen,A
+249,23,THEA,Theaterstücke,A
+250,24,ENGL,Englische Literatur,A
+251,24,FRAN,Französische Literatur,A
+252,24,ITAL,Italienische Literatur,A
+253,24,SPAN,Spanische Literatur,A
+254,25,ALLG,Allgemeines,A
+255,26,ALLG,Allgemeines,A
+256,26,GESC,Luftfahrtgeschichte,A
+257,27,ALLG,Allgemeines,A
+258,27,ALGE,Algebra,A
+259,27,DIFF,Differentialrechnung,A
+260,27,INTE,Integralrechnung,A
+261,27,STAT,Statistik,A
+262,28,ALLX,Allgemeines,A
+263,28,GESC,Medizin Historisches/Geschichte,A
+264,28,QUER,Querschnittbereiche,A
+265,28,STUD,Studium Medizin,A
+266,28,ANAT,Anatomie/Embryologie,A
+267,28,BIOC,Biochemie für Mediziner,A
+268,28,BIOL,Biologie für Mediziner,A
+269,28,CHEM,Chemie für Mediziner,A
+270,28,HIST,Histologie,A
+271,28,MEDS,Medizinische Statistik,A
+272,28,PHYK,Physik für Mediziner,A
+273,28,PHYS,Physiologie,A
+274,28,TERM,Medizinische Terminologie,A
+275,28,ALLE,Allergologie,B
+276,28,ALLG,Allgemeinmedizin,B
+277,28,ANAM,Anamnese,B
+278,28,ANÄS,Anästhesie,B
+279,28,ANGI,Angiologie,B
+280,28,ARBE,Arbeitsmedizin,B
+281,28,AUGE,Augenheilkunde,B
+282,28,CHIN,Chinesische Medizin,B
+283,28,CHIR,Chirurgie,B
+284,28,CTMR,CT/MRT,B
+285,28,DERM,Dermatologie,B
+286,28,EPID,Epidemiologie,B
+287,28,FRAU,Frauenheilkunde,B
+288,28,GAST,Gastroentereologie,B
+289,28,GYNÄ,Gynäkologie,B
+290,28,HÄMA,Hämatologie,B
+291,28,HNOK,Hals-/Nasen-/Ohren,B
+292,28,HOMÖ,Homöopathie,B
+293,28,HUMA,Humangenetik,B
+294,28,HYGI,Hygiene/Virologie,B
+295,28,IMMU,Infektiologie / Immunologie,B
+296,28,INNE,Innere Medizin,B
+297,28,INTE,Intensivmedizin,B
+298,28,KARD,Kardiologie,B
+299,28,KIND,Kinderheilkunde,B
+300,28,LABO,Labormedizin/Klinische Chemie,B
+301,28,MIKR,Medizinische Mikrobiologie,B
+302,28,MINF,Medizinische Informatik,B
+303,28,NEPH,Nephrologie,B
+304,28,NERV,Nervenheilkunde,B
+305,28,NEUR,Neurologie,B
+306,28,NOTF,Notfallmedizin,B
+307,28,ONKO,Onkologie,B
+308,28,ORTH,Orthopädie,B
+309,28,PATH,Pathologie,B
+310,28,PHAR,Pharmakologie/Arzneimittel,B
+311,28,PHYT,Phytologie,B
+312,28,PNEU,Pneumologie,B
+313,28,PRÄV,Präventivmedizin,B
+314,28,PSYC,Medizinische Psychologie/Soziologie/Psychosomatische Medizin,B
+315,28,RADI,"Radiologie, Nuklearmedizin",B
+316,28,RECH,Rechtsmedizin,B
+317,28,RHEU,Rheumatologie,B
+318,28,SONO  ,Sonographie,B
+319,28,SOZI,Sozialmedizin,B
+320,28,SPOR,Sportmedin,B
+321,28,THER,Medizinische Therapie,B
+322,28,TOXI,Toxikologie,B
+323,28,TROP,Tropenmedizin,B
+324,28,UMWE,Umweltmedizin,B
+325,28,UROL,Urologie,B
+326,29,ALLG,Allgemeines,A
+327,29,GESC,Militärgeschichte,A
+328,29,HEER,Heer,A
+329,29,LUFT,Luftwaffe,A
+330,29,MARI,Marine,A
+331,29,WAFF,Waffen; Waffensysteme,A
+332,30,ALLG,Allgemeines,A
+333,30,BIOG,Biographien (Leben und Werk),A
+334,30,INST,Instrumentenkunde,A
+335,31,ALLG,Allgemeines,A
+336,31,DIDA,Didaktik,A
+337,31,ERWA,Erwachsenenbildung,A
+338,31,ERZI,Erziehungswissenschaft,A
+339,31,GRUND,Grundschulpädagogik,A
+340,31,SCHU,Schulspädagogik,A
+341,32,ALLG,Allgemeines,A
+342,33,ALLG,Allgemeines,A
+343,33,ANTI,Antike Philosophen,A
+344,33,BIOG,Biographien (Leben und Werk),A
+345,33,GRUN,Grundlagen,A
+346,33,GESC   ,Geschichtsphilosophie,A
+347,33,POLI,Politische Philosophie,A
+348,33,RECH,Rechtsphilosophie,A
+349,33,SOZI,Sozilogische Philosophie,A
+350,33,SPRA,Sprachphilosophie,A
+351,34,ALLG,Allgemeines,A
+352,34,ASTR,Astrophysik,A
+353,34,ELEK,Elektrizität,A
+354,34,MECH,Mechanik,A
+355,34,QUAN,Quantenphysik,A
+356,34,THER,Thermodynamik,A
+357,35,ALLG,Allgemeines,A
+358,35,AUSS,Außenpolitik,A
+359,35,BILP,Bildungspolitik,A
+360,35,ENER,Energiepolitik,A
+361,35,ENTW,Entwicklungshilfe,A
+362,35,ERNÄ,Welternährung,A
+363,35,EUPO,Europäische Union,A
+364,35,FÖDE,Föderalismus,A
+365,35,FRAU,Frauenpolitik,A
+366,35,FREI,Freimaurer,A
+367,35,FRIE,Friedenspolitik/Friedensforschung,A
+368,35,GEOP,Geopolitik/Weltpolitik,A
+369,35,GESU,Gesundheitspolitik,A
+370,35,GLOB,Globalisierung,A
+371,35,INNE,Innenpolitik,A
+372,35,MENS,Menschenrechte,A
+373,35,MONA,Monarchien,A
+374,35,NGOS,Nicht Regierungsorganisationen,A
+375,35,PARL,Parlamentarismus,A
+376,35,PART,Parteien,A
+377,35,POLI,Politikwissenschaft,A
+378,35,POLK,Politische Karikaturen,A
+379,35,SOZI,Sozialpolitik,A
+380,35,THEO,Politische Theorien (Anarchismus/Konservatismus/Liberalismus/Sozialismus/Kommunismus),A
+381,35,TERR,Terrorismus,A
+382,35,UMWE,Umweltpolitik,A
+383,35,VERT,Verteidigungspolitik/Krieg,A
+384,35,WAHL,Wahlen,A
+385,35,WIDE,Widerstand,A
+386,36,ALLG,Allgemeines,A
+387,36,TEST,Psychologische Testverfahren,A
+388,37,ALTE,Alter,A
+389,37,BABY,Baby; Kleinkind,A
+390,37,BENE,Benehmen,A
+391,37,BERU,Beruf,A
+392,37,BEWE,Bewerbung,A
+393,37,FAMI,Familie,A
+394,37,KARR,Karriere,A
+395,37,PART,Partnerschaft,A
+396,37,PSYC,Psyche; Lebenshilfe,A
+397,37,SCHR,Schreiben,A
+398,37,SONS,Sonstige Ratgeber,A
+399,38,ALLG,Allgemeines,A
+400,38,STUD,Studium Rechtswissenschaft,A
+401,38,ARBR,Arbeitsrecht,A
+402,38,ERBR,Erbrecht,A
+403,38,EURO,Europarecht,A
+404,38,FAMI,Familienrecht,A
+405,38,GESR,Gesellschaftsrecht,A
+406,38,HAND,Handelsrecht,A
+407,38,ÖFFR,Öffentliches Recht/Staatsrecht,A
+408,38,SEER,Seerecht,A
+409,38,SOZI,Sozialrecht,A
+410,38,STRA,Strafrecht,A
+411,38,VERK,Verkehrsrecht,A
+412,38,VERW,Verwaltungsrecht,A
+413,38,WERT,Wertpapierrecht,A
+414,38,ZIVI,Zivilrecht; BGB,A
+415,39,ALLG,Allgemeines,A
+416,39,ATLA,Atlanten,A
+417,39,HOTE,Hotelführer,A
+418,39,KART,Landkarten,A
+419,39,LAND,Land und Reisen,A
+420,39,REIS,Reiseführer,A
+421,39,REIZ,Reiseerzählungen,A
+422,39,REST,Restaurantführer,A
+423,39,STAD,Stadtführer,A
+424,40,ALLG,Allgemeines,A
+425,40,BIBL,Bibelausgaben/Bibelkommentare,A
+426,40,BRAU,Brauchtum,A
+427,40,BUDD,Buddhismus,A
+428,40,CHRI,Christentum,A
+429,40,GEBE,Gebetbücher,A
+430,40,HEIL,Heilige,A
+431,40,HIND,Hinduismus,A
+432,40,ISLA,Islamismus,A
+433,40,JESU,Jesus,A
+434,40,JUDE,Judentum,A
+435,40,KATH,Katholische Theologie,A
+436,40,KIRC,Kirchengeschichte,A
+437,40,KLOS,Klöster; Abteien; ,A
+438,40,KRIT,Religionskritik,A
+439,40,LITU,Liturgie,A
+440,40,MÖNC,Mönchtum,A
+441,40,ORDE,Orden,A
+442,40,PRED,Predigten,A
+443,40,RECH,Kirchenrecht,A
+444,40,SEKT,Sekten,A
+445,40,TAOI,Taoismus,A
+446,41,ALLG,Allgemeines,A
+447,41,GESE ,Gesellschaft,A
+448,41,SOTH,Klassische Theorien,A
+449,41,SOZW,Sozialer Wandel,A
+450,42,ALLG,Allgemeines,A
+451,42,BALL,Ballett,A
+452,42,BASK,Basketball,A
+453,42,FUSS,Fußball,A
+454,42,GOLF,Golf,A
+455,42,LAUF,Laufen/Walking/Marathon,A
+456,42,REIT,Reiten,A
+457,42,SCHI,Schießen,A
+458,42,SCHW,Schwimmen,A
+459,42,TANZ,Tanzsport,A
+460,42,TENN,Tennis,A
+461,42,WAND,Wandern,A
+462,43,ALLG ,Allgemeines,A
+463,43,HISL,Historische Linguistik,A
+464,43,PSYL,Psycholinguistik,A
+465,43,VERL,Vergleichende Linguistik,A
+466,44,ALLG,Allgemeines,A
+467,44,HIST,Steuern Historisches,A
+468,44,QUER,Steuern Querschnittbereiche,A
+469,44,RATB,Steuern Berufsgruppen,A
+470,44,RATG,Steuern Ratgeber,A
+471,44,REGR,Reihen: Grüne Reihe,A
+472,44,REBL,Reihen: Blaue Reihe,A
+473,44,REST,Reihen: Steuer Seminar,A
+474,44,AOXX,Abgabenordnung,A
+475,44,GESE,Besteuerung von Gesellschaften,A
+476,44,BEWE,Bewertungsrecht,A
+477,44,BILA,Bilanzsteuerrecht,A
+478,44,BUCH,Buchführung,A
+479,44,EINK,Einkommensteuer,A
+480,44,ERBS,Schenkungsteuer/Erbschaftsteuer,A
+481,44,FGOR,Finanzgerichtsordnung,A
+482,44,GEWE,Gewerbesteuer,A
+483,44,GRUN,Grunderwerbsteuer,A
+484,44,INTE,Internationales Steuerrecht,A
+485,44,KÖRP,Körperschaftsteuer,A
+486,44,LOHN,Lohnsteuer,A
+487,44,LSTT,Lohnsteuertabellen,A
+488,44,SSTR,Steuerstrafrecht,A
+489,44,USTX,Umsatzsteuer,A
+490,44,UMWA,Umwandlungsteuerrecht,A
+491,44,VERK,Verkehrssteuern,A
+492,45,ALLG ,Allgemeines,A
+493,46,ALLG ,Allgemeines,A
+494,47,ALLG,Allgemeines,A
+495,47,FISC,Fische,A
+496,47,HUND,Hunde,A
+497,47,INSE,Insekten,A
+498,47,KATZ,Katzen,A
+499,48,ALLG,Allgemeines,A
+500,48,ANAT,Tieranatomie,A
+501,49,ALLG,Allgemeines,A
+502,49,AUSS,Außenwirtschaft,A
+503,49,FINA,Finanzwissenschaft,A
+504,49,GELD,Geldtheorie,A
+505,49,GLOB,Globalisierung,A
+506,49,KONJ,Konjunkturtheorie,A
+507,49,MAKR,Makroökonomie,A
+508,49,MIKR,Mikroökonomie,A
+509,50,ALLG,Allgemeines,A
+510,50,FINA,Finanzanlagen,A
+511,50,GESC,Wirtschaftsgeschichte,A
+512,50,KRIM,Wirtschaftskriminalität,A
+513,51,COWE,Country & Western,A
+514,51,JAZZ,Jazz,A
+515,51,KIRC,Kirchenmusik; Glockenklänge,A
+516,51,KLAS,Klassik,A
+517,51,LAND,Landestypische  Musik,A
+518,51,POPX,Pop,A
+519,51,WEIH,Weihnachtsklänge,A
+520,52,DOKU,Dokumentarfilme,A
+521,52,KOMÖ,Komödien,A
