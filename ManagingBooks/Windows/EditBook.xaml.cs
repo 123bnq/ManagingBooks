@@ -9,6 +9,8 @@ using System.Linq;
 using System.IO;
 using System.Collections.ObjectModel;
 using WPFCustomMessageBox;
+using System.Text.RegularExpressions;
+using System.Windows.Input;
 
 namespace ManagingBooks.Windows
 {
@@ -338,8 +340,11 @@ namespace ManagingBooks.Windows
                                 }
 
                                 insertCommand.CommandText = $"INSERT INTO Books_Authors (BookId, AuthorId, Priority) VALUES ((SELECT BookId FROM Books " +
-                                    $"WHERE Title = '{book.Title}' AND Version = '{tempBook.Version}' AND Medium = '{tempBook.Medium}')," +
+                                    $"WHERE BookId = {book.BookId})," +
                                     $"(SELECT AuthorId FROM Authors WHERE Name = '{tempBook.Authors[i].Name}'),{i + 1})";
+                                //insertCommand.CommandText = $"INSERT INTO Books_Authors (BookId, AuthorId, Priority) VALUES ((SELECT BookId FROM Books " +
+                                //    $"WHERE Title = '{book.Title}' AND Version = '{tempBook.Version}' AND Medium = '{tempBook.Medium}')," +
+                                //    $"(SELECT AuthorId FROM Authors WHERE Name = '{tempBook.Authors[i].Name}'),{i + 1})";
                                 insertCommand.ExecuteNonQuery();
                             }
 
@@ -350,15 +355,19 @@ namespace ManagingBooks.Windows
                                 SqliteDataReader r = selectCommand.ExecuteReader();
                                 if (!r.Read())
                                 {
-                                    insertCommand.CommandText = "INSERT INTO Signatures (Signature) VALUES (@Signature)";
+                                    insertCommand.CommandText = "INSERT INTO Signatures (Signature, Info) VALUES (@Signature, @Info)";
                                     insertCommand.Parameters.AddWithValue("Signature", tempBook.Signatures[i]);
+                                    insertCommand.Parameters.AddWithValue("Info", tempBook.Signatures[i]);
                                     insertCommand.ExecuteNonQuery();
                                     insertCommand.Parameters.Clear();
                                 }
 
                                 insertCommand.CommandText = $"INSERT INTO Books_Signatures (BookId, SignatureId, Priority) VALUES ((SELECT BookId FROM Books " +
-                                    $"WHERE Title = '{tempBook.Title}' AND Version = '{tempBook.Version}' AND Medium = '{tempBook.Medium}')," +
+                                    $"WHERE BookId = {book.BookId})," +
                                     $"(SELECT SignatureId FROM Signatures WHERE Signature = '{tempBook.Signatures[i]}'), {i + 1})";
+                                //insertCommand.CommandText = $"INSERT INTO Books_Signatures (BookId, SignatureId, Priority) VALUES ((SELECT BookId FROM Books " +
+                                //    $"WHERE Title = '{tempBook.Title}' AND Version = '{tempBook.Version}' AND Medium = '{tempBook.Medium}')," +
+                                //    $"(SELECT SignatureId FROM Signatures WHERE Signature = '{tempBook.Signatures[i]}'), {i + 1})";
                                 insertCommand.ExecuteNonQuery();
                             }
                             tr.Commit();
@@ -428,17 +437,11 @@ namespace ManagingBooks.Windows
         private bool IsDataToAdd(AddBookModel context)
         {
             return !(context.Number == 0)
-                && !string.IsNullOrWhiteSpace(context.Signature1)
-                && !string.IsNullOrWhiteSpace(context.Author1)
                 && !string.IsNullOrWhiteSpace(context.Title)
                 && !string.IsNullOrWhiteSpace(context.Publisher)
-                && !(context.Version == 0)
-                && !(context.Year == 0)
                 && !string.IsNullOrWhiteSpace(context.Medium)
                 && !string.IsNullOrWhiteSpace(context.Place)
-                && !string.IsNullOrWhiteSpace(context.Date)
-                && !(context.Pages == 0)
-                && !(context.Price == 0.00);
+                && !string.IsNullOrWhiteSpace(context.Date);
         }
 
         private int NumberOfAuthor(AddBookModel context)
@@ -481,40 +484,6 @@ namespace ManagingBooks.Windows
             this.Close();
         }
 
-        private void ReadPublisherMediumPlace()
-        {
-            string dataFolder = Path.Combine(AppContext.BaseDirectory, "Data");
-            string publisherPath = Path.Combine(dataFolder, "Publishers.dat");
-            string mediumPath = Path.Combine(dataFolder, "Mediums.dat");
-            string placePath = Path.Combine(dataFolder, "Places.dat");
-
-            using (StreamReader sr = new StreamReader(publisherPath))
-            {
-                while (!sr.EndOfStream)
-                {
-                    ListPublisher.Add(sr.ReadLine());
-                }
-            }
-
-            using (StreamReader sr = new StreamReader(placePath))
-            {
-                while (!sr.EndOfStream)
-                {
-                    ListPlace.Add(sr.ReadLine());
-                }
-            }
-
-            using (StreamReader sr = new StreamReader(mediumPath))
-            {
-                while (!sr.EndOfStream)
-                {
-                    ListMedium.Add(sr.ReadLine());
-                }
-            }
-
-            
-        }
-
         private void BtnSelectSignature_Click(object sender, RoutedEventArgs e)
         {
             AddBookModel context = this.DataContext as AddBookModel;
@@ -527,6 +496,18 @@ namespace ManagingBooks.Windows
                 Left = this.Left + this.Width - 15,
                 Top = this.Top
             }.ShowDialog();
+        }
+
+        private void IntNumberValidationTextBox(object sender, TextCompositionEventArgs e)
+        {
+            Regex regex = new Regex("[^0-9]+");
+            e.Handled = regex.IsMatch(e.Text);
+        }
+
+        private void DecimalNumberValidationTextBox(object sender, TextCompositionEventArgs e)
+        {
+            Regex regex = new Regex("^[.][0-9]+$|^[0-9]*[.]{0,1}[0-9]*$");
+            e.Handled = !regex.IsMatch(e.Text);
         }
     }
 }

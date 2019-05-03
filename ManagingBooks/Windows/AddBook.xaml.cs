@@ -10,6 +10,10 @@ using System.Threading.Tasks;
 using System.Threading;
 using System.IO;
 using WPFCustomMessageBox;
+using System.Windows.Data;
+using System.Reflection;
+using System.Text.RegularExpressions;
+using System.Windows.Input;
 
 namespace ManagingBooks.Windows
 {
@@ -49,45 +53,82 @@ namespace ManagingBooks.Windows
         /// </summary>
         private void ClearEntries()
         {
+            AddBookModel context = this.DataContext as AddBookModel;
+            PropertyInfo[] properties = context.GetType().GetProperties();
+            DateTimeFormatInfo dtfi = CultureInfo.CreateSpecificCulture("fr-FR").DateTimeFormat;
+            string nA = "N/A";
+
+            foreach (var propertyInfo in properties)
+            {
+                if (propertyInfo.PropertyType == typeof(string))
+                {
+                    propertyInfo.SetValue(this.DataContext as AddBookModel, String.Empty, null);
+                }
+                else if (propertyInfo.PropertyType == typeof(int))
+                {
+                    propertyInfo.SetValue(this.DataContext as AddBookModel, 0, null);
+                }
+            }
+
             foreach (var ctrl in WindowToBeClear.Children)
             {
-                if (ctrl.GetType() == typeof(TextBox))
-                {
-                    (ctrl as TextBox).Clear();
-                }
-                if (ctrl.GetType() == typeof(ComboBox))
-                {
-                    (ctrl as ComboBox).SelectedItem = null;
-                }
                 if (ctrl.GetType().IsSubclassOf(typeof(Panel)))
                 {
                     foreach (var childCtrl in (ctrl as Panel).Children)
                     {
-                        if (childCtrl.GetType() == typeof(TextBox))
-                        {
-                            (childCtrl as TextBox).Clear();
-                        }
-                        if (childCtrl.GetType() == typeof(ComboBox))
-                        {
-                            (childCtrl as ComboBox).SelectedItem = null;
-                        }
                         if (childCtrl.GetType() == typeof(DatePicker))
                         {
-                            (childCtrl as DatePicker).SelectedDate = null;
-                        }
-                        if (childCtrl.GetType().IsSubclassOf(typeof(Panel)))
-                        {
-                            foreach(var ccCtrl in (childCtrl as Panel).Children)
-                            {
-                                if (ccCtrl.GetType() == typeof(ComboBox))
-                                {
-                                    (ccCtrl as ComboBox).SelectedItem = null;
-                                }
-                            }
+                            (childCtrl as DatePicker).SelectedDate = new DateTime(1970, 1, 1);
                         }
                     }
                 }
             }
+            context.Author1 = nA;
+            context.Signature1 = nA;
+            context.Place = nA;
+            context.Medium = nA;
+            context.Publisher = nA;
+            context.Date = BoxDates.SelectedDate.Value.ToString("d", dtfi);
+
+            //foreach (var ctrl in WindowToBeClear.Children)
+            //{
+            //    if (ctrl.GetType() == typeof(TextBox))
+            //    {
+            //        (ctrl as TextBox).Clear();
+            //    }
+            //    if (ctrl.GetType() == typeof(ComboBox))
+            //    {
+            //        (ctrl as ComboBox).SelectedItem = null;
+            //    }
+            //    if (ctrl.GetType().IsSubclassOf(typeof(Panel)))
+            //    {
+            //        foreach (var childCtrl in (ctrl as Panel).Children)
+            //        {
+            //            if (childCtrl.GetType() == typeof(TextBox))
+            //            {
+            //                (childCtrl as TextBox).Clear();
+            //            }
+            //            if (childCtrl.GetType() == typeof(ComboBox))
+            //            {
+            //                (childCtrl as ComboBox).SelectedItem = null;
+            //            }
+            //            if (childCtrl.GetType() == typeof(DatePicker))
+            //            {
+            //                (childCtrl as DatePicker).SelectedDate = new DateTime(1970, 1, 1);
+            //            }
+            //            if (childCtrl.GetType().IsSubclassOf(typeof(Panel)))
+            //            {
+            //                foreach (var ccCtrl in (childCtrl as Panel).Children)
+            //                {
+            //                    if (ccCtrl.GetType() == typeof(ComboBox))
+            //                    {
+            //                        (ccCtrl as ComboBox).SelectedItem = null;
+            //                    }
+            //                }
+            //            }
+            //        }
+            //    }
+            //}
         }
 
         private void AddBook_Closing(object sender, CancelEventArgs e)
@@ -145,7 +186,7 @@ namespace ManagingBooks.Windows
                             {
                                 if (ccCtrl.GetType() == typeof(ComboBox))
                                 {
-                                    if((ccCtrl as ComboBox).SelectedItem != null)
+                                    if ((ccCtrl as ComboBox).SelectedItem != null)
                                     {
                                         containData |= true;
                                         break;
@@ -226,7 +267,7 @@ namespace ManagingBooks.Windows
                     SqlMethods.SqlConnect(out con);
                     var selectCommand = con.CreateCommand();
                     //selectCommand.CommandText = $"SELECT * FROM Books WHERE Number = {book.Number} OR Title = '{book.Title}' AND Version = {book.Version} AND Medium = '{book.Medium}' AND DayBought = '{book.DayBought}'";
-                    selectCommand.CommandText = $"SELECT * FROM Books WHERE Number = {book.Number} OR Title = '{book.Title}'";
+                    selectCommand.CommandText = $"SELECT * FROM Books WHERE Number = {book.Number}";
                     SqliteDataReader r = selectCommand.ExecuteReader();
 
                     if (r.Read())
@@ -280,17 +321,11 @@ namespace ManagingBooks.Windows
         private bool IsDataToAdd(AddBookModel context)
         {
             return !(context.Number == 0)
-                && !string.IsNullOrWhiteSpace(context.Signature1)
-                && !string.IsNullOrWhiteSpace(context.Author1)
                 && !string.IsNullOrWhiteSpace(context.Title)
                 && !string.IsNullOrWhiteSpace(context.Publisher)
-                && !(context.Version == 0)
-                && !(context.Year == 0)
                 && !string.IsNullOrWhiteSpace(context.Medium)
                 && !string.IsNullOrWhiteSpace(context.Place)
-                && !string.IsNullOrWhiteSpace(context.Date)
-                && !(context.Pages == 0)
-                && !(context.Price == 0.00);
+                && !string.IsNullOrWhiteSpace(context.Date);
         }
 
         private int NumberOfAuthor(AddBookModel context)
@@ -494,8 +529,9 @@ namespace ManagingBooks.Windows
                 r = selectCommand.ExecuteReader();
                 if (!r.Read())
                 {
-                    insertCommand.CommandText = "INSERT INTO Signatures (Signature) VALUES (@Signature)";
+                    insertCommand.CommandText = "INSERT INTO Signatures (Signature, Info) VALUES (@Signature, @Info)";
                     insertCommand.Parameters.AddWithValue("Signature", book.Signatures[i]);
+                    insertCommand.Parameters.AddWithValue("Info", book.Signatures[i]);
                     insertCommand.ExecuteNonQuery();
                     insertCommand.Parameters.Clear();
                 }
@@ -568,6 +604,18 @@ namespace ManagingBooks.Windows
                 Left = this.Left + this.Width - 15,
                 Top = this.Top
             }.ShowDialog();
+        }
+
+        private void IntNumberValidationTextBox(object sender, TextCompositionEventArgs e)
+        {
+            Regex regex = new Regex("[^0-9]+");
+            e.Handled = regex.IsMatch(e.Text);
+        }
+
+        private void DecimalNumberValidationTextBox(object sender, TextCompositionEventArgs e)
+        {
+            Regex regex = new Regex("^[.][0-9]+$|^[0-9]*[.]{0,1}[0-9]*$");
+            e.Handled = !regex.IsMatch(e.Text);
         }
     }
 }

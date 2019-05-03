@@ -13,22 +13,22 @@
         Closing="Window_Closing">
     <StackPanel Name="WindowToBeClear" Width="500" Margin="10">
         <TextBlock Text="{DynamicResource EditBook.Number}" Margin="0,0,0,5"/>
-        <TextBox Name="BoxNumber" Text="{Binding Number, StringFormat={}{0:#000000}, Converter={x:Static model:AddBookModel.Converter}}" Width="100" HorizontalAlignment="Left"  Margin="0,0,0,5"/>
+        <TextBox Name="BoxNumber" Text="{Binding Number, StringFormat={}{0:#000000}, Converter={x:Static model:AddBookModel.NumberConverter}}" MaxLength="6" PreviewTextInput="IntNumberValidationTextBox" Width="100" HorizontalAlignment="Left"  Margin="0,0,0,5"/>
         <TextBlock Text="{DynamicResource EditBook.Signature}" Margin="0,0,0,5"/>
         <WrapPanel Name="PnlSignatures" Margin="0,0,0,5">
-            <TextBox Name="BoxSignature1" Text="{Binding Signature1}" Margin="0,0,5,0" Width="100"/>
-            <TextBox Name="BoxSignature2" Text="{Binding Signature2}" Margin="0,0,5,0" Width="100"/>
-            <TextBox Name="BoxSignature3" Text="{Binding Signature3}" Margin="0,0,5,0" Width="100"/>
+            <TextBox Name="BoxSignature1" Text="{Binding Signature1, UpdateSourceTrigger=PropertyChanged, Converter={x:Static model:AddBookModel.StringConverter}, ConverterParameter='N/A'}" Margin="0,0,5,0" Width="100"/>
+            <TextBox Name="BoxSignature2" Text="{Binding Signature2, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,5,0" Width="100"/>
+            <TextBox Name="BoxSignature3" Text="{Binding Signature3, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,5,0" Width="100"/>
             <Button Name="BtnSelectSignature" Content="..." Margin="0,0,5,0" MinWidth="50" Click="BtnSelectSignature_Click"/>
         </WrapPanel>
         <TextBlock Text="{DynamicResource EditBook.Authors}" Margin="0,0,0,5"/>
         <WrapPanel Name="PnlAuthors" Margin="0,0,0,5">
-            <TextBox Name="BoxAuthor1" Text="{Binding Author1}" Margin="0,0,5,0" Width="100"/>
-            <TextBox Name="BoxAuthor2" Text="{Binding Author2}" Margin="0,0,5,0" Width="100"/>
-            <TextBox Name="BoxAuthor3" Text="{Binding Author3}" Margin="0,0,5,0" Width="100"/>
+            <TextBox Name="BoxAuthor1" Text="{Binding Author1, UpdateSourceTrigger=PropertyChanged, Converter={x:Static model:AddBookModel.StringConverter}, ConverterParameter='N/A'}" Margin="0,0,5,0" Width="100"/>
+            <TextBox Name="BoxAuthor2" Text="{Binding Author2, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,5,0" Width="100"/>
+            <TextBox Name="BoxAuthor3" Text="{Binding Author3, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,5,0" Width="100"/>
         </WrapPanel>
         <TextBlock Text="{DynamicResource EditBook.BookTitle}" Margin="0,0,0,5"/>
-        <TextBox Name="BoxTitle" Text="{Binding Title}" Margin="0,0,0,5"/>
+        <TextBox Name="BoxTitle" Text="{Binding Title, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,5"/>
         <TextBlock Text="{DynamicResource EditBook.Publisher}" Margin="0,0,0,5"/>
         <ComboBox Name="BoxPublisher" Text="{Binding Publisher}" Margin="0,0,0,5" MaxDropDownHeight="150"/>
         <Grid>
@@ -42,9 +42,9 @@
                 <ColumnDefinition Width="auto"/>
             </Grid.ColumnDefinitions>
             <TextBlock Text="{DynamicResource AddBook.Version}" Margin="0,0,0,5"/>
-            <TextBox Grid.Row="1" Name="BoxVersion" Text="{Binding Version, Converter={x:Static model:AddBookModel.Converter}}" Width="100" Margin="0,0,5,0"/>
+            <TextBox Grid.Row="1" Name="BoxVersion" Text="{Binding Version, Converter={x:Static model:AddBookModel.NumberConverter}}" PreviewTextInput="IntNumberValidationTextBox" Width="100" Margin="0,0,5,0"/>
             <TextBlock Grid.Column="1" Text="{DynamicResource EditBook.Year}" Margin="0,0,0,5"/>
-            <TextBox Grid.Row="1" Grid.Column="1" Name="BoxYear" Text="{Binding Year, Converter={x:Static model:AddBookModel.Converter}}" Width="100" Margin="0,0,5,0"/>
+            <TextBox Grid.Row="1" Grid.Column="1" Name="BoxYear" Text="{Binding Year, Converter={x:Static model:AddBookModel.NumberConverter}}" MaxLength="4" PreviewTextInput="IntNumberValidationTextBox" Width="100" Margin="0,0,5,0"/>
             <TextBlock Grid.Column="2" Text="{DynamicResource EditBook.Medium}" Margin="0,0,0,5"/>
             <ComboBox Grid.Row="1" Grid.Column="2" Name="BoxMedium" Text="{Binding Medium}" Width="100" Margin="0,0,5,0" MaxDropDownHeight="150"/>
         </Grid>
@@ -76,9 +76,9 @@
                 </DatePicker.Resources>
             </DatePicker>
             <TextBlock Grid.Column="1" Text="{DynamicResource EditBook.Pages}" Margin="0,0,0,5"/>
-            <TextBox  Name="BoxPage" Grid.Row="1" Grid.Column="1" Text="{Binding Pages, Converter={x:Static model:AddBookModel.Converter}}" Width="100" Margin="0,0,5,5"/>
+            <TextBox  Name="BoxPage" Grid.Row="1" Grid.Column="1" Text="{Binding Pages, Converter={x:Static model:AddBookModel.NumberConverter}}" PreviewTextInput="IntNumberValidationTextBox" Width="100" Margin="0,0,5,5"/>
             <TextBlock Grid.Column="2" Text="{DynamicResource EditBook.Price}" Margin="0,0,0,5"/>
-            <TextBox Name="BoxPrice" Grid.Row="1" Grid.Column="2" Text="{Binding Price, StringFormat={}{0:#0.00}, Converter={x:Static model:AddBookModel.Converter}}" Width="100" Margin="0,0,5,5"/>
+            <TextBox Name="BoxPrice" Grid.Row="1" Grid.Column="2" Text="{Binding Price, StringFormat={}{0:#0.00}, Converter={x:Static model:AddBookModel.NumberConverter}}" PreviewTextInput="DecimalNumberValidationTextBox" Width="100" Margin="0,0,5,5"/>
         </Grid>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
             <Button Name="BtnOk" Content="{DynamicResource EditBook.OkBtn}" MinWidth="75" Margin="0,0,5,0" Click="BtnOk_Click"/>

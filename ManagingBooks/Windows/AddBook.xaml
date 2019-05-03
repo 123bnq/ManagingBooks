@@ -15,17 +15,17 @@
         <StackPanel Orientation="Horizontal">
             <StackPanel Name="WindowToBeClear" Width="500" Margin="0,0,5,0">
                 <TextBlock Text="{DynamicResource AddBook.Number}" Margin="0,0,0,5"/>
-                <TextBox Name="BoxNumber" Text="{Binding Number, StringFormat={}{0:#000000}, Converter={x:Static model:AddBookModel.Converter}}" Width="110" HorizontalAlignment="Left"  Margin="0,0,0,5"/>
+                <TextBox Name="BoxNumber" Text="{Binding Number, StringFormat={}{0:#000000}, Converter={x:Static model:AddBookModel.NumberConverter}}" MaxLength="6" PreviewTextInput="IntNumberValidationTextBox"  Width="110" HorizontalAlignment="Left"  Margin="0,0,0,5"/>
                 <TextBlock Text="{DynamicResource AddBook.Signature}" Margin="0,0,0,5"/>
                 <WrapPanel Name="PnlSignatures" Margin="0,0,0,5">
-                    <TextBox Name="BoxSignature1" Text="{Binding Signature1, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,5,0" Width="110"/>
+                    <TextBox Name="BoxSignature1" Text="{Binding Signature1, UpdateSourceTrigger=PropertyChanged, Converter={x:Static model:AddBookModel.StringConverter}, ConverterParameter='N/A'}" Margin="0,0,5,0" Width="110"/>
                     <TextBox Name="BoxSignature2" Text="{Binding Signature2, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,5,0" Width="110"/>
                     <TextBox Name="BoxSignature3" Text="{Binding Signature3, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,5,0" Width="110"/>
                     <Button Name="BtnSelectSignature" Content="..." Margin="0,0,5,0" MinWidth="50" Click="BtnSelectSignature_Click"/>
                 </WrapPanel>
                 <TextBlock Text="{DynamicResource AddBook.Authors}" Margin="0,0,0,5"/>
                 <WrapPanel Name="PnlAuthors" Margin="0,0,0,5">
-                    <TextBox Name="BoxAuthor1" Text="{Binding Author1, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,5,0" Width="110"/>
+                    <TextBox Name="BoxAuthor1" Text="{Binding Author1, UpdateSourceTrigger=PropertyChanged, Converter={x:Static model:AddBookModel.StringConverter}, ConverterParameter='N/A'}" Margin="0,0,5,0" Width="110"/>
                     <TextBox Name="BoxAuthor2" Text="{Binding Author2, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,5,0" Width="110"/>
                     <TextBox Name="BoxAuthor3" Text="{Binding Author3, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,5,0" Width="110"/>
                 </WrapPanel>
@@ -47,9 +47,9 @@
                         <ColumnDefinition Width="auto"/>
                     </Grid.ColumnDefinitions>
                     <TextBlock Text="{DynamicResource AddBook.Version}" Margin="0,0,0,5"/>
-                    <TextBox Grid.Row="1" Name="BoxVersion" Text="{Binding Version, Converter={x:Static model:AddBookModel.Converter}}" Width="110" Margin="0,0,5,0"/>
+                    <TextBox Grid.Row="1" Name="BoxVersion" Text="{Binding Version, Converter={x:Static model:AddBookModel.NumberConverter}}" PreviewTextInput="IntNumberValidationTextBox" Width="110" Margin="0,0,5,0"/>
                     <TextBlock Grid.Column="1" Text="{DynamicResource AddBook.Year}" Margin="0,0,0,5"/>
-                    <TextBox Grid.Row="1" Grid.Column="1" Name="BoxYear" Text="{Binding Year, Converter={x:Static model:AddBookModel.Converter}}" Width="110" Margin="0,0,5,0"/>
+                    <TextBox Grid.Row="1" Grid.Column="1" Name="BoxYear" Text="{Binding Year, Converter={x:Static model:AddBookModel.NumberConverter}}" MaxLength="4" PreviewTextInput="IntNumberValidationTextBox" Width="110" Margin="0,0,5,0"/>
                     <TextBlock Grid.Column="2" Text="{DynamicResource AddBook.Medium}" Margin="0,0,0,5"/>
                     <Grid  Grid.Row="1" Grid.Column="2">
                         <ComboBox Name="BoxMedium" Text="{Binding Medium}" Width="110" Margin="0,0,5,0" MaxDropDownHeight="150"/>
@@ -72,7 +72,7 @@
                         <ColumnDefinition Width="auto"/>
                     </Grid.ColumnDefinitions>
                     <TextBlock Text="{DynamicResource AddBook.Date}" Margin="0,0,0,5"/>
-                    <DatePicker Name="BoxDates" Grid.Row="1" FirstDayOfWeek="Monday" SelectedDateChanged="BoxDates_SelectedDateChanged" DisplayDateEnd="{x:Static sys:DateTime.Today}" MinWidth="100" Margin="0,0,5,5">
+                    <DatePicker Name="BoxDates" Grid.Row="1" FirstDayOfWeek="Monday" SelectedDate="1/1/1970" DisplayDate="{x:Static sys:DateTime.Today}" SelectedDateChanged="BoxDates_SelectedDateChanged" DisplayDateEnd="{x:Static sys:DateTime.Today}" MinWidth="100" Margin="0,0,5,5">
                         <DatePicker.Resources>
                             <Style TargetType="DatePickerTextBox">
                                 <Setter Property="Control.Template">
@@ -87,9 +87,9 @@
                         </DatePicker.Resources>
                     </DatePicker>
                     <TextBlock Grid.Column="1" Text="{DynamicResource AddBook.Pages}" Margin="0,0,0,5"/>
-                    <TextBox  Name="BoxPage" Grid.Row="1" Grid.Column="1" Text="{Binding Pages, Converter={x:Static model:AddBookModel.Converter}}" Width="100" Margin="0,0,5,5"/>
+                    <TextBox  Name="BoxPage" Grid.Row="1" Grid.Column="1" Text="{Binding Pages, Converter={x:Static model:AddBookModel.NumberConverter}}" PreviewTextInput="IntNumberValidationTextBox" Width="100" Margin="0,0,5,5"/>
                     <TextBlock Grid.Column="2" Text="{DynamicResource AddBook.Price}" Margin="0,0,0,5"/>
-                    <TextBox Name="BoxPrice" Grid.Row="1" Grid.Column="2" Text="{Binding Price, StringFormat={}{0:#0.00}, Converter={x:Static model:AddBookModel.Converter}}" Width="100" Margin="0,0,5,5"/>
+                    <TextBox Name="BoxPrice" Grid.Row="1" Grid.Column="2" Text="{Binding Price, StringFormat={}{0:#0.00}, Converter={x:Static model:AddBookModel.NumberConverter}}" PreviewTextInput="DecimalNumberValidationTextBox" Width="100" Margin="0,0,5,5"/>
                 </Grid>
             </StackPanel>
             <StackPanel Margin="35,0,0,0">

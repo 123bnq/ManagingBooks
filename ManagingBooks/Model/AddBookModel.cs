@@ -9,7 +9,8 @@ namespace ManagingBooks.Model
 {
     public class AddBookModel : INotifyPropertyChanged
     {
-        public static readonly ValueConverter Converter = new ValueConverter();
+        public static readonly ValueConverter NumberConverter = new ValueConverter();
+        public static readonly EmptyStringConverter StringConverter = new EmptyStringConverter();
         private int m_Number;
         private string m_Signature1;
         private string m_Signature2;
@@ -150,7 +151,7 @@ namespace ManagingBooks.Model
             get => m_Year;
             set
             {
-                if (value != m_Year)
+                if (value != m_Year && value <= DateTime.Now.Year)
                 {
                     m_Year = value;
                     NotifyPropertyChanged();
@@ -246,6 +247,19 @@ namespace ManagingBooks.Model
             }
 
             return value;
+        }
+    }
+
+    public class EmptyStringConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return string.IsNullOrEmpty((string)value) ? parameter : value;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return string.IsNullOrEmpty((string)value) ? parameter : value;
         }
     }
 }
