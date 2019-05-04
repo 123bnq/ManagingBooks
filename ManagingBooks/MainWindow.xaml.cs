@@ -437,6 +437,8 @@ namespace ManagingBooks
             {
                 SearchList.IsEnabled = false;
                 BoxSearchText.IsEnabled = false;
+                BtnClearBookInfo.IsEnabled = false;
+                BtnAddToPrint.IsEnabled = false;
                 if (SearchList.SelectedIndex != -1)
                 {
                     await Task.Run(() =>
@@ -477,6 +479,8 @@ namespace ManagingBooks
             }
             SearchList.IsEnabled = true;
             BoxSearchText.IsEnabled = true;
+            BtnClearBookInfo.IsEnabled = true;
+            BtnAddToPrint.IsEnabled = true;
         }
 
         private void Delete_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
@@ -745,7 +749,14 @@ namespace ManagingBooks
                     int.TryParse(reader["Jahr"].ToString(), out temp);
                     book.Year = temp;
                     book.Medium = reader["Medium"].ToString();
-                    book.Place = reader["Standort"].ToString();
+                    if (!string.IsNullOrEmpty(reader["Standort"].ToString()))
+                    {
+                        book.Place = reader["Standort"].ToString(); 
+                    }
+                    else
+                    {
+                        book.Place = "N/A";
+                    }
                     int.TryParse(reader["Seiten"].ToString(), out temp);
                     book.Pages = temp;
                     double dec;

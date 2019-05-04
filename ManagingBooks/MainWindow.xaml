@@ -120,7 +120,7 @@
                                 </DataTemplate>
                             </ListBox.ItemTemplate>
                         </ListBox>
-                        <Button Content="{DynamicResource MainWindow.PrintList.AddBtn}" MinWidth="75" HorizontalAlignment="Center" Margin="0,0,0,10" Command="local:CustomCommands.AddToPrint"/>
+                        <Button Name="BtnAddToPrint" Content="{DynamicResource MainWindow.PrintList.AddBtn}" MinWidth="75" HorizontalAlignment="Center" Margin="0,0,0,10" Command="local:CustomCommands.AddToPrint"/>
                         <Button Content="{DynamicResource MainWindow.PrintList.RemoveBtn}" MinWidth="75" HorizontalAlignment="Center" Margin="0,0,0,10" Command="local:CustomCommands.RemoveFromPrint"/>
                         <Button Content="{DynamicResource MainWindow.PrintList.ClearBtn}" MinWidth="75" HorizontalAlignment="Center" Margin="0,0,0,10" Command="local:CustomCommands.ClearPrintList"/>
                         <Button Name="BtnPrint" Content="{DynamicResource MainWindow.PrintList.PrintBtn}" MinWidth="75" Command="local:CustomCommands.Print" HorizontalAlignment="Center"/>

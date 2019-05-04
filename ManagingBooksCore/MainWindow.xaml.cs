@@ -142,7 +142,7 @@ namespace ManagingBooks
                     tempBook.Signatures = Convert.ToString(r["Signature"]);
                     i++;
                 }
-                Thread.Sleep(TimeSpan.FromTicks(500));
+                Thread.Sleep(TimeSpan.FromTicks(5));
             }
             if (i != 0)
             {
@@ -437,6 +437,8 @@ namespace ManagingBooks
             {
                 SearchList.IsEnabled = false;
                 BoxSearchText.IsEnabled = false;
+                BtnClearBookInfo.IsEnabled = false;
+                BtnAddToPrint.IsEnabled = false;
                 if (SearchList.SelectedIndex != -1)
                 {
                     await Task.Run(() =>
@@ -477,6 +479,8 @@ namespace ManagingBooks
             }
             SearchList.IsEnabled = true;
             BoxSearchText.IsEnabled = true;
+            BtnClearBookInfo.IsEnabled = true;
+            BtnAddToPrint.IsEnabled = true;
         }
 
         private void Delete_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
@@ -673,105 +677,112 @@ namespace ManagingBooks
 
         private void Test_Click(object sender, RoutedEventArgs e)
         {
-        //    DateTimeFormatInfo dtfi = CultureInfo.CreateSpecificCulture("fr-FR").DateTimeFormat;
+            //DateTimeFormatInfo dtfi = CultureInfo.CreateSpecificCulture("fr-FR").DateTimeFormat;
 
-        //    var myDataTable = new DataTable();
-        //    string mdbPath = Path.Combine(AppContext.BaseDirectory, "Data\\ProNoskoDatenbank_160717.mdb");
-        //    using (var conection = new OleDbConnection($"Provider=Microsoft.JET.OLEDB.4.0;data source={mdbPath};"))
-        //    {
-        //        SqlMethods.SqlConnect(out SqliteConnection con);
-        //        SqliteTransaction tr = con.BeginTransaction();
+            //var myDataTable = new DataTable();
+            //string mdbPath = Path.Combine(AppContext.BaseDirectory, "Data\\ProNoskoDatenbank_160717.mdb");
+            //using (var conection = new OleDbConnection($"Provider=Microsoft.JET.OLEDB.4.0;data source={mdbPath};"))
+            //{
+            //    SqlMethods.SqlConnect(out SqliteConnection con);
+            //    SqliteTransaction tr = con.BeginTransaction();
 
-        //        conection.Open();
-        //        OleDbDataReader reader = null;
+            //    conection.Open();
+            //    OleDbDataReader reader = null;
 
-        //        //OleDbCommand command = new OleDbCommand("SELECT books.Id,books.Nr,books.Signatur,books.Autor,books.Autor2,books.Autor3,books.Titel,verlag.Name,books.Auflage,books.Jahr,books.Medium,books.Standort,books.Einkauf,books.Seiten,books.Preis FROM books INNER JOIN verlag ON books.Verlag = verlag.id WHERE books.Id=33", conection);
-        //        OleDbCommand command = new OleDbCommand("SELECT books.Id,books.Nr,books.Signatur,books.Autor,books.Autor2,books.Autor3,books.Titel,verlag.Name,books.Auflage,books.Jahr,books.Medium,books.Standort,books.Einkauf,books.Seiten,books.Preis FROM books INNER JOIN verlag ON books.Verlag = verlag.id ORDER BY books.Id asc", conection);
-        //        reader = command.ExecuteReader();
-        //        while (reader.Read())
-        //        {
-        //            Book book = new Book();
-        //            int temp;
-        //            int.TryParse(reader["Nr"].ToString(), out temp);
-        //            book.Number = temp;
-        //            string text = reader["Signatur"].ToString();
-        //            string[] textArray = text.Split('-');
-        //            book.NoSignature = textArray.Length;
-        //            book.Signatures = new string[book.NoSignature];
-        //            for (int i = 0; i < book.NoSignature; i++)
-        //            {
-        //                if (string.IsNullOrEmpty(textArray[i]))
-        //                {
-        //                    book.Signatures[i] = "N/A";
-        //                }
-        //                else
-        //                {
-        //                    book.Signatures[i] = textArray[i];
-        //                }
-        //            }
-        //            if (!string.IsNullOrEmpty(reader["Autor3"].ToString()))
-        //            {
-        //                book.NoAuthor = 3;
-        //            }
-        //            else if (!string.IsNullOrEmpty(reader["Autor2"].ToString()))
-        //            {
-        //                book.NoAuthor = 2;
-        //            }
-        //            else
-        //            {
-        //                book.NoAuthor = 1;
-        //            }
-        //            book.Authors = new Author[book.NoAuthor];
-        //            for (int i = 0; i < book.Authors.Length; i++)
-        //            {
-        //                book.Authors[i] = new Author();
-        //            }
-        //            if (book.NoAuthor > 0)
-        //            {
-        //                book.Authors[0].Name = reader["Autor"].ToString();
-        //            }
-        //            if (book.NoAuthor > 1)
-        //            {
-        //                book.Authors[1].Name = reader["Autor2"].ToString();
-        //            }
-        //            if (book.NoAuthor > 2)
-        //            {
-        //                book.Authors[2].Name = reader["Autor3"].ToString();
-        //            }
-        //            book.Title = reader["Titel"].ToString();
-        //            book.Publisher = reader["Name"].ToString();
-        //            int.TryParse(reader["Auflage"].ToString(), out temp);
-        //            book.Version = temp;
-        //            int.TryParse(reader["Jahr"].ToString(), out temp);
-        //            book.Year = temp;
-        //            book.Medium = reader["Medium"].ToString();
-        //            book.Place = reader["Standort"].ToString();
-        //            int.TryParse(reader["Seiten"].ToString(), out temp);
-        //            book.Pages = temp;
-        //            double dec;
-        //            double.TryParse(reader["Preis"].ToString().Replace(',', '.'), out dec);
-        //            book.Price = dec;
-        //            int.TryParse(reader["Einkauf"].ToString(), out temp);
-        //            if (temp == 0)
-        //            {
-        //                book.DayBought = new DateTime(1970, 1, 1).ToString("d", dtfi);
-        //            }
-        //            else
-        //            {
-        //                int year = temp % 10000;
-        //                temp /= 10000;
-        //                int month = temp % 100;
-        //                temp /= 100;
-        //                int day = temp;
-        //                book.DayBought = new DateTime(year, month, day).ToString("d", dtfi);
-        //            }
+            //    //OleDbCommand command = new OleDbCommand("SELECT books.Id,books.Nr,books.Signatur,books.Autor,books.Autor2,books.Autor3,books.Titel,verlag.Name,books.Auflage,books.Jahr,books.Medium,books.Standort,books.Einkauf,books.Seiten,books.Preis FROM books INNER JOIN verlag ON books.Verlag = verlag.id WHERE books.Id=33", conection);
+            //    OleDbCommand command = new OleDbCommand("SELECT books.Id,books.Nr,books.Signatur,books.Autor,books.Autor2,books.Autor3,books.Titel,verlag.Name,books.Auflage,books.Jahr,books.Medium,books.Standort,books.Einkauf,books.Seiten,books.Preis FROM books INNER JOIN verlag ON books.Verlag = verlag.id ORDER BY books.Id asc", conection);
+            //    reader = command.ExecuteReader();
+            //    while (reader.Read())
+            //    {
+            //        Book book = new Book();
+            //        int temp;
+            //        int.TryParse(reader["Nr"].ToString(), out temp);
+            //        book.Number = temp;
+            //        string text = reader["Signatur"].ToString();
+            //        string[] textArray = text.Split('-');
+            //        book.NoSignature = textArray.Length;
+            //        book.Signatures = new string[book.NoSignature];
+            //        for (int i = 0; i < book.NoSignature; i++)
+            //        {
+            //            if (string.IsNullOrEmpty(textArray[i]))
+            //            {
+            //                book.Signatures[i] = "N/A";
+            //            }
+            //            else
+            //            {
+            //                book.Signatures[i] = textArray[i];
+            //            }
+            //        }
+            //        if (!string.IsNullOrEmpty(reader["Autor3"].ToString()))
+            //        {
+            //            book.NoAuthor = 3;
+            //        }
+            //        else if (!string.IsNullOrEmpty(reader["Autor2"].ToString()))
+            //        {
+            //            book.NoAuthor = 2;
+            //        }
+            //        else
+            //        {
+            //            book.NoAuthor = 1;
+            //        }
+            //        book.Authors = new Author[book.NoAuthor];
+            //        for (int i = 0; i < book.Authors.Length; i++)
+            //        {
+            //            book.Authors[i] = new Author();
+            //        }
+            //        if (book.NoAuthor > 0)
+            //        {
+            //            book.Authors[0].Name = reader["Autor"].ToString();
+            //        }
+            //        if (book.NoAuthor > 1)
+            //        {
+            //            book.Authors[1].Name = reader["Autor2"].ToString();
+            //        }
+            //        if (book.NoAuthor > 2)
+            //        {
+            //            book.Authors[2].Name = reader["Autor3"].ToString();
+            //        }
+            //        book.Title = reader["Titel"].ToString();
+            //        book.Publisher = reader["Name"].ToString();
+            //        int.TryParse(reader["Auflage"].ToString(), out temp);
+            //        book.Version = temp;
+            //        int.TryParse(reader["Jahr"].ToString(), out temp);
+            //        book.Year = temp;
+            //        book.Medium = reader["Medium"].ToString();
+            //        if (!string.IsNullOrEmpty(reader["Standort"].ToString()))
+            //        {
+            //            book.Place = reader["Standort"].ToString(); 
+            //        }
+            //        else
+            //        {
+            //            book.Place = "N/A";
+            //        }
+            //        int.TryParse(reader["Seiten"].ToString(), out temp);
+            //        book.Pages = temp;
+            //        double dec;
+            //        double.TryParse(reader["Preis"].ToString().Replace(',', '.'), out dec);
+            //        book.Price = dec;
+            //        int.TryParse(reader["Einkauf"].ToString(), out temp);
+            //        if (temp == 0)
+            //        {
+            //            book.DayBought = new DateTime(1970, 1, 1).ToString("d", dtfi);
+            //        }
+            //        else
+            //        {
+            //            int year = temp % 10000;
+            //            temp /= 10000;
+            //            int month = temp % 100;
+            //            temp /= 100;
+            //            int day = temp;
+            //            book.DayBought = new DateTime(year, month, day).ToString("d", dtfi);
+            //        }
                     
-        //            AddBook.AddBookToDatabase(ref con, ref tr, book);
-        //        }
-        //        tr.Commit();
-        //        con.Close();
-        //    }
-        //    Search.RunWorkerAsync(NumberOfBooks());
+            //        AddBook.AddBookToDatabase(ref con, ref tr, book);
+            //    }
+            //    tr.Commit();
+            //    con.Close();
+            //}
+            //Search.RunWorkerAsync(NumberOfBooks());
 
         }
     }
