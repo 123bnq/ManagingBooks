@@ -367,8 +367,9 @@ namespace ManagingBooks
                     using (PdfDocument pdf = new PdfDocument(writer))
                     {
                         Document document = new Document(pdf);
+                        //BarcodeInter25 barcode = new BarcodeInter25(pdf);
+
                         Barcode128 barcode = new Barcode128(pdf);
-                        barcode.SetCodeType(Barcode128.CODE_C);
                         Table table = new Table(5, false);
                         table.SetWidth(iText.Layout.Properties.UnitValue.CreatePercentValue(100));
                         foreach (string codeNr in context.ListBookPrint)
@@ -384,8 +385,10 @@ namespace ManagingBooks
                             barcodeImage.SetHorizontalAlignment(iText.Layout.Properties.HorizontalAlignment.CENTER);
                             //barcodeImage.Scale(1.5F, 1.5F);
                             Cell cell = new Cell();
+                            cell.Add(new Paragraph("Code 128").SetTextAlignment(iText.Layout.Properties.TextAlignment.CENTER));
                             cell.Add(barcodeImage);
                             table.AddCell(cell);
+                            
                         }
                         document.Add(table);
                     }
