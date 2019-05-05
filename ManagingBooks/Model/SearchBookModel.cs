@@ -74,6 +74,31 @@ namespace ManagingBooks.Model
             }
         }
 
+        //public string ViewNumber
+        //{
+        //    get => m_ViewNumber;
+        //    set
+        //    {
+        //        if (value != m_ViewNumber)
+        //        {
+        //            if (int.TryParse(value, out int n))
+        //            {
+        //                string temp = value;
+        //                int length = temp.Length;
+        //                for (int i = 6; i > length; i--)
+        //                {
+        //                    temp = String.Concat("0", temp);
+        //                }
+        //                m_ViewNumber = temp;
+        //            }
+        //            else
+        //            {
+        //                m_ViewNumber = value;
+        //            }
+        //            NotifyPropertyChanged();
+        //        }
+        //    }
+        //}
         public string ViewNumber
         {
             get => m_ViewNumber;
@@ -81,20 +106,7 @@ namespace ManagingBooks.Model
             {
                 if (value != m_ViewNumber)
                 {
-                    if (int.TryParse(value, out int n))
-                    {
-                        string temp = value;
-                        int length = temp.Length;
-                        for (int i = 6; i > length; i--)
-                        {
-                            temp = String.Concat("0", temp);
-                        }
-                        m_ViewNumber = temp;
-                    }
-                    else
-                    {
-                        m_ViewNumber = value;
-                    }
+                    m_ViewNumber = value;
                     NotifyPropertyChanged();
                 }
             }
@@ -240,7 +252,7 @@ namespace ManagingBooks.Model
         }
 
         public ObservableCollection<SearchBook> DisplayBooks { get; set; }
-        public ObservableCollection<int> ListBookPrint { get; set; }
+        public ObservableCollection<string> ListBookPrint { get; set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -255,8 +267,32 @@ namespace ManagingBooks.Model
 
     class SearchBook
     {
+        private string m_Nr;
         public int BookId { get; set; }
-        public int Number { get; set; }
+        public string Number
+        {
+            get => m_Nr;
+            set
+            {
+                if (m_Nr != value)
+                {
+                    if (int.TryParse(value, out int n))
+                    {
+                        string temp = value;
+                        int length = temp.Length;
+                        for (int i = 6; i > length; i--)
+                        {
+                            temp = String.Concat("0", temp);
+                        }
+                        m_Nr = temp;
+                    }
+                    else
+                    {
+                        m_Nr = value;
+                    } 
+                }
+            }
+        }
         public string Signatures { get; set; }
         public string Title { get; set; }
         public string Publishers { get; set; }
