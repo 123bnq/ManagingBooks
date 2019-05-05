@@ -46,7 +46,7 @@ namespace ManagingBooks
             SearchBookModel context = new SearchBookModel();
             this.DataContext = context;
             context.DisplayBooks = new ObservableCollection<SearchBook>();
-            context.ListBookPrint = new ObservableCollection<int>();
+            context.ListBookPrint = new ObservableCollection<string>();
             SearchList.ItemsSource = context.DisplayBooks;
             context.DisplayBooks.Clear();
             Search.WorkerReportsProgress = true;
@@ -121,8 +121,8 @@ namespace ManagingBooks
                     tempBook = new SearchBook();
                     tempBook.BookId = result;
                     lastBookId = result;
-                    int.TryParse(Convert.ToString(r["Number"]), out result);
-                    tempBook.Number = result;
+                    //int.TryParse(Convert.ToString(r["Number"]), out result);
+                    tempBook.Number = Convert.ToString(r["Number"]);
                     tempBook.Title = Convert.ToString(r["Title"]);
                     tempBook.Publishers = Convert.ToString(r["Publisher"]);
                     int.TryParse(Convert.ToString(r["Year"]), out result);
@@ -142,7 +142,7 @@ namespace ManagingBooks
                     tempBook.Signatures = Convert.ToString(r["Signature"]);
                     i++;
                 }
-                Thread.Sleep(TimeSpan.FromTicks(5));
+                Thread.Sleep(TimeSpan.FromTicks(500));
             }
             if (i != 0)
             {
@@ -300,8 +300,8 @@ namespace ManagingBooks
                     tempBook = new SearchBook();
                     tempBook.BookId = result;
                     lastBookId = result;
-                    int.TryParse(Convert.ToString(r["Number"]), out result);
-                    tempBook.Number = result;
+                    //int.TryParse(Convert.ToString(r["Number"]), out result);
+                    tempBook.Number = Convert.ToString(r["Number"]);
                     tempBook.Title = Convert.ToString(r["Title"]);
                     tempBook.Publishers = Convert.ToString(r["Publisher"]);
                     int.TryParse(Convert.ToString(r["Year"]), out result);
@@ -367,25 +367,28 @@ namespace ManagingBooks
                     using (PdfDocument pdf = new PdfDocument(writer))
                     {
                         Document document = new Document(pdf);
+                        //BarcodeInter25 barcode = new BarcodeInter25(pdf);
+
                         Barcode128 barcode = new Barcode128(pdf);
-                        barcode.SetCodeType(Barcode128.CODE_C);
                         Table table = new Table(5, false);
                         table.SetWidth(iText.Layout.Properties.UnitValue.CreatePercentValue(100));
-                        foreach (var book in context.ListBookPrint)
+                        foreach (string codeNr in context.ListBookPrint)
                         {
-                            string codeNr = book.ToString();
-                            int length = codeNr.Length;
-                            for (int i = 6; i > length; i--)
-                            {
-                                codeNr = String.Concat("0", codeNr);
-                            }
+                            //string codeNr = book.ToString();
+                            //int length = codeNr.Length;
+                            //for (int i = 6; i > length; i--)
+                            //{
+                            //    codeNr = String.Concat("0", codeNr);
+                            //}
                             barcode.SetCode(codeNr);
                             Image barcodeImage = new Image(barcode.CreateFormXObject(pdf));
                             barcodeImage.SetHorizontalAlignment(iText.Layout.Properties.HorizontalAlignment.CENTER);
                             //barcodeImage.Scale(1.5F, 1.5F);
                             Cell cell = new Cell();
+                            cell.Add(new Paragraph("Code 128").SetTextAlignment(iText.Layout.Properties.TextAlignment.CENTER));
                             cell.Add(barcodeImage);
                             table.AddCell(cell);
+                            
                         }
                         document.Add(table);
                     }
@@ -635,7 +638,7 @@ namespace ManagingBooks
         private void RemoveFromPrint_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             SearchBookModel context = this.DataContext as SearchBookModel;
-            int bookToRemove = (int)ListPrint.SelectedItem;
+            string bookToRemove = ListPrint.SelectedItem.ToString();
             context.ListBookPrint.Remove(bookToRemove);
         }
 
