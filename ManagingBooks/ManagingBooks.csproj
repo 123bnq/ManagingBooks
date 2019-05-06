@@ -141,6 +141,7 @@
     <Compile Include="Model\EditPlaceModel.cs" />
     <Compile Include="Model\EditPublisherModel.cs" />
     <Compile Include="Model\SearchBookModel.cs" />
+    <Compile Include="SortAdorner.cs" />
     <Compile Include="SqlMethods.cs" />
     <Compile Include="Windows\AddBook.xaml.cs">
       <DependentUpon>AddBook.xaml</DependentUpon>

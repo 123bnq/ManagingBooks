@@ -72,24 +72,38 @@
                     <ListView.View>
                         <GridView>
                             <GridViewColumn Header="{DynamicResource MainWindow.SearchList.BookId}" Width="50" DisplayMemberBinding="{Binding BookId}"/>
-                            <GridViewColumn Header="{DynamicResource MainWindow.SearchList.Number}" Width="Auto">
+                            <GridViewColumn Width="Auto">
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
                                         <TextBlock Text="{Binding Number, StringFormat={}{0:#000000}}" TextAlignment="Right"/>
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
+                                <GridViewColumn.Header>
+                                    <GridViewColumnHeader Content="{DynamicResource MainWindow.SearchList.Number}" Tag="Number" Click="GridViewColumnHeader_Click"/>
+                                </GridViewColumn.Header>
                             </GridViewColumn>
-                            <GridViewColumn Header="{DynamicResource MainWindow.SearchList.Signature}" Width="Auto" DisplayMemberBinding="{Binding Signatures}"/>
-                            <GridViewColumn Header="{DynamicResource MainWindow.SearchList.Title}" Width="150">
+                            <GridViewColumn Width="Auto" DisplayMemberBinding="{Binding Signatures}">
+                                <GridViewColumn.Header>
+                                    <GridViewColumnHeader Content="{DynamicResource MainWindow.SearchList.Signature}" Tag="Signature" Click="GridViewColumnHeader_Click"/>
+                                </GridViewColumn.Header>
+                            </GridViewColumn>
+                            <GridViewColumn Width="150">
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
                                         <TextBlock Text="{Binding Title}" FontStyle="Italic" FontWeight="Bold" FontSize="14"/>
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
+                                <GridViewColumn.Header>
+                                    <GridViewColumnHeader Content="{DynamicResource MainWindow.SearchList.Title}" Tag="Title" Click="GridViewColumnHeader_Click"/>
+                                </GridViewColumn.Header>
                             </GridViewColumn>
                             <GridViewColumn Header="{DynamicResource MainWindow.SearchList.Authors}" Width="150" DisplayMemberBinding="{Binding Authors}"/>
                             <GridViewColumn Header="{DynamicResource MainWindow.SearchList.Publisher}" Width="75" DisplayMemberBinding="{Binding Publishers}"/>
-                            <GridViewColumn Header="{DynamicResource MainWindow.SearchList.Year}" Width="50" DisplayMemberBinding="{Binding Year}"/>
+                            <GridViewColumn Width="50" DisplayMemberBinding="{Binding Year}">
+                                <GridViewColumn.Header>
+                                    <GridViewColumnHeader Content="{DynamicResource MainWindow.SearchList.Year}" Tag="Year" Click="GridViewColumnHeader_Click"/>
+                                </GridViewColumn.Header>
+                            </GridViewColumn>
                             <GridViewColumn Header="{DynamicResource MainWindow.SearchList.Version}" Width="50" DisplayMemberBinding="{Binding Version}"/>
                             <GridViewColumn Header="{DynamicResource MainWindow.SearchList.Medium}" Width="100" DisplayMemberBinding="{Binding Medium}"/>
                             <GridViewColumn Header="{DynamicResource MainWindow.SearchList.Place}" Width="75" DisplayMemberBinding="{Binding Place}"/>

@@ -3,6 +3,7 @@ using Microsoft.Data.Sqlite;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -24,6 +25,9 @@ namespace ManagingBooks.Windows
     /// </summary>
     public partial class EditPlace : Window
     {
+        private GridViewColumnHeader listViewSortCol = null;
+        private SortAdorner listViewSortAdorner = null;
+
         public EditPlace()
         {
             EditPlaceModel context = new EditPlaceModel();
@@ -217,6 +221,11 @@ namespace ManagingBooks.Windows
         {
             ClearEntries(this.DataContext as EditPlaceModel);
             PlaceList.SelectedItem = null;
+        }
+
+        private void GridViewColumnHeader_Click(object sender, RoutedEventArgs e)
+        {
+            SortAdorner.SortClick(sender, e, ref listViewSortCol, ref listViewSortAdorner, ref PlaceList);
         }
     }
 }

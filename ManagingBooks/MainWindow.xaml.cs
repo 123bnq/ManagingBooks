@@ -23,6 +23,7 @@ using System.Data.OleDb;
 using System.Data;
 using System.IO;
 using System.Globalization;
+using System.Windows.Controls;
 
 namespace ManagingBooks
 {
@@ -31,6 +32,9 @@ namespace ManagingBooks
     /// </summary>
     public partial class MainWindow : Window
     {
+        private GridViewColumnHeader listViewSortCol = null;
+        private SortAdorner listViewSortAdorner = null;
+
         BackgroundWorker Search = new BackgroundWorker();
         BackgroundWorker Delete = new BackgroundWorker();
         int LastIndex = -1;
@@ -381,7 +385,7 @@ namespace ManagingBooks
                             //    codeNr = String.Concat("0", codeNr);
                             //}
                             barcode.SetCode(codeNr);
-                            Image barcodeImage = new Image(barcode.CreateFormXObject(pdf));
+                            iText.Layout.Element.Image barcodeImage = new iText.Layout.Element.Image(barcode.CreateFormXObject(pdf));
                             barcodeImage.SetHorizontalAlignment(iText.Layout.Properties.HorizontalAlignment.CENTER);
                             //barcodeImage.Scale(1.5F, 1.5F);
                             Cell cell = new Cell();
@@ -787,6 +791,15 @@ namespace ManagingBooks
             }
             Search.RunWorkerAsync(NumberOfBooks());
 
+        }
+
+        private void GridViewColumnHeader_Click(object sender, RoutedEventArgs e)
+        {
+            SortAdorner.SortClick(sender, e, ref listViewSortCol, ref listViewSortAdorner, ref SearchList);
+            //GridViewColumnHeader column = sender as GridViewColumnHeader;
+            //string sortBy = column.Tag.ToString();
+            //SearchList.Items.SortDescriptions.Clear();
+            //SearchList.Items.SortDescriptions.Add(new SortDescription(sortBy, ListSortDirection.Descending));
         }
     }
 
