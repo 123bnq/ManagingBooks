@@ -187,9 +187,9 @@
                 </Grid.RowDefinitions>
                 <TextBlock Text="{DynamicResource MainWindow.Search}" Margin="0,0,0,5"/>
                 <TextBox Name="BoxSearchText" Grid.Column="1" Width="500" Margin="5,0,5,5" Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}" TextChanged="BoxSearchText_TextChanged">
-                    <TextBox.InputBindings>
+                    <!--<TextBox.InputBindings>
                         <KeyBinding Key="Return" Command="local:CustomCommands.Search"/>
-                    </TextBox.InputBindings>
+                    </TextBox.InputBindings>-->
                 </TextBox>
                 <Button x:Name="Test" Grid.Column="2" MinWidth="75" Content="Test" Margin="5,0,0,5" Click="Test_Click" />
                 <TextBlock Grid.Row="1" Text="{DynamicResource MainWindow.SearchBy}" Margin="0,0,10,0"/>
