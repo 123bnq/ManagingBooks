@@ -268,6 +268,7 @@ namespace ManagingBooks.Model
     class SearchBook
     {
         private string m_Nr;
+
         public int BookId { get; set; }
         public string Number
         {

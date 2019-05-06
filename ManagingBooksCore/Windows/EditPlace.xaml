@@ -42,10 +42,26 @@
             </ListView.Resources>
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="Id" Width="Auto" DisplayMemberBinding="{Binding Id}"/>
-                    <GridViewColumn Header="{DynamicResource EditPlace.City}" Width="Auto" DisplayMemberBinding="{Binding City}"/>
-                    <GridViewColumn Header="{DynamicResource EditPlace.State}" Width="Auto" DisplayMemberBinding="{Binding State}"/>
-                    <GridViewColumn Header="{DynamicResource EditPlace.Country}" Width="Auto" DisplayMemberBinding="{Binding Country}"/>
+                    <GridViewColumn Width="Auto" DisplayMemberBinding="{Binding Id}">
+                        <GridViewColumn.Header>
+                            <GridViewColumnHeader Tag="Id" Click="GridViewColumnHeader_Click" Content="Id"/>
+                        </GridViewColumn.Header>
+                    </GridViewColumn>
+                    <GridViewColumn Width="Auto" DisplayMemberBinding="{Binding City}">
+                        <GridViewColumn.Header>
+                            <GridViewColumnHeader Content="{DynamicResource EditPlace.City}" Tag="City" Click="GridViewColumnHeader_Click"/>
+                        </GridViewColumn.Header>
+                    </GridViewColumn>
+                    <GridViewColumn Width="Auto" DisplayMemberBinding="{Binding State}">
+                        <GridViewColumn.Header>
+                            <GridViewColumnHeader Content="{DynamicResource EditPlace.State}" Tag="State" Click="GridViewColumnHeader_Click"/>
+                        </GridViewColumn.Header>
+                    </GridViewColumn>
+                    <GridViewColumn Width="Auto" DisplayMemberBinding="{Binding Country}">
+                        <GridViewColumn.Header>
+                            <GridViewColumnHeader Content="{DynamicResource EditPlace.Country}" Tag="Country" Click="GridViewColumnHeader_Click"/>
+                        </GridViewColumn.Header>
+                    </GridViewColumn>
                 </GridView>
             </ListView.View>
         </ListView>
