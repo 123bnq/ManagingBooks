@@ -17,6 +17,9 @@ namespace ManagingBooks.Windows
     /// </summary>
     public partial class EditPublisher : Window
     {
+        private GridViewColumnHeader listViewSortCol = null;
+        private SortAdorner listViewSortAdorner = null;
+
         public EditPublisher()
         {
             EditPublisherModel context = new EditPublisherModel();
@@ -201,6 +204,11 @@ namespace ManagingBooks.Windows
                 context.City = pub.City;
                 context.Country = pub.Country;
             }
+        }
+
+        private void GridViewColumnHeader_Click(object sender, RoutedEventArgs e)
+        {
+            SortAdorner.SortClick(sender, e, ref listViewSortCol, ref listViewSortAdorner, ref PubList);
         }
     }
 }

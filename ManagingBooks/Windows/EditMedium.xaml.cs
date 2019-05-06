@@ -5,6 +5,7 @@ using System.Collections.ObjectModel;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using WPFCustomMessageBox;
 
@@ -15,6 +16,9 @@ namespace ManagingBooks.Windows
     /// </summary>
     public partial class EditMedium : Window
     {
+        private GridViewColumnHeader listViewSortCol = null;
+        private SortAdorner listViewSortAdorner = null;
+
         public EditMedium()
         {
             EditMediumModel context = new EditMediumModel();
@@ -178,6 +182,11 @@ namespace ManagingBooks.Windows
                 context.Id = med.Id;
                 context.Name = med.Name;
             }
+        }
+
+        private void GridViewColumnHeader_Click(object sender, RoutedEventArgs e)
+        {
+            SortAdorner.SortClick(sender, e, ref listViewSortCol, ref listViewSortAdorner, ref MediumList);
         }
     }
 }

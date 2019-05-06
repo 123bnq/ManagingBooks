@@ -37,8 +37,16 @@
             </ListView.Resources>
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="Id" Width="Auto" DisplayMemberBinding="{Binding Id}"/>
-                    <GridViewColumn Header="{DynamicResource EditMedium.Name}" Width="Auto" DisplayMemberBinding="{Binding Name}"/>
+                    <GridViewColumn Width="Auto" DisplayMemberBinding="{Binding Id}">
+                        <GridViewColumn.Header>
+                            <GridViewColumnHeader Content="Id" Tag="Id" Click="GridViewColumnHeader_Click"/>
+                        </GridViewColumn.Header>
+                    </GridViewColumn>
+                    <GridViewColumn Width="Auto" DisplayMemberBinding="{Binding Name}">
+                        <GridViewColumn.Header>
+                            <GridViewColumnHeader Content="{DynamicResource EditMedium.Name}" Tag="Name" Click="GridViewColumnHeader_Click"/>
+                        </GridViewColumn.Header>
+                    </GridViewColumn>
                 </GridView>
             </ListView.View>
         </ListView>
