@@ -190,23 +190,6 @@ namespace ManagingBooks
             }
             else
             {
-                //switch (context.SearchBy)
-                //{
-                //    case "Number":
-                //        return (item as SearchBook).Number.ToString().IndexOf(context.SearchText, StringComparison.OrdinalIgnoreCase) >= 0;
-                //    case "Signature":
-                //        return (item as SearchBook).Signatures.StartsWith(context.SearchText, StringComparison.OrdinalIgnoreCase);
-                //    case "Title":
-                //        return (item as SearchBook).Title.IndexOf(context.SearchText, StringComparison.OrdinalIgnoreCase) >= 0;
-                //    case "Authors":
-                //        return (item as SearchBook).Authors.IndexOf(context.SearchText, StringComparison.OrdinalIgnoreCase) >= 0;
-                //    case "Place":
-                //        return (item as SearchBook).Place.IndexOf(context.SearchText, StringComparison.OrdinalIgnoreCase) >= 0;
-                //    case "Medium":
-                //        return (item as SearchBook).Medium.StartsWith(context.SearchText, StringComparison.OrdinalIgnoreCase);
-                //    default:
-                //        return true;
-                //}
                 if (context.SearchBy.Equals(Application.Current.FindResource("MainWindow.SearchBy.Number")))
                     return (item as SearchBook).Number.ToString().IndexOf(context.SearchText, StringComparison.OrdinalIgnoreCase) >= 0;
                 else if (context.SearchBy.Equals(Application.Current.FindResource("MainWindow.SearchBy.Signatures")))
@@ -304,7 +287,6 @@ namespace ManagingBooks
                     tempBook = new SearchBook();
                     tempBook.BookId = result;
                     lastBookId = result;
-                    //int.TryParse(Convert.ToString(r["Number"]), out result);
                     tempBook.Number = Convert.ToString(r["Number"]);
                     tempBook.Title = Convert.ToString(r["Title"]);
                     tempBook.Publishers = Convert.ToString(r["Publisher"]);
@@ -371,19 +353,12 @@ namespace ManagingBooks
                     using (PdfDocument pdf = new PdfDocument(writer))
                     {
                         Document document = new Document(pdf);
-                        //BarcodeInter25 barcode = new BarcodeInter25(pdf);
-
                         Barcode128 barcode = new Barcode128(pdf);
                         Table table = new Table(5, false);
                         table.SetWidth(iText.Layout.Properties.UnitValue.CreatePercentValue(100));
+
                         foreach (string codeNr in context.ListBookPrint)
                         {
-                            //string codeNr = book.ToString();
-                            //int length = codeNr.Length;
-                            //for (int i = 6; i > length; i--)
-                            //{
-                            //    codeNr = String.Concat("0", codeNr);
-                            //}
                             barcode.SetCode(codeNr);
                             iText.Layout.Element.Image barcodeImage = new iText.Layout.Element.Image(barcode.CreateFormXObject(pdf));
                             barcodeImage.SetHorizontalAlignment(iText.Layout.Properties.HorizontalAlignment.CENTER);
@@ -468,7 +443,6 @@ namespace ManagingBooks
                             deleteCommand.ExecuteNonQuery();
                             tr.Commit();
                             con.Close();
-
 
                             progress.Report(Convert.ToInt32((double)(max - i) / max * 100));
                             context.Status = Application.Current.FindResource("MainWindow.CodeBehind.Status.Deleting").ToString();
