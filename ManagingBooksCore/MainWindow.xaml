@@ -71,7 +71,11 @@
                     </ListView.Resources>
                     <ListView.View>
                         <GridView>
-                            <GridViewColumn Header="{DynamicResource MainWindow.SearchList.BookId}" Width="50" DisplayMemberBinding="{Binding BookId}"/>
+                            <GridViewColumn Width="50" DisplayMemberBinding="{Binding BookId}">
+                                <GridViewColumn.Header>
+                                    <GridViewColumnHeader Content="{DynamicResource MainWindow.SearchList.BookId}" Tag="BookId" Click="GridViewColumnHeader_Click"/>
+                                </GridViewColumn.Header>
+                            </GridViewColumn>
                             <GridViewColumn Width="Auto">
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
@@ -84,7 +88,7 @@
                             </GridViewColumn>
                             <GridViewColumn Width="Auto" DisplayMemberBinding="{Binding Signatures}">
                                 <GridViewColumn.Header>
-                                    <GridViewColumnHeader Content="{DynamicResource MainWindow.SearchList.Signature}" Tag="Signature" Click="GridViewColumnHeader_Click"/>
+                                    <GridViewColumnHeader Content="{DynamicResource MainWindow.SearchList.Signature}" Tag="Signatures" Click="GridViewColumnHeader_Click"/>
                                 </GridViewColumn.Header>
                             </GridViewColumn>
                             <GridViewColumn Width="150">
@@ -97,30 +101,60 @@
                                     <GridViewColumnHeader Content="{DynamicResource MainWindow.SearchList.Title}" Tag="Title" Click="GridViewColumnHeader_Click"/>
                                 </GridViewColumn.Header>
                             </GridViewColumn>
-                            <GridViewColumn Header="{DynamicResource MainWindow.SearchList.Authors}" Width="150" DisplayMemberBinding="{Binding Authors}"/>
-                            <GridViewColumn Header="{DynamicResource MainWindow.SearchList.Publisher}" Width="75" DisplayMemberBinding="{Binding Publishers}"/>
+                            <GridViewColumn Width="150" DisplayMemberBinding="{Binding Authors}">
+                                <GridViewColumn.Header>
+                                    <GridViewColumnHeader Content="{DynamicResource MainWindow.SearchList.Authors}" Tag="Authors" Click="GridViewColumnHeader_Click"/>
+                                </GridViewColumn.Header>
+                            </GridViewColumn>
+                            <GridViewColumn Width="75" DisplayMemberBinding="{Binding Publishers}">
+                                <GridViewColumn.Header>
+                                    <GridViewColumnHeader Content="{DynamicResource MainWindow.SearchList.Publisher}" Tag="Publishers" Click="GridViewColumnHeader_Click"/>
+                                </GridViewColumn.Header>
+                            </GridViewColumn>
                             <GridViewColumn Width="50" DisplayMemberBinding="{Binding Year}">
                                 <GridViewColumn.Header>
                                     <GridViewColumnHeader Content="{DynamicResource MainWindow.SearchList.Year}" Tag="Year" Click="GridViewColumnHeader_Click"/>
                                 </GridViewColumn.Header>
                             </GridViewColumn>
-                            <GridViewColumn Header="{DynamicResource MainWindow.SearchList.Version}" Width="50" DisplayMemberBinding="{Binding Version}"/>
-                            <GridViewColumn Header="{DynamicResource MainWindow.SearchList.Medium}" Width="100" DisplayMemberBinding="{Binding Medium}"/>
-                            <GridViewColumn Header="{DynamicResource MainWindow.SearchList.Place}" Width="75" DisplayMemberBinding="{Binding Place}"/>
-                            <GridViewColumn Header="{DynamicResource MainWindow.SearchList.Date}" Width="75" DisplayMemberBinding="{Binding Date}"/>
-                            <GridViewColumn Header="{DynamicResource MainWindow.SearchList.Pages}" Width="40">
+                            <GridViewColumn Width="50" DisplayMemberBinding="{Binding Version}">
+                                <GridViewColumn.Header>
+                                    <GridViewColumnHeader Content="{DynamicResource MainWindow.SearchList.Version}" Tag="Version" Click="GridViewColumnHeader_Click"/>
+                                </GridViewColumn.Header>
+                            </GridViewColumn>
+                            <GridViewColumn Width="100" DisplayMemberBinding="{Binding Medium}">
+                                <GridViewColumn.Header>
+                                    <GridViewColumnHeader Content="{DynamicResource MainWindow.SearchList.Medium}" Tag="Medium" Click="GridViewColumnHeader_Click"/>
+                                </GridViewColumn.Header>
+                            </GridViewColumn>
+                            <GridViewColumn Width="75" DisplayMemberBinding="{Binding Place}">
+                                <GridViewColumn.Header>
+                                    <GridViewColumnHeader Content="{DynamicResource MainWindow.SearchList.Place}" Tag="Place" Click="GridViewColumnHeader_Click"/>
+                                </GridViewColumn.Header>
+                            </GridViewColumn>
+                            <GridViewColumn Width="75" DisplayMemberBinding="{Binding Date}">
+                                <GridViewColumn.Header>
+                                    <GridViewColumnHeader Content="{DynamicResource MainWindow.SearchList.Date}" Tag="Date" Click="GridViewColumnHeader_Click"/>
+                                </GridViewColumn.Header>
+                            </GridViewColumn>
+                            <GridViewColumn Width="40">
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
                                         <TextBlock Text="{Binding Pages}" TextAlignment="Right"/>
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
+                                <GridViewColumn.Header>
+                                    <GridViewColumnHeader Content="{DynamicResource MainWindow.SearchList.Pages}" Tag="Pages" Click="GridViewColumnHeader_Click"/>
+                                </GridViewColumn.Header>
                             </GridViewColumn>
-                            <GridViewColumn Header="{DynamicResource MainWindow.SearchList.Price}" Width="40">
+                            <GridViewColumn Width="40">
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
                                         <TextBlock Text="{Binding Price, StringFormat={}{0:#0.00}}" TextAlignment="Right"/>
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
+                                <GridViewColumn.Header>
+                                    <GridViewColumnHeader Content="{DynamicResource MainWindow.SearchList.Price}" Tag="Price" Click="GridViewColumnHeader_Click"/>
+                                </GridViewColumn.Header>
                             </GridViewColumn>
                         </GridView>
                     </ListView.View>
@@ -153,9 +187,9 @@
                 </Grid.RowDefinitions>
                 <TextBlock Text="{DynamicResource MainWindow.Search}" Margin="0,0,0,5"/>
                 <TextBox Name="BoxSearchText" Grid.Column="1" Width="500" Margin="5,0,5,5" Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}" TextChanged="BoxSearchText_TextChanged">
-                    <TextBox.InputBindings>
+                    <!--<TextBox.InputBindings>
                         <KeyBinding Key="Return" Command="local:CustomCommands.Search"/>
-                    </TextBox.InputBindings>
+                    </TextBox.InputBindings>-->
                 </TextBox>
                 <Button x:Name="Test" Grid.Column="2" MinWidth="75" Content="Test" Margin="5,0,0,5" Click="Test_Click" />
                 <TextBlock Grid.Row="1" Text="{DynamicResource MainWindow.SearchBy}" Margin="0,0,10,0"/>

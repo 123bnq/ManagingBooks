@@ -389,7 +389,7 @@ namespace ManagingBooks
                             barcodeImage.SetHorizontalAlignment(iText.Layout.Properties.HorizontalAlignment.CENTER);
                             //barcodeImage.Scale(1.5F, 1.5F);
                             Cell cell = new Cell();
-                            cell.Add(new Paragraph("Code 128").SetTextAlignment(iText.Layout.Properties.TextAlignment.CENTER));
+                            //cell.Add(new Paragraph("Code 128").SetTextAlignment(iText.Layout.Properties.TextAlignment.CENTER));
                             cell.Add(barcodeImage);
                             table.AddCell(cell);
                             
