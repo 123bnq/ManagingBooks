@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ManagingBooks"
         mc:Ignorable="d"
-        Title="{DynamicResource MainWindow.Title}" MinWidth="1000" MinHeight="700" Height="700" WindowStartupLocation="CenterScreen"
+        Title="{DynamicResource MainWindow.Title}" SizeToContent="WidthAndHeight" WindowStartupLocation="CenterScreen"
         Background="WhiteSmoke">
     <Window.CommandBindings>
         <CommandBinding Command="local:CustomCommands.Exit" CanExecute="ExitCommand_CanExecute" Executed="ExitCommand_Executed"/>
@@ -54,7 +54,7 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
-                <ListView x:Name="SearchList" MinHeight="300" MaxHeight="400" Margin="0,0,0,5" SelectionChanged="SearchList_SelectionChanged">
+                <ListView x:Name="SearchList" MinHeight="300" MaxHeight="400" MinWidth="700" Margin="0,0,0,5" SelectionChanged="SearchList_SelectionChanged">
                     <ListView.Resources>
                         <ContextMenu x:Key="ItemContextMenu">
                             <MenuItem Header="{DynamicResource MainWindow.SearchList.ContextMenu.Edit}" Command="local:CustomCommands.Edit"/>

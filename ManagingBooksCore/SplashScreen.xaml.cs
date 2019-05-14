@@ -25,6 +25,8 @@ namespace ManagingBooks
         public SplashScreen()
         {
             InitializeComponent();
+            this.Height = SystemParameters.FullPrimaryScreenHeight * 0.5;
+            this.Width = SystemParameters.PrimaryScreenWidth * 0.5;
             Dt.Tick += Dt_Tick;
             Dt.Interval = new TimeSpan(0, 0, 2);
             Dt.Start();
