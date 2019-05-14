@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ManagingBooks"
         mc:Ignorable="d"
-        Title="{DynamicResource MainWindow.Title}" SizeToContent="WidthAndHeight" WindowStartupLocation="CenterScreen"
+        Title="{DynamicResource MainWindow.Title}" ResizeMode="CanMinimize" SizeToContent="WidthAndHeight" WindowStartupLocation="CenterScreen"
         Background="WhiteSmoke">
     <Window.CommandBindings>
         <CommandBinding Command="local:CustomCommands.Exit" CanExecute="ExitCommand_CanExecute" Executed="ExitCommand_Executed"/>
