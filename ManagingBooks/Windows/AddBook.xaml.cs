@@ -396,6 +396,7 @@ namespace ManagingBooks.Windows
             con.Close();
         }
 
+        // *** not used *** generate random data and add to DB
         private async void BtnAddTest_Click(object sender, RoutedEventArgs e)
         {
             AddBookModel context = this.DataContext as AddBookModel;
@@ -468,8 +469,8 @@ namespace ManagingBooks.Windows
             string caption = "Information";
             CustomMessageBox.ShowOK(message, caption, CustomMessageBoxButton.OK, MessageBoxImage.Information);
             //MessageBox.Show(message, caption, MessageBoxButton.OK, MessageBoxImage.Information);
-
         }
+        // *** not used ***
 
         public static void AddBookToDatabase(ref SqliteConnection con, ref SqliteTransaction tr, Book book)
         {
@@ -606,12 +607,22 @@ namespace ManagingBooks.Windows
             }.ShowDialog();
         }
 
+        /// <summary>
+        /// Allowing keys to be used in textbox for inputing integer
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void IntNumberValidationTextBox(object sender, TextCompositionEventArgs e)
         {
             Regex regex = new Regex("[^0-9]+");
             e.Handled = regex.IsMatch(e.Text);
         }
 
+        /// <summary>
+        /// Allowing keys to be used in textbox for inputing float
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void DecimalNumberValidationTextBox(object sender, TextCompositionEventArgs e)
         {
             Regex regex = new Regex("^[.][0-9]+$|^[0-9]*[.]{0,1}[0-9]*$");

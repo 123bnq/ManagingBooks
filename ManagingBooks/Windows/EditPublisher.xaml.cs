@@ -126,7 +126,6 @@ namespace ManagingBooks.Windows
                 GetPublisher();
                 ClearEntries(this.DataContext as EditPublisherModel);
             }
-
         }
 
         private void SavePubCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
@@ -144,6 +143,7 @@ namespace ManagingBooks.Windows
             SqliteDataReader r = selectCommand.ExecuteReader();
             if (!r.Read())
             {
+                // to add new Publisher
                 if (context.Id == 0)
                 {
                     SqliteCommand insertCommand = con.CreateCommand();
@@ -162,6 +162,8 @@ namespace ManagingBooks.Windows
                     }
                     insertCommand.ExecuteNonQuery();
                 }
+
+                // to update publisher's name
                 else
                 {
                     SqliteCommand updateCommand = con.CreateCommand();
@@ -171,7 +173,8 @@ namespace ManagingBooks.Windows
             }
             else
             {
-                if (context.Id == 0)
+                // to update old publisher's place
+                if (context.Id != 0)
                 {
                     SqliteCommand updateCommand = con.CreateCommand();
                     updateCommand.CommandText = $"UPDATE Publishers SET Name='{context.Name}', City='{context.City}', Country='{context.Country}' WHERE Id={context.Id}";
@@ -190,6 +193,11 @@ namespace ManagingBooks.Windows
             GetPublisher();
         }
 
+        /// <summary>
+        /// Provide edit function for the selected Publisher
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void PubList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             EditPublisherModel context = this.DataContext as EditPublisherModel;
@@ -206,6 +214,11 @@ namespace ManagingBooks.Windows
             }
         }
 
+        /// <summary>
+        /// Sorting function
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void GridViewColumnHeader_Click(object sender, RoutedEventArgs e)
         {
             SortAdorner.SortClick(sender, e, ref listViewSortCol, ref listViewSortAdorner, ref PubList);

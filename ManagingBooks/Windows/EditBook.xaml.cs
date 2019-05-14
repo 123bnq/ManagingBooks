@@ -272,6 +272,7 @@ namespace ManagingBooks.Windows
                         sufficient = false;
                     }
 
+                    // nothing is changed
                     if (!isChanged && sufficient)
                     {
                         MessageBoxResult result;
@@ -295,8 +296,10 @@ namespace ManagingBooks.Windows
                             e.Cancel = true;
                         }
                     }
+                    // something is change and is allowed to be proceeded
                     else if (isChanged && sufficient)
                     {
+                        // to update a certain book
                         if (updateRequest)
                         {
                             updateRequest = false;
@@ -378,6 +381,7 @@ namespace ManagingBooks.Windows
                             CustomMessageBox.ShowOK(message, caption, CustomMessageBoxButton.OK, MessageBoxImage.Information);
                             //MessageBox.Show(message, caption, MessageBoxButton.OK, MessageBoxImage.Information);
                         }
+                        // to create a new instance from the previous book with some changes
                         else if (copied)
                         {
                             copied = false;
@@ -498,12 +502,22 @@ namespace ManagingBooks.Windows
             }.ShowDialog();
         }
 
+        /// <summary>
+        /// Allowing keys for inputing integer
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void IntNumberValidationTextBox(object sender, TextCompositionEventArgs e)
         {
             Regex regex = new Regex("[^0-9]+");
             e.Handled = regex.IsMatch(e.Text);
         }
 
+        /// <summary>
+        /// Allowing keys for inputing float
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void DecimalNumberValidationTextBox(object sender, TextCompositionEventArgs e)
         {
             Regex regex = new Regex("^[.][0-9]+$|^[0-9]*[.]{0,1}[0-9]*$");
