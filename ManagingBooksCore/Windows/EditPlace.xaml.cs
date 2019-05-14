@@ -1,21 +1,12 @@
 ﻿using ManagingBooks.Model;
 using Microsoft.Data.Sqlite;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Linq;
 using System.Reflection;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using WPFCustomMessageBox;
 
 namespace ManagingBooks.Windows
@@ -126,6 +117,7 @@ namespace ManagingBooks.Windows
             SqliteDataReader r = selectCommand.ExecuteReader();
             if (!r.Read())
             {
+                // to add new place
                 if (context.Id == 0)
                 {
                     SqliteCommand insertCommand = con.CreateCommand();
@@ -155,6 +147,8 @@ namespace ManagingBooks.Windows
                     }
                     insertCommand.ExecuteNonQuery();
                 }
+
+                // to update place's State and country
                 else
                 {
                     SqliteCommand updateCommand = con.CreateCommand();
@@ -164,6 +158,7 @@ namespace ManagingBooks.Windows
             }
             else
             {
+                // to update place's city
                 if (context.Id != 0)
                 {
                     SqliteCommand updateCommand = con.CreateCommand();
@@ -201,6 +196,11 @@ namespace ManagingBooks.Windows
             }
         }
 
+        /// <summary>
+        /// Provide edit function for the selected place
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void PlaceList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             EditPlaceModel context = this.DataContext as EditPlaceModel;
@@ -223,6 +223,11 @@ namespace ManagingBooks.Windows
             PlaceList.SelectedItem = null;
         }
 
+        /// <summary>
+        /// Sorting function
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void GridViewColumnHeader_Click(object sender, RoutedEventArgs e)
         {
             SortAdorner.SortClick(sender, e, ref listViewSortCol, ref listViewSortAdorner, ref PlaceList);

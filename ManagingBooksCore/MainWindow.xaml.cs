@@ -57,18 +57,32 @@ namespace ManagingBooks
             Search.DoWork += Search_DoWork;
             Search.ProgressChanged += Search_ProgressChanged;
             Search.RunWorkerCompleted += Search_RunWorkerCompleted;
+            // start collecting books from DB
             Search.RunWorkerAsync(NumberOfBooks());
+
+            // hide books which are not relevant to UserFilter
             CollectionView view = CollectionViewSource.GetDefaultView(SearchList.ItemsSource) as CollectionView;
             view.Filter = UserFilter;
+
+            // *** not used ***
             Delete.WorkerReportsProgress = true;
             Delete.DoWork += Delete_DoWork;
             Delete.ProgressChanged += Delete_ProgressChanged;
             Delete.RunWorkerCompleted += Delete_RunWorkerCompleted;
+            // *** not used ***
+
+            // Clear book info
             ClearEntries(context);
+
+            // Set default Search By option
             context.SearchBy = Application.Current.FindResource("MainWindow.SearchBy.Number").ToString();
         }
 
-
+        /// <summary>
+        /// Access DB and fetch the books
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         void Search_DoWork(object sender, DoWorkEventArgs e)
         {
             int max = (int)e.Argument;
@@ -89,6 +103,8 @@ namespace ManagingBooks
             int lastAuthorId = -1;
             bool finishedBook = false;
             SearchBook tempBook = new SearchBook();
+
+            // read  DB and forming a book object
             while (r.Read())
             {
                 int result;
@@ -158,6 +174,11 @@ namespace ManagingBooks
 
         }
 
+        /// <summary>
+        /// Provide progress change of fetching books
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         void Search_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
             SearchBookModel temp = this.DataContext as SearchBookModel;
@@ -169,10 +190,13 @@ namespace ManagingBooks
             }
         }
 
+        // What to be done after finishing fetching books
         void Search_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             SearchBookModel context = this.DataContext as SearchBookModel;
+            // set the status to finished
             context.Status = Application.Current.FindResource("MainWindow.CodeBehind.Status.Completed").ToString();
+            // focus to the previous chosen book if any
             if (LastIndex != -1)
             {
                 SearchList.SelectedIndex = LastIndex;
@@ -181,6 +205,11 @@ namespace ManagingBooks
             }
         }
 
+        /// <summary>
+        /// Define the requirement to display books when searching
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
         private bool UserFilter(object item)
         {
             var context = this.DataContext as SearchBookModel;
@@ -190,23 +219,6 @@ namespace ManagingBooks
             }
             else
             {
-                //switch (context.SearchBy)
-                //{
-                //    case "Number":
-                //        return (item as SearchBook).Number.ToString().IndexOf(context.SearchText, StringComparison.OrdinalIgnoreCase) >= 0;
-                //    case "Signature":
-                //        return (item as SearchBook).Signatures.StartsWith(context.SearchText, StringComparison.OrdinalIgnoreCase);
-                //    case "Title":
-                //        return (item as SearchBook).Title.IndexOf(context.SearchText, StringComparison.OrdinalIgnoreCase) >= 0;
-                //    case "Authors":
-                //        return (item as SearchBook).Authors.IndexOf(context.SearchText, StringComparison.OrdinalIgnoreCase) >= 0;
-                //    case "Place":
-                //        return (item as SearchBook).Place.IndexOf(context.SearchText, StringComparison.OrdinalIgnoreCase) >= 0;
-                //    case "Medium":
-                //        return (item as SearchBook).Medium.StartsWith(context.SearchText, StringComparison.OrdinalIgnoreCase);
-                //    default:
-                //        return true;
-                //}
                 if (context.SearchBy.Equals(Application.Current.FindResource("MainWindow.SearchBy.Number")))
                     return (item as SearchBook).Number.ToString().IndexOf(context.SearchText, StringComparison.OrdinalIgnoreCase) >= 0;
                 else if (context.SearchBy.Equals(Application.Current.FindResource("MainWindow.SearchBy.Signatures")))
@@ -224,8 +236,14 @@ namespace ManagingBooks
             }
         }
 
+        /// <summary>
+        /// Call the AddBook window
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void AddWindow_Click(object sender, RoutedEventArgs e)
         {
+            // After closing the window, refresh the display books
             if (!new AddBook() { Owner = this }.ShowDialog().Value)
             {
                 (DataContext as SearchBookModel).DisplayBooks.Clear();
@@ -233,6 +251,11 @@ namespace ManagingBooks
             }
         }
 
+        /// <summary>
+        /// Close the program
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ExitCommand_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             Application.Current.Shutdown();
@@ -243,6 +266,7 @@ namespace ManagingBooks
             e.CanExecute = true;
         }
 
+        // *** not used ***
         private void SearchCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
             e.CanExecute = (!string.IsNullOrWhiteSpace(BoxSearchText.Text) && !string.IsNullOrWhiteSpace(BoxSearchBy.Text));
@@ -260,7 +284,9 @@ namespace ManagingBooks
             context.SearchText = string.Empty;
             BoxSearchBy.SelectedItem = null;
         }
+        // *** not used ***
 
+        // *** not used ***
         private void SearchAll(SearchBookModel context)
         {
             SqliteConnection con;
@@ -304,7 +330,6 @@ namespace ManagingBooks
                     tempBook = new SearchBook();
                     tempBook.BookId = result;
                     lastBookId = result;
-                    //int.TryParse(Convert.ToString(r["Number"]), out result);
                     tempBook.Number = Convert.ToString(r["Number"]);
                     tempBook.Title = Convert.ToString(r["Title"]);
                     tempBook.Publishers = Convert.ToString(r["Publisher"]);
@@ -328,7 +353,13 @@ namespace ManagingBooks
             }
             con.Close();
         }
+        // *** not used ***
 
+        /// <summary>
+        /// Refresh current displayed books to match the certain search pattern
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void BoxSearchText_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
         {
             CollectionViewSource.GetDefaultView(SearchList.ItemsSource).Refresh();
@@ -339,6 +370,11 @@ namespace ManagingBooks
             e.CanExecute = (SearchList.SelectedItem != null);
         }
 
+        /// <summary>
+        /// Call EditBook window
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void EditCommand_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             int bookId = (SearchList.SelectedItem as SearchBook).BookId;
@@ -355,9 +391,13 @@ namespace ManagingBooks
             }
         }
 
+        /// <summary>
+        /// Provide pdf file of barcodes
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void PrintCommand_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            //new BarcodeDisplay((SearchList.SelectedItem as SearchBook).Number.ToString().PadLeft(6, '0')) { Owner = this }.Show();
             SearchBookModel context = this.DataContext as SearchBookModel;
             string pdfPath;
             SaveFileDialog dialog = new SaveFileDialog();
@@ -371,19 +411,12 @@ namespace ManagingBooks
                     using (PdfDocument pdf = new PdfDocument(writer))
                     {
                         Document document = new Document(pdf);
-                        //BarcodeInter25 barcode = new BarcodeInter25(pdf);
-
                         Barcode128 barcode = new Barcode128(pdf);
                         Table table = new Table(5, false);
                         table.SetWidth(iText.Layout.Properties.UnitValue.CreatePercentValue(100));
+
                         foreach (string codeNr in context.ListBookPrint)
                         {
-                            //string codeNr = book.ToString();
-                            //int length = codeNr.Length;
-                            //for (int i = 6; i > length; i--)
-                            //{
-                            //    codeNr = String.Concat("0", codeNr);
-                            //}
                             barcode.SetCode(codeNr);
                             iText.Layout.Element.Image barcodeImage = new iText.Layout.Element.Image(barcode.CreateFormXObject(pdf));
                             barcodeImage.SetHorizontalAlignment(iText.Layout.Properties.HorizontalAlignment.CENTER);
@@ -397,6 +430,7 @@ namespace ManagingBooks
                         document.Add(table);
                     }
                 }
+                // open the pdf file for reviewing and printing
                 Process proc = new Process();
                 proc.StartInfo.FileName = pdfPath;
                 proc.StartInfo.UseShellExecute = true;
@@ -405,6 +439,10 @@ namespace ManagingBooks
 
         }
 
+        /// <summary>
+        /// Calculate the amount of books inside the DB
+        /// </summary>
+        /// <returns></returns>
         private int NumberOfBooks()
         {
             int numBook = 0;
@@ -425,6 +463,11 @@ namespace ManagingBooks
             e.CanExecute = (SearchList.SelectedItem != null);
         }
 
+        /// <summary>
+        /// Remove certain books out of the DB and synchronize to the display
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private async void DeleteCommand_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             SearchBookModel context = this.DataContext as SearchBookModel;
@@ -469,7 +512,6 @@ namespace ManagingBooks
                             tr.Commit();
                             con.Close();
 
-
                             progress.Report(Convert.ToInt32((double)(max - i) / max * 100));
                             context.Status = Application.Current.FindResource("MainWindow.CodeBehind.Status.Deleting").ToString();
 
@@ -490,6 +532,7 @@ namespace ManagingBooks
             BtnAddToPrint.IsEnabled = true;
         }
 
+        // *** not used ***
         private void Delete_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             SearchBookModel context = this.DataContext as SearchBookModel;
@@ -504,7 +547,9 @@ namespace ManagingBooks
             context.Status = Application.Current.FindResource("MainWindow.CodeBehind.Status.Deleting").ToString();
             ClearEntries(context);
         }
+        // *** not used ***
 
+        // *** not used ***
         private void Delete_DoWork(object sender, DoWorkEventArgs e)
         {
             {
@@ -536,14 +581,13 @@ namespace ManagingBooks
                             Thread.Sleep(1);
                             progressPercentage = Convert.ToInt32((double)(deleteList.Count - i) / deleteList.Count * 100);
                             (sender as BackgroundWorker).ReportProgress(progressPercentage, tempBook);
-
-
-                            //context.DisplayBooks.Remove(tempBook);
                         }
                     }
                 });
             }
         }
+        // *** not used ***
+
 
         private void EditPublisher_Click(object sender, RoutedEventArgs e)
         {
@@ -560,6 +604,11 @@ namespace ManagingBooks
             new EditMedium() { Owner = this }.ShowDialog();
         }
 
+        /// <summary>
+        /// Display information of the selected book
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void SearchList_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
             SearchBookModel context = this.DataContext as SearchBookModel;
@@ -608,6 +657,11 @@ namespace ManagingBooks
             e.CanExecute = !Application.Current.Resources.MergedDictionaries[0].Source.ToString().Equals(English.OriginalString);
         }
 
+        /// <summary>
+        /// Change the laguage to English
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void EnglishCommand_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             ResourceDictionary dict = new ResourceDictionary();
@@ -621,6 +675,11 @@ namespace ManagingBooks
             e.CanExecute = !Application.Current.Resources.MergedDictionaries[0].Source.ToString().Equals(German.OriginalString);
         }
 
+        /// <summary>
+        ///  Change the laguage to German
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void GermanCommand_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             ResourceDictionary dict = new ResourceDictionary();
@@ -669,19 +728,15 @@ namespace ManagingBooks
                         });
                         Thread.Sleep(TimeSpan.FromTicks(5));
                     }
-
-                    //else
-                    //{
-                    //    MessageBox.Show("Already added");
-                    //}
                 }
             });
-
-            //SearchBook book = SearchList.SelectedItem as SearchBook;
-
-
         }
 
+        /// <summary>
+        /// Migrate the AccessDB to SqliteDB - Only works in .NET Framework
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Test_Click(object sender, RoutedEventArgs e)
         {
             //DateTimeFormatInfo dtfi = CultureInfo.CreateSpecificCulture("fr-FR").DateTimeFormat;
@@ -793,13 +848,14 @@ namespace ManagingBooks
 
         }
 
+        /// <summary>
+        /// Provide sorting function when clicking on the header of listView
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void GridViewColumnHeader_Click(object sender, RoutedEventArgs e)
         {
             SortAdorner.SortClick(sender, e, ref listViewSortCol, ref listViewSortAdorner, ref SearchList);
-            //GridViewColumnHeader column = sender as GridViewColumnHeader;
-            //string sortBy = column.Tag.ToString();
-            //SearchList.Items.SortDescriptions.Clear();
-            //SearchList.Items.SortDescriptions.Add(new SortDescription(sortBy, ListSortDirection.Descending));
         }
     }
 
@@ -841,6 +897,5 @@ namespace ManagingBooks
         public static string No { get => Application.Current.FindResource("MessageBox.NoBtn").ToString(); }
         public static string Cancel { get => Application.Current.FindResource("MessageBox.CancelBtn").ToString(); }
         public static string OK { get => Application.Current.FindResource("MessageBox.OkBtn").ToString(); }
-
     }
 }

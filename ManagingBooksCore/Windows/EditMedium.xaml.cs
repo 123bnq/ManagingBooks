@@ -48,6 +48,9 @@ namespace ManagingBooks.Windows
             CommandManager.InvalidateRequerySuggested();
         }
 
+        /// <summary>
+        /// Fetch data from DB
+        /// </summary>
         private void GetMedium()
         {
             EditMediumModel context = this.DataContext as EditMediumModel;
@@ -138,12 +141,15 @@ namespace ManagingBooks.Windows
             SqliteDataReader r = selectCommand.ExecuteReader();
             if (!r.Read())
             {
+                // to add new medium
                 if (context.Id == 0)
                 {
                     SqliteCommand insertCommand = con.CreateCommand();
                     insertCommand.CommandText = $"INSERT INTO Mediums (Name) VALUES ('{context.Name}')";
                     insertCommand.ExecuteNonQuery();
                 }
+
+                // to update medium's name
                 else
                 {
                     SqliteCommand updateCommand = con.CreateCommand();
@@ -153,6 +159,7 @@ namespace ManagingBooks.Windows
             }
             else
             {
+                // to update medium's name
                 if (context.Id != 0)
                 {
                     SqliteCommand updateCommand = con.CreateCommand();
@@ -172,6 +179,11 @@ namespace ManagingBooks.Windows
             GetMedium();
         }
 
+        /// <summary>
+        /// Provide option to edit the selected medium
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void MediumList_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
             EditMediumModel context = this.DataContext as EditMediumModel;
@@ -184,6 +196,11 @@ namespace ManagingBooks.Windows
             }
         }
 
+        /// <summary>
+        /// Sorting function
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void GridViewColumnHeader_Click(object sender, RoutedEventArgs e)
         {
             SortAdorner.SortClick(sender, e, ref listViewSortCol, ref listViewSortAdorner, ref MediumList);

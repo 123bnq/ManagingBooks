@@ -8,7 +8,20 @@
     <AssemblyName>ManagingBooksCore</AssemblyName>
     <RootNamespace>ManagingBooks</RootNamespace>
     <PublishSingleFile>true</PublishSingleFile>
+    <ApplicationIcon>Images\Generic Book File Type_40px.ico</ApplicationIcon>
+    <Win32Resource />
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Generic Book File Type_40px.ico" />
+    <None Remove="Images\sharon-mccutcheon-532782-unsplash.jpg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Images\sharon-mccutcheon-532782-unsplash.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="itext7" Version="7.1.6" />
