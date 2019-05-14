@@ -262,7 +262,6 @@
     <Content Include="Data\ProNoskoDatenbank_160717.mdb">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Resource Include="Generic Book File Type_40px.ico" />
     <Resource Include="Images\Generic Book File Type_40px.ico" />
     <Resource Include="Images\sharon-mccutcheon-532782-unsplash.jpg" />
   </ItemGroup>
