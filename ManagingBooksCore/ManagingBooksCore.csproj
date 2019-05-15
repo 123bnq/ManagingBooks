@@ -9,7 +9,7 @@
     <RootNamespace>ManagingBooks</RootNamespace>
     <PublishSingleFile>true</PublishSingleFile>
     <ApplicationIcon>Images\Generic Book File Type_40px.ico</ApplicationIcon>
-    <Win32Resource />
+    <RuntimeIdentifier>win-x86</RuntimeIdentifier>
   </PropertyGroup>
 
   <ItemGroup>
@@ -18,9 +18,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="Images\sharon-mccutcheon-532782-unsplash.jpg">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    <Resource Include="Images\sharon-mccutcheon-532782-unsplash.jpg">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
 
   <ItemGroup>
