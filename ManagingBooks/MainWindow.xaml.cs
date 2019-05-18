@@ -668,6 +668,11 @@ namespace ManagingBooks
             dict.Source = English;
             Application.Current.Resources.MergedDictionaries.Clear();
             Application.Current.Resources.MergedDictionaries.Add(dict);
+            File.WriteAllText(SplashScreen.ResourcePath, string.Empty);
+            using(StreamWriter w = new StreamWriter(SplashScreen.ResourcePath))
+            {
+                w.Write("0");
+            }
         }
 
         private void GermanCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
@@ -686,6 +691,11 @@ namespace ManagingBooks
             dict.Source = German;
             Application.Current.Resources.MergedDictionaries.Clear();
             Application.Current.Resources.MergedDictionaries.Add(dict);
+            File.WriteAllText(SplashScreen.ResourcePath, string.Empty);
+            using (StreamWriter w = new StreamWriter(SplashScreen.ResourcePath))
+            {
+                w.Write("1");
+            }
         }
 
         private void PrintCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)

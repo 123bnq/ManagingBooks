@@ -3,6 +3,7 @@
                     xmlns:system="clr-namespace:System;assembly=mscorlib"
                     xmlns:local="clr-namespace:ManagingBooks.Resources">
     <system:String x:Key="MainWindow.Title">Bibliothek</system:String>
+    <system:String x:Key="Version">1.0</system:String>
 
     <system:String x:Key="MainWindow.Menu.File">_File</system:String>
     <system:String x:Key="MainWindow.Menu.File.Add">Ein_gabe...</system:String>
