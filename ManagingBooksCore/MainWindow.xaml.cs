@@ -248,6 +248,7 @@ namespace ManagingBooks
             {
                 (DataContext as SearchBookModel).DisplayBooks.Clear();
                 Search.RunWorkerAsync(NumberOfBooks());
+                ClearEntries(DataContext as SearchBookModel);
             }
         }
 
@@ -401,6 +402,7 @@ namespace ManagingBooks
             SearchBookModel context = this.DataContext as SearchBookModel;
             string pdfPath;
             SaveFileDialog dialog = new SaveFileDialog();
+            dialog.FileName = "Barcode";
             dialog.Filter = "PDF (*.pdf)|*.pdf";
             dialog.InitialDirectory = AppContext.BaseDirectory;
             if (dialog.ShowDialog(this) == true)
@@ -668,6 +670,11 @@ namespace ManagingBooks
             dict.Source = English;
             Application.Current.Resources.MergedDictionaries.Clear();
             Application.Current.Resources.MergedDictionaries.Add(dict);
+            File.WriteAllText(SplashScreen.ResourcePath, string.Empty);
+            using(StreamWriter w = new StreamWriter(SplashScreen.ResourcePath))
+            {
+                w.Write("0");
+            }
         }
 
         private void GermanCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
@@ -686,6 +693,11 @@ namespace ManagingBooks
             dict.Source = German;
             Application.Current.Resources.MergedDictionaries.Clear();
             Application.Current.Resources.MergedDictionaries.Add(dict);
+            File.WriteAllText(SplashScreen.ResourcePath, string.Empty);
+            using (StreamWriter w = new StreamWriter(SplashScreen.ResourcePath))
+            {
+                w.Write("1");
+            }
         }
 
         private void PrintCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
@@ -857,6 +869,20 @@ namespace ManagingBooks
         {
             SortAdorner.SortClick(sender, e, ref listViewSortCol, ref listViewSortAdorner, ref SearchList);
         }
+
+        private void EditSignature_Click(object sender, RoutedEventArgs e)
+        {
+            ChooseSignatures window = new ChooseSignatures(true) { Owner = this };
+            ChooseSignaturesModel context = window.DataContext as ChooseSignaturesModel;
+            window.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+            window.ShowDialog();
+        }
+
+        private void Transfer_Click(object sender, RoutedEventArgs e)
+        {
+            TransferBook window = new TransferBook() { Owner = this };
+            window.ShowDialog();
+        }
     }
 
     public static class CustomCommands
@@ -889,6 +915,11 @@ namespace ManagingBooks
         public static readonly RoutedUICommand SaveMedium = new RoutedUICommand("SaveMedium", "SaveMedium", typeof(CustomCommands));
         public static readonly RoutedUICommand RemovePlace = new RoutedUICommand("RemovePlace", "RemovePlace", typeof(CustomCommands));
         public static readonly RoutedUICommand SavePlace = new RoutedUICommand("SavePlace", "SavePlace", typeof(CustomCommands));
+        public static readonly RoutedUICommand RemoveSig = new RoutedUICommand("RemoveSig", "RemoveSig", typeof(CustomCommands));
+        public static readonly RoutedUICommand SaveSig = new RoutedUICommand("SaveSig", "SaveSig", typeof(CustomCommands));
+
+        public static readonly RoutedUICommand AddToTransfer = new RoutedUICommand("AddToTransfer", "AddToTransfer", typeof(CustomCommands));
+        public static readonly RoutedUICommand ExportTransferList = new RoutedUICommand("ExportTransferList", "ExportTransferList", typeof(CustomCommands));
     }
 
     public static class CustomMessageBoxButton

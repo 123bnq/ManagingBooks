@@ -3,7 +3,8 @@
                     xmlns:system="clr-namespace:System;assembly=mscorlib"
                     xmlns:local="clr-namespace:ManagingBooks.Resources">
     <system:String x:Key="MainWindow.Title">Book Management</system:String>
-    
+    <system:String x:Key="Version">1.0</system:String>
+
     <system:String x:Key="MainWindow.Menu.File">_File</system:String>
     <system:String x:Key="MainWindow.Menu.File.Add">_Add...</system:String>
     <system:String x:Key="MainWindow.Menu.File.Edit">_Edit...</system:String>
@@ -13,6 +14,7 @@
     <system:String x:Key="MainWindow.Menu.Data.Publisher">Edit _Publishers...</system:String>
     <system:String x:Key="MainWindow.Menu.Data.Place">Edit P_laces...</system:String>
     <system:String x:Key="MainWindow.Menu.Data.Medium">Edit _Mediums...</system:String>
+    <system:String x:Key="MainWindow.Menu.Data.Signature">Edit _Signature...</system:String>
     <system:String x:Key="MainWindow.Menu.Language">_Languange</system:String>
     <system:String x:Key="MainWindow.Menu.Language.English">_English</system:String>
     <system:String x:Key="MainWindow.Menu.Language.German">_Deutsch</system:String>
@@ -42,7 +44,7 @@
     <system:String x:Key="MainWindow.PrintList.RemoveBtn">Remove</system:String>
     <system:String x:Key="MainWindow.PrintList.ClearBtn">Clear List</system:String>
     <system:String x:Key="MainWindow.PrintList.PrintBtn">Print</system:String>
-    
+
     <system:String x:Key="MainWindow.Search">Search:</system:String>
     <system:String x:Key="MainWindow.SearchBtn">Search</system:String>
     <system:String x:Key="MainWindow.SearchBy">Search by:</system:String>
@@ -52,7 +54,7 @@
     <system:String x:Key="MainWindow.SearchBy.Authors">Authors</system:String>
     <system:String x:Key="MainWindow.SearchBy.Medium">Medium</system:String>
     <system:String x:Key="MainWindow.SearchBy.Place">Place</system:String>
-    
+
     <system:String x:Key="MainWindow.BookInfo">Book Information</system:String>
     <system:String x:Key="MainWindow.BookInfo.Number">Book Number:</system:String>
     <system:String x:Key="MainWindow.BookInfo.Signatures">Signatures:</system:String>
@@ -145,6 +147,28 @@
     <system:String x:Key="ChooseSignature.Signatures.Info">Information</system:String>
     <system:String x:Key="ChooseSignature.SubSignatures.Name">Signature</system:String>
     <system:String x:Key="ChooseSignature.SubSignatures.Info">Information</system:String>
+    <system:String x:Key="ChooseSignature.SubSignatures.Sort">Type</system:String>
+
+    <system:String x:Key="ChooseSignature.Label.Signature">Signature:</system:String>
+    <system:String x:Key="ChooseSignature.Label.EditSignature">Edit Signature:</system:String>
+    <system:String x:Key="ChooseSignature.Label.Info">Information:</system:String>
+    <system:String x:Key="ChooseSignature.Label.EditInfo">Edit Information:</system:String>
+    <system:String x:Key="ChooseSignature.Label.Parent">Subset of:</system:String>
+    <system:String x:Key="ChooseSignature.Label.EditParent">Edit Subset of:</system:String>
+    <system:String x:Key="ChooseSignature.Label.Sort">Sort:</system:String>
+    <system:String x:Key="ChooseSignature.Label.EditSort">Edit Sort:</system:String>
+
+    <system:String x:Key="ChooseSignature.SaveBtn">Save</system:String>
+    <system:String x:Key="ChooseSignature.ClearBtn">Clear</system:String>
+    <system:String x:Key="ChooseSignature.RemoveBtn">Remove</system:String>
+    <system:String x:Key="ChooseSignature.CloseBtn">Close</system:String>
+    
+    <system:String x:Key="ChooseSignature.CodeBehind.WarningClose.Message">Do you want to discard?</system:String>
+    <system:String x:Key="ChooseSignature.CodeBehind.WarningClose.Caption">Warning</system:String>
+    <system:String x:Key="ChooseSignature.CodeBehind.ErrorSave.Message">Signature exists!</system:String>
+    <system:String x:Key="ChooseSignature.CodeBehind.ErrorSave.Caption">Error</system:String>
+    <system:String x:Key="ChooseSignature.CodeBehind.ErrorRemove.Message">Signature contain sub-signatures! Cannot remove.</system:String>
+    <system:String x:Key="ChooseSignature.CodeBehind.ErrorRemove.Caption">Error</system:String>
 
 
     <system:String x:Key="EditMedium.Title">Edit Medium</system:String>
@@ -207,7 +231,7 @@
     <system:String x:Key="EditPublisher.CodeBehind.WarningClose.Caption">Warning</system:String>
 
 
-    
+
     <system:String x:Key="MessageBox.YesBtn">Yes</system:String>
     <system:String x:Key="MessageBox.NoBtn">No</system:String>
     <system:String x:Key="MessageBox.CancelBtn">Cancel</system:String>

@@ -602,8 +602,8 @@ namespace ManagingBooks.Windows
             new ChooseSignatures(context)
             {
                 Owner = this,
-                Left = this.Left + this.Width - 15,
-                Top = this.Top
+                Left = this.Left + 10,
+                Top = this.Top + 150
             }.ShowDialog();
         }
 

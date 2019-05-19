@@ -9,9 +9,12 @@
         Title="SplashScreen" Height="450" Width="800">
     <StackPanel>
         <StackPanel.Background>
-            <ImageBrush ImageSource="\Images\sharon-mccutcheon-532782-unsplash.jpg"/>
+            <ImageBrush ImageSource="/Images/sharon-mccutcheon-532782-unsplash.jpg"/>
         </StackPanel.Background>
-        <TextBlock FontSize="50" Text="Managing Books" Margin="50,50,50,0"/>
-        <TextBlock FontSize="15" Text="Version 1.0" Margin="50,0,50,0"/>
+        <TextBlock FontSize="50" Text="{DynamicResource MainWindow.Title}" Margin="50,50,50,0"/>
+        <TextBlock FontSize="15" Margin="50,0,50,0">
+            <Run Text="Version "/>
+            <Run Text="{DynamicResource Version}"/>
+        </TextBlock>
     </StackPanel>
 </Window>

@@ -13,7 +13,7 @@
         Closing="AddBook_Closing">
     <StackPanel Margin="10" >
         <StackPanel Orientation="Horizontal">
-            <StackPanel Name="WindowToBeClear" Width="500" Margin="0,0,5,0">
+            <StackPanel Name="WindowToBeClear" Width="400" Margin="0,0,5,0">
                 <TextBlock Text="{DynamicResource AddBook.Number}" Margin="0,0,0,5"/>
                 <TextBox Name="BoxNumber" Text="{Binding Number, StringFormat={}{0:#000000}, Converter={x:Static model:AddBookModel.NumberConverter}}" MaxLength="6" PreviewTextInput="IntNumberValidationTextBox"  Width="110" HorizontalAlignment="Left"  Margin="0,0,0,5"/>
                 <TextBlock Text="{DynamicResource AddBook.Signature}" Margin="0,0,0,5"/>
@@ -92,7 +92,7 @@
                     <TextBox Name="BoxPrice" Grid.Row="1" Grid.Column="2" Text="{Binding Price, StringFormat={}{0:#0.00}, Converter={x:Static model:AddBookModel.NumberConverter}}" PreviewTextInput="DecimalNumberValidationTextBox" Width="100" Margin="0,0,5,5"/>
                 </Grid>
             </StackPanel>
-            <StackPanel Margin="35,0,0,0">
+            <StackPanel Margin="10,0,0,0">
                 <TextBlock Text="{DynamicResource AddBook.Last20}" Margin="0,0,0,10"/>
                 <ListBox Name="ListNumber" Width="120" Height="336" ItemsSource="{Binding ListBook}">
                     <ListBox.ItemTemplate>

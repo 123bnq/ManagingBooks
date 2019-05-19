@@ -402,6 +402,7 @@ namespace ManagingBooks
             SearchBookModel context = this.DataContext as SearchBookModel;
             string pdfPath;
             SaveFileDialog dialog = new SaveFileDialog();
+            dialog.FileName = "Barcode";
             dialog.Filter = "PDF (*.pdf)|*.pdf";
             dialog.InitialDirectory = AppContext.BaseDirectory;
             if (dialog.ShowDialog(this) == true)

@@ -9,7 +9,7 @@
     <RootNamespace>ManagingBooks</RootNamespace>
     <PublishSingleFile>true</PublishSingleFile>
     <ApplicationIcon>Images\Generic Book File Type_40px.ico</ApplicationIcon>
-    <RuntimeIdentifier>win-x86</RuntimeIdentifier>
+    <PublishSingleFile>false</PublishSingleFile>
   </PropertyGroup>
 
   <ItemGroup>
@@ -40,6 +40,9 @@
     </None>
     <None Update="Data\ProNoskoDatenbank_160717.mdb">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\Language.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
 </Project>

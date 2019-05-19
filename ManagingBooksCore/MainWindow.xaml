@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ManagingBooks"
         mc:Ignorable="d"
-        Title="{DynamicResource MainWindow.Title}" SizeToContent="WidthAndHeight" WindowStartupLocation="CenterScreen"
+        Title="{DynamicResource MainWindow.Title}" ResizeMode="CanMinimize" SizeToContent="WidthAndHeight" WindowStartupLocation="CenterScreen"
         Background="WhiteSmoke">
     <Window.CommandBindings>
         <CommandBinding Command="local:CustomCommands.Exit" CanExecute="ExitCommand_CanExecute" Executed="ExitCommand_Executed"/>
@@ -26,6 +26,7 @@
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="{DynamicResource MainWindow.Menu.File}">
                 <MenuItem Header="{DynamicResource MainWindow.Menu.File.Add}" Click="AddWindow_Click"/>
+                <MenuItem Header="_Transfer..." Click="Transfer_Click"/>
                 <MenuItem Header="{DynamicResource MainWindow.Menu.File.Edit}" Command="local:CustomCommands.Edit"/>
                 <MenuItem Header="{DynamicResource MainWindow.Menu.File.Delete}" Command="local:CustomCommands.Delete"/>
                 <MenuItem Header="{DynamicResource MainWindow.Menu.File.Exit}" Command="local:CustomCommands.Exit"/>
@@ -34,6 +35,7 @@
                 <MenuItem Header="{DynamicResource MainWindow.Menu.Data.Publisher}" Click="EditPublisher_Click"/>
                 <MenuItem Header="{DynamicResource MainWindow.Menu.Data.Place}" Click="EditPlace_Click"/>
                 <MenuItem Header="{DynamicResource MainWindow.Menu.Data.Medium}" Click="EditMedium_Click"/>
+                <MenuItem Header="{DynamicResource MainWindow.Menu.Data.Signature}" Click="EditSignature_Click"/>
             </MenuItem>
             <MenuItem Header="{DynamicResource MainWindow.Menu.Language}">
                 <MenuItem Header="{DynamicResource MainWindow.Menu.Language.English}" Command="local:CustomCommands.English"/>
