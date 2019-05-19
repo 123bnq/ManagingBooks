@@ -14,21 +14,32 @@ namespace ManagingBooks.Model
         private string m_test;
         private Signature m_MainSig;
         private Signature m_SubSig;
+        private int m_CurrentId;
+        private string m_Name;
+        private string m_Info;
+        private int m_ParentId;
+        private string m_Sort;
+        private string m_LabelName;
+        private string m_LabelInfo;
+        private string m_LabelParent;
+        private string m_LabelSort;
+        private bool m_IsSubSig = true;
 
-        public string Test
+        public int CurrentId
         {
-            get => m_test;
+            get => m_CurrentId;
             set
             {
-                if (value != m_test)
+                if (value != m_CurrentId)
                 {
-                    m_test = value;
+                    m_CurrentId = value;
                     NotifyPropertyChanged();
                 }
             }
         }
         public ObservableCollection<Signature> Signatures { get; set; }
         public ObservableCollection<Signature> SubSignatures { get; set; }
+        public ObservableCollection<Signature> ParentList { get; set; }
 
         public Signature MainSig
         {
@@ -55,6 +66,117 @@ namespace ManagingBooks.Model
             }
         }
 
+        public string Name
+        {
+            get => m_Name;
+            set
+            {
+                if (value != m_Name)
+                {
+                    m_Name = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+        public string Info
+        {
+            get => m_Info;
+            set
+            {
+                if (value != m_Info)
+                {
+                    m_Info = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+        public int ParentId
+        {
+            get => m_ParentId;
+            set
+            {
+                if (value != m_ParentId)
+                {
+                    m_ParentId = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+        public string Sort
+        {
+            get => m_Sort;
+            set
+            {
+                if (value != m_Sort)
+                {
+                    m_Sort = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+
+        public string LabelName
+        {
+            get => m_LabelName;
+            set
+            {
+                if (value != m_LabelName)
+                {
+                    m_LabelName = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+        public string LabelInfo
+        {
+            get => m_LabelInfo;
+            set
+            {
+                if (value != m_LabelInfo)
+                {
+                    m_LabelInfo = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+        public string LabelParent
+        {
+            get => m_LabelParent;
+            set
+            {
+                if (value != m_LabelParent)
+                {
+                    m_LabelParent = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+        public string LabelSort
+        {
+            get => m_LabelSort;
+            set
+            {
+                if (value != m_LabelSort)
+                {
+                    m_LabelSort = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+
+        public bool IsSubSig
+        {
+            get => m_IsSubSig;
+            set
+            {
+                if (value != m_IsSubSig)
+                {
+                    m_IsSubSig = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         private void NotifyPropertyChanged([CallerMemberName] String propertyName = "")
@@ -72,5 +194,11 @@ namespace ManagingBooks.Model
         public string Name { get; set; }
         public string Info { get; set; }
         public string Sort { get; set; }
+
+        public override string ToString()
+        {
+            string result = String.Format($"{Name} ({Info})");
+            return result;
+        }
     }
 }

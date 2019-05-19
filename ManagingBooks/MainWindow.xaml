@@ -34,6 +34,7 @@
                 <MenuItem Header="{DynamicResource MainWindow.Menu.Data.Publisher}" Click="EditPublisher_Click"/>
                 <MenuItem Header="{DynamicResource MainWindow.Menu.Data.Place}" Click="EditPlace_Click"/>
                 <MenuItem Header="{DynamicResource MainWindow.Menu.Data.Medium}" Click="EditMedium_Click"/>
+                <MenuItem Header="{DynamicResource MainWindow.Menu.Data.Signature}" Click="EditSignature_Click"/>
             </MenuItem>
             <MenuItem Header="{DynamicResource MainWindow.Menu.Language}">
                 <MenuItem Header="{DynamicResource MainWindow.Menu.Language.English}" Command="local:CustomCommands.English"/>

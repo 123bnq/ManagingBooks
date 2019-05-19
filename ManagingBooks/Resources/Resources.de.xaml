@@ -14,6 +14,7 @@
     <system:String x:Key="MainWindow.Menu.Data.Publisher">Bearbeiten _Verlag...</system:String>
     <system:String x:Key="MainWindow.Menu.Data.Place">Bearbeiten Stand_ort...</system:String>
     <system:String x:Key="MainWindow.Menu.Data.Medium">Bearbeiten _Medium...</system:String>
+    <system:String x:Key="MainWindow.Menu.Data.Signature">Bearbeiten _Signatur...</system:String>
     <system:String x:Key="MainWindow.Menu.Language">_Sprachen</system:String>
     <system:String x:Key="MainWindow.Menu.Language.English">_English</system:String>
     <system:String x:Key="MainWindow.Menu.Language.German">_Deutsch</system:String>
@@ -146,6 +147,28 @@
     <system:String x:Key="ChooseSignature.Signatures.Info">Informationen</system:String>
     <system:String x:Key="ChooseSignature.SubSignatures.Name">Signatur</system:String>
     <system:String x:Key="ChooseSignature.SubSignatures.Info">Informationen</system:String>
+    <system:String x:Key="ChooseSignature.SubSignatures.Sort">Typ</system:String>
+
+    <system:String x:Key="ChooseSignature.Label.Signature">Signatur:</system:String>
+    <system:String x:Key="ChooseSignature.Label.EditSignature">Signatur bearbeiten:</system:String>
+    <system:String x:Key="ChooseSignature.Label.Info">Informationen:</system:String>
+    <system:String x:Key="ChooseSignature.Label.EditInfo">Informationen bearbeiten:</system:String>
+    <system:String x:Key="ChooseSignature.Label.Parent">Untergruppe von:</system:String>
+    <system:String x:Key="ChooseSignature.Label.EditParent">Untergruppe von bearbeiten:</system:String>
+    <system:String x:Key="ChooseSignature.Label.Sort">Typ:</system:String>
+    <system:String x:Key="ChooseSignature.Label.EditSort">Typ bearbeiten:</system:String>
+
+    <system:String x:Key="ChooseSignature.SaveBtn">Speichen</system:String>
+    <system:String x:Key="ChooseSignature.ClearBtn">Löschen</system:String>
+    <system:String x:Key="ChooseSignature.RemoveBtn">Entfernen</system:String>
+    <system:String x:Key="ChooseSignature.CloseBtn">Schließen</system:String>
+    
+    <system:String x:Key="ChooseSignature.CodeBehind.WarningClose.Message">Möchten Sie sie entsorgen?</system:String>
+    <system:String x:Key="ChooseSignature.CodeBehind.WarningClose.Caption">Warnung</system:String>
+    <system:String x:Key="ChooseSignature.CodeBehind.ErrorSave.Message">Signatur existiert!</system:String>
+    <system:String x:Key="ChooseSignature.CodeBehind.ErrorSave.Caption">Fehler</system:String>
+    <system:String x:Key="ChooseSignature.CodeBehind.ErrorRemove.Message">Signatur enthält Untersignaturen! Kann nicht entfernt werden.</system:String>
+    <system:String x:Key="ChooseSignature.CodeBehind.ErrorRemove.Caption">Fehler</system:String>
 
 
     <system:String x:Key="EditMedium.Title">Medium bearbeiten</system:String>

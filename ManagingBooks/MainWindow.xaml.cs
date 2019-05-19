@@ -248,6 +248,7 @@ namespace ManagingBooks
             {
                 (DataContext as SearchBookModel).DisplayBooks.Clear();
                 Search.RunWorkerAsync(NumberOfBooks());
+                ClearEntries(DataContext as SearchBookModel);
             }
         }
 
@@ -867,6 +868,14 @@ namespace ManagingBooks
         {
             SortAdorner.SortClick(sender, e, ref listViewSortCol, ref listViewSortAdorner, ref SearchList);
         }
+
+        private void EditSignature_Click(object sender, RoutedEventArgs e)
+        {
+            ChooseSignatures window = new ChooseSignatures(true) { Owner = this };
+            ChooseSignaturesModel context = window.DataContext as ChooseSignaturesModel;
+            window.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+            window.ShowDialog();
+        }
     }
 
     public static class CustomCommands
@@ -899,6 +908,8 @@ namespace ManagingBooks
         public static readonly RoutedUICommand SaveMedium = new RoutedUICommand("SaveMedium", "SaveMedium", typeof(CustomCommands));
         public static readonly RoutedUICommand RemovePlace = new RoutedUICommand("RemovePlace", "RemovePlace", typeof(CustomCommands));
         public static readonly RoutedUICommand SavePlace = new RoutedUICommand("SavePlace", "SavePlace", typeof(CustomCommands));
+        public static readonly RoutedUICommand RemoveSig = new RoutedUICommand("RemoveSig", "RemoveSig", typeof(CustomCommands));
+        public static readonly RoutedUICommand SaveSig = new RoutedUICommand("SaveSig", "SaveSig", typeof(CustomCommands));
     }
 
     public static class CustomMessageBoxButton
