@@ -876,6 +876,12 @@ namespace ManagingBooks
             window.WindowStartupLocation = WindowStartupLocation.CenterOwner;
             window.ShowDialog();
         }
+
+        private void Transfer_Click(object sender, RoutedEventArgs e)
+        {
+            TransferBook window = new TransferBook() { Owner = this };
+            window.ShowDialog();
+        }
     }
 
     public static class CustomCommands
@@ -910,6 +916,9 @@ namespace ManagingBooks
         public static readonly RoutedUICommand SavePlace = new RoutedUICommand("SavePlace", "SavePlace", typeof(CustomCommands));
         public static readonly RoutedUICommand RemoveSig = new RoutedUICommand("RemoveSig", "RemoveSig", typeof(CustomCommands));
         public static readonly RoutedUICommand SaveSig = new RoutedUICommand("SaveSig", "SaveSig", typeof(CustomCommands));
+
+        public static readonly RoutedUICommand AddToTransfer = new RoutedUICommand("AddToTransfer", "AddToTransfer", typeof(CustomCommands));
+        public static readonly RoutedUICommand ExportTransferList = new RoutedUICommand("ExportTransferList", "ExportTransferList", typeof(CustomCommands));
     }
 
     public static class CustomMessageBoxButton

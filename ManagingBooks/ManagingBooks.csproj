@@ -144,6 +144,7 @@
     <Compile Include="Model\EditPlaceModel.cs" />
     <Compile Include="Model\EditPublisherModel.cs" />
     <Compile Include="Model\SearchBookModel.cs" />
+    <Compile Include="Model\TransferBookModel.cs" />
     <Compile Include="SortAdorner.cs" />
     <Compile Include="SplashScreen.xaml.cs">
       <DependentUpon>SplashScreen.xaml</DependentUpon>
@@ -166,6 +167,9 @@
     </Compile>
     <Compile Include="Windows\EditPublisher.xaml.cs">
       <DependentUpon>EditPublisher.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\TransferBook.xaml.cs">
+      <DependentUpon>TransferBook.xaml</DependentUpon>
     </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -209,6 +213,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Windows\EditPublisher.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\TransferBook.xaml">
+      <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>

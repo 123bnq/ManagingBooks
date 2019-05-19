@@ -26,6 +26,7 @@
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="{DynamicResource MainWindow.Menu.File}">
                 <MenuItem Header="{DynamicResource MainWindow.Menu.File.Add}" Click="AddWindow_Click"/>
+                <MenuItem Header="_Transfer..." Click="Transfer_Click"/>
                 <MenuItem Header="{DynamicResource MainWindow.Menu.File.Edit}" Command="local:CustomCommands.Edit"/>
                 <MenuItem Header="{DynamicResource MainWindow.Menu.File.Delete}" Command="local:CustomCommands.Delete"/>
                 <MenuItem Header="{DynamicResource MainWindow.Menu.File.Exit}" Command="local:CustomCommands.Exit"/>
