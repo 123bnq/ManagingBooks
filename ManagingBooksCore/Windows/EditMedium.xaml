@@ -8,7 +8,7 @@
         mc:Ignorable="d"
         Background="WhiteSmoke"
         WindowStartupLocation="CenterOwner" ResizeMode="NoResize" SizeToContent="WidthAndHeight"
-        Closing="Window_Closing"
+        Closing="Window_Closing" ShowInTaskbar="False"
         Title="{DynamicResource EditMedium.Title}">
     <Window.CommandBindings>
         <CommandBinding Command="main:CustomCommands.RemoveMedium" CanExecute="RemoveMediumCommand_CanExecute" Executed="RemoveMediumCommand_Executed"/>

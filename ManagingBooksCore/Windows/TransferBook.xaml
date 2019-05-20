@@ -7,6 +7,7 @@
         xmlns:main="clr-namespace:ManagingBooks"
         mc:Ignorable="d"
         Title="Transfer Books" SizeToContent="WidthAndHeight" Background="WhiteSmoke"
+        ShowInTaskbar="False"
         WindowStartupLocation="CenterOwner">
     <Window.CommandBindings>
         <CommandBinding Command="main:CustomCommands.AddToTransfer" CanExecute="AddToTransferCommand_CanExecute" Executed="AddToTransferCommand_Executed"/>
