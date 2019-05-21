@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:ManagingBooks.Windows"
         xmlns:main="clr-namespace:ManagingBooks"
         mc:Ignorable="d"
-        Title="Transfer Books" SizeToContent="WidthAndHeight" Background="WhiteSmoke"
+        Title="{DynamicResource TransferBook.Title}" SizeToContent="WidthAndHeight" Background="WhiteSmoke"
         ShowInTaskbar="False"
         WindowStartupLocation="CenterOwner">
     <Window.CommandBindings>
@@ -42,23 +42,23 @@
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                         <GridViewColumn.Header>
-                            <GridViewColumnHeader Content="{DynamicResource MainWindow.SearchList.Number}" Tag="Number"/>
+                            <GridViewColumnHeader Content="{DynamicResource TransferBook.ListTransfer.Number}" Tag="Number"/>
                         </GridViewColumn.Header>
                     </GridViewColumn>
                     <GridViewColumn Width="200" DisplayMemberBinding="{Binding Title}">
                         <GridViewColumn.Header>
-                            <GridViewColumnHeader Content="{DynamicResource MainWindow.SearchList.Title}" Tag="Title"/>
+                            <GridViewColumnHeader Content="{DynamicResource TransgerBook.ListTransfer.BookTitle}" Tag="Title"/>
                         </GridViewColumn.Header>
                     </GridViewColumn>
                 </GridView>
             </ListView.View>
         </ListView>
-        <TextBlock Text="Book Number:"/>
+        <TextBlock Text="{DynamicResource TransferBook.BookNumber}"/>
         <TextBox Name="NumberBox" Text="{Binding BookNumber,UpdateSourceTrigger=PropertyChanged}" MaxLength="6" PreviewTextInput="IntNumberValidationTextBox">
             <TextBox.InputBindings>
                 <KeyBinding Key="Return" Command="main:CustomCommands.AddToTransfer"/>
             </TextBox.InputBindings>
         </TextBox>
-        <Button Name="BtnExport" Content="Export List" MinWidth="75" HorizontalAlignment="Center" Margin="10" Command="main:CustomCommands.ExportTransferList"/>
+        <Button Name="BtnExport" Content="{DynamicResource TransferBook.Export}" MinWidth="75" HorizontalAlignment="Center" Margin="10" Command="main:CustomCommands.ExportTransferList"/>
     </StackPanel>
 </Window>

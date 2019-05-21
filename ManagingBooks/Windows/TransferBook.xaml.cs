@@ -44,7 +44,9 @@ namespace ManagingBooks.Windows
             if (context.TransferList.Any(n => n.Number == number))
             {
                 //error
-                CustomMessageBox.ShowOK("Book is already added!", "Error", CustomMessageBoxButton.OK, MessageBoxImage.Error);
+                string msg = Application.Current.FindResource("TransferBook.CodeBehind.WarningAdd.Exist.Message").ToString();
+                string caption = Application.Current.FindResource("TransferBook.CodeBehind.WarningAdd.Exist.Caption").ToString();
+                CustomMessageBox.ShowOK(msg, caption, CustomMessageBoxButton.OK, MessageBoxImage.Warning);
             }
             else
             {
@@ -64,10 +66,8 @@ namespace ManagingBooks.Windows
                 else
                 {
                     // No book is found
-                    string msg = Application.Current.FindResource("MainWindow.CodeBehind.DeleteNotify.Message").ToString();
-                    msg = "Book not found. Please make sure that it is added";
-                    string caption = Application.Current.FindResource("MainWindow.CodeBehind.DeleteNotify.Caption").ToString();
-                    caption = "Error";
+                    string msg = Application.Current.FindResource("TransferBook.CodeBehind.ErrorAdd.NotFound.Message").ToString();
+                    string caption = Application.Current.FindResource("TransferBook.CodeBehind.ErrorAdd.NotFound.Caption").ToString();
                     CustomMessageBox.ShowOK(msg, caption, CustomMessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
