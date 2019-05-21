@@ -6,15 +6,16 @@
     <system:String x:Key="Version">1.0</system:String>
 
     <system:String x:Key="MainWindow.Menu.File">_File</system:String>
-    <system:String x:Key="MainWindow.Menu.File.Add">_Add...</system:String>
-    <system:String x:Key="MainWindow.Menu.File.Edit">_Edit...</system:String>
+    <system:String x:Key="MainWindow.Menu.File.Add">_Add book...</system:String>
+    <system:String x:Key="MainWindow.Menu.File.Edit">_Edit book...</system:String>
+    <system:String x:Key="MainWindow.Nemu.File.Transfer">_Transfer...</system:String>
     <system:String x:Key="MainWindow.Menu.File.Delete">_Delete</system:String>
     <system:String x:Key="MainWindow.Menu.File.Exit">_Exit</system:String>
-    <system:String x:Key="MainWindow.Menu.Data">_Data</system:String>
-    <system:String x:Key="MainWindow.Menu.Data.Publisher">Edit _Publishers...</system:String>
-    <system:String x:Key="MainWindow.Menu.Data.Place">Edit P_laces...</system:String>
-    <system:String x:Key="MainWindow.Menu.Data.Medium">Edit _Mediums...</system:String>
-    <system:String x:Key="MainWindow.Menu.Data.Signature">Edit _Signature...</system:String>
+    <system:String x:Key="MainWindow.Menu.Edit">_Edit</system:String>
+    <system:String x:Key="MainWindow.Menu.Edit.Publisher">_Publishers...</system:String>
+    <system:String x:Key="MainWindow.Menu.Edit.Place">P_laces...</system:String>
+    <system:String x:Key="MainWindow.Menu.Edit.Medium">_Mediums...</system:String>
+    <system:String x:Key="MainWindow.Menu.Edit.Signature">_Signature...</system:String>
     <system:String x:Key="MainWindow.Menu.Language">_Languange</system:String>
     <system:String x:Key="MainWindow.Menu.Language.English">_English</system:String>
     <system:String x:Key="MainWindow.Menu.Language.German">_Deutsch</system:String>
@@ -24,7 +25,7 @@
 
     <system:String x:Key="MainWindow.SearchList.ContextMenu.Edit">_Edit...</system:String>
     <system:String x:Key="MainWindow.SearchList.ContextMenu.Delete">_Delete</system:String>
-    <system:String x:Key="MainWindow.SearchList.ContextMenu.Print">_Print</system:String>
+    <system:String x:Key="MainWindow.SearchList.ContextMenu.AddToPrint">Add to _Print</system:String>
     <system:String x:Key="MainWindow.SearchList.BookId">BookId</system:String>
     <system:String x:Key="MainWindow.SearchList.Number">Number</system:String>
     <system:String x:Key="MainWindow.SearchList.Signature">Signatures</system:String>
@@ -230,6 +231,18 @@
     <system:String x:Key="EditPublisher.CodeBehind.WarningClose.Message">Do you want to discard?</system:String>
     <system:String x:Key="EditPublisher.CodeBehind.WarningClose.Caption">Warning</system:String>
 
+
+    <system:String x:Key="TransferBook.Title">Transfer books</system:String>
+    <system:String x:Key="TransferBook.ListTransfer.Number">Number</system:String>
+    <system:String x:Key="TransgerBook.ListTransfer.BookTitle">Book Title</system:String>
+    <system:String x:Key="TransferBook.BookNumber">Book Number:</system:String>
+    <system:String x:Key="TransferBook.Export">Export List</system:String>
+
+    <system:String x:Key="TransferBook.CodeBehind.WarningAdd.Exist.Message">Book is already added!</system:String>
+    <system:String x:Key="TransferBook.CodeBehind.WarningAdd.Exist.Caption">Warning</system:String>
+    <system:String x:Key="TransferBook.CodeBehind.ErrorAdd.NotFound.Message">Book not found. Please make sure that it is added</system:String>
+    <system:String x:Key="TransferBook.CodeBehind.ErrorAdd.NotFound.Caption">Error</system:String>
+    
 
 
     <system:String x:Key="MessageBox.YesBtn">Yes</system:String>

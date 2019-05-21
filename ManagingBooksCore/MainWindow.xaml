@@ -26,16 +26,16 @@
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="{DynamicResource MainWindow.Menu.File}">
                 <MenuItem Header="{DynamicResource MainWindow.Menu.File.Add}" Click="AddWindow_Click"/>
-                <MenuItem Header="_Transfer..." Click="Transfer_Click"/>
+                <MenuItem Header="{DynamicResource MainWindow.Nemu.File.Transfer}" Click="Transfer_Click"/>
                 <MenuItem Header="{DynamicResource MainWindow.Menu.File.Edit}" Command="local:CustomCommands.Edit"/>
                 <MenuItem Header="{DynamicResource MainWindow.Menu.File.Delete}" Command="local:CustomCommands.Delete"/>
                 <MenuItem Header="{DynamicResource MainWindow.Menu.File.Exit}" Command="local:CustomCommands.Exit"/>
             </MenuItem>
-            <MenuItem Header="{DynamicResource MainWindow.Menu.Data}">
-                <MenuItem Header="{DynamicResource MainWindow.Menu.Data.Publisher}" Click="EditPublisher_Click"/>
-                <MenuItem Header="{DynamicResource MainWindow.Menu.Data.Place}" Click="EditPlace_Click"/>
-                <MenuItem Header="{DynamicResource MainWindow.Menu.Data.Medium}" Click="EditMedium_Click"/>
-                <MenuItem Header="{DynamicResource MainWindow.Menu.Data.Signature}" Click="EditSignature_Click"/>
+            <MenuItem Header="{DynamicResource MainWindow.Menu.Edit}">
+                <MenuItem Header="{DynamicResource MainWindow.Menu.Edit.Publisher}" Click="EditPublisher_Click"/>
+                <MenuItem Header="{DynamicResource MainWindow.Menu.Edit.Place}" Click="EditPlace_Click"/>
+                <MenuItem Header="{DynamicResource MainWindow.Menu.Edit.Medium}" Click="EditMedium_Click"/>
+                <MenuItem Header="{DynamicResource MainWindow.Menu.Edit.Signature}" Click="EditSignature_Click"/>
             </MenuItem>
             <MenuItem Header="{DynamicResource MainWindow.Menu.Language}">
                 <MenuItem Header="{DynamicResource MainWindow.Menu.Language.English}" Command="local:CustomCommands.English"/>
@@ -61,7 +61,7 @@
                         <ContextMenu x:Key="ItemContextMenu">
                             <MenuItem Header="{DynamicResource MainWindow.SearchList.ContextMenu.Edit}" Command="local:CustomCommands.Edit"/>
                             <MenuItem Header="{DynamicResource MainWindow.SearchList.ContextMenu.Delete}" Command="local:CustomCommands.Delete"/>
-                            <MenuItem Header="{DynamicResource MainWindow.SearchList.ContextMenu.Print}" Command="local:CustomCommands.Print"/>
+                            <MenuItem Header="{DynamicResource MainWindow.SearchList.ContextMenu.AddToPrint}" Command="local:CustomCommands.AddToPrint"/>
                         </ContextMenu>
                         <Style TargetType="{x:Type GridViewColumnHeader}">
                             <Setter Property="HorizontalContentAlignment" Value="Left"/>
