@@ -47,7 +47,7 @@
                     </GridViewColumn>
                     <GridViewColumn Width="200" DisplayMemberBinding="{Binding Title}">
                         <GridViewColumn.Header>
-                            <GridViewColumnHeader Content="{DynamicResource TransgerBook.ListTransfer.BookTitle}" Tag="Title"/>
+                            <GridViewColumnHeader Content="{DynamicResource TransferBook.ListTransfer.BookTitle}" Tag="Title"/>
                         </GridViewColumn.Header>
                     </GridViewColumn>
                 </GridView>

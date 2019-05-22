@@ -234,7 +234,7 @@
 
     <system:String x:Key="TransferBook.Title">Transfer books</system:String>
     <system:String x:Key="TransferBook.ListTransfer.Number">Number</system:String>
-    <system:String x:Key="TransgerBook.ListTransfer.BookTitle">Book Title</system:String>
+    <system:String x:Key="TransferBook.ListTransfer.BookTitle">Book Title</system:String>
     <system:String x:Key="TransferBook.BookNumber">Book Number:</system:String>
     <system:String x:Key="TransferBook.Export">Export List</system:String>
 
