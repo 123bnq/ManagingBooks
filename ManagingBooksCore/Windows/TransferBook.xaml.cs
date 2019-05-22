@@ -96,13 +96,16 @@ namespace ManagingBooks.Windows
             dialog.InitialDirectory = AppContext.BaseDirectory;
             if (dialog.ShowDialog(this) == true)
             {
+                string pdfTitle = Application.Current.FindResource("TransferBook.Title").ToString();
+                string pdfNumberCol = Application.Current.FindResource("TransferBook.ListTransfer.Number").ToString();
+                string pdfTitleCol = Application.Current.FindResource("TransferBook.ListTransfer.BookTitle").ToString();
                 pdfPath = dialog.FileName;
                 using (PdfWriter writer = new PdfWriter(pdfPath))
                 {
                     using (PdfDocument pdf = new PdfDocument(writer))
                     {
                         Document document = new Document(pdf);
-                        Paragraph paragraph = new Paragraph("Transfer list")
+                        Paragraph paragraph = new Paragraph(pdfTitle)
                             .SetFontSize(20.0f)
                             .SetBold()
                             .SetTextAlignment(iText.Layout.Properties.TextAlignment.CENTER);
@@ -119,9 +122,9 @@ namespace ManagingBooks.Windows
                         Paragraph para = new Paragraph().Add("ID").SetBold();
                         cells[0].Add(para)
                             .SetTextAlignment(iText.Layout.Properties.TextAlignment.RIGHT);
-                        para = new Paragraph().Add("Number").SetBold();
+                        para = new Paragraph().Add(pdfNumberCol).SetBold();
                         cells[1].Add(para).SetTextAlignment(iText.Layout.Properties.TextAlignment.RIGHT);
-                        para = new Paragraph().Add("Title").SetBold();
+                        para = new Paragraph().Add(pdfTitleCol).SetBold();
                         cells[2].Add(para).SetTextAlignment(iText.Layout.Properties.TextAlignment.CENTER);
                         foreach (var cell in cells)
                         {
