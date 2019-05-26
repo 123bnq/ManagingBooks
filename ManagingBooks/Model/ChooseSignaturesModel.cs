@@ -11,7 +11,6 @@ namespace ManagingBooks.Model
 {
     class ChooseSignaturesModel : INotifyPropertyChanged
     {
-        private string m_test;
         private Signature m_MainSig;
         private Signature m_SubSig;
         private int m_CurrentId;

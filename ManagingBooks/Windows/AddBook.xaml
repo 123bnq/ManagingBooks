@@ -33,7 +33,7 @@
                 <TextBox Name="BoxTitle" Text="{Binding Title, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,5"/>
                 <TextBlock Text="{DynamicResource AddBook.Publisher}" Margin="0,0,0,5"/>
                 <Grid>
-                    <ComboBox Name="BoxPublisher" Text="{Binding Publisher}" Margin="0,0,0,5" MaxDropDownHeight="150"/>
+                    <ComboBox Name="BoxPublisher" Text="{Binding Publisher, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,5" MaxDropDownHeight="150"/>
                     <TextBlock DataContext="{Binding ElementName=BoxPublisher, Path=SelectedItem}" Margin="5,3,0,0" IsHitTestVisible="False" Style="{StaticResource ComboBoxNull}"/>
                 </Grid>
                 <Grid>
@@ -52,13 +52,13 @@
                     <TextBox Grid.Row="1" Grid.Column="1" Name="BoxYear" Text="{Binding Year, Converter={x:Static model:AddBookModel.NumberConverter}}" MaxLength="4" PreviewTextInput="IntNumberValidationTextBox" Width="110" Margin="0,0,5,0"/>
                     <TextBlock Grid.Column="2" Text="{DynamicResource AddBook.Medium}" Margin="0,0,0,5"/>
                     <Grid  Grid.Row="1" Grid.Column="2">
-                        <ComboBox Name="BoxMedium" Text="{Binding Medium}" Width="110" Margin="0,0,5,0" MaxDropDownHeight="150"/>
+                        <ComboBox Name="BoxMedium" Text="{Binding Medium, UpdateSourceTrigger=PropertyChanged}" Width="110" Margin="0,0,5,0" MaxDropDownHeight="150"/>
                         <TextBlock DataContext="{Binding ElementName=BoxMedium, Path=SelectedItem}" Margin="5,3,0,0" IsHitTestVisible="False" Style="{StaticResource ComboBoxNull}"/>
                     </Grid>
                 </Grid>
                 <TextBlock Text="{DynamicResource AddBook.Place}" Margin="0,0,0,5"/>
                 <Grid>
-                    <ComboBox Name="BoxPlace" Text="{Binding Place}" Margin="0,0,0,5" MaxDropDownHeight="150"/>
+                    <ComboBox Name="BoxPlace" Text="{Binding Place, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,5" MaxDropDownHeight="150"/>
                     <TextBlock DataContext="{Binding ElementName=BoxPlace, Path=SelectedItem}" Margin="5,3,0,0" IsHitTestVisible="False" Style="{StaticResource ComboBoxNull}"/>
                 </Grid>
                 <Grid>

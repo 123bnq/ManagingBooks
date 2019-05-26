@@ -441,11 +441,7 @@ namespace ManagingBooks.Windows
         private bool IsDataToAdd(AddBookModel context)
         {
             return !(context.Number == 0)
-                && !string.IsNullOrWhiteSpace(context.Title)
-                && !string.IsNullOrWhiteSpace(context.Publisher)
-                && !string.IsNullOrWhiteSpace(context.Medium)
-                && !string.IsNullOrWhiteSpace(context.Place)
-                && !string.IsNullOrWhiteSpace(context.Date);
+                && !string.IsNullOrWhiteSpace(context.Title);
         }
 
         private int NumberOfAuthor(AddBookModel context)
