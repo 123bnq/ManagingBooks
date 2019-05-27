@@ -43,20 +43,26 @@ namespace Demo_iTextDotnetCore
             {
                 using (iText.Kernel.Pdf.PdfDocument pdf = new iText.Kernel.Pdf.PdfDocument(pdfWriter))
                 {
-                    Rectangle envelope = new Rectangle(3000, 1000);
+                    Rectangle envelope = new Rectangle(3016, 1327);
                     PageSize ps = new PageSize(envelope);
                     //ps.ApplyMargins(0, 0, 0, 0, true);
                     Document document = new Document(pdf, ps);
                     document.SetMargins(0, 0, 0, 0);
-                    Paragraph text = new Paragraph("Signature").SetTextAlignment(TextAlignment.CENTER).SetFontSize(150);
+                    Paragraph text = new Paragraph("Signature").SetTextAlignment(TextAlignment.CENTER).SetFontSize(200);
+                    Paragraph num = new Paragraph("011120").SetTextAlignment(TextAlignment.CENTER).SetFontSize(200);
                     Barcode128 barcode128 = new Barcode128(pdf);
                     barcode128.SetCodeType(Barcode128.CODE_C);
                     barcode128.SetCode("011120");
+                    barcode128.FitWidth(2800);
+                    barcode128.SetBarHeight(700);
+                    barcode128.SetAltText("");
+
                     Image barcodeImage = new Image(barcode128.CreateFormXObject(pdf));
                     barcodeImage.SetHorizontalAlignment(HorizontalAlignment.CENTER);
-                    barcodeImage.Scale(25F, 22F);
+                    //barcodeImage.Scale(62F, 22F);
                     document.Add(text);
                     document.Add(barcodeImage);
+                    document.Add(num);
                     //Table table = new Table(5, false);
                     //table.SetWidth(UnitValue.CreatePercentValue(100));
                     //Cell[] cellArray = new Cell[100];
