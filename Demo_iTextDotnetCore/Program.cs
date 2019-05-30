@@ -59,7 +59,6 @@ namespace Demo_iTextDotnetCore
 
                     Image barcodeImage = new Image(barcode128.CreateFormXObject(pdf));
                     barcodeImage.SetHorizontalAlignment(HorizontalAlignment.CENTER);
-                    //barcodeImage.Scale(62F, 22F);
                     document.Add(text);
                     document.Add(barcodeImage);
                     document.Add(num);
