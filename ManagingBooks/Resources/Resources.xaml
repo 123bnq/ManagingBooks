@@ -10,6 +10,7 @@
     <system:String x:Key="MainWindow.Menu.File.Edit">_Edit book...</system:String>
     <system:String x:Key="MainWindow.Nemu.File.Transfer">_Transfer...</system:String>
     <system:String x:Key="MainWindow.Menu.File.Delete">_Delete</system:String>
+    <system:String x:Key="MainWindow.Menu.File.CreateBarcode">Create _Barcode</system:String>
     <system:String x:Key="MainWindow.Menu.File.Exit">_Exit</system:String>
     <system:String x:Key="MainWindow.Menu.Edit">_Edit</system:String>
     <system:String x:Key="MainWindow.Menu.Edit.Publisher">_Publishers...</system:String>
@@ -26,6 +27,7 @@
     <system:String x:Key="MainWindow.SearchList.ContextMenu.Edit">_Edit...</system:String>
     <system:String x:Key="MainWindow.SearchList.ContextMenu.Delete">_Delete</system:String>
     <system:String x:Key="MainWindow.SearchList.ContextMenu.AddToPrint">Add to _Print</system:String>
+    <system:String x:Key="MainWindow.SearchList.ContextMenu.CreateBarcode">Create _Barcode</system:String>
     <system:String x:Key="MainWindow.SearchList.BookId">BookId</system:String>
     <system:String x:Key="MainWindow.SearchList.Number">Number</system:String>
     <system:String x:Key="MainWindow.SearchList.Signature">Signatures</system:String>
@@ -59,6 +61,8 @@
     <system:String x:Key="MainWindow.SearchBy.Authors">Authors</system:String>
     <system:String x:Key="MainWindow.SearchBy.Medium">Medium</system:String>
     <system:String x:Key="MainWindow.SearchBy.Place">Place</system:String>
+
+    <system:String x:Key="MainWindow.BarcodeFolder">Barcode Folder</system:String>
 
     <system:String x:Key="MainWindow.BookInfo">Book Information</system:String>
     <system:String x:Key="MainWindow.BookInfo.Number">Book Number:</system:String>
@@ -106,7 +110,7 @@
     <system:String x:Key="AddBook.CodeBehind.WarningCancel.Caption">Warning</system:String>
     <system:String x:Key="AddBook.CodeBehind.WarningAdd.Message">Book is already added.</system:String>
     <system:String x:Key="AddBook.CodeBehind.WarningAdd.Caption">Warning</system:String>
-    <system:String x:Key="AddBook.CodeBehind.InfoAdd.Message">Book is successfully added.</system:String>
+    <system:String x:Key="AddBook.CodeBehind.InfoAdd.Message">Book is successfully added. Do you want to generate barcode?</system:String>
     <system:String x:Key="AddBook.CodeBehind.InfoAdd.Caption">Information</system:String>
     <system:String x:Key="AddBook.CodeBehind.ErrorAdd.IncorrectOrder.Message">Next author or next signature should be put correctly :) :)</system:String>
     <system:String x:Key="AddBook.CodeBehind.ErrorAdd.IncorrectOrder.Caption">Error</system:String>

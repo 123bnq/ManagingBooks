@@ -9,7 +9,8 @@
     <system:String x:Key="MainWindow.Menu.File.Add">Buch Ein_gabe...</system:String>
     <system:String x:Key="MainWindow.Menu.File.Edit">Buch Be_arbeiten...</system:String>
     <system:String x:Key="MainWindow.Nemu.File.Transfer">_Übertragen...</system:String>
-    <system:String x:Key="MainWindow.Menu.File.Delete">_Entfernen</system:String>
+    <system:String x:Key="MainWindow.Menu.File.Delete">En_tfernen</system:String>
+    <system:String x:Key="MainWindow.Menu.File.CreateBarcode">Barcode _Erstellen</system:String>
     <system:String x:Key="MainWindow.Menu.File.Exit">_Beenden</system:String>
     <system:String x:Key="MainWindow.Menu.Edit">_Bearbeiten</system:String>
     <system:String x:Key="MainWindow.Menu.Edit.Publisher">_Verlag...</system:String>
@@ -24,8 +25,9 @@
     <system:String x:Key="MainWindow.Menu.Help.About">_Über uns</system:String>
 
     <system:String x:Key="MainWindow.SearchList.ContextMenu.Edit">_Bearbeiten...</system:String>
-    <system:String x:Key="MainWindow.SearchList.ContextMenu.Delete">_Entfernen</system:String>
+    <system:String x:Key="MainWindow.SearchList.ContextMenu.Delete">En_tfernen</system:String>
     <system:String x:Key="MainWindow.SearchList.ContextMenu.AddToPrint">Zum _Drucken hinzufügen</system:String>
+    <system:String x:Key="MainWindow.SearchList.ContextMenu.CreateBarcode">Barcode _Erstellen</system:String>
     <system:String x:Key="MainWindow.SearchList.BookId">BookId</system:String>
     <system:String x:Key="MainWindow.SearchList.Number">Nummer</system:String>
     <system:String x:Key="MainWindow.SearchList.Signature">Signatur</system:String>
@@ -59,6 +61,8 @@
     <system:String x:Key="MainWindow.SearchBy.Authors">Autoren</system:String>
     <system:String x:Key="MainWindow.SearchBy.Medium">Medium</system:String>
     <system:String x:Key="MainWindow.SearchBy.Place">Standort</system:String>
+
+    <system:String x:Key="MainWindow.BarcodeFolder">Barcode-Ordner</system:String>
 
     <system:String x:Key="MainWindow.BookInfo">Buchinformationen</system:String>
     <system:String x:Key="MainWindow.BookInfo.Number">Buchnummer:</system:String>
@@ -106,7 +110,7 @@
     <system:String x:Key="AddBook.CodeBehind.WarningCancel.Caption">Warnung</system:String>
     <system:String x:Key="AddBook.CodeBehind.WarningAdd.Message">Buch ist bereits hinzugefügt.</system:String>
     <system:String x:Key="AddBook.CodeBehind.WarningAdd.Caption">Warnung</system:String>
-    <system:String x:Key="AddBook.CodeBehind.InfoAdd.Message">Buch wurde erfolgreich hinzugefügt.</system:String>
+    <system:String x:Key="AddBook.CodeBehind.InfoAdd.Message">Buch wurde erfolgreich hinzugefügt. Möchten Sie Barcode generieren?</system:String>
     <system:String x:Key="AddBook.CodeBehind.InfoAdd.Caption">Information</system:String>
     <system:String x:Key="AddBook.CodeBehind.ErrorAdd.IncorrectOrder.Message">Nächster Autor oder nächste Signatur sollte korrekt platziert werden :) :)</system:String>
     <system:String x:Key="AddBook.CodeBehind.ErrorAdd.IncorrectOrder.Caption">Fehler</system:String>

@@ -14,6 +14,12 @@ using System.Windows.Data;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Windows.Input;
+using iText.Kernel.Pdf;
+using iText.Kernel.Geom;
+using iText.Layout;
+using iText.Layout.Element;
+using iText.Barcodes;
+using System.Diagnostics;
 
 namespace ManagingBooks.Windows
 {
@@ -59,7 +65,7 @@ namespace ManagingBooks.Windows
             AddBookModel context = this.DataContext as AddBookModel;
             PropertyInfo[] properties = context.GetType().GetProperties();
             DateTimeFormatInfo dtfi = CultureInfo.CreateSpecificCulture("fr-FR").DateTimeFormat;
-            
+
 
             foreach (var propertyInfo in properties)
             {
@@ -306,7 +312,7 @@ namespace ManagingBooks.Windows
                         BtnAdd.IsEnabled = false;
                         await Task.Run(() =>
                         {
-                            
+
                             var tr = con.BeginTransaction();
                             AddBookToDatabase(ref con, ref tr, book);
                             tr.Commit();
@@ -314,7 +320,22 @@ namespace ManagingBooks.Windows
                         });
                         message = Application.Current.FindResource("AddBook.CodeBehind.InfoAdd.Message").ToString();
                         caption = Application.Current.FindResource("AddBook.CodeBehind.InfoAdd.Caption").ToString();
-                        CustomMessageBox.ShowOK(message, caption, CustomMessageBoxButton.OK, MessageBoxImage.Information);
+                        var result = CustomMessageBox.ShowYesNo(message, caption, CustomMessageBoxButton.Yes, CustomMessageBoxButton.No, MessageBoxImage.Information);
+                        // Generate barcode
+                        if (result == MessageBoxResult.Yes)
+                        {
+                            string number = book.Number.ToString();
+                            string signature = string.Join(" - ", book.Signatures);
+
+                            int length = number.Length;
+                            for (int i = 6; i > length; i--)
+                            {
+                                number = String.Concat("0", number);
+                            }
+
+                            MainWindow.CreateBarcodeImage(number, signature, isOpen: true);
+
+                        }
                         BtnAdd.IsEnabled = true;
                         //MessageBox.Show(message, caption, MessageBoxButton.OK, MessageBoxImage.Information);
                         UpdateListBook(context);
@@ -651,5 +672,7 @@ namespace ManagingBooks.Windows
             Regex regex = new Regex("^[.][0-9]+$|^[0-9]*[.]{0,1}[0-9]*$");
             e.Handled = !regex.IsMatch(e.Text);
         }
+
+
     }
 }

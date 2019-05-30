@@ -25,6 +25,7 @@ using System.IO;
 using System.Globalization;
 using System.Windows.Controls;
 using iText.Layout.Borders;
+using iText.Kernel.Geom;
 
 namespace ManagingBooks
 {
@@ -43,6 +44,7 @@ namespace ManagingBooks
         Uri English = new Uri(".\\Resources\\Resources.xaml", UriKind.Relative);
         Uri German = new Uri(".\\Resources\\Resources.de.xaml", UriKind.Relative);
 
+        string ExportFolder = System.IO.Path.Combine(AppContext.BaseDirectory, "Barcode");
         //SearchBook DeleteBook;
 
         public MainWindow()
@@ -119,7 +121,7 @@ namespace ManagingBooks
                         string temp = Convert.ToString(r["Signature"]);
                         if (!tempBook.Signatures.Contains(temp))
                         {
-                            tempBook.Signatures += " " + Convert.ToString(r["Signature"]);
+                            tempBook.Signatures += "-" + Convert.ToString(r["Signature"]);
                         }
                     }
                     if (result1 != lastAuthorId)
@@ -182,12 +184,13 @@ namespace ManagingBooks
         /// <param name="e"></param>
         void Search_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
-            SearchBookModel temp = this.DataContext as SearchBookModel;
-            temp.Progress = e.ProgressPercentage;
-            temp.Status = Application.Current.FindResource("MainWindow.CodeBehind.Status.Running").ToString();
+            SearchBookModel context = this.DataContext as SearchBookModel;
+            context.Progress = e.ProgressPercentage;
+            context.Status = "Running";
+            //context.Status = Application.Current.FindResource("MainWindow.CodeBehind.Status.Running").ToString();
             if (e.UserState != null)
             {
-                temp.DisplayBooks.Add(e.UserState as SearchBook);
+                context.DisplayBooks.Add(e.UserState as SearchBook);
             }
         }
 
@@ -196,7 +199,8 @@ namespace ManagingBooks
         {
             SearchBookModel context = this.DataContext as SearchBookModel;
             // set the status to finished
-            context.Status = Application.Current.FindResource("MainWindow.CodeBehind.Status.Completed").ToString();
+            context.Status = "Search Complete";
+            //context.Status = Application.Current.FindResource("MainWindow.CodeBehind.Status.Completed").ToString();
             // focus to the previous chosen book if any
             if (LastIndex != -1)
             {
@@ -587,7 +591,8 @@ namespace ManagingBooks
                             con.Close();
 
                             progress.Report(Convert.ToInt32((double)(max - i) / max * 100));
-                            context.Status = Application.Current.FindResource("MainWindow.CodeBehind.Status.Deleting").ToString();
+                            context.Status = "Deleting";
+                            //context.Status = Application.Current.FindResource("MainWindow.CodeBehind.Status.Deleting").ToString();
 
                             App.Current.Dispatcher.Invoke((Action)delegate
                             {
@@ -597,7 +602,8 @@ namespace ManagingBooks
                             Thread.Sleep(TimeSpan.FromTicks(5));
                         }
                     });
-                    context.Status = Application.Current.FindResource("MainWindow.CodeBehind.Status.DeleteCompleted").ToString();
+                    context.Status = "Delete Finished";
+                    //context.Status = Application.Current.FindResource("MainWindow.CodeBehind.Status.DeleteCompleted").ToString();
                 }
             }
             SearchList.IsEnabled = true;
@@ -743,7 +749,7 @@ namespace ManagingBooks
             Application.Current.Resources.MergedDictionaries.Clear();
             Application.Current.Resources.MergedDictionaries.Add(dict);
             File.WriteAllText(SplashScreen.ResourcePath, string.Empty);
-            using(StreamWriter w = new StreamWriter(SplashScreen.ResourcePath))
+            using (StreamWriter w = new StreamWriter(SplashScreen.ResourcePath))
             {
                 w.Write("0");
             }
@@ -826,7 +832,7 @@ namespace ManagingBooks
             DateTimeFormatInfo dtfi = CultureInfo.CreateSpecificCulture("fr-FR").DateTimeFormat;
 
             var myDataTable = new DataTable();
-            string mdbPath = Path.Combine(AppContext.BaseDirectory, "Data\\ProNoskoDatenbank_160717.mdb");
+            string mdbPath = System.IO.Path.Combine(AppContext.BaseDirectory, "Data\\ProNoskoDatenbank_160717.mdb");
             using (var conection = new OleDbConnection($"Provider=Microsoft.JET.OLEDB.4.0;data source={mdbPath};"))
             {
                 SqlMethods.SqlConnect(out SqliteConnection con);
@@ -856,7 +862,7 @@ namespace ManagingBooks
                         }
                         else
                         {
-                            book.Signatures[i] = textArray[i];
+                            book.Signatures[i] = textArray[i].Trim();
                         }
                     }
                     if (!string.IsNullOrEmpty(reader["Autor3"].ToString()))
@@ -878,18 +884,18 @@ namespace ManagingBooks
                     }
                     if (book.NoAuthor > 0)
                     {
-                        book.Authors[0].Name = reader["Autor"].ToString();
+                        book.Authors[0].Name = reader["Autor"].ToString().Trim();
                     }
                     if (book.NoAuthor > 1)
                     {
-                        book.Authors[1].Name = reader["Autor2"].ToString();
+                        book.Authors[1].Name = reader["Autor2"].ToString().Trim();
                     }
                     if (book.NoAuthor > 2)
                     {
-                        book.Authors[2].Name = reader["Autor3"].ToString();
+                        book.Authors[2].Name = reader["Autor3"].ToString().Trim();
                     }
-                    book.Title = reader["Titel"].ToString();
-                    book.Publisher = reader["Name"].ToString();
+                    book.Title = reader["Titel"].ToString().Trim();
+                    book.Publisher = reader["Name"].ToString().Trim();
                     int.TryParse(reader["Auflage"].ToString(), out temp);
                     book.Version = temp;
                     int.TryParse(reader["Jahr"].ToString(), out temp);
@@ -897,7 +903,7 @@ namespace ManagingBooks
                     book.Medium = reader["Medium"].ToString();
                     if (!string.IsNullOrEmpty(reader["Standort"].ToString()))
                     {
-                        book.Place = reader["Standort"].ToString(); 
+                        book.Place = reader["Standort"].ToString().Trim();
                     }
                     else
                     {
@@ -922,7 +928,7 @@ namespace ManagingBooks
                         int day = temp;
                         book.DayBought = new DateTime(year, month, day).ToString("d", dtfi);
                     }
-                    
+
                     AddBook.AddBookToDatabase(ref con, ref tr, book);
                 }
                 tr.Commit();
@@ -955,7 +961,115 @@ namespace ManagingBooks
             TransferBook window = new TransferBook() { Owner = this };
             window.ShowDialog();
         }
+
+        public static void CreateBarcodeImage(string number, string signature, bool isOpen)
+        {
+            string exportFolder = System.IO.Path.Combine(AppContext.BaseDirectory, "Barcode");
+            string tempFile = System.IO.Path.Combine(exportFolder, "temp.pdf");
+            string exportImage = System.IO.Path.Combine(exportFolder, String.Concat(number, ".png"));
+            int imageWidth = 757;
+            int imageHeight = 332;
+            int textSize = 50;
+            int barcodeWidth = 700;
+            int barcodeHeight = 166;
+
+
+            if (!Directory.Exists(exportFolder))
+            {
+                Directory.CreateDirectory(exportFolder);
+            }
+
+            using (PdfWriter pdfWriter = new PdfWriter(tempFile))
+            {
+                using (PdfDocument pdf = new PdfDocument(pdfWriter))
+                {
+                    Rectangle envelope = new Rectangle(imageWidth, imageHeight);
+                    PageSize ps = new PageSize(envelope);
+                    Document document = new Document(pdf, ps);
+                    document.SetMargins(0, 0, 0, 0);
+                    Paragraph text = new Paragraph(signature)
+                        .SetTextAlignment(iText.Layout.Properties.TextAlignment.CENTER)
+                        .SetFontSize(textSize);
+                    Paragraph num = new Paragraph(number)
+                        .SetTextAlignment(iText.Layout.Properties.TextAlignment.CENTER)
+                        .SetFontSize(textSize);
+                    Barcode128 barcode128 = new Barcode128(pdf);
+                    barcode128.SetCodeType(Barcode128.CODE_C);
+                    barcode128.SetCode(number);
+                    barcode128.FitWidth(barcodeWidth);
+                    barcode128.SetBarHeight(barcodeHeight);
+                    barcode128.SetAltText("");
+
+                    iText.Layout.Element.Image barcodeImage = new iText.Layout.Element.Image(barcode128.CreateFormXObject(pdf));
+                    barcodeImage.SetHorizontalAlignment(iText.Layout.Properties.HorizontalAlignment.CENTER);
+                    document.Add(text);
+                    document.Add(barcodeImage);
+                    document.Add(num);
+                }
+            }
+            Spire.Pdf.PdfDocument document1 = new Spire.Pdf.PdfDocument();
+            document1.LoadFromFile(tempFile);
+            System.Drawing.Image img = document1.SaveAsImage(0);
+            img.Save(exportImage);
+
+            if (File.Exists(tempFile))
+            {
+                File.Delete(tempFile);
+            }
+            if (isOpen)
+            {
+                Process proc = new Process();
+                proc.StartInfo.FileName = exportImage;
+                proc.StartInfo.UseShellExecute = true;
+                proc.Start();
+            }
+        }
+
+        private async void CreateBarcodeCommand_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+
+            string exportImage;
+            var books = SearchList.SelectedItems;
+            if (books != null)
+            {
+                await Task.Run(() =>
+                {
+                    foreach (var book in books)
+                    {
+                        CreateBarcodeImage((book as SearchBook).Number, (book as SearchBook).Signatures, isOpen: false);
+                        exportImage = System.IO.Path.Combine(ExportFolder, string.Concat((book as SearchBook).Number, ".png"));
+                        if (books.Count == 1)
+                        {
+                            Process proc = new Process();
+                            proc.StartInfo.FileName = exportImage;
+                            proc.StartInfo.UseShellExecute = true;
+                            proc.Start();
+                        }
+                        Thread.Sleep(5);
+                    }
+                    if (books.Count > 1)
+                    {
+                        Process.Start("explorer.exe", ExportFolder);
+                    }
+                });
+            }
+        }
+
+        private void BtnBarcode_Click(object sender, RoutedEventArgs e)
+        {
+            if (!Directory.Exists(ExportFolder))
+            {
+                Directory.CreateDirectory(ExportFolder);
+            }
+            Process.Start("explorer.exe", ExportFolder);
+        }
+
+        private void BtnTest_Click(object sender, RoutedEventArgs e)
+        {
+            GridView g = SearchList.View as GridView;
+        }
     }
+
 
     public static class CustomCommands
     {
@@ -975,6 +1089,7 @@ namespace ManagingBooks
         public static readonly RoutedUICommand AddToPrint = new RoutedUICommand("AddToPrint", "AddToPrint", typeof(CustomCommands));
         public static readonly RoutedUICommand RemoveFromPrint = new RoutedUICommand("RemoveFromPrint", "RemoveFromPrint", typeof(CustomCommands));
         public static readonly RoutedUICommand ClearPrintList = new RoutedUICommand("ClearPrintList", "ClearPrintList", typeof(CustomCommands));
+        public static readonly RoutedUICommand CreateBarcode = new RoutedUICommand("CreateBarcode", "CreateBarcode", typeof(CustomCommands));
 
         public static readonly RoutedUICommand ClearBookInfo = new RoutedUICommand("ClearBookInfo", "ClearBookInfo", typeof(CustomCommands));
 
