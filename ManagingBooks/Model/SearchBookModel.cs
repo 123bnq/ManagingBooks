@@ -252,7 +252,7 @@ namespace ManagingBooks.Model
         }
 
         public ObservableCollection<SearchBook> DisplayBooks { get; set; }
-        public ObservableCollection<string> ListBookPrint { get; set; }
+        public ObservableCollection<SearchBook> ListBookPrint { get; set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
 

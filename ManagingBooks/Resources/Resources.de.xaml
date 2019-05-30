@@ -45,6 +45,10 @@
     <system:String x:Key="MainWindow.PrintList.RemoveBtn">Entfernen</system:String>
     <system:String x:Key="MainWindow.PrintList.ClearBtn">Löschen</system:String>
     <system:String x:Key="MainWindow.PrintList.PrintBtn">Drucken</system:String>
+    <system:String x:Key="MainWindow.PrintList.PDF.Title">Listenbücher</system:String>
+    <system:String x:Key="MainWindow.PrintList.PDF.TableHeader.Number">Nummer</system:String>
+    <system:String x:Key="MainWindow.PrintList.PDF.TableHeader.Signature">Signatur</system:String>
+    <system:String x:Key="MainWindow.PrintList.PDF.TableHeader.BookTitle">Buchtitel</system:String>
 
     <system:String x:Key="MainWindow.Search">Suchen:</system:String>
     <system:String x:Key="MainWindow.SearchBtn">Suchen</system:String>

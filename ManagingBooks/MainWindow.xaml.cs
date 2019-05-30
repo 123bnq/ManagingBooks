@@ -24,6 +24,7 @@ using System.Data;
 using System.IO;
 using System.Globalization;
 using System.Windows.Controls;
+using iText.Layout.Borders;
 
 namespace ManagingBooks
 {
@@ -50,7 +51,7 @@ namespace ManagingBooks
             SearchBookModel context = new SearchBookModel();
             this.DataContext = context;
             context.DisplayBooks = new ObservableCollection<SearchBook>();
-            context.ListBookPrint = new ObservableCollection<string>();
+            context.ListBookPrint = new ObservableCollection<SearchBook>();
             SearchList.ItemsSource = context.DisplayBooks;
             context.DisplayBooks.Clear();
             Search.WorkerReportsProgress = true;
@@ -397,7 +398,7 @@ namespace ManagingBooks
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void PrintCommand_Executed(object sender, ExecutedRoutedEventArgs e)
+        private void PrintBarcodeCommand_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             SearchBookModel context = this.DataContext as SearchBookModel;
             string pdfPath;
@@ -417,19 +418,18 @@ namespace ManagingBooks
                         Table table = new Table(5, false);
                         table.SetWidth(iText.Layout.Properties.UnitValue.CreatePercentValue(100));
 
-                        foreach (string codeNr in context.ListBookPrint)
-                        {
-                            barcode.SetCode(codeNr);
-                            iText.Layout.Element.Image barcodeImage = new iText.Layout.Element.Image(barcode.CreateFormXObject(pdf));
-                            barcodeImage.SetHorizontalAlignment(iText.Layout.Properties.HorizontalAlignment.CENTER);
-                            //barcodeImage.Scale(1.5F, 1.5F);
-                            Cell cell = new Cell();
-                            //cell.Add(new Paragraph("Code 128").SetTextAlignment(iText.Layout.Properties.TextAlignment.CENTER));
-                            cell.Add(barcodeImage);
-                            table.AddCell(cell);
-                            
-                        }
-                        document.Add(table);
+                        //foreach (string codeNr in context.ListBookPrint)
+                        //{
+                        //    barcode.SetCode(codeNr);
+                        //    iText.Layout.Element.Image barcodeImage = new iText.Layout.Element.Image(barcode.CreateFormXObject(pdf));
+                        //    barcodeImage.SetHorizontalAlignment(iText.Layout.Properties.HorizontalAlignment.CENTER);
+                        //    //barcodeImage.Scale(1.5F, 1.5F);
+                        //    Cell cell = new Cell();
+                        //    //cell.Add(new Paragraph("Code 128").SetTextAlignment(iText.Layout.Properties.TextAlignment.CENTER));
+                        //    cell.Add(barcodeImage);
+                        //    table.AddCell(cell);
+                        //}
+                        //document.Add(table);
                     }
                 }
                 // open the pdf file for reviewing and printing
@@ -438,7 +438,79 @@ namespace ManagingBooks
                 proc.StartInfo.UseShellExecute = true;
                 proc.Start();
             }
+        }
 
+        private void PrintCommand_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            SearchBookModel context = this.DataContext as SearchBookModel;
+            string pdfPath;
+            SaveFileDialog dialog = new SaveFileDialog();
+            dialog.FileName = "List Books";
+            dialog.Filter = "PDF (*.pdf)|*.pdf";
+            dialog.InitialDirectory = AppContext.BaseDirectory;
+            if (dialog.ShowDialog(this) == true)
+            {
+                string pdfTitle = Application.Current.FindResource("MainWindow.PrintList.PDF.Title").ToString();
+                string pdfNumberCol = Application.Current.FindResource("MainWindow.PrintList.PDF.TableHeader.Number").ToString();
+                string pdfSignatureCol = Application.Current.FindResource("MainWindow.PrintList.PDF.TableHeader.Signature").ToString();
+                string pdfTitleCol = Application.Current.FindResource("MainWindow.PrintList.PDF.TableHeader.BookTitle").ToString();
+                pdfPath = dialog.FileName;
+                using (PdfWriter writer = new PdfWriter(pdfPath))
+                {
+                    using (PdfDocument pdf = new PdfDocument(writer))
+                    {
+                        Document document = new Document(pdf);
+                        Paragraph paragraph = new Paragraph(pdfTitle)
+                            .SetFontSize(20.0f)
+                            .SetBold()
+                            .SetTextAlignment(iText.Layout.Properties.TextAlignment.CENTER);
+
+                        float[] columnWidths = { 1, 3, 5, 10 };
+                        Table table = new Table(columnWidths);
+                        table.SetWidth(iText.Layout.Properties.UnitValue.CreatePercentValue(100));
+
+                        Cell[] cells = new Cell[4];
+                        for (int i = 0; i < cells.Length; i++)
+                        {
+                            cells[i] = new Cell();
+                        }
+                        Paragraph para = new Paragraph().Add("ID").SetBold();
+                        cells[0].Add(para)
+                            .SetTextAlignment(iText.Layout.Properties.TextAlignment.RIGHT);
+                        para = new Paragraph().Add(pdfNumberCol).SetBold();
+                        cells[1].Add(para).SetTextAlignment(iText.Layout.Properties.TextAlignment.RIGHT);
+                        para = new Paragraph().Add(pdfSignatureCol).SetBold();
+                        cells[2].Add(para).SetTextAlignment(iText.Layout.Properties.TextAlignment.CENTER);
+                        para = new Paragraph().Add(pdfTitleCol).SetBold();
+                        cells[3].Add(para).SetTextAlignment(iText.Layout.Properties.TextAlignment.CENTER);
+                        foreach (var cell in cells)
+                        {
+                            table.AddHeaderCell(cell);
+                        }
+                        for (int i = 0; i < context.ListBookPrint.Count; i++)
+                        {
+                            for (int j = 0; j < cells.Length; j++)
+                            {
+                                cells[j] = new Cell();
+                            }
+                            cells[0].Add(new Paragraph((i + 1).ToString()).SetFixedLeading(15)).SetTextAlignment(iText.Layout.Properties.TextAlignment.RIGHT).SetFontSize(10);
+                            cells[1].Add(new Paragraph(context.ListBookPrint[i].Number).SetFixedLeading(15)).SetTextAlignment(iText.Layout.Properties.TextAlignment.RIGHT).SetFontSize(10);
+                            cells[2].Add(new Paragraph(context.ListBookPrint[i].Signatures).SetFixedLeading(15)).SetTextAlignment(iText.Layout.Properties.TextAlignment.LEFT).SetFontSize(10);
+                            cells[3].Add(new Paragraph(context.ListBookPrint[i].Title).SetFixedLeading(15)).SetTextAlignment(iText.Layout.Properties.TextAlignment.LEFT).SetFontSize(10);
+                            foreach (var cell in cells)
+                            {
+                                table.AddCell(cell);
+                            }
+                        }
+                        document.Add(paragraph);
+                        document.Add(table);
+                    }
+                }
+                Process proc = new Process();
+                proc.StartInfo.FileName = pdfPath;
+                proc.StartInfo.UseShellExecute = true;
+                proc.Start();
+            }
         }
 
         /// <summary>
@@ -713,7 +785,7 @@ namespace ManagingBooks
         private void RemoveFromPrint_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             SearchBookModel context = this.DataContext as SearchBookModel;
-            string bookToRemove = ListPrint.SelectedItem.ToString();
+            SearchBook bookToRemove = ListPrint.SelectedItem as SearchBook;
             context.ListBookPrint.Remove(bookToRemove);
         }
 
@@ -732,11 +804,11 @@ namespace ManagingBooks
             {
                 foreach (var book in addList)
                 {
-                    if (!context.ListBookPrint.Contains((book as SearchBook).Number))
+                    if (!context.ListBookPrint.Contains(book))
                     {
                         App.Current.Dispatcher.Invoke((Action)delegate
                         {
-                            context.ListBookPrint.Add((book as SearchBook).Number);
+                            context.ListBookPrint.Add(book);
                         });
                         Thread.Sleep(TimeSpan.FromTicks(5));
                     }

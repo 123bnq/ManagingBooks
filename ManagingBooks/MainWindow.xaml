@@ -163,13 +163,7 @@
                 </ListView>
                 <GroupBox Grid.Column="1" Margin="10,0,0,0" Header="{DynamicResource MainWindow.PrintList.Title}">
                     <StackPanel>
-                        <ListBox Name="ListPrint" Width="120" Height="280" ItemsSource="{Binding ListBookPrint}" Margin="0,5,0,10">
-                            <ListBox.ItemTemplate>
-                                <DataTemplate>
-                                    <TextBlock Text="{Binding StringFormat={}{0:#000000}}"/>
-                                </DataTemplate>
-                            </ListBox.ItemTemplate>
-                        </ListBox>
+                        <ListBox Name="ListPrint" Width="120" Height="280" ItemsSource="{Binding ListBookPrint}" DisplayMemberPath="Number" Margin="0,5,0,10"/>
                         <Button Name="BtnAddToPrint" Content="{DynamicResource MainWindow.PrintList.AddBtn}" MinWidth="75" HorizontalAlignment="Center" Margin="0,0,0,10" Command="local:CustomCommands.AddToPrint"/>
                         <Button Content="{DynamicResource MainWindow.PrintList.RemoveBtn}" MinWidth="75" HorizontalAlignment="Center" Margin="0,0,0,10" Command="local:CustomCommands.RemoveFromPrint"/>
                         <Button Content="{DynamicResource MainWindow.PrintList.ClearBtn}" MinWidth="75" HorizontalAlignment="Center" Margin="0,0,0,10" Command="local:CustomCommands.ClearPrintList"/>

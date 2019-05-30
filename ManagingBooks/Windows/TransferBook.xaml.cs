@@ -117,7 +117,7 @@ namespace ManagingBooks.Windows
                         Cell[] cells = new Cell[3];
                         for (int i = 0; i < cells.Length; i++)
                         {
-                            cells[i] = new Cell().SetBorderBottom(new SolidBorder(2.0f));
+                            cells[i] = new Cell();
                         }
                         Paragraph para = new Paragraph().Add("ID").SetBold();
                         cells[0].Add(para)
@@ -136,15 +136,14 @@ namespace ManagingBooks.Windows
                             {
                                 cells[j] = new Cell();
                             }
-                            cells[0].Add(new Paragraph((i + 1).ToString())).SetTextAlignment(iText.Layout.Properties.TextAlignment.RIGHT);
-                            cells[1].Add(new Paragraph(context.TransferList[i].Number)).SetTextAlignment(iText.Layout.Properties.TextAlignment.RIGHT);
-                            cells[2].Add(new Paragraph(context.TransferList[i].Title)).SetTextAlignment(iText.Layout.Properties.TextAlignment.LEFT);
+                            cells[0].Add(new Paragraph((i + 1).ToString()).SetFixedLeading(15)).SetTextAlignment(iText.Layout.Properties.TextAlignment.RIGHT);
+                            cells[1].Add(new Paragraph(context.TransferList[i].Number).SetFixedLeading(15)).SetTextAlignment(iText.Layout.Properties.TextAlignment.RIGHT);
+                            cells[2].Add(new Paragraph(context.TransferList[i].Title).SetFixedLeading(15)).SetTextAlignment(iText.Layout.Properties.TextAlignment.LEFT);
                             foreach (var cell in cells)
                             {
                                 table.AddCell(cell);
                             }
                         }
-                        table.SetBorder(new SolidBorder(2.0f));
 
                         document.Add(paragraph);
                         document.Add(table);
