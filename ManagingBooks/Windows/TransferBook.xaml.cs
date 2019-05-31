@@ -128,7 +128,7 @@ namespace ManagingBooks.Windows
                         cells[2].Add(para).SetTextAlignment(iText.Layout.Properties.TextAlignment.CENTER);
                         foreach (var cell in cells)
                         {
-                            table.AddCell(cell);
+                            table.AddHeaderCell(cell);
                         }
                         for (int i = 0; i < context.TransferList.Count; i++)
                         {
