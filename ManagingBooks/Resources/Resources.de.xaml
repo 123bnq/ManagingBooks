@@ -147,6 +147,8 @@
     <system:String x:Key="EditBook.CodeBehind.InfoCopy.Successful.Caption">Informationen</system:String>
     <system:String x:Key="EditBook.CodeBehind.Error.Message">Nicht ausreichend. Bitte füllen Sie alle Pflichtfelder aus.</system:String>
     <system:String x:Key="EditBook.CodeBehind.Error.Caption">Fehler</system:String>
+    <system:String x:Key="EditBook.CodeBehind.ErrorPosition.Message">Nächster Autor oder nächste Signatur sollte korrekt gesetzt werden :) :)</system:String>
+    <system:String x:Key="EditBook.CodeBehind.ErrorPosition.Caption">Fehler</system:String>
     <system:String x:Key="EditBook.CodeBehind.WarningCancel.Message">Möchten Sie den Bearbeitungsprozess abbrechen?</system:String>
     <system:String x:Key="EditBook.CodeBehind.WarningCancel.Caption">Warnung</system:String>
 

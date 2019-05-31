@@ -326,6 +326,7 @@ namespace ManagingBooks.Windows
 
                             var selectCommand = con.CreateCommand();
                             var insertCommand = con.CreateCommand();
+                            insertCommand.Transaction = tr;
 
                             for (int i = 0; i < noAuthor; i++)
                             {
@@ -405,13 +406,13 @@ namespace ManagingBooks.Windows
                         //    e.Cancel = result == MessageBoxResult.No;
                         //}
                     }
-                    //else
-                    //{
-                    //    message = "Next author or next signature should be put correctly :) :)";
-                    //    caption = "Error";
-                    //    var result = MessageBox.Show(message, caption, MessageBoxButton.OK, MessageBoxImage.Error);
-                    //    e.Cancel = true;
-                    //}
+                    else
+                    {
+                        message = Application.Current.FindResource("EditBook.CodeBehind.ErrorPosition.Message").ToString();
+                        caption = Application.Current.FindResource("EditBook.CodeBehind.ErrorPosition.Caption").ToString();
+                        var result = CustomMessageBox.ShowOK(message, caption, CustomMessageBoxButton.OK, MessageBoxImage.Error);
+                        e.Cancel = true;
+                    }
                 }
                 else
                 {
