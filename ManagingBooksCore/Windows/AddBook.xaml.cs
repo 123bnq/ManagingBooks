@@ -14,6 +14,12 @@ using System.Windows.Data;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Windows.Input;
+using iText.Kernel.Pdf;
+using iText.Kernel.Geom;
+using iText.Layout;
+using iText.Layout.Element;
+using iText.Barcodes;
+using System.Diagnostics;
 
 namespace ManagingBooks.Windows
 {
@@ -25,6 +31,9 @@ namespace ManagingBooks.Windows
         ObservableCollection<string> ListPublisher = new ObservableCollection<string>();
         ObservableCollection<string> ListMedium = new ObservableCollection<string>();
         ObservableCollection<string> ListPlace = new ObservableCollection<string>();
+
+        string NotAvalable = "N/A";
+
         public AddBook()
         {
             this.DataContext = new AddBookModel();
@@ -56,7 +65,7 @@ namespace ManagingBooks.Windows
             AddBookModel context = this.DataContext as AddBookModel;
             PropertyInfo[] properties = context.GetType().GetProperties();
             DateTimeFormatInfo dtfi = CultureInfo.CreateSpecificCulture("fr-FR").DateTimeFormat;
-            string nA = "N/A";
+
 
             foreach (var propertyInfo in properties)
             {
@@ -65,6 +74,10 @@ namespace ManagingBooks.Windows
                     propertyInfo.SetValue(this.DataContext as AddBookModel, String.Empty, null);
                 }
                 else if (propertyInfo.PropertyType == typeof(int))
+                {
+                    propertyInfo.SetValue(this.DataContext as AddBookModel, 0, null);
+                }
+                else if (propertyInfo.PropertyType == typeof(double))
                 {
                     propertyInfo.SetValue(this.DataContext as AddBookModel, 0, null);
                 }
@@ -83,11 +96,11 @@ namespace ManagingBooks.Windows
                     }
                 }
             }
-            context.Author1 = nA;
-            context.Signature1 = nA;
-            context.Place = nA;
-            context.Medium = nA;
-            context.Publisher = nA;
+            context.Author1 = NotAvalable;
+            context.Signature1 = NotAvalable;
+            context.Place = NotAvalable;
+            context.Medium = NotAvalable;
+            context.Publisher = NotAvalable;
             context.Date = BoxDates.SelectedDate.Value.ToString("d", dtfi);
 
             //foreach (var ctrl in WindowToBeClear.Children)
@@ -134,77 +147,94 @@ namespace ManagingBooks.Windows
         private void AddBook_Closing(object sender, CancelEventArgs e)
         {
             bool containData = false;
-            foreach (var ctrl in WindowToBeClear.Children)
-            {
-                if (ctrl.GetType() == typeof(TextBox))
-                {
-                    if (!string.IsNullOrWhiteSpace((ctrl as TextBox).Text))
-                    {
-                        containData |= true;
-                        break;
-                    }
-                }
-                if (ctrl.GetType() == typeof(ComboBox))
-                {
-                    if ((ctrl as ComboBox).SelectedItem != null)
-                    {
-                        containData |= true;
-                        break;
-                    }
-                }
-                if (ctrl.GetType().IsSubclassOf(typeof(Panel)))
-                {
-                    foreach (var childCtrl in (ctrl as Panel).Children)
-                    {
-                        if (childCtrl.GetType() == typeof(TextBox))
-                        {
-                            if (!string.IsNullOrWhiteSpace((childCtrl as TextBox).Text))
-                            {
-                                containData |= true;
-                                break;
-                            }
-                        }
-                        if (childCtrl.GetType() == typeof(ComboBox))
-                        {
-                            if ((childCtrl as ComboBox).SelectedItem != null)
-                            {
-                                containData |= true;
-                                break;
-                            }
-                        }
-                        if (childCtrl.GetType() == typeof(DatePicker))
-                        {
-                            if ((childCtrl as DatePicker).SelectedDate != null)
-                            {
-                                containData |= true;
-                                break;
-                            }
-                        }
-                        if (childCtrl.GetType().IsSubclassOf(typeof(Panel)))
-                        {
-                            foreach (var ccCtrl in (childCtrl as Panel).Children)
-                            {
-                                if (ccCtrl.GetType() == typeof(ComboBox))
-                                {
-                                    if ((ccCtrl as ComboBox).SelectedItem != null)
-                                    {
-                                        containData |= true;
-                                        break;
-                                    }
-                                }
-                            }
-                        }
-                        if (containData)
-                        {
-                            break;
-                        }
-                    }
-                    if (containData)
-                    {
-                        break;
-                    }
-                }
-            }
+            AddBookModel context = this.DataContext as AddBookModel;
+            containData = context.Number != 0
+                || context.Signature1 != NotAvalable
+                || !string.IsNullOrWhiteSpace(context.Signature2)
+                || !string.IsNullOrWhiteSpace(context.Signature3)
+                || context.Author1 != NotAvalable
+                || !string.IsNullOrWhiteSpace(context.Author2)
+                || !string.IsNullOrWhiteSpace(context.Author3)
+                || !string.IsNullOrWhiteSpace(context.Title)
+                || context.Publisher != NotAvalable
+                || context.Version != 0
+                || context.Year != 0
+                || context.Medium != NotAvalable
+                || context.Place != NotAvalable
+                || context.Date != "01/01/1970"
+                || context.Pages != 0
+                || context.Price != 0;
+            //foreach (var ctrl in WindowToBeClear.Children)
+            //{
+            //    if (ctrl.GetType() == typeof(TextBox))
+            //    {
+            //        if (!string.IsNullOrWhiteSpace((ctrl as TextBox).Text))
+            //        {
+            //            containData |= true;
+            //            break;
+            //        }
+            //    }
+            //    if (ctrl.GetType() == typeof(ComboBox))
+            //    {
+            //        if ((ctrl as ComboBox).SelectedItem != null)
+            //        {
+            //            containData |= true;
+            //            break;
+            //        }
+            //    }
+            //    if (ctrl.GetType().IsSubclassOf(typeof(Panel)))
+            //    {
+            //        foreach (var childCtrl in (ctrl as Panel).Children)
+            //        {
+            //            if (childCtrl.GetType() == typeof(TextBox))
+            //            {
+            //                if (!string.IsNullOrWhiteSpace((childCtrl as TextBox).Text))
+            //                {
+            //                    containData |= true;
+            //                    break;
+            //                }
+            //            }
+            //            if (childCtrl.GetType() == typeof(ComboBox))
+            //            {
+            //                if ((childCtrl as ComboBox).SelectedItem != null)
+            //                {
+            //                    containData |= true;
+            //                    break;
+            //                }
+            //            }
+            //            if (childCtrl.GetType() == typeof(DatePicker))
+            //            {
+            //                if ((childCtrl as DatePicker).SelectedDate != null)
+            //                {
+            //                    containData |= true;
+            //                    break;
+            //                }
+            //            }
+            //            if (childCtrl.GetType().IsSubclassOf(typeof(Panel)))
+            //            {
+            //                foreach (var ccCtrl in (childCtrl as Panel).Children)
+            //                {
+            //                    if (ccCtrl.GetType() == typeof(ComboBox))
+            //                    {
+            //                        if ((ccCtrl as ComboBox).SelectedItem != null)
+            //                        {
+            //                            containData |= true;
+            //                            break;
+            //                        }
+            //                    }
+            //                }
+            //            }
+            //            if (containData)
+            //            {
+            //                break;
+            //            }
+            //        }
+            //        if (containData)
+            //        {
+            //            break;
+            //        }
+            //    }
+            //}
 
             if (containData)
             {
@@ -279,8 +309,10 @@ namespace ManagingBooks.Windows
                     }
                     else
                     {
+                        BtnAdd.IsEnabled = false;
                         await Task.Run(() =>
                         {
+
                             var tr = con.BeginTransaction();
                             AddBookToDatabase(ref con, ref tr, book);
                             tr.Commit();
@@ -288,7 +320,23 @@ namespace ManagingBooks.Windows
                         });
                         message = Application.Current.FindResource("AddBook.CodeBehind.InfoAdd.Message").ToString();
                         caption = Application.Current.FindResource("AddBook.CodeBehind.InfoAdd.Caption").ToString();
-                        CustomMessageBox.ShowOK(message, caption, CustomMessageBoxButton.OK, MessageBoxImage.Information);
+                        var result = CustomMessageBox.ShowYesNo(message, caption, CustomMessageBoxButton.Yes, CustomMessageBoxButton.No, MessageBoxImage.Information);
+                        // Generate barcode
+                        if (result == MessageBoxResult.Yes)
+                        {
+                            string number = book.Number.ToString();
+                            string signature = string.Join(" - ", book.Signatures);
+
+                            int length = number.Length;
+                            for (int i = 6; i > length; i--)
+                            {
+                                number = String.Concat("0", number);
+                            }
+
+                            MainWindow.CreateBarcodeImage(number, signature, isOpen: true);
+
+                        }
+                        BtnAdd.IsEnabled = true;
                         //MessageBox.Show(message, caption, MessageBoxButton.OK, MessageBoxImage.Information);
                         UpdateListBook(context);
                         ClearEntries();
@@ -321,11 +369,7 @@ namespace ManagingBooks.Windows
         private bool IsDataToAdd(AddBookModel context)
         {
             return !(context.Number == 0)
-                && !string.IsNullOrWhiteSpace(context.Title)
-                && !string.IsNullOrWhiteSpace(context.Publisher)
-                && !string.IsNullOrWhiteSpace(context.Medium)
-                && !string.IsNullOrWhiteSpace(context.Place)
-                && !string.IsNullOrWhiteSpace(context.Date);
+                && !string.IsNullOrWhiteSpace(context.Title);
         }
 
         private int NumberOfAuthor(AddBookModel context)
@@ -628,5 +672,7 @@ namespace ManagingBooks.Windows
             Regex regex = new Regex("^[.][0-9]+$|^[0-9]*[.]{0,1}[0-9]*$");
             e.Handled = !regex.IsMatch(e.Text);
         }
+
+
     }
 }

@@ -10,7 +10,6 @@ using System.ComponentModel;
 using System.Threading;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using System.Reflection;
 using iText.Kernel.Pdf;
 using iText.Layout;
 using iText.Layout.Element;
@@ -19,11 +18,10 @@ using Microsoft.Win32;
 using System.Diagnostics;
 using System.Linq;
 using WPFCustomMessageBox;
-using System.Data.OleDb;
 using System.Data;
 using System.IO;
-using System.Globalization;
 using System.Windows.Controls;
+using iText.Kernel.Geom;
 
 namespace ManagingBooks
 {
@@ -42,6 +40,7 @@ namespace ManagingBooks
         Uri English = new Uri(".\\Resources\\Resources.xaml", UriKind.Relative);
         Uri German = new Uri(".\\Resources\\Resources.de.xaml", UriKind.Relative);
 
+        string ExportFolder = System.IO.Path.Combine(AppContext.BaseDirectory, "Barcode");
         //SearchBook DeleteBook;
 
         public MainWindow()
@@ -50,7 +49,7 @@ namespace ManagingBooks
             SearchBookModel context = new SearchBookModel();
             this.DataContext = context;
             context.DisplayBooks = new ObservableCollection<SearchBook>();
-            context.ListBookPrint = new ObservableCollection<string>();
+            context.ListBookPrint = new ObservableCollection<SearchBook>();
             SearchList.ItemsSource = context.DisplayBooks;
             context.DisplayBooks.Clear();
             Search.WorkerReportsProgress = true;
@@ -118,7 +117,7 @@ namespace ManagingBooks
                         string temp = Convert.ToString(r["Signature"]);
                         if (!tempBook.Signatures.Contains(temp))
                         {
-                            tempBook.Signatures += " " + Convert.ToString(r["Signature"]);
+                            tempBook.Signatures += "-" + Convert.ToString(r["Signature"]);
                         }
                     }
                     if (result1 != lastAuthorId)
@@ -181,12 +180,13 @@ namespace ManagingBooks
         /// <param name="e"></param>
         void Search_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
-            SearchBookModel temp = this.DataContext as SearchBookModel;
-            temp.Progress = e.ProgressPercentage;
-            temp.Status = Application.Current.FindResource("MainWindow.CodeBehind.Status.Running").ToString();
+            SearchBookModel context = this.DataContext as SearchBookModel;
+            context.Progress = e.ProgressPercentage;
+            context.Status = "Running";
+            //context.Status = Application.Current.FindResource("MainWindow.CodeBehind.Status.Running").ToString();
             if (e.UserState != null)
             {
-                temp.DisplayBooks.Add(e.UserState as SearchBook);
+                context.DisplayBooks.Add(e.UserState as SearchBook);
             }
         }
 
@@ -195,7 +195,8 @@ namespace ManagingBooks
         {
             SearchBookModel context = this.DataContext as SearchBookModel;
             // set the status to finished
-            context.Status = Application.Current.FindResource("MainWindow.CodeBehind.Status.Completed").ToString();
+            context.Status = "Search Complete";
+            //context.Status = Application.Current.FindResource("MainWindow.CodeBehind.Status.Completed").ToString();
             // focus to the previous chosen book if any
             if (LastIndex != -1)
             {
@@ -397,7 +398,7 @@ namespace ManagingBooks
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void PrintCommand_Executed(object sender, ExecutedRoutedEventArgs e)
+        private void PrintBarcodeCommand_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             SearchBookModel context = this.DataContext as SearchBookModel;
             string pdfPath;
@@ -417,19 +418,18 @@ namespace ManagingBooks
                         Table table = new Table(5, false);
                         table.SetWidth(iText.Layout.Properties.UnitValue.CreatePercentValue(100));
 
-                        foreach (string codeNr in context.ListBookPrint)
-                        {
-                            barcode.SetCode(codeNr);
-                            iText.Layout.Element.Image barcodeImage = new iText.Layout.Element.Image(barcode.CreateFormXObject(pdf));
-                            barcodeImage.SetHorizontalAlignment(iText.Layout.Properties.HorizontalAlignment.CENTER);
-                            //barcodeImage.Scale(1.5F, 1.5F);
-                            Cell cell = new Cell();
-                            //cell.Add(new Paragraph("Code 128").SetTextAlignment(iText.Layout.Properties.TextAlignment.CENTER));
-                            cell.Add(barcodeImage);
-                            table.AddCell(cell);
-                            
-                        }
-                        document.Add(table);
+                        //foreach (string codeNr in context.ListBookPrint)
+                        //{
+                        //    barcode.SetCode(codeNr);
+                        //    iText.Layout.Element.Image barcodeImage = new iText.Layout.Element.Image(barcode.CreateFormXObject(pdf));
+                        //    barcodeImage.SetHorizontalAlignment(iText.Layout.Properties.HorizontalAlignment.CENTER);
+                        //    //barcodeImage.Scale(1.5F, 1.5F);
+                        //    Cell cell = new Cell();
+                        //    //cell.Add(new Paragraph("Code 128").SetTextAlignment(iText.Layout.Properties.TextAlignment.CENTER));
+                        //    cell.Add(barcodeImage);
+                        //    table.AddCell(cell);
+                        //}
+                        //document.Add(table);
                     }
                 }
                 // open the pdf file for reviewing and printing
@@ -438,7 +438,79 @@ namespace ManagingBooks
                 proc.StartInfo.UseShellExecute = true;
                 proc.Start();
             }
+        }
 
+        private void PrintCommand_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            SearchBookModel context = this.DataContext as SearchBookModel;
+            string pdfPath;
+            SaveFileDialog dialog = new SaveFileDialog();
+            dialog.FileName = "List Books";
+            dialog.Filter = "PDF (*.pdf)|*.pdf";
+            dialog.InitialDirectory = AppContext.BaseDirectory;
+            if (dialog.ShowDialog(this) == true)
+            {
+                string pdfTitle = Application.Current.FindResource("MainWindow.PrintList.PDF.Title").ToString();
+                string pdfNumberCol = Application.Current.FindResource("MainWindow.PrintList.PDF.TableHeader.Number").ToString();
+                string pdfSignatureCol = Application.Current.FindResource("MainWindow.PrintList.PDF.TableHeader.Signature").ToString();
+                string pdfTitleCol = Application.Current.FindResource("MainWindow.PrintList.PDF.TableHeader.BookTitle").ToString();
+                pdfPath = dialog.FileName;
+                using (PdfWriter writer = new PdfWriter(pdfPath))
+                {
+                    using (PdfDocument pdf = new PdfDocument(writer))
+                    {
+                        Document document = new Document(pdf);
+                        Paragraph paragraph = new Paragraph(pdfTitle)
+                            .SetFontSize(20.0f)
+                            .SetBold()
+                            .SetTextAlignment(iText.Layout.Properties.TextAlignment.CENTER);
+
+                        float[] columnWidths = { 1, 3, 5, 10 };
+                        Table table = new Table(columnWidths);
+                        table.SetWidth(iText.Layout.Properties.UnitValue.CreatePercentValue(100));
+
+                        Cell[] cells = new Cell[4];
+                        for (int i = 0; i < cells.Length; i++)
+                        {
+                            cells[i] = new Cell();
+                        }
+                        Paragraph para = new Paragraph().Add("ID").SetBold();
+                        cells[0].Add(para)
+                            .SetTextAlignment(iText.Layout.Properties.TextAlignment.RIGHT);
+                        para = new Paragraph().Add(pdfNumberCol).SetBold();
+                        cells[1].Add(para).SetTextAlignment(iText.Layout.Properties.TextAlignment.RIGHT);
+                        para = new Paragraph().Add(pdfSignatureCol).SetBold();
+                        cells[2].Add(para).SetTextAlignment(iText.Layout.Properties.TextAlignment.CENTER);
+                        para = new Paragraph().Add(pdfTitleCol).SetBold();
+                        cells[3].Add(para).SetTextAlignment(iText.Layout.Properties.TextAlignment.CENTER);
+                        foreach (var cell in cells)
+                        {
+                            table.AddHeaderCell(cell);
+                        }
+                        for (int i = 0; i < context.ListBookPrint.Count; i++)
+                        {
+                            for (int j = 0; j < cells.Length; j++)
+                            {
+                                cells[j] = new Cell();
+                            }
+                            cells[0].Add(new Paragraph((i + 1).ToString()).SetFixedLeading(15)).SetTextAlignment(iText.Layout.Properties.TextAlignment.RIGHT).SetFontSize(10);
+                            cells[1].Add(new Paragraph(context.ListBookPrint[i].Number).SetFixedLeading(15)).SetTextAlignment(iText.Layout.Properties.TextAlignment.RIGHT).SetFontSize(10);
+                            cells[2].Add(new Paragraph(context.ListBookPrint[i].Signatures).SetFixedLeading(15)).SetTextAlignment(iText.Layout.Properties.TextAlignment.LEFT).SetFontSize(10);
+                            cells[3].Add(new Paragraph(context.ListBookPrint[i].Title).SetFixedLeading(15)).SetTextAlignment(iText.Layout.Properties.TextAlignment.LEFT).SetFontSize(10);
+                            foreach (var cell in cells)
+                            {
+                                table.AddCell(cell);
+                            }
+                        }
+                        document.Add(paragraph);
+                        document.Add(table);
+                    }
+                }
+                Process proc = new Process();
+                proc.StartInfo.FileName = pdfPath;
+                proc.StartInfo.UseShellExecute = true;
+                proc.Start();
+            }
         }
 
         /// <summary>
@@ -515,7 +587,8 @@ namespace ManagingBooks
                             con.Close();
 
                             progress.Report(Convert.ToInt32((double)(max - i) / max * 100));
-                            context.Status = Application.Current.FindResource("MainWindow.CodeBehind.Status.Deleting").ToString();
+                            context.Status = "Deleting";
+                            //context.Status = Application.Current.FindResource("MainWindow.CodeBehind.Status.Deleting").ToString();
 
                             App.Current.Dispatcher.Invoke((Action)delegate
                             {
@@ -525,7 +598,8 @@ namespace ManagingBooks
                             Thread.Sleep(TimeSpan.FromTicks(5));
                         }
                     });
-                    context.Status = Application.Current.FindResource("MainWindow.CodeBehind.Status.DeleteCompleted").ToString();
+                    context.Status = "Delete Finished";
+                    //context.Status = Application.Current.FindResource("MainWindow.CodeBehind.Status.DeleteCompleted").ToString();
                 }
             }
             SearchList.IsEnabled = true;
@@ -671,7 +745,7 @@ namespace ManagingBooks
             Application.Current.Resources.MergedDictionaries.Clear();
             Application.Current.Resources.MergedDictionaries.Add(dict);
             File.WriteAllText(SplashScreen.ResourcePath, string.Empty);
-            using(StreamWriter w = new StreamWriter(SplashScreen.ResourcePath))
+            using (StreamWriter w = new StreamWriter(SplashScreen.ResourcePath))
             {
                 w.Write("0");
             }
@@ -713,7 +787,7 @@ namespace ManagingBooks
         private void RemoveFromPrint_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             SearchBookModel context = this.DataContext as SearchBookModel;
-            string bookToRemove = ListPrint.SelectedItem.ToString();
+            SearchBook bookToRemove = ListPrint.SelectedItem as SearchBook;
             context.ListBookPrint.Remove(bookToRemove);
         }
 
@@ -732,11 +806,11 @@ namespace ManagingBooks
             {
                 foreach (var book in addList)
                 {
-                    if (!context.ListBookPrint.Contains((book as SearchBook).Number))
+                    if (!context.ListBookPrint.Contains(book))
                     {
                         App.Current.Dispatcher.Invoke((Action)delegate
                         {
-                            context.ListBookPrint.Add((book as SearchBook).Number);
+                            context.ListBookPrint.Add(book);
                         });
                         Thread.Sleep(TimeSpan.FromTicks(5));
                     }
@@ -754,7 +828,7 @@ namespace ManagingBooks
             //DateTimeFormatInfo dtfi = CultureInfo.CreateSpecificCulture("fr-FR").DateTimeFormat;
 
             //var myDataTable = new DataTable();
-            //string mdbPath = Path.Combine(AppContext.BaseDirectory, "Data\\ProNoskoDatenbank_160717.mdb");
+            //string mdbPath = System.IO.Path.Combine(AppContext.BaseDirectory, "Data\\ProNoskoDatenbank_160717.mdb");
             //using (var conection = new OleDbConnection($"Provider=Microsoft.JET.OLEDB.4.0;data source={mdbPath};"))
             //{
             //    SqlMethods.SqlConnect(out SqliteConnection con);
@@ -784,7 +858,7 @@ namespace ManagingBooks
             //            }
             //            else
             //            {
-            //                book.Signatures[i] = textArray[i];
+            //                book.Signatures[i] = textArray[i].Trim();
             //            }
             //        }
             //        if (!string.IsNullOrEmpty(reader["Autor3"].ToString()))
@@ -806,18 +880,18 @@ namespace ManagingBooks
             //        }
             //        if (book.NoAuthor > 0)
             //        {
-            //            book.Authors[0].Name = reader["Autor"].ToString();
+            //            book.Authors[0].Name = reader["Autor"].ToString().Trim();
             //        }
             //        if (book.NoAuthor > 1)
             //        {
-            //            book.Authors[1].Name = reader["Autor2"].ToString();
+            //            book.Authors[1].Name = reader["Autor2"].ToString().Trim();
             //        }
             //        if (book.NoAuthor > 2)
             //        {
-            //            book.Authors[2].Name = reader["Autor3"].ToString();
+            //            book.Authors[2].Name = reader["Autor3"].ToString().Trim();
             //        }
-            //        book.Title = reader["Titel"].ToString();
-            //        book.Publisher = reader["Name"].ToString();
+            //        book.Title = reader["Titel"].ToString().Trim();
+            //        book.Publisher = reader["Name"].ToString().Trim();
             //        int.TryParse(reader["Auflage"].ToString(), out temp);
             //        book.Version = temp;
             //        int.TryParse(reader["Jahr"].ToString(), out temp);
@@ -825,7 +899,7 @@ namespace ManagingBooks
             //        book.Medium = reader["Medium"].ToString();
             //        if (!string.IsNullOrEmpty(reader["Standort"].ToString()))
             //        {
-            //            book.Place = reader["Standort"].ToString(); 
+            //            book.Place = reader["Standort"].ToString().Trim();
             //        }
             //        else
             //        {
@@ -850,7 +924,7 @@ namespace ManagingBooks
             //            int day = temp;
             //            book.DayBought = new DateTime(year, month, day).ToString("d", dtfi);
             //        }
-                    
+
             //        AddBook.AddBookToDatabase(ref con, ref tr, book);
             //    }
             //    tr.Commit();
@@ -883,7 +957,115 @@ namespace ManagingBooks
             TransferBook window = new TransferBook() { Owner = this };
             window.ShowDialog();
         }
+
+        public static void CreateBarcodeImage(string number, string signature, bool isOpen)
+        {
+            string exportFolder = System.IO.Path.Combine(AppContext.BaseDirectory, "Barcode");
+            string tempFile = System.IO.Path.Combine(exportFolder, "temp.pdf");
+            string exportImage = System.IO.Path.Combine(exportFolder, String.Concat(number, ".png"));
+            int imageWidth = 757;
+            int imageHeight = 332;
+            int textSize = 50;
+            int barcodeWidth = 700;
+            int barcodeHeight = 166;
+
+
+            if (!Directory.Exists(exportFolder))
+            {
+                Directory.CreateDirectory(exportFolder);
+            }
+
+            using (PdfWriter pdfWriter = new PdfWriter(tempFile))
+            {
+                using (PdfDocument pdf = new PdfDocument(pdfWriter))
+                {
+                    Rectangle envelope = new Rectangle(imageWidth, imageHeight);
+                    PageSize ps = new PageSize(envelope);
+                    Document document = new Document(pdf, ps);
+                    document.SetMargins(0, 0, 0, 0);
+                    Paragraph text = new Paragraph(signature)
+                        .SetTextAlignment(iText.Layout.Properties.TextAlignment.CENTER)
+                        .SetFontSize(textSize);
+                    Paragraph num = new Paragraph(number)
+                        .SetTextAlignment(iText.Layout.Properties.TextAlignment.CENTER)
+                        .SetFontSize(textSize);
+                    Barcode128 barcode128 = new Barcode128(pdf);
+                    barcode128.SetCodeType(Barcode128.CODE_C);
+                    barcode128.SetCode(number);
+                    barcode128.FitWidth(barcodeWidth);
+                    barcode128.SetBarHeight(barcodeHeight);
+                    barcode128.SetAltText("");
+
+                    iText.Layout.Element.Image barcodeImage = new iText.Layout.Element.Image(barcode128.CreateFormXObject(pdf));
+                    barcodeImage.SetHorizontalAlignment(iText.Layout.Properties.HorizontalAlignment.CENTER);
+                    document.Add(text);
+                    document.Add(barcodeImage);
+                    document.Add(num);
+                }
+            }
+            Spire.Pdf.PdfDocument document1 = new Spire.Pdf.PdfDocument();
+            document1.LoadFromFile(tempFile);
+            System.Drawing.Image img = document1.SaveAsImage(0);
+            img.Save(exportImage);
+
+            if (File.Exists(tempFile))
+            {
+                File.Delete(tempFile);
+            }
+            if (isOpen)
+            {
+                Process proc = new Process();
+                proc.StartInfo.FileName = exportImage;
+                proc.StartInfo.UseShellExecute = true;
+                proc.Start();
+            }
+        }
+
+        private async void CreateBarcodeCommand_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+
+            string exportImage;
+            var books = SearchList.SelectedItems;
+            if (books != null)
+            {
+                await Task.Run(() =>
+                {
+                    foreach (var book in books)
+                    {
+                        CreateBarcodeImage((book as SearchBook).Number, (book as SearchBook).Signatures, isOpen: false);
+                        exportImage = System.IO.Path.Combine(ExportFolder, string.Concat((book as SearchBook).Number, ".png"));
+                        if (books.Count == 1)
+                        {
+                            Process proc = new Process();
+                            proc.StartInfo.FileName = exportImage;
+                            proc.StartInfo.UseShellExecute = true;
+                            proc.Start();
+                        }
+                        Thread.Sleep(5);
+                    }
+                    if (books.Count > 1)
+                    {
+                        Process.Start("explorer.exe", ExportFolder);
+                    }
+                });
+            }
+        }
+
+        private void BtnBarcode_Click(object sender, RoutedEventArgs e)
+        {
+            if (!Directory.Exists(ExportFolder))
+            {
+                Directory.CreateDirectory(ExportFolder);
+            }
+            Process.Start("explorer.exe", ExportFolder);
+        }
+
+        private void BtnTest_Click(object sender, RoutedEventArgs e)
+        {
+            GridView g = SearchList.View as GridView;
+        }
     }
+
 
     public static class CustomCommands
     {
@@ -903,6 +1085,7 @@ namespace ManagingBooks
         public static readonly RoutedUICommand AddToPrint = new RoutedUICommand("AddToPrint", "AddToPrint", typeof(CustomCommands));
         public static readonly RoutedUICommand RemoveFromPrint = new RoutedUICommand("RemoveFromPrint", "RemoveFromPrint", typeof(CustomCommands));
         public static readonly RoutedUICommand ClearPrintList = new RoutedUICommand("ClearPrintList", "ClearPrintList", typeof(CustomCommands));
+        public static readonly RoutedUICommand CreateBarcode = new RoutedUICommand("CreateBarcode", "CreateBarcode", typeof(CustomCommands));
 
         public static readonly RoutedUICommand ClearBookInfo = new RoutedUICommand("ClearBookInfo", "ClearBookInfo", typeof(CustomCommands));
 
