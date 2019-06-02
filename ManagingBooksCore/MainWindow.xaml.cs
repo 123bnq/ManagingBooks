@@ -78,6 +78,7 @@ namespace ManagingBooks
 
             // Clear book info
             ClearEntries(context);
+            GetListViewColVisible(context);
 
             // Set default Search By option
             context.SearchBy = Application.Current.FindResource("MainWindow.SearchBy.Number").ToString();
@@ -829,112 +830,120 @@ namespace ManagingBooks
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void Test_Click(object sender, RoutedEventArgs e)
+        private void BtnImportMDB_Click(object sender, RoutedEventArgs e)
         {
             //DateTimeFormatInfo dtfi = CultureInfo.CreateSpecificCulture("fr-FR").DateTimeFormat;
 
             //var myDataTable = new DataTable();
             //string mdbPath = System.IO.Path.Combine(AppContext.BaseDirectory, "Data\\ProNoskoDatenbank_160717.mdb");
-            //using (var conection = new OleDbConnection($"Provider=Microsoft.JET.OLEDB.4.0;data source={mdbPath};"))
+            //OpenFileDialog dialog = new OpenFileDialog();
+            //dialog.InitialDirectory = System.IO.Path.Combine(AppContext.BaseDirectory, "Data");
+            //dialog.Filter = "Microsoft Access databases (*.mdb)|*.mdb";
+
+            //if (dialog.ShowDialog(this) == true)
             //{
-            //    SqlMethods.SqlConnect(out SqliteConnection con);
-            //    SqliteTransaction tr = con.BeginTransaction();
-
-            //    conection.Open();
-            //    OleDbDataReader reader = null;
-
-            //    //OleDbCommand command = new OleDbCommand("SELECT books.Id,books.Nr,books.Signatur,books.Autor,books.Autor2,books.Autor3,books.Titel,verlag.Name,books.Auflage,books.Jahr,books.Medium,books.Standort,books.Einkauf,books.Seiten,books.Preis FROM books INNER JOIN verlag ON books.Verlag = verlag.id WHERE books.Id=33", conection);
-            //    OleDbCommand command = new OleDbCommand("SELECT books.Id,books.Nr,books.Signatur,books.Autor,books.Autor2,books.Autor3,books.Titel,verlag.Name,books.Auflage,books.Jahr,books.Medium,books.Standort,books.Einkauf,books.Seiten,books.Preis FROM books INNER JOIN verlag ON books.Verlag = verlag.id ORDER BY books.Id asc", conection);
-            //    reader = command.ExecuteReader();
-            //    while (reader.Read())
+            //    mdbPath = dialog.FileName;
+            //    using (var conection = new OleDbConnection($"Provider=Microsoft.JET.OLEDB.4.0;data source={mdbPath};"))
             //    {
-            //        Book book = new Book();
-            //        int temp;
-            //        int.TryParse(reader["Nr"].ToString(), out temp);
-            //        book.Number = temp;
-            //        string text = reader["Signatur"].ToString();
-            //        string[] textArray = text.Split('-');
-            //        book.NoSignature = textArray.Length;
-            //        book.Signatures = new string[book.NoSignature];
-            //        for (int i = 0; i < book.NoSignature; i++)
+            //        SqlMethods.SqlConnect(out SqliteConnection con);
+            //        SqliteTransaction tr = con.BeginTransaction();
+
+            //        conection.Open();
+            //        OleDbDataReader reader = null;
+
+            //        //OleDbCommand command = new OleDbCommand("SELECT books.Id,books.Nr,books.Signatur,books.Autor,books.Autor2,books.Autor3,books.Titel,verlag.Name,books.Auflage,books.Jahr,books.Medium,books.Standort,books.Einkauf,books.Seiten,books.Preis FROM books INNER JOIN verlag ON books.Verlag = verlag.id WHERE books.Id=33", conection);
+            //        OleDbCommand command = new OleDbCommand("SELECT books.Id,books.Nr,books.Signatur,books.Autor,books.Autor2,books.Autor3,books.Titel,verlag.Name,books.Auflage,books.Jahr,books.Medium,books.Standort,books.Einkauf,books.Seiten,books.Preis FROM books INNER JOIN verlag ON books.Verlag = verlag.id ORDER BY books.Id asc", conection);
+            //        reader = command.ExecuteReader();
+            //        while (reader.Read())
             //        {
-            //            if (string.IsNullOrEmpty(textArray[i]))
+            //            Book book = new Book();
+            //            int temp;
+            //            int.TryParse(reader["Nr"].ToString(), out temp);
+            //            book.Number = temp;
+            //            string text = reader["Signatur"].ToString();
+            //            string[] textArray = text.Split('-');
+            //            book.NoSignature = textArray.Length;
+            //            book.Signatures = new string[book.NoSignature];
+            //            for (int i = 0; i < book.NoSignature; i++)
             //            {
-            //                book.Signatures[i] = "N/A";
+            //                if (string.IsNullOrEmpty(textArray[i]))
+            //                {
+            //                    book.Signatures[i] = "N/A";
+            //                }
+            //                else
+            //                {
+            //                    book.Signatures[i] = textArray[i].Trim();
+            //                }
+            //            }
+            //            if (!string.IsNullOrEmpty(reader["Autor3"].ToString()))
+            //            {
+            //                book.NoAuthor = 3;
+            //            }
+            //            else if (!string.IsNullOrEmpty(reader["Autor2"].ToString()))
+            //            {
+            //                book.NoAuthor = 2;
             //            }
             //            else
             //            {
-            //                book.Signatures[i] = textArray[i].Trim();
+            //                book.NoAuthor = 1;
             //            }
-            //        }
-            //        if (!string.IsNullOrEmpty(reader["Autor3"].ToString()))
-            //        {
-            //            book.NoAuthor = 3;
-            //        }
-            //        else if (!string.IsNullOrEmpty(reader["Autor2"].ToString()))
-            //        {
-            //            book.NoAuthor = 2;
-            //        }
-            //        else
-            //        {
-            //            book.NoAuthor = 1;
-            //        }
-            //        book.Authors = new Author[book.NoAuthor];
-            //        for (int i = 0; i < book.Authors.Length; i++)
-            //        {
-            //            book.Authors[i] = new Author();
-            //        }
-            //        if (book.NoAuthor > 0)
-            //        {
-            //            book.Authors[0].Name = reader["Autor"].ToString().Trim();
-            //        }
-            //        if (book.NoAuthor > 1)
-            //        {
-            //            book.Authors[1].Name = reader["Autor2"].ToString().Trim();
-            //        }
-            //        if (book.NoAuthor > 2)
-            //        {
-            //            book.Authors[2].Name = reader["Autor3"].ToString().Trim();
-            //        }
-            //        book.Title = reader["Titel"].ToString().Trim();
-            //        book.Publisher = reader["Name"].ToString().Trim();
-            //        int.TryParse(reader["Auflage"].ToString(), out temp);
-            //        book.Version = temp;
-            //        int.TryParse(reader["Jahr"].ToString(), out temp);
-            //        book.Year = temp;
-            //        book.Medium = reader["Medium"].ToString();
-            //        if (!string.IsNullOrEmpty(reader["Standort"].ToString()))
-            //        {
-            //            book.Place = reader["Standort"].ToString().Trim();
-            //        }
-            //        else
-            //        {
-            //            book.Place = "N/A";
-            //        }
-            //        int.TryParse(reader["Seiten"].ToString(), out temp);
-            //        book.Pages = temp;
-            //        double dec;
-            //        double.TryParse(reader["Preis"].ToString().Replace(',', '.'), out dec);
-            //        book.Price = dec;
-            //        int.TryParse(reader["Einkauf"].ToString(), out temp);
-            //        if (temp == 0)
-            //        {
-            //            book.DayBought = new DateTime(1970, 1, 1).ToString("d", dtfi);
-            //        }
-            //        else
-            //        {
-            //            int year = temp % 10000;
-            //            temp /= 10000;
-            //            int month = temp % 100;
-            //            temp /= 100;
-            //            int day = temp;
-            //            book.DayBought = new DateTime(year, month, day).ToString("d", dtfi);
-            //        }
+            //            book.Authors = new Author[book.NoAuthor];
+            //            for (int i = 0; i < book.Authors.Length; i++)
+            //            {
+            //                book.Authors[i] = new Author();
+            //            }
+            //            if (book.NoAuthor > 0)
+            //            {
+            //                book.Authors[0].Name = reader["Autor"].ToString().Trim();
+            //            }
+            //            if (book.NoAuthor > 1)
+            //            {
+            //                book.Authors[1].Name = reader["Autor2"].ToString().Trim();
+            //            }
+            //            if (book.NoAuthor > 2)
+            //            {
+            //                book.Authors[2].Name = reader["Autor3"].ToString().Trim();
+            //            }
+            //            book.Title = reader["Titel"].ToString().Trim();
+            //            book.Publisher = reader["Name"].ToString().Trim();
+            //            int.TryParse(reader["Auflage"].ToString(), out temp);
+            //            book.Version = temp;
+            //            int.TryParse(reader["Jahr"].ToString(), out temp);
+            //            book.Year = temp;
+            //            book.Medium = reader["Medium"].ToString();
+            //            if (!string.IsNullOrEmpty(reader["Standort"].ToString()))
+            //            {
+            //                book.Place = reader["Standort"].ToString().Trim();
+            //            }
+            //            else
+            //            {
+            //                book.Place = "N/A";
+            //            }
+            //            int.TryParse(reader["Seiten"].ToString(), out temp);
+            //            book.Pages = temp;
+            //            double dec;
+            //            double.TryParse(reader["Preis"].ToString().Replace(',', '.'), out dec);
+            //            book.Price = dec;
+            //            int.TryParse(reader["Einkauf"].ToString(), out temp);
+            //            if (temp == 0)
+            //            {
+            //                book.DayBought = new DateTime(1970, 1, 1).ToString("d", dtfi);
+            //            }
+            //            else
+            //            {
+            //                int year = temp % 10000;
+            //                temp /= 10000;
+            //                int month = temp % 100;
+            //                temp /= 100;
+            //                int day = temp;
+            //                book.DayBought = new DateTime(year, month, day).ToString("d", dtfi);
+            //            }
 
-            //        AddBook.AddBookToDatabase(ref con, ref tr, book);
+            //            AddBook.AddBookToDatabase(ref con, ref tr, book);
+            //        }
+            //        tr.Commit();
+            //        con.Close();
             //    }
-            //    tr.Commit();
-            //    con.Close();
             //}
             //Search.RunWorkerAsync(NumberOfBooks());
 
@@ -1066,9 +1075,143 @@ namespace ManagingBooks
             Process.Start("explorer.exe", ExportFolder);
         }
 
-        private void BtnTest_Click(object sender, RoutedEventArgs e)
+        private async void BtnImportDB_Click(object sender, RoutedEventArgs e)
         {
             SearchBookModel context = this.DataContext as SearchBookModel;
+            OpenFileDialog dialog = new OpenFileDialog();
+            dialog.Filter = "Sqlite Database (*.db)|*.db";
+            dialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            if (dialog.ShowDialog(this) == true)
+            {
+                int i = 0;
+                SqliteConnection con = new SqliteConnection("" + new SqliteConnectionStringBuilder
+                {
+                    DataSource = dialog.FileName
+                });
+                con.Open();
+                SqlMethods.SqlConnect(out SqliteConnection connection);
+
+                var selectCommand = con.CreateCommand();
+                selectCommand.CommandText = "SELECT b.BookId,b.Number,b.Title,b.Version,b.Medium,a.AuthorId,a.Name,s.Signature,b.Publisher,b.Place,b.Year,b.DayBought,b.Pages,b.Price " +
+                    "FROM Books b " +
+                    "LEFT JOIN Books_Authors ba ON (b.BookId = ba.BookId) " +
+                    "LEFT JOIN Authors a ON (ba.AuthorId = a.AuthorId) " +
+                    "LEFT JOIN Books_Signatures bs ON (bs.BookId = b.BookId) " +
+                    "LEFT JOIN Signatures s ON (bs.SignatureId = s.SignatureId) ORDER BY b.BookId,ba.Priority,bs.Priority";
+                SqliteDataReader r = selectCommand.ExecuteReader();
+                int lastBookId = -1;
+                int lastAuthorId = -1;
+                bool finishedBook = false;
+                Book tempBook = new Book();
+                List<string> authors = new List<string>();
+                List<string> signatures = new List<string>();
+                // read  DB and forming a book object
+                SearchList.IsEnabled = false;
+                BoxSearchText.IsEnabled = false;
+                BtnClearBookInfo.IsEnabled = false;
+                BtnAddToPrint.IsEnabled = false;
+                await Task.Run(() =>
+                {
+
+                    while (r.Read())
+                    {
+                        int result;
+                        int.TryParse(Convert.ToString(r["BookId"]), out result);
+                        if (result == lastBookId)
+                        {
+                            int result1;
+                            int.TryParse(Convert.ToString(r["AuthorId"]), out result1);
+                            if (result1 == lastAuthorId)
+                            {
+                                string temp = Convert.ToString(r["Signature"]);
+                                if (!signatures.Contains(temp))
+                                {
+                                    signatures.Add(Convert.ToString(r["Signature"]));
+                                }
+                                //if (!tempBook.Signatures.Contains(temp))
+                                //{
+                                //    tempBook.Signatures += "-" + Convert.ToString(r["Signature"]);
+                                //}
+                            }
+                            if (result1 != lastAuthorId)
+                            {
+                                authors.Add(Convert.ToString(r["Name"]));
+                                //tempBook.Authors += ", " + Convert.ToString(r["Name"]);
+                                lastAuthorId = result1;
+                            }
+                        }
+                        else
+                        {
+                            finishedBook = true;
+                            if (finishedBook && (!string.IsNullOrEmpty(tempBook.Title)))
+                            {
+                                authors = authors.Distinct().ToList();
+                                signatures = signatures.Distinct().ToList();
+                                tempBook.NoAuthor = authors.Count;
+                                tempBook.Authors = new Author[tempBook.NoAuthor];
+
+                                for (int j = 0; j < tempBook.Authors.Length; j++)
+                                {
+                                    tempBook.Authors[j] = new Author();
+                                }
+                                int k = 0;
+                                foreach (var a in authors)
+                                {
+                                    tempBook.Authors[k++].Name = a;
+                                }
+                                k = 0;
+
+                                tempBook.NoSignature = signatures.Count;
+                                tempBook.Signatures = new string[tempBook.NoSignature];
+
+                                foreach (var s in signatures)
+                                {
+                                    tempBook.Signatures[k++] = s;
+                                }
+                                var transaction = connection.BeginTransaction();
+                                AddBook.AddBookToDatabase(ref connection, ref transaction, tempBook);
+                                authors.Clear();
+                                signatures.Clear();
+                                transaction.Commit();
+                                finishedBook = false;
+                            }
+                            tempBook = new Book();
+                            tempBook.BookId = result;
+                            lastBookId = result;
+                            int.TryParse(Convert.ToString(r["Number"]), out result);
+                            tempBook.Number = result;
+                            tempBook.Title = Convert.ToString(r["Title"]);
+                            tempBook.Publisher = Convert.ToString(r["Publisher"]);
+                            int.TryParse(Convert.ToString(r["Year"]), out result);
+                            tempBook.Year = result;
+                            int.TryParse(Convert.ToString(r["Version"]), out result);
+                            tempBook.Version = result;
+                            tempBook.Medium = Convert.ToString(r["Medium"]);
+                            tempBook.Place = Convert.ToString(r["Place"]);
+                            tempBook.DayBought = Convert.ToString(r["DayBought"]);
+                            int.TryParse(Convert.ToString(r["Pages"]), out result);
+                            tempBook.Pages = result;
+                            double.TryParse(Convert.ToString(r["Price"]), out double result_d);
+                            tempBook.Price = result_d;
+                            int.TryParse(Convert.ToString(r["AuthorId"]), out result);
+                            lastAuthorId = result;
+                            authors.Add(Convert.ToString(r["Name"]));
+                            signatures.Add(Convert.ToString(r["Signature"]));
+                            //tempBook.Authors = Convert.ToString(r["Name"]);
+                            //tempBook.Signatures = Convert.ToString(r["Signature"]);
+                            i++;
+                        }
+                        Thread.Sleep(TimeSpan.FromTicks(5));
+                    }
+                });
+                connection.Close();
+                con.Close();
+                Search.RunWorkerAsync(NumberOfBooks());
+                SearchList.IsEnabled = true;
+                BoxSearchText.IsEnabled = true;
+                BtnClearBookInfo.IsEnabled = true;
+                BtnAddToPrint.IsEnabled = true;
+            }
         }
 
         private void SearchList_MouseDown(object sender, MouseButtonEventArgs e)
@@ -1079,10 +1222,140 @@ namespace ManagingBooks
                 SearchList.SelectedItem = null;
                 ClearEntries(this.DataContext as SearchBookModel);
             }
-                
+        }
+
+        private void GetListViewColVisible(SearchBookModel context)
+        {
+            string[] colHeader = { "BookId", "Number", "Signature", "Title", "Authors", "Publisher", "Year", "Version", "Medium", "Place", "Date", "Pages", "Price" };
+            int[] values = new int[colHeader.Length];
+            SqlMethods.SqlConnect(out SqliteConnection con);
+            var selectCommand = con.CreateCommand();
+            selectCommand.CommandText = "SELECT ColName, Boolean FROM ListViewColVisible";
+            SqliteDataReader r = selectCommand.ExecuteReader();
+            int i = 0;
+            if (!r.Read())
+            {
+                var tr = con.BeginTransaction();
+                var insertCommand = con.CreateCommand();
+                insertCommand.Transaction = tr;
+                foreach (var col in colHeader)
+                {
+                    insertCommand.CommandText = $"INSERT INTO ListViewColVisible (ColName,Boolean) VALUES ('{col}',1)";
+                    insertCommand.ExecuteNonQuery();
+                }
+                tr.Commit();
+            }
+            r.Close();
+            r = selectCommand.ExecuteReader();
+            while (r.Read())
+            {
+                int result;
+                if (int.TryParse(r["Boolean"].ToString(), out result))
+                {
+                    values[i] = result;
+                    i++;
+                }
+            }
+            con.Close();
+            context.BookIdColumnVisible = values[0] == 1;
+            context.NumberColumnVisible = values[1] == 1;
+            context.SignaturesColumnVisible = values[2] == 1;
+            context.TitleColumnVisible = values[3] == 1;
+            context.AuthorsColumnVisible = values[4] == 1;
+            context.PublisherColumnVisible = values[5] == 1;
+            context.YearColumnVisible = values[6] == 1;
+            context.VersionColumnVisible = values[7] == 1;
+            context.MediumColumnVisible = values[8] == 1;
+            context.PlaceColumnVisible = values[9] == 1;
+            context.DateColumnVisible = values[10] == 1;
+            context.PagesColumnVisible = values[11] == 1;
+            context.PriceColumnVisible = values[12] == 1;
+        }
+
+        private void ContextMenuCol_Click(object sender, RoutedEventArgs e)
+        {
+            SearchBookModel context = this.DataContext as SearchBookModel;
+            string header = (sender as MenuItem).Header.ToString();
+            string colName;
+            bool value;
+            SqlMethods.SqlConnect(out SqliteConnection con);
+            var updateCommand = con.CreateCommand();
+            switch (header)
+            {
+                case "BookId":
+                    colName = header;
+                    value = context.BookIdColumnVisible;
+                    break;
+                case "Number":
+                case "Nummer":
+                    colName = "Number";
+                    value = context.NumberColumnVisible;
+                    break;
+                case "Signatures":
+                case "Signatur":
+                    colName = "Signature";
+                    value = context.SignaturesColumnVisible;
+                    break;
+                case "Book Title":
+                case "Buchtitel":
+                    colName = "Book Title";
+                    value = context.BookIdColumnVisible;
+                    break;
+                case "Authors":
+                case "Autor":
+                    colName = "Authors";
+                    value = context.AuthorsColumnVisible;
+                    break;
+                case "Publisher":
+                case "Verlag":
+                    colName = "Publisher";
+                    value = context.PublisherColumnVisible;
+                    break;
+                case "Year":
+                case "Jahr":
+                    colName = "Year";
+                    value = context.YearColumnVisible;
+                    break;
+                case "Edition":
+                case "Auflage":
+                    colName = "Version";
+                    value = context.VersionColumnVisible;
+                    break;
+                case "Medium":
+                    colName = header;
+                    value = context.MediumColumnVisible;
+                    break;
+                case "Place":
+                case "Standort":
+                    colName = "Place";
+                    value = context.PlaceColumnVisible;
+                    break;
+                case "Date bought":
+                case "Einkauf":
+                    colName = "Date";
+                    value = context.DateColumnVisible;
+                    break;
+                case "Pages":
+                case "Seiten":
+                    colName = "Pages";
+                    value = context.PagesColumnVisible;
+                    break;
+                case "Price":
+                case "Preis":
+                    colName = "Price";
+                    value = context.PriceColumnVisible;
+                    break;
+                default:
+                    colName = "Unknown";
+                    value = true;
+                    break;
+            }
+            int result = (value) ? 1 : 0;
+            updateCommand.CommandText = $"UPDATE ListViewColVisible SET Boolean={result} WHERE ColName='{colName}'";
+            updateCommand.ExecuteNonQuery();
+            con.Close();
         }
     }
-
 
     public static class CustomCommands
     {
