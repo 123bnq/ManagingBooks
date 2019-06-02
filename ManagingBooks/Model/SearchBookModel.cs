@@ -26,18 +26,18 @@ namespace ManagingBooks.Model
         private string m_ViewPrice;
 
         private bool m_BookIdColumnVisible = true;
-        private bool m_NumberColumnVsible = true;
-        private bool m_SignaturesColumnVsible = true;
-        private bool m_TitleColumnVsible = true;
-        private bool m_AuthorsColumnVsible = true;
-        private bool m_PublisherColumnVsible = true;
-        private bool m_YearColumnVsible = true;
-        private bool m_VersionColumnVsible = true;
-        private bool m_MediumColumnVsible = true;
-        private bool m_PlaceColumnVsible = true;
-        private bool m_DateColumnVsible = true;
-        private bool m_PagesColumnVsible = true;
-        private bool m_PriceColumnVsible = true;
+        private bool m_NumberColumnVisible = true;
+        private bool m_SignaturesColumnVisible = true;
+        private bool m_TitleColumnVisible = true;
+        private bool m_AuthorsColumnVisible = true;
+        private bool m_PublisherColumnVisible = true;
+        private bool m_YearColumnVisible = true;
+        private bool m_VersionColumnVisible = true;
+        private bool m_MediumColumnVisible = true;
+        private bool m_PlaceColumnVisible = true;
+        private bool m_DateColumnVisible = true;
+        private bool m_PagesColumnVisible = true;
+        private bool m_PriceColumnVisible = true;
 
         public string SearchText
         {
@@ -277,146 +277,146 @@ namespace ManagingBooks.Model
                 }
             }
         }
-        public bool NumberColumnVsible
+        public bool NumberColumnVisible
         {
-            get => m_NumberColumnVsible;
+            get => m_NumberColumnVisible;
             set
             {
-                if (value != m_NumberColumnVsible)
+                if (value != m_NumberColumnVisible)
                 {
-                    m_NumberColumnVsible = value;
+                    m_NumberColumnVisible = value;
                     NotifyPropertyChanged();
                 }
             }
         }
-        public bool SignaturesColumnVsible
+        public bool SignaturesColumnVisible
         {
-            get => m_SignaturesColumnVsible;
+            get => m_SignaturesColumnVisible;
             set
             {
-                if (value != m_SignaturesColumnVsible)
+                if (value != m_SignaturesColumnVisible)
                 {
-                    m_SignaturesColumnVsible = value;
+                    m_SignaturesColumnVisible = value;
                     NotifyPropertyChanged();
                 }
             }
         }
-        public bool TitleColumnVsible
+        public bool TitleColumnVisible
         {
-            get => m_TitleColumnVsible;
+            get => m_TitleColumnVisible;
             set
             {
-                if (value != m_TitleColumnVsible)
+                if (value != m_TitleColumnVisible)
                 {
-                    m_TitleColumnVsible = value;
+                    m_TitleColumnVisible = value;
                     NotifyPropertyChanged();
                 }
             }
         }
-        public bool AuthorsColumnVsible
+        public bool AuthorsColumnVisible
         {
-            get => m_AuthorsColumnVsible;
+            get => m_AuthorsColumnVisible;
             set
             {
-                if (value != m_AuthorsColumnVsible)
+                if (value != m_AuthorsColumnVisible)
                 {
-                    m_AuthorsColumnVsible = value;
+                    m_AuthorsColumnVisible = value;
                     NotifyPropertyChanged();
                 }
             }
         }
-        public bool PublisherColumnVsible
+        public bool PublisherColumnVisible
         {
-            get => m_PublisherColumnVsible;
+            get => m_PublisherColumnVisible;
             set
             {
-                if (value != m_PublisherColumnVsible)
+                if (value != m_PublisherColumnVisible)
                 {
-                    m_PublisherColumnVsible = value;
+                    m_PublisherColumnVisible = value;
                     NotifyPropertyChanged();
                 }
             }
         }
-        public bool YearColumnVsible
+        public bool YearColumnVisible
         {
-            get => m_YearColumnVsible;
+            get => m_YearColumnVisible;
             set
             {
-                if (value != m_YearColumnVsible)
+                if (value != m_YearColumnVisible)
                 {
-                    m_YearColumnVsible = value;
+                    m_YearColumnVisible = value;
                     NotifyPropertyChanged();
                 }
             }
         }
-        public bool VersionColumnVsible
+        public bool VersionColumnVisible
         {
-            get => m_VersionColumnVsible;
+            get => m_VersionColumnVisible;
             set
             {
-                if (value != m_VersionColumnVsible)
+                if (value != m_VersionColumnVisible)
                 {
-                    m_VersionColumnVsible = value;
+                    m_VersionColumnVisible = value;
                     NotifyPropertyChanged();
                 }
             }
         }
-        public bool MediumColumnVsible
+        public bool MediumColumnVisible
         {
-            get => m_MediumColumnVsible;
+            get => m_MediumColumnVisible;
             set
             {
-                if (value != m_MediumColumnVsible)
+                if (value != m_MediumColumnVisible)
                 {
-                    m_MediumColumnVsible = value;
+                    m_MediumColumnVisible = value;
                     NotifyPropertyChanged();
                 }
             }
         }
-        public bool PlaceColumnVsible
+        public bool PlaceColumnVisible
         {
-            get => m_PlaceColumnVsible;
+            get => m_PlaceColumnVisible;
             set
             {
-                if (value != m_PlaceColumnVsible)
+                if (value != m_PlaceColumnVisible)
                 {
-                    m_PlaceColumnVsible = value;
+                    m_PlaceColumnVisible = value;
                     NotifyPropertyChanged();
                 }
             }
         }
-        public bool DateColumnVsible
+        public bool DateColumnVisible
         {
-            get => m_DateColumnVsible;
+            get => m_DateColumnVisible;
             set
             {
-                if (value != m_DateColumnVsible)
+                if (value != m_DateColumnVisible)
                 {
-                    m_DateColumnVsible = value;
+                    m_DateColumnVisible = value;
                     NotifyPropertyChanged();
                 }
             }
         }
-        public bool PagesColumnVsible
+        public bool PagesColumnVisible
         {
-            get => m_PagesColumnVsible;
+            get => m_PagesColumnVisible;
             set
             {
-                if (value != m_PagesColumnVsible)
+                if (value != m_PagesColumnVisible)
                 {
-                    m_PagesColumnVsible = value;
+                    m_PagesColumnVisible = value;
                     NotifyPropertyChanged();
                 }
             }
         }
-        public bool PriceColumnVsible
+        public bool PriceColumnVisible
         {
-            get => m_PriceColumnVsible;
+            get => m_PriceColumnVisible;
             set
             {
-                if (value != m_PriceColumnVsible)
+                if (value != m_PriceColumnVisible)
                 {
-                    m_PriceColumnVsible = value;
+                    m_PriceColumnVisible = value;
                     NotifyPropertyChanged();
                 }
             }
