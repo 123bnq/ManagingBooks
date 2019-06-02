@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ManagingBooks.Properties
+namespace Bla.Properties
 {
 
 

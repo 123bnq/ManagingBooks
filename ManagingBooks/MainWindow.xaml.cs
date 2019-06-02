@@ -26,6 +26,7 @@ using System.Globalization;
 using System.Windows.Controls;
 using iText.Layout.Borders;
 using iText.Kernel.Geom;
+using System.Windows.Media;
 
 namespace ManagingBooks
 {
@@ -52,6 +53,7 @@ namespace ManagingBooks
             InitializeComponent();
             SearchBookModel context = new SearchBookModel();
             this.DataContext = context;
+            //SearchBookModel context = this.DataContext as SearchBookModel;
             context.DisplayBooks = new ObservableCollection<SearchBook>();
             context.ListBookPrint = new ObservableCollection<SearchBook>();
             SearchList.ItemsSource = context.DisplayBooks;
@@ -1066,7 +1068,18 @@ namespace ManagingBooks
 
         private void BtnTest_Click(object sender, RoutedEventArgs e)
         {
-            GridView g = SearchList.View as GridView;
+            SearchBookModel context = this.DataContext as SearchBookModel;
+        }
+
+        private void SearchList_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            HitTestResult r = VisualTreeHelper.HitTest(this, e.GetPosition(this));
+            if (r.VisualHit.GetType() != typeof(ListBoxItem))
+            {
+                SearchList.SelectedItem = null;
+                ClearEntries(this.DataContext as SearchBookModel);
+            }
+                
         }
     }
 

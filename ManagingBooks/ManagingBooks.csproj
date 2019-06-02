@@ -144,6 +144,7 @@
     </ApplicationDefinition>
     <Compile Include="Book.cs" />
     <Compile Include="Author.cs" />
+    <Compile Include="GridViewBehaviours.cs" />
     <Compile Include="Model\AddBookModel.cs" />
     <Compile Include="Model\ChooseSignaturesModel.cs" />
     <Compile Include="Model\EditMediumModel.cs" />
