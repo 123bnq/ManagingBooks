@@ -25,6 +25,20 @@ namespace ManagingBooks.Model
         private string m_ViewPages;
         private string m_ViewPrice;
 
+        private bool m_BookIdColumnVisible = true;
+        private bool m_NumberColumnVsible = true;
+        private bool m_SignaturesColumnVsible = true;
+        private bool m_TitleColumnVsible = true;
+        private bool m_AuthorsColumnVsible = true;
+        private bool m_PublisherColumnVsible = true;
+        private bool m_YearColumnVsible = true;
+        private bool m_VersionColumnVsible = true;
+        private bool m_MediumColumnVsible = true;
+        private bool m_PlaceColumnVsible = true;
+        private bool m_DateColumnVsible = true;
+        private bool m_PagesColumnVsible = true;
+        private bool m_PriceColumnVsible = true;
+
         public string SearchText
         {
             get => m_SearchText;
@@ -250,6 +264,165 @@ namespace ManagingBooks.Model
                 }
             }
         }
+
+        public bool BookIdColumnVisible
+        {
+            get => m_BookIdColumnVisible;
+            set
+            {
+                if (value != m_BookIdColumnVisible)
+                {
+                    m_BookIdColumnVisible = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+        public bool NumberColumnVsible
+        {
+            get => m_NumberColumnVsible;
+            set
+            {
+                if (value != m_NumberColumnVsible)
+                {
+                    m_NumberColumnVsible = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+        public bool SignaturesColumnVsible
+        {
+            get => m_SignaturesColumnVsible;
+            set
+            {
+                if (value != m_SignaturesColumnVsible)
+                {
+                    m_SignaturesColumnVsible = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+        public bool TitleColumnVsible
+        {
+            get => m_TitleColumnVsible;
+            set
+            {
+                if (value != m_TitleColumnVsible)
+                {
+                    m_TitleColumnVsible = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+        public bool AuthorsColumnVsible
+        {
+            get => m_AuthorsColumnVsible;
+            set
+            {
+                if (value != m_AuthorsColumnVsible)
+                {
+                    m_AuthorsColumnVsible = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+        public bool PublisherColumnVsible
+        {
+            get => m_PublisherColumnVsible;
+            set
+            {
+                if (value != m_PublisherColumnVsible)
+                {
+                    m_PublisherColumnVsible = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+        public bool YearColumnVsible
+        {
+            get => m_YearColumnVsible;
+            set
+            {
+                if (value != m_YearColumnVsible)
+                {
+                    m_YearColumnVsible = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+        public bool VersionColumnVsible
+        {
+            get => m_VersionColumnVsible;
+            set
+            {
+                if (value != m_VersionColumnVsible)
+                {
+                    m_VersionColumnVsible = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+        public bool MediumColumnVsible
+        {
+            get => m_MediumColumnVsible;
+            set
+            {
+                if (value != m_MediumColumnVsible)
+                {
+                    m_MediumColumnVsible = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+        public bool PlaceColumnVsible
+        {
+            get => m_PlaceColumnVsible;
+            set
+            {
+                if (value != m_PlaceColumnVsible)
+                {
+                    m_PlaceColumnVsible = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+        public bool DateColumnVsible
+        {
+            get => m_DateColumnVsible;
+            set
+            {
+                if (value != m_DateColumnVsible)
+                {
+                    m_DateColumnVsible = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+        public bool PagesColumnVsible
+        {
+            get => m_PagesColumnVsible;
+            set
+            {
+                if (value != m_PagesColumnVsible)
+                {
+                    m_PagesColumnVsible = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+        public bool PriceColumnVsible
+        {
+            get => m_PriceColumnVsible;
+            set
+            {
+                if (value != m_PriceColumnVsible)
+                {
+                    m_PriceColumnVsible = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+
+
 
         public ObservableCollection<SearchBook> DisplayBooks { get; set; }
         public ObservableCollection<SearchBook> ListBookPrint { get; set; }

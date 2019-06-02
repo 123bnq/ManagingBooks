@@ -4,9 +4,13 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ManagingBooks"
+        xmlns:model="clr-namespace:ManagingBooks.Model"
         mc:Ignorable="d"
         Title="{DynamicResource MainWindow.Title}" ResizeMode="CanMinimize" SizeToContent="WidthAndHeight" WindowStartupLocation="CenterScreen"
         Background="WhiteSmoke">
+    <!--<Window.DataContext>
+        <model:SearchBookModel/>
+    </Window.DataContext>-->
     <Window.CommandBindings>
         <CommandBinding Command="local:CustomCommands.Exit" CanExecute="ExitCommand_CanExecute" Executed="ExitCommand_Executed"/>
         <CommandBinding Command="local:CustomCommands.English" CanExecute="EnglishCommand_CanExecute" Executed="EnglishCommand_Executed"/>
@@ -23,6 +27,9 @@
         <CommandBinding Command="local:CustomCommands.Delete" CanExecute="DeleteCommand_CanExecute" Executed="DeleteCommand_Executed"/>
         <CommandBinding Command="local:CustomCommands.ClearBookInfo" CanExecute="EditCommand_CanExecute" Executed="ClearBookInfoCommand_Executed"/>
     </Window.CommandBindings>
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+    </Window.Resources>
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="{DynamicResource MainWindow.Menu.File}">
@@ -77,7 +84,15 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
-                <ListView Name="SearchList" MinHeight="300" MaxHeight="400" MinWidth="700" Margin="0,0,0,5" SelectionChanged="SearchList_SelectionChanged">
+                <ListView Name="SearchList" MinHeight="300" MaxHeight="400" Width="1000" Margin="0,0,0,5" SelectionChanged="SearchList_SelectionChanged" MouseDown="SearchList_MouseDown">
+                    <ListView.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="{DynamicResource MainWindow.SearchList.ContextMenu.Edit}" Command="local:CustomCommands.Edit"/>
+                            <MenuItem Header="{DynamicResource MainWindow.SearchList.ContextMenu.Delete}" Command="local:CustomCommands.Delete"/>
+                            <MenuItem Header="{DynamicResource MainWindow.SearchList.ContextMenu.AddToPrint}" Command="local:CustomCommands.AddToPrint"/>
+                            <MenuItem Header="{DynamicResource MainWindow.SearchList.ContextMenu.CreateBarcode}" Command="local:CustomCommands.CreateBarcode"/>
+                        </ContextMenu>
+                    </ListView.ContextMenu>
                     <ListView.Resources>
                         <ContextMenu x:Key="ItemContextMenu">
                             <MenuItem Header="{DynamicResource MainWindow.SearchList.ContextMenu.Edit}" Command="local:CustomCommands.Edit"/>
@@ -90,14 +105,33 @@
                         </Style>
                         <Style TargetType="ListViewItem">
                             <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-                            <Setter Property="ContextMenu" Value="{StaticResource ItemContextMenu}"/>
+                            <!--<Setter Property="ContextMenu" Value="{StaticResource ItemContextMenu}"/>-->
                         </Style>
                     </ListView.Resources>
                     <ListView.View>
-                        <GridView>
+                        <GridView AllowsColumnReorder="False">
+                            <GridView.ColumnHeaderContextMenu>
+                                <ContextMenu>
+                                    <MenuItem Header="{DynamicResource MainWindow.SearchList.BookId}" IsCheckable="True" IsChecked="{Binding BookIdColumnVisible}"/>
+                                    <MenuItem Header="{DynamicResource MainWindow.SearchList.Number}" IsCheckable="True" IsChecked="{Binding NumberColumnVsible}"/>
+                                    <MenuItem Header="{DynamicResource MainWindow.SearchList.Signature}" IsCheckable="True" IsChecked="{Binding SignaturesColumnVsible}"/>
+                                    <MenuItem Header="{DynamicResource MainWindow.SearchList.Title}" IsCheckable="True" IsChecked="{Binding TitleColumnVsible}"/>
+                                    <MenuItem Header="{DynamicResource MainWindow.SearchList.Authors}" IsCheckable="True" IsChecked="{Binding AuthorsColumnVsible}"/>
+                                    <MenuItem Header="{DynamicResource MainWindow.SearchList.Publisher}" IsCheckable="True" IsChecked="{Binding PublisherColumnVsible}"/>
+                                    <MenuItem Header="{DynamicResource MainWindow.SearchList.Year}" IsCheckable="True" IsChecked="{Binding YearColumnVsible}"/>
+                                    <MenuItem Header="{DynamicResource MainWindow.SearchList.Version}" IsCheckable="True" IsChecked="{Binding VersionColumnVsible}"/>
+                                    <MenuItem Header="{DynamicResource MainWindow.SearchList.Medium}" IsCheckable="True" IsChecked="{Binding MediumColumnVsible}"/>
+                                    <MenuItem Header="{DynamicResource MainWindow.SearchList.Place}" IsCheckable="True" IsChecked="{Binding PlaceColumnVsible}"/>
+                                    <MenuItem Header="{DynamicResource MainWindow.SearchList.Date}" IsCheckable="True" IsChecked="{Binding DateColumnVsible}"/>
+                                    <MenuItem Header="{DynamicResource MainWindow.SearchList.Pages}" IsCheckable="True" IsChecked="{Binding PagesColumnVsible}"/>
+                                    <MenuItem Header="{DynamicResource MainWindow.SearchList.Price}" IsCheckable="True" IsChecked="{Binding PriceColumnVsible}"/>
+                                </ContextMenu>
+                            </GridView.ColumnHeaderContextMenu>
                             <GridViewColumn Width="50" DisplayMemberBinding="{Binding BookId}">
                                 <GridViewColumn.Header>
-                                    <GridViewColumnHeader Content="{DynamicResource MainWindow.SearchList.BookId}" Tag="BookId" Click="GridViewColumnHeader_Click"/>
+                                    <GridViewColumnHeader Content="{DynamicResource MainWindow.SearchList.BookId}" Tag="BookId" Click="GridViewColumnHeader_Click"
+                                                          Visibility="{Binding BookIdColumnVisible, Converter={StaticResource BoolToVisibilityConverter}}"
+                                                          local:GridViewBehaviours.CollapseableColumn="True"/>
                                 </GridViewColumn.Header>
                             </GridViewColumn>
                             <GridViewColumn Width="Auto">
@@ -107,12 +141,16 @@
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
                                 <GridViewColumn.Header>
-                                    <GridViewColumnHeader Content="{DynamicResource MainWindow.SearchList.Number}" Tag="Number" Click="GridViewColumnHeader_Click"/>
+                                    <GridViewColumnHeader Content="{DynamicResource MainWindow.SearchList.Number}" Tag="Number" Click="GridViewColumnHeader_Click"
+                                                          Visibility="{Binding NumberColumnVsible, Converter={StaticResource BoolToVisibilityConverter}}"
+                                                          local:GridViewBehaviours.CollapseableColumn="True"/>
                                 </GridViewColumn.Header>
                             </GridViewColumn>
                             <GridViewColumn Width="Auto" DisplayMemberBinding="{Binding Signatures}">
                                 <GridViewColumn.Header>
-                                    <GridViewColumnHeader Content="{DynamicResource MainWindow.SearchList.Signature}" Tag="Signatures" Click="GridViewColumnHeader_Click"/>
+                                    <GridViewColumnHeader Content="{DynamicResource MainWindow.SearchList.Signature}" Tag="Signatures" Click="GridViewColumnHeader_Click"
+                                                          Visibility="{Binding SignaturesColumnVsible, Converter={StaticResource BoolToVisibilityConverter}}"
+                                                          local:GridViewBehaviours.CollapseableColumn="True"/>
                                 </GridViewColumn.Header>
                             </GridViewColumn>
                             <GridViewColumn Width="150">
@@ -122,42 +160,58 @@
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
                                 <GridViewColumn.Header>
-                                    <GridViewColumnHeader Content="{DynamicResource MainWindow.SearchList.Title}" Tag="Title" Click="GridViewColumnHeader_Click"/>
+                                    <GridViewColumnHeader Content="{DynamicResource MainWindow.SearchList.Title}" Tag="Title" Click="GridViewColumnHeader_Click"
+                                                          Visibility="{Binding TitleColumnVsible, Converter={StaticResource BoolToVisibilityConverter}}"
+                                                          local:GridViewBehaviours.CollapseableColumn="True"/>
                                 </GridViewColumn.Header>
                             </GridViewColumn>
                             <GridViewColumn Width="150" DisplayMemberBinding="{Binding Authors}">
                                 <GridViewColumn.Header>
-                                    <GridViewColumnHeader Content="{DynamicResource MainWindow.SearchList.Authors}" Tag="Authors" Click="GridViewColumnHeader_Click"/>
+                                    <GridViewColumnHeader Content="{DynamicResource MainWindow.SearchList.Authors}" Tag="Authors" Click="GridViewColumnHeader_Click"
+                                                          Visibility="{Binding AuthorsColumnVsible, Converter={StaticResource BoolToVisibilityConverter}}"
+                                                          local:GridViewBehaviours.CollapseableColumn="True"/>
                                 </GridViewColumn.Header>
                             </GridViewColumn>
                             <GridViewColumn Width="75" DisplayMemberBinding="{Binding Publishers}">
                                 <GridViewColumn.Header>
-                                    <GridViewColumnHeader Content="{DynamicResource MainWindow.SearchList.Publisher}" Tag="Publishers" Click="GridViewColumnHeader_Click"/>
+                                    <GridViewColumnHeader Content="{DynamicResource MainWindow.SearchList.Publisher}" Tag="Publishers" Click="GridViewColumnHeader_Click"
+                                                          Visibility="{Binding PublisherColumnVsible, Converter={StaticResource BoolToVisibilityConverter}}"
+                                                          local:GridViewBehaviours.CollapseableColumn="True"/>
                                 </GridViewColumn.Header>
                             </GridViewColumn>
                             <GridViewColumn Width="50" DisplayMemberBinding="{Binding Year}">
                                 <GridViewColumn.Header>
-                                    <GridViewColumnHeader Content="{DynamicResource MainWindow.SearchList.Year}" Tag="Year" Click="GridViewColumnHeader_Click"/>
+                                    <GridViewColumnHeader Content="{DynamicResource MainWindow.SearchList.Year}" Tag="Year" Click="GridViewColumnHeader_Click"
+                                                          Visibility="{Binding YearColumnVsible, Converter={StaticResource BoolToVisibilityConverter}}"
+                                                          local:GridViewBehaviours.CollapseableColumn="True"/>
                                 </GridViewColumn.Header>
                             </GridViewColumn>
                             <GridViewColumn Width="50" DisplayMemberBinding="{Binding Version}">
                                 <GridViewColumn.Header>
-                                    <GridViewColumnHeader Content="{DynamicResource MainWindow.SearchList.Version}" Tag="Version" Click="GridViewColumnHeader_Click"/>
+                                    <GridViewColumnHeader Content="{DynamicResource MainWindow.SearchList.Version}" Tag="Version" Click="GridViewColumnHeader_Click"
+                                                          Visibility="{Binding VersionColumnVsible, Converter={StaticResource BoolToVisibilityConverter}}"
+                                                          local:GridViewBehaviours.CollapseableColumn="True"/>
                                 </GridViewColumn.Header>
                             </GridViewColumn>
                             <GridViewColumn Width="100" DisplayMemberBinding="{Binding Medium}">
                                 <GridViewColumn.Header>
-                                    <GridViewColumnHeader Content="{DynamicResource MainWindow.SearchList.Medium}" Tag="Medium" Click="GridViewColumnHeader_Click"/>
+                                    <GridViewColumnHeader Content="{DynamicResource MainWindow.SearchList.Medium}" Tag="Medium" Click="GridViewColumnHeader_Click"
+                                                          Visibility="{Binding MediumColumnVsible, Converter={StaticResource BoolToVisibilityConverter}}"
+                                                          local:GridViewBehaviours.CollapseableColumn="True"/>
                                 </GridViewColumn.Header>
                             </GridViewColumn>
                             <GridViewColumn Width="75" DisplayMemberBinding="{Binding Place}">
                                 <GridViewColumn.Header>
-                                    <GridViewColumnHeader Content="{DynamicResource MainWindow.SearchList.Place}" Tag="Place" Click="GridViewColumnHeader_Click"/>
+                                    <GridViewColumnHeader Content="{DynamicResource MainWindow.SearchList.Place}" Tag="Place" Click="GridViewColumnHeader_Click"
+                                                          Visibility="{Binding PlaceColumnVsible, Converter={StaticResource BoolToVisibilityConverter}}"
+                                                          local:GridViewBehaviours.CollapseableColumn="True"/>
                                 </GridViewColumn.Header>
                             </GridViewColumn>
                             <GridViewColumn Width="75" DisplayMemberBinding="{Binding Date}">
                                 <GridViewColumn.Header>
-                                    <GridViewColumnHeader Content="{DynamicResource MainWindow.SearchList.Date}" Tag="Date" Click="GridViewColumnHeader_Click"/>
+                                    <GridViewColumnHeader Content="{DynamicResource MainWindow.SearchList.Date}" Tag="Date" Click="GridViewColumnHeader_Click"
+                                                          Visibility="{Binding DateColumnVsible, Converter={StaticResource BoolToVisibilityConverter}}"
+                                                          local:GridViewBehaviours.CollapseableColumn="True"/>
                                 </GridViewColumn.Header>
                             </GridViewColumn>
                             <GridViewColumn Width="40">
@@ -167,7 +221,9 @@
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
                                 <GridViewColumn.Header>
-                                    <GridViewColumnHeader Content="{DynamicResource MainWindow.SearchList.Pages}" Tag="Pages" Click="GridViewColumnHeader_Click"/>
+                                    <GridViewColumnHeader Content="{DynamicResource MainWindow.SearchList.Pages}" Tag="Pages" Click="GridViewColumnHeader_Click"
+                                                          Visibility="{Binding PagesColumnVsible, Converter={StaticResource BoolToVisibilityConverter}}"
+                                                          local:GridViewBehaviours.CollapseableColumn="True"/>
                                 </GridViewColumn.Header>
                             </GridViewColumn>
                             <GridViewColumn Width="40">
@@ -177,7 +233,9 @@
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
                                 <GridViewColumn.Header>
-                                    <GridViewColumnHeader Content="{DynamicResource MainWindow.SearchList.Price}" Tag="Price" Click="GridViewColumnHeader_Click"/>
+                                    <GridViewColumnHeader Content="{DynamicResource MainWindow.SearchList.Price}" Tag="Price" Click="GridViewColumnHeader_Click"
+                                                          Visibility="{Binding PriceColumnVsible, Converter={StaticResource BoolToVisibilityConverter}}"
+                                                          local:GridViewBehaviours.CollapseableColumn="True"/>
                                 </GridViewColumn.Header>
                             </GridViewColumn>
                         </GridView>
@@ -237,54 +295,54 @@
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
                     <WrapPanel>
-                        <TextBlock Text="{DynamicResource MainWindow.BookInfo.Number}" Margin="0,0,5,0"/>
+                        <TextBlock Text="{DynamicResource MainWindow.BookInfo.Number}" Margin="0,0,5,0" FontWeight="Bold"/>
                         <TextBlock Text="{Binding ViewNumber}" Background="White"/>
                     </WrapPanel>
                     <WrapPanel Grid.Column="1">
-                        <TextBlock Text="{DynamicResource MainWindow.BookInfo.Signatures}" Margin="0,0,5,5"/>
+                        <TextBlock Text="{DynamicResource MainWindow.BookInfo.Signatures}" Margin="0,0,5,5" FontWeight="Bold"/>
                         <TextBlock Text="{Binding ViewSignatures}" Background="White"/>
                     </WrapPanel>
                     <WrapPanel Grid.Column="2">
-                        <TextBlock Text="{DynamicResource MainWindow.BookInfo.Title}" Margin="0,0,5,0"/>
+                        <TextBlock Text="{DynamicResource MainWindow.BookInfo.Title}" Margin="0,0,5,0" FontWeight="Bold"/>
                         <TextBlock Text="{Binding ViewTitle}" Background="White"/>
                     </WrapPanel>
                     <WrapPanel Grid.Row="1">
-                        <TextBlock Text="{DynamicResource MainWindow.BookInfo.Authors}" Margin="0,0,5,0"/>
+                        <TextBlock Text="{DynamicResource MainWindow.BookInfo.Authors}" Margin="0,0,5,0" FontWeight="Bold"/>
                         <TextBlock Text="{Binding ViewAuthors}" Background="White"/>
                     </WrapPanel>
                     <WrapPanel Grid.Row="1" Grid.Column="1">
-                        <TextBlock Text="{DynamicResource MainWindow.BookInfo.Publisher}" Margin="0,0,5,0"/>
+                        <TextBlock Text="{DynamicResource MainWindow.BookInfo.Publisher}" Margin="0,0,5,0" FontWeight="Bold"/>
                         <TextBlock Text="{Binding ViewPublisher}" Background="White"/>
                     </WrapPanel>
                     <WrapPanel Grid.Row="1" Grid.Column="2">
-                        <TextBlock Text="{DynamicResource MainWindow.BookInfo.Year}" Margin="0,0,5,5"/>
+                        <TextBlock Text="{DynamicResource MainWindow.BookInfo.Year}" Margin="0,0,5,5" FontWeight="Bold"/>
                         <TextBlock Text="{Binding ViewYear}" Background="White"/>
                     </WrapPanel>
                     <WrapPanel Grid.Row="2">
-                        <TextBlock Text="{DynamicResource MainWindow.BookInfo.Version}" Margin="0,0,5,0"/>
+                        <TextBlock Text="{DynamicResource MainWindow.BookInfo.Version}" Margin="0,0,5,0" FontWeight="Bold"/>
                         <TextBlock Text="{Binding ViewVersion}" Background="White"/>
                     </WrapPanel>
                     <WrapPanel Grid.Row="2" Grid.Column="1">
-                        <TextBlock Text="{DynamicResource MainWindow.BookInfo.Medium}" Margin="0,0,5,0"/>
+                        <TextBlock Text="{DynamicResource MainWindow.BookInfo.Medium}" Margin="0,0,5,0" FontWeight="Bold"/>
                         <TextBlock Text="{Binding ViewMedium}" Background="White"/>
                     </WrapPanel>
                     <WrapPanel Grid.Row="2" Grid.Column="2">
-                        <TextBlock Text="{DynamicResource MainWindow.BookInfo.Place}" Margin="0,0,5,5"/>
+                        <TextBlock Text="{DynamicResource MainWindow.BookInfo.Place}" Margin="0,0,5,5" FontWeight="Bold"/>
                         <TextBlock Text="{Binding ViewPlace}" Background="White"/>
                     </WrapPanel>
                     <WrapPanel Grid.Row="3">
-                        <TextBlock Text="{DynamicResource MainWindow.BookInfo.Date}" Margin="0,0,5,0"/>
+                        <TextBlock Text="{DynamicResource MainWindow.BookInfo.Date}" Margin="0,0,5,0" FontWeight="Bold"/>
                         <TextBlock Text="{Binding ViewDate}" Background="White"/>
                     </WrapPanel>
                     <WrapPanel Grid.Row="3" Grid.Column="1">
-                        <TextBlock Text="{DynamicResource MainWindow.BookInfo.Pages}" Margin="0,0,5,0"/>
+                        <TextBlock Text="{DynamicResource MainWindow.BookInfo.Pages}" Margin="0,0,5,0" FontWeight="Bold"/>
                         <TextBlock Text="{Binding ViewPages}" Background="White"/>
                     </WrapPanel>
                     <WrapPanel Grid.Row="3" Grid.Column="2">
-                        <TextBlock Text="{DynamicResource MainWindow.BookInfo.Price}" Margin="0,0,5,5"/>
+                        <TextBlock Text="{DynamicResource MainWindow.BookInfo.Price}" Margin="0,0,5,5" FontWeight="Bold"/>
                         <TextBlock Text="{Binding ViewPrice, StringFormat={}{0:#0.00}}" Background="White"/>
                     </WrapPanel>
-                    
+
                     <Button FontSize="12" Name="BtnTest" Grid.Column="3" Content="Test1" MinWidth="75" FontFamily="Default" HorizontalAlignment="Right" Click="BtnTest_Click"/>
                     <Button FontSize="12" Name="BtnClearBookInfo" Grid.Row="3" Grid.Column="3" Content="{DynamicResource MainWindow.BookInfo.ClearBtn}" MinWidth="75" FontFamily="Default" HorizontalAlignment="Right" Command="local:CustomCommands.ClearBookInfo"/>
                 </Grid>

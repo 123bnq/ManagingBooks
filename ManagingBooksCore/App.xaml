@@ -8,6 +8,7 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source=".\Resources\Resources.xaml"/>
             </ResourceDictionary.MergedDictionaries>
+            <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter" />
             <Style x:Key="ComboBoxNull" TargetType="TextBlock">
                 <Setter Property="Visibility" Value="Hidden"/>
                 <Setter Property="Text" Value="{DynamicResource ComboBox.PleaseSelect}"/>
