@@ -72,6 +72,12 @@
                             <DataTrigger Binding="{Binding Status}" Value="Running">
                                 <Setter Property="Text" Value="{DynamicResource MainWindow.CodeBehind.Status.Running}"/>
                             </DataTrigger>
+                            <DataTrigger Binding="{Binding Status}" Value="Import Finished">
+                                <Setter Property="Text" Value="{DynamicResource MainWindow.CodeBehind.Status.ImportCompleted}"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Status}" Value="Importing">
+                                <Setter Property="Text" Value="{DynamicResource MainWindow.CodeBehind.Status.Importing}"/>
+                            </DataTrigger>
                         </Style.Triggers>
                     </Style>
                 </TextBlock.Style>

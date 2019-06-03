@@ -83,6 +83,8 @@
     <system:String x:Key="MainWindow.CodeBehind.Status.Completed">Load Finished</system:String>
     <system:String x:Key="MainWindow.CodeBehind.Status.Deleting">Deleting...</system:String>
     <system:String x:Key="MainWindow.CodeBehind.Status.DeleteCompleted">Delete Finished</system:String>
+    <system:String x:Key="MainWindow.CodeBehind.Status.Importing">Importing...</system:String>
+    <system:String x:Key="MainWindow.CodeBehind.Status.ImportCompleted">Import Finished</system:String>
     <system:String x:Key="MainWindow.CodeBehind.DeleteNotify.Message">Do you want to delete the selected book(s)?</system:String>
     <system:String x:Key="MainWindow.CodeBehind.DeleteNotify.Caption">Warning</system:String>
 
