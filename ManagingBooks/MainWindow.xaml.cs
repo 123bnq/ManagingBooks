@@ -1083,6 +1083,8 @@ namespace ManagingBooks
             dialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
             if (dialog.ShowDialog(this) == true)
             {
+                int count = 0;
+                int max = 0;
                 int i = 0;
                 SqliteConnection con = new SqliteConnection("" + new SqliteConnectionStringBuilder
                 {
@@ -1092,13 +1094,18 @@ namespace ManagingBooks
                 SqlMethods.SqlConnect(out SqliteConnection connection);
 
                 var selectCommand = con.CreateCommand();
+                selectCommand.CommandText = "SELECT COUNT(*) AS max FROM Books";
+                SqliteDataReader r = selectCommand.ExecuteReader();
+                r.Read();
+                int.TryParse(Convert.ToString(r["max"]), out max);
+                r.Close();
                 selectCommand.CommandText = "SELECT b.BookId,b.Number,b.Title,b.Version,b.Medium,a.AuthorId,a.Name,s.Signature,b.Publisher,b.Place,b.Year,b.DayBought,b.Pages,b.Price " +
                     "FROM Books b " +
                     "LEFT JOIN Books_Authors ba ON (b.BookId = ba.BookId) " +
                     "LEFT JOIN Authors a ON (ba.AuthorId = a.AuthorId) " +
                     "LEFT JOIN Books_Signatures bs ON (bs.BookId = b.BookId) " +
                     "LEFT JOIN Signatures s ON (bs.SignatureId = s.SignatureId) ORDER BY b.BookId,ba.Priority,bs.Priority";
-                SqliteDataReader r = selectCommand.ExecuteReader();
+                r = selectCommand.ExecuteReader();
                 int lastBookId = -1;
                 int lastAuthorId = -1;
                 bool finishedBook = false;
@@ -1170,6 +1177,9 @@ namespace ManagingBooks
                                 }
                                 var transaction = connection.BeginTransaction();
                                 AddBook.AddBookToDatabase(ref connection, ref transaction, tempBook);
+                                count++;
+                                context.Status = "Importing";
+                                context.Progress = Convert.ToInt32((double)(count) / max * 100);
                                 authors.Clear();
                                 signatures.Clear();
                                 transaction.Commit();
@@ -1202,6 +1212,41 @@ namespace ManagingBooks
                             i++;
                         }
                         Thread.Sleep(TimeSpan.FromTicks(5));
+                        //progress.Report(Convert.ToInt32((double)(max - i) / max * 100));
+                    }
+                    if (i != 0)
+                    {
+                        authors = authors.Distinct().ToList();
+                        signatures = signatures.Distinct().ToList();
+                        tempBook.NoAuthor = authors.Count;
+                        tempBook.Authors = new Author[tempBook.NoAuthor];
+
+                        for (int j = 0; j < tempBook.Authors.Length; j++)
+                        {
+                            tempBook.Authors[j] = new Author();
+                        }
+                        int k = 0;
+                        foreach (var a in authors)
+                        {
+                            tempBook.Authors[k++].Name = a;
+                        }
+                        k = 0;
+
+                        tempBook.NoSignature = signatures.Count;
+                        tempBook.Signatures = new string[tempBook.NoSignature];
+
+                        foreach (var s in signatures)
+                        {
+                            tempBook.Signatures[k++] = s;
+                        }
+                        var transaction = connection.BeginTransaction();
+                        AddBook.AddBookToDatabase(ref connection, ref transaction, tempBook);
+                        count++;
+                        context.Progress = Convert.ToInt32((double)(count) / max * 100);
+                        context.Status = "Import Finished";
+                        authors.Clear();
+                        signatures.Clear();
+                        transaction.Commit();
                     }
                 });
                 connection.Close();
