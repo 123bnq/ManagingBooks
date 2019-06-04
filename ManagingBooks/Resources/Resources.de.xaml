@@ -88,6 +88,8 @@
     <system:String x:Key="MainWindow.CodeBehind.DeleteNotify.Message">Möchten Sie die ausgewählten Bücher entfernen?</system:String>
     <system:String x:Key="MainWindow.CodeBehind.DeleteNotify.Caption">Warnung</system:String>
 
+    <system:String x:Key="MaiinWindow.StatusBar.BookCount">Anzahl der Bücher:</system:String>
+
 
     <system:String x:Key="AddBook.Title">Eingabe</system:String>
     <system:String x:Key="AddBook.Number">Nummer</system:String>
