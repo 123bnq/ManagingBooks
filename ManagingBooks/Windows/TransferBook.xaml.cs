@@ -13,6 +13,7 @@ using iText.Layout.Element;
 using Microsoft.Win32;
 using System.Diagnostics;
 using iText.Layout.Borders;
+using System.Data.SQLite;
 
 namespace ManagingBooks.Windows
 {
@@ -50,10 +51,10 @@ namespace ManagingBooks.Windows
             }
             else
             {
-                SqlMethods.SqlConnect(out SqliteConnection con);
-                SqliteCommand selectCommand = con.CreateCommand();
+                SqlMethods.SqlConnect(out SQLiteConnection con);
+                SQLiteCommand selectCommand = con.CreateCommand();
                 selectCommand.CommandText = $"SELECT BookId,Number,Title FROM Books WHERE Number={bookNumber}";
-                SqliteDataReader r = selectCommand.ExecuteReader();
+                SQLiteDataReader r = selectCommand.ExecuteReader();
                 if (r.Read())
                 {
                     TransferingBook book = new TransferingBook();

@@ -27,7 +27,7 @@ using System.Windows.Controls;
 using iText.Layout.Borders;
 using iText.Kernel.Geom;
 using System.Windows.Media;
-
+using System.Data.SQLite;
 namespace ManagingBooks
 {
     /// <summary>
@@ -63,7 +63,7 @@ namespace ManagingBooks
             Search.ProgressChanged += Search_ProgressChanged;
             Search.RunWorkerCompleted += Search_RunWorkerCompleted;
             // start collecting books from DB
-            SqlMethods.SqlConnect(out SqliteConnection con);
+            SqlMethods.SqlConnect(out SQLiteConnection con);
             int numBook = NumberOfBooks(ref con);
             con.Close();
             Search.RunWorkerAsync(numBook);
@@ -98,7 +98,7 @@ namespace ManagingBooks
             int i = 0;
             int progressPercentage;
 
-            SqliteConnection con;
+            SQLiteConnection con;
             SqlMethods.SqlConnect(out con);
             var selectCommand = con.CreateCommand();
             selectCommand.CommandText = "SELECT b.BookId,b.Number,b.Title,b.Version,b.Medium,a.AuthorId,a.Name,s.Signature,b.Publisher,b.Place,b.Year,b.DayBought,b.Pages,b.Price " +
@@ -107,7 +107,7 @@ namespace ManagingBooks
                 "LEFT JOIN Authors a ON (ba.AuthorId = a.AuthorId) " +
                 "LEFT JOIN Books_Signatures bs ON (bs.BookId = b.BookId) " +
                 "LEFT JOIN Signatures s ON (bs.SignatureId = s.SignatureId) ORDER BY b.BookId,ba.Priority,bs.Priority";
-            SqliteDataReader r = selectCommand.ExecuteReader();
+            SQLiteDataReader r = selectCommand.ExecuteReader();
             int lastBookId = -1;
             int lastAuthorId = -1;
             bool finishedBook = false;
@@ -260,7 +260,7 @@ namespace ManagingBooks
             if (!new AddBook() { Owner = this }.ShowDialog().Value)
             {
                 (DataContext as SearchBookModel).DisplayBooks.Clear();
-                SqlMethods.SqlConnect(out SqliteConnection con);
+                SqlMethods.SqlConnect(out SQLiteConnection con);
                 int numBook = NumberOfBooks(ref con);
                 con.Close();
                 Search.RunWorkerAsync(numBook);
@@ -306,7 +306,7 @@ namespace ManagingBooks
         // *** not used ***
         private void SearchAll(SearchBookModel context)
         {
-            SqliteConnection con;
+            SQLiteConnection con;
             SqlMethods.SqlConnect(out con);
             var selectCommand = con.CreateCommand();
             selectCommand.CommandText = "SELECT b.BookId,b.Number,b.Title,b.Version,b.Medium,a.AuthorId,a.Name,s.Signature,b.Publisher,b.Place,b.Year,b.DayBought,b.Pages,b.Price " +
@@ -315,7 +315,7 @@ namespace ManagingBooks
                 "LEFT JOIN Authors a ON (ba.AuthorId = a.AuthorId) " +
                 "LEFT JOIN Books_Signatures bs ON (b.BookId = bs.BookId) " +
                 "LEFT JOIN Signatures s ON (bs.SignatureId = s.SignatureId) ORDER BY b.BookId";
-            SqliteDataReader r = selectCommand.ExecuteReader();
+            SQLiteDataReader r = selectCommand.ExecuteReader();
             int lastBookId = -1;
             int lastAuthorId = -1;
             SearchBook tempBook = new SearchBook();
@@ -404,7 +404,7 @@ namespace ManagingBooks
                     LastIndex = SearchList.Items.Count;
                 }
                 (DataContext as SearchBookModel).DisplayBooks.Clear();
-                SqlMethods.SqlConnect(out SqliteConnection con);
+                SqlMethods.SqlConnect(out SQLiteConnection con);
                 int numBook = NumberOfBooks(ref con);
                 con.Close();
                 Search.RunWorkerAsync(numBook);
@@ -535,12 +535,12 @@ namespace ManagingBooks
         /// Calculate the amount of books inside the DB
         /// </summary>
         /// <returns></returns>
-        private int NumberOfBooks(ref SqliteConnection con)
+        private int NumberOfBooks(ref SQLiteConnection con)
         {
             int numBook = 0;
             var selectCommand = con.CreateCommand();
             selectCommand.CommandText = "SELECT COUNT(*) AS max FROM Books";
-            SqliteDataReader r = selectCommand.ExecuteReader();
+            SQLiteDataReader r = selectCommand.ExecuteReader();
             r.Read();
             int.TryParse(Convert.ToString(r["max"]), out numBook);
             return numBook;
@@ -579,7 +579,7 @@ namespace ManagingBooks
                 BtnAddToPrint.IsEnabled = false;
                 if (SearchList.SelectedIndex != -1)
                 {
-                    SqlMethods.SqlConnect(out SqliteConnection con);
+                    SqlMethods.SqlConnect(out SQLiteConnection con);
                     await Task.Run(() =>
                     {
                         for (int i = deleteList.Count - 1; i >= 0; i--)
@@ -655,7 +655,7 @@ namespace ManagingBooks
                         {
                             var tempBook = deleteList[i] as SearchBook;
                             int bookId = tempBook.BookId;
-                            SqlMethods.SqlConnect(out SqliteConnection con);
+                            SqlMethods.SqlConnect(out SQLiteConnection con);
                             var tr = con.BeginTransaction();
                             var deleteCommand = con.CreateCommand();
                             deleteCommand.Transaction = tr;
@@ -834,7 +834,7 @@ namespace ManagingBooks
         }
 
         /// <summary>
-        /// Migrate the AccessDB to SqliteDB - Only works in .NET Framework
+        /// Migrate the AccessDB to SQLiteDB - Only works in .NET Framework
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -851,10 +851,10 @@ namespace ManagingBooks
             if (dialog.ShowDialog(this) == true)
             {
                 mdbPath = dialog.FileName;
-                SqlMethods.SqlConnect(out SqliteConnection con);
+                SqlMethods.SqlConnect(out SQLiteConnection con);
                 using (var conection = new OleDbConnection($"Provider=Microsoft.JET.OLEDB.4.0;data source={mdbPath};"))
                 {
-                    SqliteTransaction tr = con.BeginTransaction();
+                    SQLiteTransaction tr = con.BeginTransaction();
 
                     conection.Open();
                     OleDbDataReader reader = null;
@@ -1087,23 +1087,23 @@ namespace ManagingBooks
         {
             SearchBookModel context = this.DataContext as SearchBookModel;
             OpenFileDialog dialog = new OpenFileDialog();
-            dialog.Filter = "Sqlite Database (*.db)|*.db";
+            dialog.Filter = "SQLite Database (*.db)|*.db";
             dialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
             if (dialog.ShowDialog(this) == true)
             {
                 int count = 0;
                 int max = 0;
                 int i = 0;
-                SqliteConnection con = new SqliteConnection("" + new SqliteConnectionStringBuilder
+                SQLiteConnection con = new SQLiteConnection("" + new SQLiteConnectionStringBuilder
                 {
                     DataSource = dialog.FileName
                 });
                 con.Open();
-                SqlMethods.SqlConnect(out SqliteConnection connection);
+                SqlMethods.SqlConnect(out SQLiteConnection connection);
 
                 var selectCommand = con.CreateCommand();
                 selectCommand.CommandText = "SELECT COUNT(*) AS max FROM Books";
-                SqliteDataReader r = selectCommand.ExecuteReader();
+                SQLiteDataReader r = selectCommand.ExecuteReader();
                 r.Read();
                 int.TryParse(Convert.ToString(r["max"]), out max);
                 r.Close();
@@ -1282,10 +1282,10 @@ namespace ManagingBooks
         {
             string[] colHeader = { "BookId", "Number", "Signature", "Title", "Authors", "Publisher", "Year", "Version", "Medium", "Place", "Date", "Pages", "Price" };
             int[] values = new int[colHeader.Length];
-            SqlMethods.SqlConnect(out SqliteConnection con);
+            SqlMethods.SqlConnect(out SQLiteConnection con);
             var selectCommand = con.CreateCommand();
             selectCommand.CommandText = "SELECT ColName, Boolean FROM ListViewColVisible";
-            SqliteDataReader r = selectCommand.ExecuteReader();
+            SQLiteDataReader r = selectCommand.ExecuteReader();
             int i = 0;
             if (!r.Read())
             {
@@ -1332,7 +1332,7 @@ namespace ManagingBooks
             string header = (sender as MenuItem).Header.ToString();
             string colName;
             bool value;
-            SqlMethods.SqlConnect(out SqliteConnection con);
+            SqlMethods.SqlConnect(out SQLiteConnection con);
             var updateCommand = con.CreateCommand();
             switch (header)
             {

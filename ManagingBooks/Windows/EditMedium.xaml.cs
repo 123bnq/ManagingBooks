@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Data.SQLite;
 using WPFCustomMessageBox;
 
 namespace ManagingBooks.Windows
@@ -55,10 +56,10 @@ namespace ManagingBooks.Windows
         {
             EditMediumModel context = this.DataContext as EditMediumModel;
             context.ListMedium.Clear();
-            SqlMethods.SqlConnect(out SqliteConnection con);
+            SqlMethods.SqlConnect(out SQLiteConnection con);
             var selectCommand = con.CreateCommand();
             selectCommand.CommandText = "SELECT MediumId, Name FROM Mediums ORDER BY Name";
-            SqliteDataReader r = selectCommand.ExecuteReader();
+            SQLiteDataReader r = selectCommand.ExecuteReader();
             while (r.Read())
             {
                 Medium med = new Medium();
@@ -106,9 +107,9 @@ namespace ManagingBooks.Windows
             var removingItems = MediumList.SelectedItems;
             if (MediumList.SelectedIndex != -1)
             {
-                SqlMethods.SqlConnect(out SqliteConnection con);
+                SqlMethods.SqlConnect(out SQLiteConnection con);
                 var tr = con.BeginTransaction();
-                SqliteCommand removeCommand = con.CreateCommand();
+                SQLiteCommand removeCommand = con.CreateCommand();
                 removeCommand.Transaction = tr;
                 await Task.Run(() =>
                 {
@@ -135,16 +136,16 @@ namespace ManagingBooks.Windows
         private void SaveMediumCommand_Executed(object sender, System.Windows.Input.ExecutedRoutedEventArgs e)
         {
             EditMediumModel context = this.DataContext as EditMediumModel;
-            SqlMethods.SqlConnect(out SqliteConnection con);
-            SqliteCommand selectCommand = con.CreateCommand();
+            SqlMethods.SqlConnect(out SQLiteConnection con);
+            SQLiteCommand selectCommand = con.CreateCommand();
             selectCommand.CommandText = $"SELECT MediumId, Name FROM Mediums WHERE Name='{context.Name}'";
-            SqliteDataReader r = selectCommand.ExecuteReader();
+            SQLiteDataReader r = selectCommand.ExecuteReader();
             if (!r.Read())
             {
                 // to add new medium
                 if (context.Id == 0)
                 {
-                    SqliteCommand insertCommand = con.CreateCommand();
+                    SQLiteCommand insertCommand = con.CreateCommand();
                     insertCommand.CommandText = $"INSERT INTO Mediums (Name) VALUES ('{context.Name}')";
                     insertCommand.ExecuteNonQuery();
                 }
@@ -152,7 +153,7 @@ namespace ManagingBooks.Windows
                 // to update medium's name
                 else
                 {
-                    SqliteCommand updateCommand = con.CreateCommand();
+                    SQLiteCommand updateCommand = con.CreateCommand();
                     updateCommand.CommandText = $"UPDATE Mediums SET Name='{context.Name}' WHERE MediumId={context.Id}";
                     updateCommand.ExecuteNonQuery();
                 }
@@ -162,7 +163,7 @@ namespace ManagingBooks.Windows
                 // to update medium's name
                 if (context.Id != 0)
                 {
-                    SqliteCommand updateCommand = con.CreateCommand();
+                    SQLiteCommand updateCommand = con.CreateCommand();
                     updateCommand.CommandText = $"UPDATE Mediums SET Name='{context.Name}' WHERE MediumId={context.Id}";
                     updateCommand.ExecuteNonQuery();
                 }

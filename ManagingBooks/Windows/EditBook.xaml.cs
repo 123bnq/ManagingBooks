@@ -11,6 +11,7 @@ using System.Collections.ObjectModel;
 using WPFCustomMessageBox;
 using System.Text.RegularExpressions;
 using System.Windows.Input;
+using System.Data.SQLite;
 
 namespace ManagingBooks.Windows
 {
@@ -54,7 +55,7 @@ namespace ManagingBooks.Windows
 
         private void RetriveBook(AddBookModel context)
         {
-            SqlMethods.SqlConnect(out SqliteConnection con);
+            SqlMethods.SqlConnect(out SQLiteConnection con);
             var selectCommmand = con.CreateCommand();
             selectCommmand.CommandText = $"SELECT b.Number,b.Title,b.Publisher,b.Version,b.Year,b.Medium,b.Place,b.DayBought,b.Pages,b.Price,a.AuthorId,a.Name,s.Signature " +
                 $"FROM Books b " +
@@ -63,7 +64,7 @@ namespace ManagingBooks.Windows
                 $"LEFT JOIN Books_Signatures bs ON (bs.BookId = b.BookId) " +
                 $"LEFT JOIN Signatures s ON (s.SignatureId = bs.SignatureId) " +
                 $"WHERE b.BookId = '{book.BookId}' ORDER BY ba.Priority,bs.Priority";
-            SqliteDataReader r = selectCommmand.ExecuteReader();
+            SQLiteDataReader r = selectCommmand.ExecuteReader();
             int result;
             List<string> authors = new List<string>();
             List<string> signatures = new List<string>();
@@ -306,7 +307,7 @@ namespace ManagingBooks.Windows
 
                             // update book
 
-                            SqlMethods.SqlConnect(out SqliteConnection con);
+                            SqlMethods.SqlConnect(out SQLiteConnection con);
                             var tr = con.BeginTransaction();
                             var updateCommand = con.CreateCommand();
                             updateCommand.Transaction = tr;
@@ -333,7 +334,7 @@ namespace ManagingBooks.Windows
                                 // check if there is existing Author
                                 selectCommand = con.CreateCommand();
                                 selectCommand.CommandText = $"SELECT * FROM Authors WHERE Name = '{tempBook.Authors[i].Name}'";
-                                SqliteDataReader r = selectCommand.ExecuteReader();
+                                SQLiteDataReader r = selectCommand.ExecuteReader();
                                 // if no, add Author
                                 if (!r.Read())
                                 {
@@ -356,7 +357,7 @@ namespace ManagingBooks.Windows
                             {
                                 selectCommand = con.CreateCommand();
                                 selectCommand.CommandText = $"SELECT * FROM Signatures WHERE Signature = '{tempBook.Signatures[i]}'";
-                                SqliteDataReader r = selectCommand.ExecuteReader();
+                                SQLiteDataReader r = selectCommand.ExecuteReader();
                                 if (!r.Read())
                                 {
                                     insertCommand.CommandText = "INSERT INTO Signatures (Signature, Info) VALUES (@Signature, @Info)";
@@ -387,7 +388,7 @@ namespace ManagingBooks.Windows
                         {
                             copied = false;
                             IsNew = true;
-                            SqliteConnection con;
+                            SQLiteConnection con;
                             SqlMethods.SqlConnect(out con);
                             var tr = con.BeginTransaction();
                             AddBook.AddBookToDatabase(ref con, ref tr, tempBook);

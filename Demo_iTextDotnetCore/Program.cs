@@ -9,6 +9,7 @@ using iText.Layout.Element;
 using iText.Layout.Properties;
 using iText.Kernel.Geom;
 using Spire.Pdf;
+using System.Data.SQLite;
 
 namespace Demo_iTextDotnetCore
 {
@@ -16,6 +17,15 @@ namespace Demo_iTextDotnetCore
     {
         static void Main(string[] args)
         {
+            SQLiteConnection connection = new SQLiteConnection();
+            SQLiteConnection.CreateFile("Data.sqlite");
+            string script = File.ReadAllText(System.IO.Path.Combine(AppContext.BaseDirectory, "Database1.sql"));
+            connection = new SQLiteConnection(new SQLiteConnectionStringBuilder { DataSource = "Data.sqlite" }.ToString());
+            connection.Open();
+            var createDB = connection.CreateCommand();
+            createDB.CommandText = script;
+            createDB.ExecuteNonQuery();
+            connection.Close();
             string exportFolder = AppContext.BaseDirectory;
             string exportFile = System.IO.Path.Combine(exportFolder, "Test.pdf");
             string exportImage = System.IO.Path.Combine(exportFolder, "bc.png");
