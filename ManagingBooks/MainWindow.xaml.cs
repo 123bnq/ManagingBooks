@@ -63,7 +63,10 @@ namespace ManagingBooks
             Search.ProgressChanged += Search_ProgressChanged;
             Search.RunWorkerCompleted += Search_RunWorkerCompleted;
             // start collecting books from DB
-            Search.RunWorkerAsync(NumberOfBooks());
+            SqlMethods.SqlConnect(out SqliteConnection con);
+            int numBook = NumberOfBooks(ref con);
+            con.Close();
+            Search.RunWorkerAsync(numBook);
 
             // hide books which are not relevant to UserFilter
             CollectionView view = CollectionViewSource.GetDefaultView(SearchList.ItemsSource) as CollectionView;
@@ -203,6 +206,8 @@ namespace ManagingBooks
             SearchBookModel context = this.DataContext as SearchBookModel;
             // set the status to finished
             context.Status = "Search Complete";
+            // set number of Book
+            context.BookCount = (int)e.Result;
             //context.Status = Application.Current.FindResource("MainWindow.CodeBehind.Status.Completed").ToString();
             // focus to the previous chosen book if any
             if (LastIndex != -1)
@@ -255,7 +260,10 @@ namespace ManagingBooks
             if (!new AddBook() { Owner = this }.ShowDialog().Value)
             {
                 (DataContext as SearchBookModel).DisplayBooks.Clear();
-                Search.RunWorkerAsync(NumberOfBooks());
+                SqlMethods.SqlConnect(out SqliteConnection con);
+                int numBook = NumberOfBooks(ref con);
+                con.Close();
+                Search.RunWorkerAsync(numBook);
                 ClearEntries(DataContext as SearchBookModel);
             }
         }
@@ -396,7 +404,10 @@ namespace ManagingBooks
                     LastIndex = SearchList.Items.Count;
                 }
                 (DataContext as SearchBookModel).DisplayBooks.Clear();
-                Search.RunWorkerAsync(NumberOfBooks());
+                SqlMethods.SqlConnect(out SqliteConnection con);
+                int numBook = NumberOfBooks(ref con);
+                con.Close();
+                Search.RunWorkerAsync(numBook);
             }
         }
 
@@ -524,18 +535,14 @@ namespace ManagingBooks
         /// Calculate the amount of books inside the DB
         /// </summary>
         /// <returns></returns>
-        private int NumberOfBooks()
+        private int NumberOfBooks(ref SqliteConnection con)
         {
             int numBook = 0;
-            SqlMethods.SqlConnect(out SqliteConnection con);
             var selectCommand = con.CreateCommand();
-            selectCommand.CommandText = "SELECT BookId FROM Books";
+            selectCommand.CommandText = "SELECT COUNT(*) AS max FROM Books";
             SqliteDataReader r = selectCommand.ExecuteReader();
-            while (r.Read())
-            {
-                numBook++;
-            }
-            con.Close();
+            r.Read();
+            int.TryParse(Convert.ToString(r["max"]), out numBook);
             return numBook;
         }
 
@@ -572,13 +579,14 @@ namespace ManagingBooks
                 BtnAddToPrint.IsEnabled = false;
                 if (SearchList.SelectedIndex != -1)
                 {
+                    SqlMethods.SqlConnect(out SqliteConnection con);
                     await Task.Run(() =>
                     {
                         for (int i = deleteList.Count - 1; i >= 0; i--)
                         {
                             var tempBook = deleteList[i] as SearchBook;
                             int bookId = tempBook.BookId;
-                            SqlMethods.SqlConnect(out SqliteConnection con);
+
                             var tr = con.BeginTransaction();
                             var deleteCommand = con.CreateCommand();
                             deleteCommand.Transaction = tr;
@@ -591,8 +599,6 @@ namespace ManagingBooks
                             deleteCommand.CommandText = $"DELETE FROM Books WHERE BookId={bookId}";
                             deleteCommand.ExecuteNonQuery();
                             tr.Commit();
-                            con.Close();
-
                             progress.Report(Convert.ToInt32((double)(max - i) / max * 100));
                             context.Status = "Deleting";
                             //context.Status = Application.Current.FindResource("MainWindow.CodeBehind.Status.Deleting").ToString();
@@ -606,6 +612,8 @@ namespace ManagingBooks
                         }
                     });
                     context.Status = "Delete Finished";
+                    context.BookCount = NumberOfBooks(ref con);
+                    con.Close();
                     //context.Status = Application.Current.FindResource("MainWindow.CodeBehind.Status.DeleteCompleted").ToString();
                 }
             }
@@ -843,9 +851,9 @@ namespace ManagingBooks
             if (dialog.ShowDialog(this) == true)
             {
                 mdbPath = dialog.FileName;
+                SqlMethods.SqlConnect(out SqliteConnection con);
                 using (var conection = new OleDbConnection($"Provider=Microsoft.JET.OLEDB.4.0;data source={mdbPath};"))
                 {
-                    SqlMethods.SqlConnect(out SqliteConnection con);
                     SqliteTransaction tr = con.BeginTransaction();
 
                     conection.Open();
@@ -942,11 +950,11 @@ namespace ManagingBooks
                         AddBook.AddBookToDatabase(ref con, ref tr, book);
                     }
                     tr.Commit();
-                    con.Close();
                 }
+                int numBook = NumberOfBooks(ref con);
+                con.Close();
+                Search.RunWorkerAsync(numBook);
             }
-            Search.RunWorkerAsync(NumberOfBooks());
-
         }
 
         /// <summary>
@@ -1250,8 +1258,9 @@ namespace ManagingBooks
                     }
                 });
                 connection.Close();
+                int numBook = NumberOfBooks(ref con);
+                Search.RunWorkerAsync(numBook);
                 con.Close();
-                Search.RunWorkerAsync(NumberOfBooks());
                 SearchList.IsEnabled = true;
                 BoxSearchText.IsEnabled = true;
                 BtnClearBookInfo.IsEnabled = true;

@@ -11,6 +11,7 @@ namespace ManagingBooks.Model
         private string m_SearchBy;
         private string m_Status;
         private int m_Progress;
+        private int m_BookCount;
 
         private string m_ViewNumber;
         private string m_ViewSignatures;
@@ -83,6 +84,18 @@ namespace ManagingBooks.Model
                 if (value != m_Progress)
                 {
                     m_Progress = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+        public int BookCount
+        {
+            get => m_BookCount;
+            set
+            {
+                if (value != m_BookCount)
+                {
+                    m_BookCount = value;
                     NotifyPropertyChanged();
                 }
             }

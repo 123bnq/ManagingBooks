@@ -8,9 +8,9 @@
         mc:Ignorable="d"
         Title="{DynamicResource MainWindow.Title}" ResizeMode="CanMinimize" SizeToContent="WidthAndHeight" WindowStartupLocation="CenterScreen"
         Background="WhiteSmoke">
-    <!--<Window.DataContext>
+    <Window.DataContext>
         <model:SearchBookModel/>
-    </Window.DataContext>-->
+    </Window.DataContext>
     <Window.CommandBindings>
         <CommandBinding Command="local:CustomCommands.Exit" CanExecute="ExitCommand_CanExecute" Executed="ExitCommand_Executed"/>
         <CommandBinding Command="local:CustomCommands.English" CanExecute="EnglishCommand_CanExecute" Executed="EnglishCommand_Executed"/>
@@ -83,6 +83,9 @@
                 </TextBlock.Style>
             </TextBlock>
             <ProgressBar Minimum="0" Maximum="100" Height="15" Width="200" Value="{Binding Progress}"/>
+            <Separator/>
+            <TextBlock Text="Book count:"/>
+            <TextBlock Text="{Binding BookCount}"/>
         </StatusBar>
         <StackPanel Margin="10">
             <Grid>
