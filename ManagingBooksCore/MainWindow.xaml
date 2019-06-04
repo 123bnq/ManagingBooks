@@ -83,6 +83,9 @@
                 </TextBlock.Style>
             </TextBlock>
             <ProgressBar Minimum="0" Maximum="100" Height="15" Width="200" Value="{Binding Progress}"/>
+            <Separator/>
+            <TextBlock Text="{DynamicResource MaiinWindow.StatusBar.BookCount}"/>
+            <TextBlock Text="{Binding BookCount}"/>
         </StatusBar>
         <StackPanel Margin="10">
             <Grid>

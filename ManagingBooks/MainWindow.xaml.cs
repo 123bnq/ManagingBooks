@@ -621,6 +621,7 @@ namespace ManagingBooks
             BoxSearchText.IsEnabled = true;
             BtnClearBookInfo.IsEnabled = true;
             BtnAddToPrint.IsEnabled = true;
+            ClearEntries(context);
         }
 
         // *** not used ***

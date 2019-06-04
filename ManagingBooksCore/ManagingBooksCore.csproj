@@ -29,12 +29,16 @@
     <PackageReference Include="Microsoft.Data.Sqlite" Version="2.2.4" />
     <PackageReference Include="Microsoft.Data.Sqlite.Core" Version="2.2.4" />
     <PackageReference Include="Microsoft.Windows.Compatibility" Version="2.0.1" />
+    <PackageReference Include="System.Data.SQLite.Core" Version="1.0.110" />
     <PackageReference Include="WPFCustomMessageBox" Version="1.0.7" />
   </ItemGroup>
 
   <ItemGroup>
     <None Update="Data\Database.db">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Data\Database.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Data\ProNoskoDatenbank_160717.ldb">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

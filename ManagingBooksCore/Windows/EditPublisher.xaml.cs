@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Data.SQLite;
 using WPFCustomMessageBox;
 
 namespace ManagingBooks.Windows
@@ -34,10 +35,10 @@ namespace ManagingBooks.Windows
         {
             EditPublisherModel context = this.DataContext as EditPublisherModel;
             context.ListPublisher.Clear();
-            SqlMethods.SqlConnect(out SqliteConnection con);
+            SqlMethods.SqlConnect(out SQLiteConnection con);
             var selectCommand = con.CreateCommand();
             selectCommand.CommandText = "SELECT Id, Name, City, Country FROM Publishers ORDER BY Name";
-            SqliteDataReader r = selectCommand.ExecuteReader();
+            SQLiteDataReader r = selectCommand.ExecuteReader();
             while (r.Read())
             {
                 Publisher pub = new Publisher();
@@ -108,9 +109,9 @@ namespace ManagingBooks.Windows
             var removingItems = PubList.SelectedItems;
             if (PubList.SelectedIndex != -1)
             {
-                SqlMethods.SqlConnect(out SqliteConnection con);
+                SqlMethods.SqlConnect(out SQLiteConnection con);
                 var tr = con.BeginTransaction();
-                SqliteCommand removeCommand = con.CreateCommand();
+                SQLiteCommand removeCommand = con.CreateCommand();
                 removeCommand.Transaction = tr;
                 await Task.Run(() =>
                 {
@@ -137,16 +138,16 @@ namespace ManagingBooks.Windows
         private void SavePubCommand_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             EditPublisherModel context = this.DataContext as EditPublisherModel;
-            SqlMethods.SqlConnect(out SqliteConnection con);
-            SqliteCommand selectCommand = con.CreateCommand();
+            SqlMethods.SqlConnect(out SQLiteConnection con);
+            SQLiteCommand selectCommand = con.CreateCommand();
             selectCommand.CommandText = $"SELECT Name FROM Publishers WHERE Name='{context.Name}'";
-            SqliteDataReader r = selectCommand.ExecuteReader();
+            SQLiteDataReader r = selectCommand.ExecuteReader();
             if (!r.Read())
             {
                 // to add new Publisher
                 if (context.Id == 0)
                 {
-                    SqliteCommand insertCommand = con.CreateCommand();
+                    SQLiteCommand insertCommand = con.CreateCommand();
                     if (!string.IsNullOrWhiteSpace(context.City) && !string.IsNullOrWhiteSpace(context.Country))
                     {
                         insertCommand.CommandText = "INSERT INTO Publishers (Name,City,Country) VALUES (@Name,@City,@Country)";
@@ -166,7 +167,7 @@ namespace ManagingBooks.Windows
                 // to update publisher's name
                 else
                 {
-                    SqliteCommand updateCommand = con.CreateCommand();
+                    SQLiteCommand updateCommand = con.CreateCommand();
                     updateCommand.CommandText = $"UPDATE Publishers SET Name='{context.Name}', City='{context.City}', Country='{context.Country}' WHERE Id={context.Id}";
                     updateCommand.ExecuteNonQuery();
                 }
@@ -176,7 +177,7 @@ namespace ManagingBooks.Windows
                 // to update old publisher's place
                 if (context.Id != 0)
                 {
-                    SqliteCommand updateCommand = con.CreateCommand();
+                    SQLiteCommand updateCommand = con.CreateCommand();
                     updateCommand.CommandText = $"UPDATE Publishers SET Name='{context.Name}', City='{context.City}', Country='{context.Country}' WHERE Id={context.Id}";
                     updateCommand.ExecuteNonQuery();
                 }

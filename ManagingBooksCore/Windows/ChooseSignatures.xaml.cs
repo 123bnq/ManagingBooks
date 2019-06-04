@@ -15,6 +15,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Data.SQLite;
 using WPFCustomMessageBox;
 
 namespace ManagingBooks.Windows
@@ -84,10 +85,10 @@ namespace ManagingBooks.Windows
         {
             ChooseSignaturesModel context = this.DataContext as ChooseSignaturesModel;
             context.Signatures.Clear();
-            SqlMethods.SqlConnect(out SqliteConnection con);
-            SqliteCommand selectCommand = con.CreateCommand();
+            SqlMethods.SqlConnect(out SQLiteConnection con);
+            SQLiteCommand selectCommand = con.CreateCommand();
             selectCommand.CommandText = "SELECT SignatureId, Signature, Info FROM Signatures WHERE ParentId IS NULL";
-            SqliteDataReader r = selectCommand.ExecuteReader();
+            SQLiteDataReader r = selectCommand.ExecuteReader();
             while (r.Read())
             {
                 Signature sig = new Signature();
@@ -108,10 +109,10 @@ namespace ManagingBooks.Windows
         {
             ChooseSignaturesModel context = this.DataContext as ChooseSignaturesModel;
             context.SubSignatures.Clear();
-            SqlMethods.SqlConnect(out SqliteConnection con);
-            SqliteCommand selectCommand = con.CreateCommand();
+            SqlMethods.SqlConnect(out SQLiteConnection con);
+            SQLiteCommand selectCommand = con.CreateCommand();
             selectCommand.CommandText = $"SELECT SignatureId, Signature, Info, Sort FROM Signatures Where ParentId={SignatureId} ORDER BY Sort,Signature";
-            SqliteDataReader r = selectCommand.ExecuteReader();
+            SQLiteDataReader r = selectCommand.ExecuteReader();
             while (r.Read())
             {
                 Signature sig = new Signature();
@@ -236,17 +237,17 @@ namespace ManagingBooks.Windows
         private async void RemoveSigCommand_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             ChooseSignaturesModel context = this.DataContext as ChooseSignaturesModel;
-            SqlMethods.SqlConnect(out SqliteConnection con);
+            SqlMethods.SqlConnect(out SQLiteConnection con);
 
-            SqliteCommand removeCommand = con.CreateCommand();
+            SQLiteCommand removeCommand = con.CreateCommand();
 
 
             // remove main Signature
             if (context.ParentId == 0)
             {
-                SqliteCommand selectCommand = con.CreateCommand();
+                SQLiteCommand selectCommand = con.CreateCommand();
                 selectCommand.CommandText = $"SELECT * FROM Signatures WHERE ParentId={context.CurrentId}";
-                SqliteDataReader r = selectCommand.ExecuteReader();
+                SQLiteDataReader r = selectCommand.ExecuteReader();
                 if (!r.Read())
                 {
                     removeCommand.CommandText = $"DELETE FROM Signatures WHERE SignatureId={context.CurrentId}";
@@ -266,7 +267,7 @@ namespace ManagingBooks.Windows
             else
             {
                 var removeItems = SubList.SelectedItems;
-                SqliteTransaction tr = con.BeginTransaction();
+                SQLiteTransaction tr = con.BeginTransaction();
                 removeCommand.Transaction = tr;
                 await Task.Run(() =>
                 {
@@ -297,8 +298,8 @@ namespace ManagingBooks.Windows
         private void SaveSigCommand_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             ChooseSignaturesModel context = this.DataContext as ChooseSignaturesModel;
-            SqlMethods.SqlConnect(out SqliteConnection con);
-            SqliteCommand selectCommand = con.CreateCommand();
+            SqlMethods.SqlConnect(out SQLiteConnection con);
+            SQLiteCommand selectCommand = con.CreateCommand();
             if (context.ParentId == 0)
             {
                 selectCommand.CommandText = $"SELECT SignatureId, Signature, Info FROM Signatures WHERE ParentId IS NULL AND Signature = '{context.Name}'";
@@ -307,13 +308,13 @@ namespace ManagingBooks.Windows
             {
                 selectCommand.CommandText = $"SELECT SignatureId, Signature, Info FROM Signatures WHERE ParentId = {context.ParentId} AND Signature = '{context.Name}'";
             }
-            SqliteDataReader r = selectCommand.ExecuteReader();
+            SQLiteDataReader r = selectCommand.ExecuteReader();
             if (!r.Read())
             {
                 // to add new place
                 if (context.CurrentId == 0)
                 {
-                    SqliteCommand insertCommand = con.CreateCommand();
+                    SQLiteCommand insertCommand = con.CreateCommand();
                     if (context.ParentId == 0)
                     {
                         insertCommand.CommandText = $"INSERT INTO Signatures (Signature,Info) VALUES ('{context.Name}','{context.Info}')";
@@ -328,7 +329,7 @@ namespace ManagingBooks.Windows
                 // to update place's State and country
                 else
                 {
-                    SqliteCommand updateCommand = con.CreateCommand();
+                    SQLiteCommand updateCommand = con.CreateCommand();
                     if (context.ParentId == 0)
                     {
                         updateCommand.CommandText = $"UPDATE Signatures SET Signature='{context.Name}', Info='{context.Info}' WHERE SignatureId={context.CurrentId}";
@@ -345,7 +346,7 @@ namespace ManagingBooks.Windows
                 // to update place's city
                 if (context.CurrentId != 0)
                 {
-                    SqliteCommand updateCommand = con.CreateCommand();
+                    SQLiteCommand updateCommand = con.CreateCommand();
                     if (context.ParentId == 0)
                     {
                         updateCommand.CommandText = $"UPDATE Signatures SET Signature='{context.Name}', Info='{context.Info}' WHERE SignatureId={context.CurrentId}";

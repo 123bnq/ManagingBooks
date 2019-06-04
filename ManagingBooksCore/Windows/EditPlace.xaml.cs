@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Data.SQLite;
 using WPFCustomMessageBox;
 
 namespace ManagingBooks.Windows
@@ -54,10 +55,10 @@ namespace ManagingBooks.Windows
         {
             EditPlaceModel context = this.DataContext as EditPlaceModel;
             context.ListPlace.Clear();
-            SqlMethods.SqlConnect(out SqliteConnection con);
+            SqlMethods.SqlConnect(out SQLiteConnection con);
             var selectCommand = con.CreateCommand();
             selectCommand.CommandText = "SELECT Id, City, State, Country FROM Places ORDER BY City";
-            SqliteDataReader r = selectCommand.ExecuteReader();
+            SQLiteDataReader r = selectCommand.ExecuteReader();
             while (r.Read())
             {
                 Place place = new Place();
@@ -82,9 +83,9 @@ namespace ManagingBooks.Windows
             var removingItems = PlaceList.SelectedItems;
             if (PlaceList.SelectedIndex != -1)
             {
-                SqlMethods.SqlConnect(out SqliteConnection con);
+                SqlMethods.SqlConnect(out SQLiteConnection con);
                 var tr = con.BeginTransaction();
-                SqliteCommand removeCommand = con.CreateCommand();
+                SQLiteCommand removeCommand = con.CreateCommand();
                 removeCommand.Transaction = tr;
                 await Task.Run(() =>
                 {
@@ -111,16 +112,16 @@ namespace ManagingBooks.Windows
         private void SavePlaceCommand_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             EditPlaceModel context = this.DataContext as EditPlaceModel;
-            SqlMethods.SqlConnect(out SqliteConnection con);
-            SqliteCommand selectCommand = con.CreateCommand();
+            SqlMethods.SqlConnect(out SQLiteConnection con);
+            SQLiteCommand selectCommand = con.CreateCommand();
             selectCommand.CommandText = $"SELECT City FROM Places WHERE City='{context.City}'";
-            SqliteDataReader r = selectCommand.ExecuteReader();
+            SQLiteDataReader r = selectCommand.ExecuteReader();
             if (!r.Read())
             {
                 // to add new place
                 if (context.Id == 0)
                 {
-                    SqliteCommand insertCommand = con.CreateCommand();
+                    SQLiteCommand insertCommand = con.CreateCommand();
                     if (!string.IsNullOrWhiteSpace(context.State) && !string.IsNullOrWhiteSpace(context.Country))
                     {
                         insertCommand.CommandText = "INSERT INTO Places (City,State,Country) VALUES (@City,@State,@Country)";
@@ -151,7 +152,7 @@ namespace ManagingBooks.Windows
                 // to update place's State and country
                 else
                 {
-                    SqliteCommand updateCommand = con.CreateCommand();
+                    SQLiteCommand updateCommand = con.CreateCommand();
                     updateCommand.CommandText = $"UPDATE Places SET City='{context.City}', State='{context.State}', Country='{context.Country}' WHERE Id={context.Id}";
                     updateCommand.ExecuteNonQuery();
                 }
@@ -161,7 +162,7 @@ namespace ManagingBooks.Windows
                 // to update place's city
                 if (context.Id != 0)
                 {
-                    SqliteCommand updateCommand = con.CreateCommand();
+                    SQLiteCommand updateCommand = con.CreateCommand();
                     updateCommand.CommandText = $"UPDATE Places SET City='{context.City}', State='{context.State}', Country='{context.Country}' WHERE Id={context.Id}";
                     updateCommand.ExecuteNonQuery();
                 }

@@ -14,6 +14,7 @@ using System.Windows.Data;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Windows.Input;
+using System.Data.SQLite;
 using iText.Kernel.Pdf;
 using iText.Kernel.Geom;
 using iText.Layout;
@@ -293,12 +294,12 @@ namespace ManagingBooks.Windows
                         book.Signatures[2] = context.Signature3;
                     }
 
-                    SqliteConnection con;
+                    SQLiteConnection con;
                     SqlMethods.SqlConnect(out con);
                     var selectCommand = con.CreateCommand();
                     //selectCommand.CommandText = $"SELECT * FROM Books WHERE Number = {book.Number} OR Title = '{book.Title}' AND Version = {book.Version} AND Medium = '{book.Medium}' AND DayBought = '{book.DayBought}'";
                     selectCommand.CommandText = $"SELECT * FROM Books WHERE Number = {book.Number}";
-                    SqliteDataReader r = selectCommand.ExecuteReader();
+                    SQLiteDataReader r = selectCommand.ExecuteReader();
 
                     if (r.Read())
                     {
@@ -422,11 +423,11 @@ namespace ManagingBooks.Windows
             {
                 context.ListBook.Clear();
             });
-            SqliteConnection con;
+            SQLiteConnection con;
             SqlMethods.SqlConnect(out con);
             var updateCommand = con.CreateCommand();
             updateCommand.CommandText = "SELECT Number FROM Books ORDER BY BookId DESC";
-            SqliteDataReader r = updateCommand.ExecuteReader();
+            SQLiteDataReader r = updateCommand.ExecuteReader();
             int i = 20;
             while (r.Read() && i-- > 0)
             {
@@ -448,10 +449,10 @@ namespace ManagingBooks.Windows
             string date = "01/01/2019";
             string[] medium = { "Text book", "CD", "DVD", "E-book" };
             Random rnd = new Random();
-            SqlMethods.SqlConnect(out SqliteConnection connect);
-            SqliteCommand selectCommand = connect.CreateCommand();
+            SqlMethods.SqlConnect(out SQLiteConnection connect);
+            SQLiteCommand selectCommand = connect.CreateCommand();
             selectCommand.CommandText = "SELECT count(*) FROM Mediums";
-            SqliteDataReader reader = selectCommand.ExecuteReader();
+            SQLiteDataReader reader = selectCommand.ExecuteReader();
             reader.Read();
             int temp;
             int.TryParse(Convert.ToString(reader["count(*)"]), out temp);
@@ -500,7 +501,7 @@ namespace ManagingBooks.Windows
                     book.Pages = rnd.Next(10, 501);
                     book.Price = Math.Round(rnd.NextDouble() * 100, 2);
 
-                    SqliteConnection con;
+                    SQLiteConnection con;
                     SqlMethods.SqlConnect(out con);
                     var tr = con.BeginTransaction();
                     AddBookToDatabase(ref con, ref tr, book);
@@ -516,7 +517,7 @@ namespace ManagingBooks.Windows
         }
         // *** not used ***
 
-        public static void AddBookToDatabase(ref SqliteConnection con, ref SqliteTransaction tr, Book book)
+        public static void AddBookToDatabase(ref SQLiteConnection con, ref SQLiteTransaction tr, Book book)
         {
             var insertCommand = con.CreateCommand();
             insertCommand.Transaction = tr;
@@ -535,8 +536,8 @@ namespace ManagingBooks.Windows
             insertCommand.ExecuteNonQuery();
             insertCommand.Parameters.Clear();
             Thread.Sleep(TimeSpan.FromTicks(5));
-            SqliteCommand selectCommand;
-            SqliteDataReader r;
+            SQLiteCommand selectCommand;
+            SQLiteDataReader r;
             int maxId = 0;
             selectCommand = con.CreateCommand();
             selectCommand.CommandText = $"SELECT BookId FROM Books WHERE Title = '{book.Title}'";
@@ -593,10 +594,10 @@ namespace ManagingBooks.Windows
 
         public static void ReadPublisherMediumPlace(ObservableCollection<string> listPubl, ObservableCollection<string> listMedi, ObservableCollection<string> listPlace)
         {
-            SqlMethods.SqlConnect(out SqliteConnection con);
+            SqlMethods.SqlConnect(out SQLiteConnection con);
             var selectCommand = con.CreateCommand();
             selectCommand.CommandText = "SELECT Name FROM Publishers ORDER BY Name";
-            SqliteDataReader r = selectCommand.ExecuteReader();
+            SQLiteDataReader r = selectCommand.ExecuteReader();
             while (r.Read())
             {
                 listPubl.Add(Convert.ToString(r["Name"]));
