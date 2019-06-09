@@ -26,6 +26,22 @@ namespace Demo_iTextDotnetCore
             createDB.CommandText = script;
             createDB.ExecuteNonQuery();
             connection.Close();
+            connection.Open();
+            var insertCommand = connection.CreateCommand();
+            insertCommand.CommandText = "INSERT INTO Books (Number, Title, Publisher, Version, Year, Medium, Place, DayBought, Pages, Price) " +
+                "VALUES (@Number,@Title,@Publisher,@Version,@Year,@Medium,@Place,@Date,@Pages,@Price)";
+            insertCommand.Parameters.AddWithValue("Number", 123);
+            insertCommand.Parameters.AddWithValue("Title", "qwerqwr'");
+            insertCommand.Parameters.AddWithValue("Publisher", "pub");
+            insertCommand.Parameters.AddWithValue("Version", 1);
+            insertCommand.Parameters.AddWithValue("Year", 2010);
+            insertCommand.Parameters.AddWithValue("Medium", "med");
+            insertCommand.Parameters.AddWithValue("Place", "bla");
+            insertCommand.Parameters.AddWithValue("Date", "12122010");
+            insertCommand.Parameters.AddWithValue("Pages", 15);
+            insertCommand.Parameters.AddWithValue("Price", 15.2);
+            insertCommand.ExecuteNonQuery();
+            connection.Close();
             string exportFolder = AppContext.BaseDirectory;
             string exportFile = System.IO.Path.Combine(exportFolder, "Test.pdf");
             string exportImage = System.IO.Path.Combine(exportFolder, "bc.png");
