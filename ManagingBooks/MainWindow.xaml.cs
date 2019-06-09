@@ -1453,8 +1453,10 @@ namespace ManagingBooks
         public static readonly RoutedUICommand SaveMedium = new RoutedUICommand("SaveMedium", "SaveMedium", typeof(CustomCommands));
         public static readonly RoutedUICommand RemovePlace = new RoutedUICommand("RemovePlace", "RemovePlace", typeof(CustomCommands));
         public static readonly RoutedUICommand SavePlace = new RoutedUICommand("SavePlace", "SavePlace", typeof(CustomCommands));
-        public static readonly RoutedUICommand RemoveSig = new RoutedUICommand("RemoveSig", "RemoveSig", typeof(CustomCommands));
-        public static readonly RoutedUICommand SaveSig = new RoutedUICommand("SaveSig", "SaveSig", typeof(CustomCommands));
+        public static readonly RoutedUICommand RemoveMainSig = new RoutedUICommand("RemoveMainSig", "RemoveMainSig", typeof(CustomCommands));
+        public static readonly RoutedUICommand RemoveSubSig = new RoutedUICommand("RemoveSubSig", "RemoveSubSig", typeof(CustomCommands));
+        public static readonly RoutedUICommand SaveMainSig = new RoutedUICommand("SaveMainSig", "SaveMainSig", typeof(CustomCommands));
+        public static readonly RoutedUICommand SaveSubSig = new RoutedUICommand("SaveSubSig", "SaveSubSig", typeof(CustomCommands));
 
         public static readonly RoutedUICommand AddToTransfer = new RoutedUICommand("AddToTransfer", "AddToTransfer", typeof(CustomCommands));
         public static readonly RoutedUICommand ExportTransferList = new RoutedUICommand("ExportTransferList", "ExportTransferList", typeof(CustomCommands));

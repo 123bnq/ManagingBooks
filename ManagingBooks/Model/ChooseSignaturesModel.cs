@@ -14,6 +14,7 @@ namespace ManagingBooks.Model
         private Signature m_MainSig;
         private Signature m_SubSig;
         private int m_CurrentId;
+        private int m_CurrentSubId;
         private string m_Name;
         private string m_Info;
 
@@ -21,12 +22,14 @@ namespace ManagingBooks.Model
         private string m_LabelInfo;
         private string m_LabelParent;
         private string m_LabelSort;
-        private bool m_IsSubSig = true;
+        private bool m_IsSubSig = false;
 
         private string m_SubName;
         private string m_SubInfo;
         private int m_ParentId;
         private string m_Sort;
+
+        private bool m_IsEdit = true;
 
         public int CurrentId
         {
@@ -36,6 +39,19 @@ namespace ManagingBooks.Model
                 if (value != m_CurrentId)
                 {
                     m_CurrentId = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+
+        public int CurrentSubId
+        {
+            get => m_CurrentSubId;
+            set
+            {
+                if (value != m_CurrentSubId)
+                {
+                    m_CurrentSubId = value;
                     NotifyPropertyChanged();
                 }
             }
@@ -200,6 +216,19 @@ namespace ManagingBooks.Model
                 if (value != m_IsSubSig)
                 {
                     m_IsSubSig = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+
+        public bool IsEdit
+        {
+            get => m_IsEdit;
+            set
+            {
+                if (value != m_IsEdit)
+                {
+                    m_IsEdit = value;
                     NotifyPropertyChanged();
                 }
             }
