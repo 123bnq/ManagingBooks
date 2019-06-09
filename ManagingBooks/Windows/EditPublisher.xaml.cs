@@ -113,13 +113,15 @@ namespace ManagingBooks.Windows
                 var tr = con.BeginTransaction();
                 SQLiteCommand removeCommand = con.CreateCommand();
                 removeCommand.Transaction = tr;
-                await Task.Run(() =>
+                await Task.Run(async () =>
                 {
                     for (int i = removingItems.Count - 1; i >= 0; i--)
                     {
                         Publisher temp = removingItems[i] as Publisher;
-                        removeCommand.CommandText = $"DELETE FROM Publishers WHERE Name='{temp.Name}'";
-                        removeCommand.ExecuteNonQueryAsync();
+                        removeCommand.CommandText = $"DELETE FROM Publishers WHERE Name=@Name";
+                        removeCommand.Parameters.AddWithValue("Name", temp.Name);
+                        await removeCommand.ExecuteNonQueryAsync();
+                        removeCommand.Parameters.Clear();
                     }
                     tr.Commit();
                     con.Close();
@@ -140,8 +142,10 @@ namespace ManagingBooks.Windows
             EditPublisherModel context = this.DataContext as EditPublisherModel;
             SqlMethods.SqlConnect(out SQLiteConnection con);
             SQLiteCommand selectCommand = con.CreateCommand();
-            selectCommand.CommandText = $"SELECT Name FROM Publishers WHERE Name='{context.Name}'";
+            selectCommand.CommandText = $"SELECT Name FROM Publishers WHERE Name=@Name";
+            selectCommand.Parameters.AddWithValue("Name", context.Name);
             SQLiteDataReader r = selectCommand.ExecuteReader();
+            selectCommand.Parameters.Clear();
             if (!r.Read())
             {
                 // to add new Publisher
@@ -168,8 +172,13 @@ namespace ManagingBooks.Windows
                 else
                 {
                     SQLiteCommand updateCommand = con.CreateCommand();
-                    updateCommand.CommandText = $"UPDATE Publishers SET Name='{context.Name}', City='{context.City}', Country='{context.Country}' WHERE Id={context.Id}";
+                    updateCommand.CommandText = $"UPDATE Publishers SET Name=@Name, City=@City, Country=@Country WHERE Id=@Id";
+                    updateCommand.Parameters.AddWithValue("Name", context.Name);
+                    updateCommand.Parameters.AddWithValue("City", context.City);
+                    updateCommand.Parameters.AddWithValue("Country", context.Country);
+                    updateCommand.Parameters.AddWithValue("Id", context.Id);
                     updateCommand.ExecuteNonQuery();
+                    updateCommand.Parameters.Clear();
                 }
             }
             else
@@ -178,8 +187,13 @@ namespace ManagingBooks.Windows
                 if (context.Id != 0)
                 {
                     SQLiteCommand updateCommand = con.CreateCommand();
-                    updateCommand.CommandText = $"UPDATE Publishers SET Name='{context.Name}', City='{context.City}', Country='{context.Country}' WHERE Id={context.Id}";
+                    updateCommand.CommandText = $"UPDATE Publishers SET Name=@Name, City=@City, Country=@Country WHERE Id=@Id";
+                    updateCommand.Parameters.AddWithValue("Name", context.Name);
+                    updateCommand.Parameters.AddWithValue("City", context.City);
+                    updateCommand.Parameters.AddWithValue("Country", context.Country);
+                    updateCommand.Parameters.AddWithValue("Id", context.Id);
                     updateCommand.ExecuteNonQuery();
+                    updateCommand.Parameters.Clear();
                 }
                 else
                 {

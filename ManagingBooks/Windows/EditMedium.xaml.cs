@@ -111,13 +111,15 @@ namespace ManagingBooks.Windows
                 var tr = con.BeginTransaction();
                 SQLiteCommand removeCommand = con.CreateCommand();
                 removeCommand.Transaction = tr;
-                await Task.Run(() =>
+                await Task.Run( async () =>
                 {
                     for (int i = removingItems.Count - 1; i >= 0; i--)
                     {
                         Medium temp = removingItems[i] as Medium;
-                        removeCommand.CommandText = $"DELETE FROM Mediums WHERE Name='{temp.Name}'";
-                        removeCommand.ExecuteNonQueryAsync();
+                        removeCommand.CommandText = $"DELETE FROM Mediums WHERE Name=@Name";
+                        removeCommand.Parameters.AddWithValue("Name", temp.Name);
+                        await removeCommand.ExecuteNonQueryAsync();
+                        removeCommand.Parameters.Clear();
                     }
                     tr.Commit();
                     con.Close();
@@ -138,24 +140,31 @@ namespace ManagingBooks.Windows
             EditMediumModel context = this.DataContext as EditMediumModel;
             SqlMethods.SqlConnect(out SQLiteConnection con);
             SQLiteCommand selectCommand = con.CreateCommand();
-            selectCommand.CommandText = $"SELECT MediumId, Name FROM Mediums WHERE Name='{context.Name}'";
+            selectCommand.CommandText = $"SELECT MediumId, Name FROM Mediums WHERE Name=@Name";
+            selectCommand.Parameters.AddWithValue("Name", context.Name);
             SQLiteDataReader r = selectCommand.ExecuteReader();
+            selectCommand.Parameters.Clear();
             if (!r.Read())
             {
                 // to add new medium
                 if (context.Id == 0)
                 {
                     SQLiteCommand insertCommand = con.CreateCommand();
-                    insertCommand.CommandText = $"INSERT INTO Mediums (Name) VALUES ('{context.Name}')";
+                    insertCommand.CommandText = $"INSERT INTO Mediums (Name) VALUES (@Name)";
+                    insertCommand.Parameters.AddWithValue("Name", context.Name);
                     insertCommand.ExecuteNonQuery();
+                    insertCommand.Parameters.Clear();
                 }
 
                 // to update medium's name
                 else
                 {
                     SQLiteCommand updateCommand = con.CreateCommand();
-                    updateCommand.CommandText = $"UPDATE Mediums SET Name='{context.Name}' WHERE MediumId={context.Id}";
+                    updateCommand.CommandText = $"UPDATE Mediums SET Name=@Name WHERE MediumId=@Id";
+                    updateCommand.Parameters.AddWithValue("Name", context.Name);
+                    updateCommand.Parameters.AddWithValue("Id", context.Id);
                     updateCommand.ExecuteNonQuery();
+                    updateCommand.Parameters.Clear();
                 }
             }
             else
@@ -164,8 +173,11 @@ namespace ManagingBooks.Windows
                 if (context.Id != 0)
                 {
                     SQLiteCommand updateCommand = con.CreateCommand();
-                    updateCommand.CommandText = $"UPDATE Mediums SET Name='{context.Name}' WHERE MediumId={context.Id}";
+                    updateCommand.CommandText = $"UPDATE Mediums SET Name=@Name WHERE MediumId=@Id";
+                    updateCommand.Parameters.AddWithValue("Name", context.Name);
+                    updateCommand.Parameters.AddWithValue("Id", context.Id);
                     updateCommand.ExecuteNonQuery();
+                    updateCommand.Parameters.Clear();
                 }
                 else
                 {

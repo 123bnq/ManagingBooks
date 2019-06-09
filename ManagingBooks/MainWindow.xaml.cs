@@ -590,14 +590,20 @@ namespace ManagingBooks
                             var tr = con.BeginTransaction();
                             var deleteCommand = con.CreateCommand();
                             deleteCommand.Transaction = tr;
-                            deleteCommand.CommandText = $"DELETE FROM Books_Authors WHERE BookId={bookId}";
+                            deleteCommand.CommandText = $"DELETE FROM Books_Authors WHERE BookId=@BookId";
+                            deleteCommand.Parameters.AddWithValue("BookId", bookId);
                             deleteCommand.ExecuteNonQuery();
+                            deleteCommand.Parameters.Clear();
                             deleteCommand = con.CreateCommand();
-                            deleteCommand.CommandText = $"DELETE FROM Books_Signatures WHERE BookId={bookId}";
+                            deleteCommand.CommandText = $"DELETE FROM Books_Signatures WHERE BookId=@BookId";
+                            deleteCommand.Parameters.AddWithValue("BookId", bookId);
                             deleteCommand.ExecuteNonQuery();
+                            deleteCommand.Parameters.Clear();
                             deleteCommand = con.CreateCommand();
-                            deleteCommand.CommandText = $"DELETE FROM Books WHERE BookId={bookId}";
+                            deleteCommand.CommandText = $"DELETE FROM Books WHERE BookId=@BookId";
+                            deleteCommand.Parameters.AddWithValue("BookId", bookId);
                             deleteCommand.ExecuteNonQuery();
+                            deleteCommand.Parameters.Clear();
                             tr.Commit();
                             progress.Report(Convert.ToInt32((double)(max - i) / max * 100));
                             context.Status = "Deleting";
@@ -1295,8 +1301,10 @@ namespace ManagingBooks
                 insertCommand.Transaction = tr;
                 foreach (var col in colHeader)
                 {
-                    insertCommand.CommandText = $"INSERT INTO ListViewColVisible (ColName,Boolean) VALUES ('{col}',1)";
+                    insertCommand.CommandText = $"INSERT INTO ListViewColVisible (ColName,Boolean) VALUES (@Column,1)";
+                    insertCommand.Parameters.AddWithValue("Column", col);
                     insertCommand.ExecuteNonQuery();
+                    insertCommand.Parameters.Clear();
                 }
                 tr.Commit();
             }
@@ -1406,7 +1414,9 @@ namespace ManagingBooks
                     break;
             }
             int result = (value) ? 1 : 0;
-            updateCommand.CommandText = $"UPDATE ListViewColVisible SET Boolean={result} WHERE ColName='{colName}'";
+            updateCommand.CommandText = $"UPDATE ListViewColVisible SET Boolean=@Result WHERE ColName=@Column";
+            updateCommand.Parameters.AddWithValue("Result", result);
+            updateCommand.Parameters.AddWithValue("Column", colName);
             updateCommand.ExecuteNonQuery();
             con.Close();
         }

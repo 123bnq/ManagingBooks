@@ -87,13 +87,15 @@ namespace ManagingBooks.Windows
                 var tr = con.BeginTransaction();
                 SQLiteCommand removeCommand = con.CreateCommand();
                 removeCommand.Transaction = tr;
-                await Task.Run(() =>
+                await Task.Run( async() =>
                 {
                     for (int i = removingItems.Count - 1; i >= 0; i--)
                     {
                         Place temp = removingItems[i] as Place;
-                        removeCommand.CommandText = $"DELETE FROM Places WHERE City='{temp.City}'";
-                        removeCommand.ExecuteNonQueryAsync();
+                        removeCommand.CommandText = $"DELETE FROM Places WHERE City=@City";
+                        removeCommand.Parameters.AddWithValue("City", temp.City);
+                        await removeCommand.ExecuteNonQueryAsync();
+                        removeCommand.Parameters.Clear();
                     }
                     tr.Commit();
                     con.Close();
@@ -114,8 +116,10 @@ namespace ManagingBooks.Windows
             EditPlaceModel context = this.DataContext as EditPlaceModel;
             SqlMethods.SqlConnect(out SQLiteConnection con);
             SQLiteCommand selectCommand = con.CreateCommand();
-            selectCommand.CommandText = $"SELECT City FROM Places WHERE City='{context.City}'";
+            selectCommand.CommandText = $"SELECT City FROM Places WHERE City=@City";
+            selectCommand.Parameters.AddWithValue("City", context.City);
             SQLiteDataReader r = selectCommand.ExecuteReader();
+            selectCommand.Parameters.Clear();
             if (!r.Read())
             {
                 // to add new place
@@ -147,14 +151,20 @@ namespace ManagingBooks.Windows
                         insertCommand.Parameters.AddWithValue("City", context.City);
                     }
                     insertCommand.ExecuteNonQuery();
+                    insertCommand.Parameters.Clear();
                 }
 
                 // to update place's State and country
                 else
                 {
                     SQLiteCommand updateCommand = con.CreateCommand();
-                    updateCommand.CommandText = $"UPDATE Places SET City='{context.City}', State='{context.State}', Country='{context.Country}' WHERE Id={context.Id}";
+                    updateCommand.CommandText = $"UPDATE Places SET City=@City, State=@State, Country=Country WHERE Id=@Id";
+                    updateCommand.Parameters.AddWithValue("Country", context.Country);
+                    updateCommand.Parameters.AddWithValue("State", context.State);
+                    updateCommand.Parameters.AddWithValue("City", context.City);
+                    updateCommand.Parameters.AddWithValue("Id", context.Id);
                     updateCommand.ExecuteNonQuery();
+                    updateCommand.Parameters.Clear();
                 }
             }
             else
@@ -163,8 +173,13 @@ namespace ManagingBooks.Windows
                 if (context.Id != 0)
                 {
                     SQLiteCommand updateCommand = con.CreateCommand();
-                    updateCommand.CommandText = $"UPDATE Places SET City='{context.City}', State='{context.State}', Country='{context.Country}' WHERE Id={context.Id}";
+                    updateCommand.CommandText = $"UPDATE Places SET City=@City, State=@State, Country=@Country WHERE Id=@Id";
+                    updateCommand.Parameters.AddWithValue("Country", context.Country);
+                    updateCommand.Parameters.AddWithValue("State", context.State);
+                    updateCommand.Parameters.AddWithValue("City", context.City);
+                    updateCommand.Parameters.AddWithValue("Id", context.Id);
                     updateCommand.ExecuteNonQuery();
+                    updateCommand.Parameters.Clear();
                 }
                 else
                 {

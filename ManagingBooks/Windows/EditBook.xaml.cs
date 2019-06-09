@@ -63,8 +63,10 @@ namespace ManagingBooks.Windows
                 $"LEFT JOIN Authors a ON (a.AuthorId = ba.AuthorId) " +
                 $"LEFT JOIN Books_Signatures bs ON (bs.BookId = b.BookId) " +
                 $"LEFT JOIN Signatures s ON (s.SignatureId = bs.SignatureId) " +
-                $"WHERE b.BookId = '{book.BookId}' ORDER BY ba.Priority,bs.Priority";
+                $"WHERE b.BookId = @BookId ORDER BY ba.Priority,bs.Priority";
+            selectCommmand.Parameters.AddWithValue("BookId", book.BookId);
             SQLiteDataReader r = selectCommmand.ExecuteReader();
+            selectCommmand.Parameters.Clear();
             int result;
             List<string> authors = new List<string>();
             List<string> signatures = new List<string>();
@@ -311,19 +313,45 @@ namespace ManagingBooks.Windows
                             var tr = con.BeginTransaction();
                             var updateCommand = con.CreateCommand();
                             updateCommand.Transaction = tr;
-                            updateCommand.CommandText = $"UPDATE Books SET Number={tempBook.Number}, Title='{tempBook.Title}', Publisher='{tempBook.Publisher}', Version={tempBook.Version}, Year={tempBook.Year}, Medium='{tempBook.Medium}', Place='{tempBook.Place}', DayBought='{tempBook.DayBought}', Pages={tempBook.Pages}, Price={tempBook.Price} WHERE BookId={tempBook.BookId}";
-                            updateCommand.ExecuteNonQuery();
+                            updateCommand.CommandText = $"UPDATE Books SET Number=@Number, Title=@Title, Publisher=@Publisher, Version=@Version, Year=@Year, Medium=@Medium, Place=@Place, DayBought=@Date, Pages=@Pages, Price=@Price WHERE BookId=@BookId";
+                            updateCommand.Parameters.AddWithValue("Number", tempBook.Number);
+                            updateCommand.Parameters.AddWithValue("Title", tempBook.Title);
+                            updateCommand.Parameters.AddWithValue("Publisher", tempBook.Publisher);
+                            updateCommand.Parameters.AddWithValue("Version", tempBook.Version);
+                            updateCommand.Parameters.AddWithValue("Year", tempBook.Year);
+                            updateCommand.Parameters.AddWithValue("Medium", tempBook.Medium);
+                            updateCommand.Parameters.AddWithValue("Place", tempBook.Place);
+                            updateCommand.Parameters.AddWithValue("Date", tempBook.DayBought);
+                            updateCommand.Parameters.AddWithValue("Pages", tempBook.Pages);
+                            updateCommand.Parameters.AddWithValue("Price", tempBook.Price);
+                            updateCommand.Parameters.AddWithValue("BookId", tempBook.BookId);
+                            SqlMethods.LogSqlEditCommand(updateCommand.CommandText);
+                            try
+                            {
+                                updateCommand.ExecuteNonQuery();
+                                updateCommand.Parameters.Clear();
+                            }
+                            catch (Exception ex)
+                            {
+                                MessageBox.Show(ex.ToString());
+                            }
 
                             //clear the binding from book and author and the signature
 
                             var deleteCommand = con.CreateCommand();
                             deleteCommand.Transaction = tr;
-                            deleteCommand.CommandText = $"DELETE FROM Books_Authors WHERE BookId={tempBook.BookId}";
+                            deleteCommand.CommandText = $"DELETE FROM Books_Authors WHERE BookId=@BookId";
+                            deleteCommand.Parameters.AddWithValue("BookId", tempBook.BookId);
+                            SqlMethods.LogSqlEditCommand(deleteCommand.CommandText);
                             deleteCommand.ExecuteNonQuery();
+                            deleteCommand.Parameters.Clear();
 
                             //deleteCommand = con.CreateCommand();
-                            deleteCommand.CommandText = $"DELETE FROM Books_Signatures WHERE BookId={tempBook.BookId}";
+                            deleteCommand.CommandText = $"DELETE FROM Books_Signatures WHERE BookId=@BookId";
+                            deleteCommand.Parameters.AddWithValue("BookId", tempBook.BookId);
+                            SqlMethods.LogSqlEditCommand(deleteCommand.CommandText);
                             deleteCommand.ExecuteNonQuery();
+                            deleteCommand.Parameters.Clear();
 
                             var selectCommand = con.CreateCommand();
                             var insertCommand = con.CreateCommand();
@@ -333,47 +361,126 @@ namespace ManagingBooks.Windows
                             {
                                 // check if there is existing Author
                                 selectCommand = con.CreateCommand();
-                                selectCommand.CommandText = $"SELECT * FROM Authors WHERE Name = '{tempBook.Authors[i].Name}'";
-                                SQLiteDataReader r = selectCommand.ExecuteReader();
-                                // if no, add Author
-                                if (!r.Read())
+                                selectCommand.CommandText = $"SELECT * FROM Authors WHERE Name = @Author";
+                                selectCommand.Parameters.AddWithValue("Author", tempBook.Authors[i].Name);
+                                SqlMethods.LogSqlEditCommand(selectCommand.CommandText);
+                                SQLiteDataReader r;
+                                try
                                 {
-                                    insertCommand.CommandText = "INSERT INTO Authors (Name) VALUES (@Name)";
-                                    insertCommand.Parameters.AddWithValue("Name", tempBook.Authors[i].Name);
-                                    insertCommand.ExecuteNonQuery();
+                                    r = selectCommand.ExecuteReader();
+                                    
+                                    if (!r.Read())
+                                    {
+                                        insertCommand.CommandText = "INSERT INTO Authors (Name) VALUES (@Name)";
+                                        insertCommand.Parameters.AddWithValue("Name", tempBook.Authors[i].Name);
+                                        SqlMethods.LogSqlEditCommand(insertCommand.CommandText);
+                                        string textPara = string.Empty;
+                                        for (int index = 0; index < insertCommand.Parameters.Count; index++)
+                                        {   
+                                            textPara += insertCommand.Parameters[index].Value + ", ";
+                                        }
+                                        SqlMethods.LogSqlEditCommand(textPara);
+                                        try
+                                        {
+                                            insertCommand.ExecuteNonQuery();
+                                        }
+                                        catch (Exception ex)
+                                        {
+                                            MessageBox.Show(ex.ToString());
+                                        }
+                                        insertCommand.Parameters.Clear();
+                                    }
+
+                                    insertCommand.CommandText = $"INSERT INTO Books_Authors (BookId, AuthorId, Priority) VALUES ((SELECT BookId FROM Books " +
+                                        $"WHERE BookId = @BookId)," +
+                                        $"(SELECT AuthorId FROM Authors WHERE Name = @Author),@Priority)";
+                                    insertCommand.Parameters.AddWithValue("BookId", tempBook.BookId);
+                                    insertCommand.Parameters.AddWithValue("Author", tempBook.Authors[i].Name);
+                                    insertCommand.Parameters.AddWithValue("Priority", i + 1);
+                                    SqlMethods.LogSqlEditCommand(insertCommand.CommandText);
+                                    //insertCommand.CommandText = $"INSERT INTO Books_Authors (BookId, AuthorId, Priority) VALUES ((SELECT BookId FROM Books " +
+                                    //    $"WHERE Title = '{book.Title}' AND Version = '{tempBook.Version}' AND Medium = '{tempBook.Medium}')," +
+                                    //    $"(SELECT AuthorId FROM Authors WHERE Name = '{tempBook.Authors[i].Name}'),{i + 1})";
+                                    try
+                                    {
+                                        insertCommand.ExecuteNonQuery();
+                                        
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        MessageBox.Show(ex.ToString());
+                                    }
                                     insertCommand.Parameters.Clear();
                                 }
+                                catch (Exception ex)
+                                {
+                                    MessageBox.Show(ex.ToString());
 
-                                insertCommand.CommandText = $"INSERT INTO Books_Authors (BookId, AuthorId, Priority) VALUES ((SELECT BookId FROM Books " +
-                                    $"WHERE BookId = {book.BookId})," +
-                                    $"(SELECT AuthorId FROM Authors WHERE Name = '{tempBook.Authors[i].Name}'),{i + 1})";
-                                //insertCommand.CommandText = $"INSERT INTO Books_Authors (BookId, AuthorId, Priority) VALUES ((SELECT BookId FROM Books " +
-                                //    $"WHERE Title = '{book.Title}' AND Version = '{tempBook.Version}' AND Medium = '{tempBook.Medium}')," +
-                                //    $"(SELECT AuthorId FROM Authors WHERE Name = '{tempBook.Authors[i].Name}'),{i + 1})";
-                                insertCommand.ExecuteNonQuery();
+                                }
+                                selectCommand.Parameters.Clear();
+                                // if no, add Author
+
                             }
 
                             for (int i = 0; i < noSignature; i++)
                             {
                                 selectCommand = con.CreateCommand();
-                                selectCommand.CommandText = $"SELECT * FROM Signatures WHERE Signature = '{tempBook.Signatures[i]}'";
-                                SQLiteDataReader r = selectCommand.ExecuteReader();
-                                if (!r.Read())
+                                selectCommand.CommandText = $"SELECT * FROM Signatures WHERE Signature = @Signature";
+                                selectCommand.Parameters.AddWithValue("Signature", tempBook.Signatures[i]);
+                                SqlMethods.LogSqlEditCommand(selectCommand.CommandText);
+                                SQLiteDataReader r;
+                                try
                                 {
-                                    insertCommand.CommandText = "INSERT INTO Signatures (Signature, Info) VALUES (@Signature, @Info)";
+                                    r = selectCommand.ExecuteReader();
+                                    
+                                    if (!r.Read())
+                                    {
+                                        insertCommand.CommandText = "INSERT INTO Signatures (Signature, Info) VALUES (@Signature, @Info)";
+                                        insertCommand.Parameters.AddWithValue("Signature", tempBook.Signatures[i]);
+                                        insertCommand.Parameters.AddWithValue("Info", tempBook.Signatures[i]);
+                                        SqlMethods.LogSqlEditCommand(insertCommand.CommandText);
+                                        string textPara = string.Empty;
+                                        for (int index = 0; index < insertCommand.Parameters.Count; index++)
+                                        {
+                                            textPara += insertCommand.Parameters[index].Value + ", ";
+                                        }
+                                        SqlMethods.LogSqlEditCommand(textPara);
+                                        try
+                                        {
+                                            insertCommand.ExecuteNonQuery();
+                                        }
+                                        catch (Exception ex)
+                                        {
+                                            MessageBox.Show(ex.ToString());
+                                        }
+                                        insertCommand.Parameters.Clear();
+                                    }
+
+                                    insertCommand.CommandText = $"INSERT INTO Books_Signatures (BookId, SignatureId, Priority) VALUES ((SELECT BookId FROM Books " +
+                                        $"WHERE BookId = @BookId)," +
+                                        $"(SELECT SignatureId FROM Signatures WHERE Signature = @Signature), @Priority)";
+                                    insertCommand.Parameters.AddWithValue("BookId", tempBook.BookId);
                                     insertCommand.Parameters.AddWithValue("Signature", tempBook.Signatures[i]);
-                                    insertCommand.Parameters.AddWithValue("Info", tempBook.Signatures[i]);
-                                    insertCommand.ExecuteNonQuery();
+                                    insertCommand.Parameters.AddWithValue("Priority", i + 1);
+                                    SqlMethods.LogSqlEditCommand(insertCommand.CommandText);
+                                    //insertCommand.CommandText = $"INSERT INTO Books_Signatures (BookId, SignatureId, Priority) VALUES ((SELECT BookId FROM Books " +
+                                    //    $"WHERE Title = '{tempBook.Title}' AND Version = '{tempBook.Version}' AND Medium = '{tempBook.Medium}')," +
+                                    //    $"(SELECT SignatureId FROM Signatures WHERE Signature = '{tempBook.Signatures[i]}'), {i + 1})";
+                                    try
+                                    {
+                                        insertCommand.ExecuteNonQuery();
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        MessageBox.Show(ex.ToString());
+                                    }
                                     insertCommand.Parameters.Clear();
                                 }
-
-                                insertCommand.CommandText = $"INSERT INTO Books_Signatures (BookId, SignatureId, Priority) VALUES ((SELECT BookId FROM Books " +
-                                    $"WHERE BookId = {book.BookId})," +
-                                    $"(SELECT SignatureId FROM Signatures WHERE Signature = '{tempBook.Signatures[i]}'), {i + 1})";
-                                //insertCommand.CommandText = $"INSERT INTO Books_Signatures (BookId, SignatureId, Priority) VALUES ((SELECT BookId FROM Books " +
-                                //    $"WHERE Title = '{tempBook.Title}' AND Version = '{tempBook.Version}' AND Medium = '{tempBook.Medium}')," +
-                                //    $"(SELECT SignatureId FROM Signatures WHERE Signature = '{tempBook.Signatures[i]}'), {i + 1})";
-                                insertCommand.ExecuteNonQuery();
+                                catch (Exception ex)
+                                {
+                                    MessageBox.Show(ex.ToString());
+                                }
+                                selectCommand.Parameters.Clear();
                             }
                             tr.Commit();
                             con.Close();
