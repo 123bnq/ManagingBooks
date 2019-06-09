@@ -344,6 +344,7 @@ namespace ManagingBooks.Windows
                         UpdateListBook(context);
                         ClearEntries();
                     }
+                    r.Close();
                 }
                 else
                 {
@@ -440,6 +441,7 @@ namespace ManagingBooks.Windows
                     context.ListBook.Add(result);
                 });
             }
+            r.Close();
             con.Close();
         }
 
@@ -558,6 +560,7 @@ namespace ManagingBooks.Windows
             {
                 int.TryParse(Convert.ToString(r["BookId"]), out maxId);
             }
+            r.Close();
             for (int i = 0; i < book.NoAuthor; i++)
             {
                 selectCommand = con.CreateCommand();
@@ -580,6 +583,7 @@ namespace ManagingBooks.Windows
                     insertCommand.ExecuteNonQuery();
                     insertCommand.Parameters.Clear();
                 }
+                r.Close();
                 //insertCommand.CommandText = $"INSERT INTO Books_Authors (BookId, AuthorId, Priority) VALUES ((SELECT BookId FROM Books " +
                 //    $"WHERE Title = '{book.Title}' AND Version = '{book.Version}' AND Medium = '{book.Medium}' " +
                 //    $"AND Publisher = '{book.Publisher}' AND Year = '{book.Year}' AND Pages = {book.Pages})," +
@@ -678,6 +682,8 @@ namespace ManagingBooks.Windows
                     listPlace.Add($"{city}, {state}, {country}");
                 }
             }
+            r.Close();
+            con.Close();
         }
 
         private void BtnSelectSignature_Click(object sender, RoutedEventArgs e)

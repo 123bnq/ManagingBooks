@@ -179,6 +179,7 @@ namespace ManagingBooks
                 (sender as BackgroundWorker).ReportProgress(progressPercentage, tempBook);
             }
             e.Result = i;
+            r.Close();
             con.Close();
 
         }
@@ -368,6 +369,7 @@ namespace ManagingBooks
                     context.DisplayBooks.Add(tempBook);
                 }
             }
+            r.Close();
             con.Close();
         }
         // *** not used ***
@@ -543,6 +545,7 @@ namespace ManagingBooks
             SQLiteDataReader r = selectCommand.ExecuteReader();
             r.Read();
             int.TryParse(Convert.ToString(r["max"]), out numBook);
+            r.Close();
             return numBook;
         }
 
@@ -1264,6 +1267,7 @@ namespace ManagingBooks
                         transaction.Commit();
                     }
                 });
+                r.Close();
                 connection.Close();
                 int numBook = NumberOfBooks(ref con);
                 Search.RunWorkerAsync(numBook);
@@ -1319,6 +1323,7 @@ namespace ManagingBooks
                     i++;
                 }
             }
+            r.Close();
             con.Close();
             context.BookIdColumnVisible = values[0] == 1;
             context.NumberColumnVisible = values[1] == 1;

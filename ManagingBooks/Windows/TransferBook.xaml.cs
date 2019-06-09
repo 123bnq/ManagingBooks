@@ -73,6 +73,8 @@ namespace ManagingBooks.Windows
                     string caption = Application.Current.FindResource("TransferBook.CodeBehind.ErrorAdd.NotFound.Caption").ToString();
                     CustomMessageBox.ShowOK(msg, caption, CustomMessageBoxButton.OK, MessageBoxImage.Error);
                 }
+                r.Close();
+                con.Close();
             }
             context.BookNumber = string.Empty;
         }

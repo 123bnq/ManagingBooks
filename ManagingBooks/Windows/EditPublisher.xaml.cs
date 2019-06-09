@@ -203,6 +203,7 @@ namespace ManagingBooks.Windows
                     //MessageBoxResult result = MessageBox.Show(message, caption, MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
+            r.Close();
             con.Close();
             ClearEntries(context);
             GetPublisher();

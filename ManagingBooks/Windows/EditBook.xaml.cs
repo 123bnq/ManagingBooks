@@ -118,6 +118,7 @@ namespace ManagingBooks.Windows
                 book.Signatures[i++] = s;
             }
             CopyBookToView(this.DataContext as AddBookModel, book);
+            r.Close();
             con.Close();
         }
 
@@ -390,7 +391,7 @@ namespace ManagingBooks.Windows
                                         }
                                         insertCommand.Parameters.Clear();
                                     }
-
+                                    r.Close();
                                     insertCommand.CommandText = $"INSERT INTO Books_Authors (BookId, AuthorId, Priority) VALUES ((SELECT BookId FROM Books " +
                                         $"WHERE BookId = @BookId)," +
                                         $"(SELECT AuthorId FROM Authors WHERE Name = @Author),@Priority)";
@@ -455,7 +456,7 @@ namespace ManagingBooks.Windows
                                         }
                                         insertCommand.Parameters.Clear();
                                     }
-
+                                    r.Close();
                                     insertCommand.CommandText = $"INSERT INTO Books_Signatures (BookId, SignatureId, Priority) VALUES ((SELECT BookId FROM Books " +
                                         $"WHERE BookId = @BookId)," +
                                         $"(SELECT SignatureId FROM Signatures WHERE Signature = @Signature), @Priority)";

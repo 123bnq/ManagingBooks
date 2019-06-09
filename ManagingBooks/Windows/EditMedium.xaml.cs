@@ -187,6 +187,7 @@ namespace ManagingBooks.Windows
                     //MessageBox.Show(message, caption, MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
+            r.Close();
             con.Close();
             ClearEntries(context);
             GetMedium();
