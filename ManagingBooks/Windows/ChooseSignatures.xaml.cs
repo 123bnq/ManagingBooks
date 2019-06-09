@@ -42,6 +42,7 @@ namespace ManagingBooks.Windows
             ReadSignature();
             InitializeComponent();
             EditSig.Visibility = Visibility.Collapsed;
+            EditSubSig.Visibility = Visibility.Collapsed;
             //ClearEntries(context);
         }
 
@@ -58,7 +59,7 @@ namespace ManagingBooks.Windows
             ReadParentList();
             InitializeComponent();
             EditSig.Visibility = Visibility.Visible;
-
+            EditSubSig.Visibility = Visibility.Visible;
         }
 
         private void ClearEntries(ChooseSignaturesModel context)
@@ -77,8 +78,8 @@ namespace ManagingBooks.Windows
                     propertyInfo.SetValue(context, 0, null);
                 }
             }
-            ResetLabel(context);
-            CommandManager.InvalidateRequerySuggested();
+            //ResetLabel(context);
+            //CommandManager.InvalidateRequerySuggested();
         }
 
         private void ReadSignature()
@@ -111,8 +112,10 @@ namespace ManagingBooks.Windows
             context.SubSignatures.Clear();
             SqlMethods.SqlConnect(out SQLiteConnection con);
             SQLiteCommand selectCommand = con.CreateCommand();
-            selectCommand.CommandText = $"SELECT SignatureId, Signature, Info, Sort FROM Signatures Where ParentId={SignatureId} ORDER BY Sort,Signature";
+            selectCommand.CommandText = $"SELECT SignatureId, Signature, Info, Sort FROM Signatures Where ParentId=@SignatureId ORDER BY Sort,Signature";
+            selectCommand.Parameters.AddWithValue("SignatureId", SignatureId);
             SQLiteDataReader r = selectCommand.ExecuteReader();
+            selectCommand.Parameters.Clear();
             while (r.Read())
             {
                 Signature sig = new Signature();
@@ -157,6 +160,7 @@ namespace ManagingBooks.Windows
                     EditLabel(context);
                     context.IsSubSig = false;
                     context.CurrentId = context.MainSig.Id;
+                    context.ParentId = context.MainSig.Id;
                     context.Name = context.MainSig.Name;
                     context.Info = context.MainSig.Info;
                 }
@@ -178,8 +182,8 @@ namespace ManagingBooks.Windows
                     EditLabel(context);
                     context.IsSubSig = false;
                     context.CurrentId = context.SubSig.Id;
-                    context.Name = context.SubSig.Name;
-                    context.Info = context.SubSig.Info;
+                    context.SubName = context.SubSig.Name;
+                    context.SubInfo = context.SubSig.Info;
                     context.ParentId = context.MainSig.Id;
                     context.Sort = context.SubSig.Sort;
                 }
@@ -246,12 +250,16 @@ namespace ManagingBooks.Windows
             if (context.ParentId == 0)
             {
                 SQLiteCommand selectCommand = con.CreateCommand();
-                selectCommand.CommandText = $"SELECT * FROM Signatures WHERE ParentId={context.CurrentId}";
+                selectCommand.CommandText = $"SELECT * FROM Signatures WHERE ParentId=@ParentId";
+                selectCommand.Parameters.AddWithValue("ParentId", context.CurrentId);
                 SQLiteDataReader r = selectCommand.ExecuteReader();
+                selectCommand.Parameters.Clear();
                 if (!r.Read())
                 {
-                    removeCommand.CommandText = $"DELETE FROM Signatures WHERE SignatureId={context.CurrentId}";
+                    removeCommand.CommandText = $"DELETE FROM Signatures WHERE SignatureId=@SignatureId";
+                    removeCommand.Parameters.AddWithValue("SignatureId", context.CurrentId);
                     removeCommand.ExecuteNonQuery();
+                    removeCommand.Parameters.Clear();
                     ReadSignature();
                     ReadParentList();
                 }
@@ -269,13 +277,15 @@ namespace ManagingBooks.Windows
                 var removeItems = SubList.SelectedItems;
                 SQLiteTransaction tr = con.BeginTransaction();
                 removeCommand.Transaction = tr;
-                await Task.Run(() =>
+                await Task.Run( async () =>
                 {
                     foreach (var item in removeItems)
                     {
                         Signature temp = item as Signature;
-                        removeCommand.CommandText = $"DELETE FROM Signatures WHERE SignatureId={temp.Id}";
-                        removeCommand.ExecuteNonQueryAsync();
+                        removeCommand.CommandText = $"DELETE FROM Signatures WHERE SignatureId=@SignatureId";
+                        removeCommand.Parameters.AddWithValue("SignatureId", temp.Id);
+                        await removeCommand.ExecuteNonQueryAsync();
+                        removeCommand.Parameters.Clear();
                     }
                     tr.Commit();
                 });
@@ -302,28 +312,39 @@ namespace ManagingBooks.Windows
             SQLiteCommand selectCommand = con.CreateCommand();
             if (context.ParentId == 0)
             {
-                selectCommand.CommandText = $"SELECT SignatureId, Signature, Info FROM Signatures WHERE ParentId IS NULL AND Signature = '{context.Name}'";
+                selectCommand.CommandText = $"SELECT SignatureId, Signature, Info FROM Signatures WHERE ParentId IS NULL AND Signature = @Name";
+                selectCommand.Parameters.AddWithValue("Name", context.Name);
             }
             else
             {
-                selectCommand.CommandText = $"SELECT SignatureId, Signature, Info FROM Signatures WHERE ParentId = {context.ParentId} AND Signature = '{context.Name}'";
+                selectCommand.CommandText = $"SELECT SignatureId, Signature, Info FROM Signatures WHERE ParentId = @ParentId AND Signature = @Name";
+                selectCommand.Parameters.AddWithValue("ParentId", context.ParentId);
+                selectCommand.Parameters.AddWithValue("Name", context.Name);
             }
             SQLiteDataReader r = selectCommand.ExecuteReader();
+            selectCommand.Parameters.Clear();
             if (!r.Read())
             {
-                // to add new place
+                // to add new signature
                 if (context.CurrentId == 0)
                 {
                     SQLiteCommand insertCommand = con.CreateCommand();
                     if (context.ParentId == 0)
                     {
-                        insertCommand.CommandText = $"INSERT INTO Signatures (Signature,Info) VALUES ('{context.Name}','{context.Info}')";
+                        insertCommand.CommandText = $"INSERT INTO Signatures (Signature,Info) VALUES (@Name,@Info)";
+                        insertCommand.Parameters.AddWithValue("Name", context.Name);
+                        insertCommand.Parameters.AddWithValue("Info", context.Info);
                     }
                     else
                     {
-                        insertCommand.CommandText = $"INSERT INTO Signatures (Signature,Info,ParentId,Sort) VALUES ('{context.Name}','{context.Info}','{context.ParentId}','{context.Sort}')";
+                        insertCommand.CommandText = $"INSERT INTO Signatures (Signature,Info,ParentId,Sort) VALUES (@Name,@Info,@ParentId,@Sort)";
+                        insertCommand.Parameters.AddWithValue("Name", context.Name);
+                        insertCommand.Parameters.AddWithValue("Info", context.Info);
+                        insertCommand.Parameters.AddWithValue("ParentId", context.ParentId);
+                        insertCommand.Parameters.AddWithValue("Sort", context.Sort);
                     }
                     insertCommand.ExecuteNonQuery();
+                    insertCommand.Parameters.Clear();
                 }
 
                 // to update place's State and country
@@ -332,31 +353,46 @@ namespace ManagingBooks.Windows
                     SQLiteCommand updateCommand = con.CreateCommand();
                     if (context.ParentId == 0)
                     {
-                        updateCommand.CommandText = $"UPDATE Signatures SET Signature='{context.Name}', Info='{context.Info}' WHERE SignatureId={context.CurrentId}";
+                        updateCommand.CommandText = $"UPDATE Signatures SET Signature=@Name, Info=@Info WHERE SignatureId=@SignatureId";
+                        updateCommand.Parameters.AddWithValue("Name", context.Name);
+                        updateCommand.Parameters.AddWithValue("Info", context.Info);
+                        updateCommand.Parameters.AddWithValue("SignatureId", context.CurrentId);
                     }
                     else
                     {
-                        updateCommand.CommandText = $"UPDATE Signatures SET Signature='{context.Name}', Info='{context.Info}',Sort='{context.Sort}' WHERE SignatureId={context.CurrentId}";
+                        updateCommand.CommandText = $"UPDATE Signatures SET Signature=@Name, Info=@Info,Sort=@Sort WHERE SignatureId=@SignatureId";
+                        updateCommand.Parameters.AddWithValue("Name", context.Name);
+                        updateCommand.Parameters.AddWithValue("Info", context.Info);
+                        updateCommand.Parameters.AddWithValue("Sort", context.Sort);
+                        updateCommand.Parameters.AddWithValue("SignatureId", context.CurrentId);
                     }
                     updateCommand.ExecuteNonQuery();
+                    updateCommand.Parameters.Clear();
                 }
             }
             else
             {
-                // to update place's city
+                // to update signature
                 if (context.CurrentId != 0)
                 {
                     SQLiteCommand updateCommand = con.CreateCommand();
                     if (context.ParentId == 0)
                     {
-                        updateCommand.CommandText = $"UPDATE Signatures SET Signature='{context.Name}', Info='{context.Info}' WHERE SignatureId={context.CurrentId}";
+                        updateCommand.CommandText = $"UPDATE Signatures SET Signature=@Name, Info=@Info WHERE SignatureId=@SignatureId";
+                        updateCommand.Parameters.AddWithValue("Name", context.Name);
+                        updateCommand.Parameters.AddWithValue("Info", context.Info);
+                        updateCommand.Parameters.AddWithValue("SignatureId", context.CurrentId);
                     }
                     else
                     {
-                        updateCommand.CommandText = $"UPDATE Signatures SET Signature='{context.Name}', Info='{context.Info}',Sort='{context.Sort}' WHERE SignatureId={context.CurrentId}";
+                        updateCommand.CommandText = $"UPDATE Signatures SET Signature=@Name, Info=@Info,Sort=@Sort WHERE SignatureId=@SignatureId";
+                        updateCommand.Parameters.AddWithValue("Name", context.Name);
+                        updateCommand.Parameters.AddWithValue("Info", context.Info);
+                        updateCommand.Parameters.AddWithValue("Sort", context.Sort);
+                        updateCommand.Parameters.AddWithValue("SignatureId", context.CurrentId);
                     }
                     updateCommand.ExecuteNonQuery();
-
+                    updateCommand.Parameters.Clear();
                 }
                 else
                 {

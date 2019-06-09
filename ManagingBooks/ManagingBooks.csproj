@@ -280,7 +280,9 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Data\Database.sql" />
+    <Content Include="Data\Database.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Data\ProNoskoDatenbank_160717.mdb">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

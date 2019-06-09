@@ -16,13 +16,17 @@ namespace ManagingBooks.Model
         private int m_CurrentId;
         private string m_Name;
         private string m_Info;
-        private int m_ParentId;
-        private string m_Sort;
+
         private string m_LabelName;
         private string m_LabelInfo;
         private string m_LabelParent;
         private string m_LabelSort;
         private bool m_IsSubSig = true;
+
+        private string m_SubName;
+        private string m_SubInfo;
+        private int m_ParentId;
+        private string m_Sort;
 
         public int CurrentId
         {
@@ -85,6 +89,31 @@ namespace ManagingBooks.Model
                 if (value != m_Info)
                 {
                     m_Info = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+
+        public string SubName
+        {
+            get => m_SubName;
+            set
+            {
+                if (value != m_SubName)
+                {
+                    m_SubName = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+        public string SubInfo
+        {
+            get => m_SubInfo;
+            set
+            {
+                if (value != m_SubInfo)
+                {
+                    m_SubInfo = value;
                     NotifyPropertyChanged();
                 }
             }
