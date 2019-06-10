@@ -22,6 +22,9 @@ namespace ManagingBooks.Model
         private string m_LabelInfo;
         private string m_LabelParent;
         private string m_LabelSort;
+
+        private string m_LabelSubName;
+        private string m_LabelSubInfo;
         private bool m_IsSubSig = false;
 
         private string m_SubName;
@@ -203,6 +206,31 @@ namespace ManagingBooks.Model
                 if (value != m_LabelSort)
                 {
                     m_LabelSort = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+
+        public string LabelSubName
+        {
+            get => m_LabelSubName;
+            set
+            {
+                if (value != m_LabelSubName)
+                {
+                    m_LabelSubName = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+        public string LabelSubInfo
+        {
+            get => m_LabelSubInfo;
+            set
+            {
+                if (value != m_LabelSubInfo)
+                {
+                    m_LabelSubInfo = value;
                     NotifyPropertyChanged();
                 }
             }

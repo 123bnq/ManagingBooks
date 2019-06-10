@@ -68,14 +68,15 @@ namespace ManagingBooks.Windows
             EditSubSig.Visibility = Visibility.Visible;
         }
 
-        private void ClearEntries(ChooseSignaturesModel context, string name = null, string info = null, string parrentId = null)
+        private void ClearEntries(ChooseSignaturesModel context, string name = null, string info = null, string parrentId = null, bool main = true)
         {
             context = this.DataContext as ChooseSignaturesModel;
             PropertyInfo[] properties = context.GetType().GetProperties();
 
             foreach (var propertyInfo in properties)
             {
-                if (propertyInfo.PropertyType == typeof(string) && !propertyInfo.Name.Equals("Sort") && !propertyInfo.Name.Equals(name) && !propertyInfo.Name.Equals(info))
+                if (propertyInfo.PropertyType == typeof(string) && !propertyInfo.Name.Equals("Sort") && !propertyInfo.Name.Equals(name) && !propertyInfo.Name.Equals(info)
+                    && !propertyInfo.Name.Equals("LabelName") && !propertyInfo.Name.Equals("LabelInfo") && !propertyInfo.Name.Equals("LabelSubName") && !propertyInfo.Name.Equals("LabelSubInfo"))
                 {
                     propertyInfo.SetValue(context, string.Empty, null);
                 }
@@ -84,7 +85,7 @@ namespace ManagingBooks.Windows
                     propertyInfo.SetValue(context, 0, null);
                 }
             }
-            //ResetLabel(context);
+            ResetLabel(context, main: main);
             //CommandManager.InvalidateRequerySuggested();
         }
 
@@ -165,13 +166,13 @@ namespace ManagingBooks.Windows
                 else
                 {
                     ClearEntries(context, "Name", "Info");
-                    //EditLabel(context);
                     context.IsSubSig = false;
                     context.CurrentId = context.MainSig.Id;
                     context.ParentId = context.MainSig.Id;
                     context.Name = context.MainSig.Name;
                     context.Info = context.MainSig.Info;
                     // change to edit label for main signature
+                    EditLabel(context, sub: false);
                 }
             }
         }
@@ -188,7 +189,6 @@ namespace ManagingBooks.Windows
                 else
                 {
                     //ClearEntries(context, "Name", "Info", "ParrentId");
-                    //EditLabel(context);
                     context.IsSubSig = true;
                     context.CurrentSubId = context.SubSig.Id;
                     context.SubName = context.SubSig.Name;
@@ -196,23 +196,34 @@ namespace ManagingBooks.Windows
                     context.ParentId = context.MainSig.Id;
                     context.Sort = context.SubSig.Sort;
                     // change to edit label for sub signature
+                    EditLabel(context, sub: true);
                 }
             }
         }
 
-        private void EditLabel(ChooseSignaturesModel context)
+        private void EditLabel(ChooseSignaturesModel context, bool sub = false)
         {
             context.LabelName = Application.Current.FindResource("ChooseSignature.Label.EditSignature").ToString();
             context.LabelInfo = Application.Current.FindResource("ChooseSignature.Label.EditInfo").ToString();
-            context.LabelParent = Application.Current.FindResource("ChooseSignature.Label.EditParent").ToString();
-            context.LabelSort = Application.Current.FindResource("ChooseSignature.Label.EditSort").ToString();
+            if (sub)
+            {
+                context.LabelSubName = Application.Current.FindResource("ChooseSignature.Label.EditSignature").ToString();
+                context.LabelSubInfo = Application.Current.FindResource("ChooseSignature.Label.EditInfo").ToString();
+            }
+            //context.LabelParent = Application.Current.FindResource("ChooseSignature.Label.EditParent").ToString();
+            //context.LabelSort = Application.Current.FindResource("ChooseSignature.Label.EditSort").ToString();
         }
-        private void ResetLabel(ChooseSignaturesModel context)
+        private void ResetLabel(ChooseSignaturesModel context, bool main = false)
         {
-            context.LabelName = Application.Current.FindResource("ChooseSignature.Label.Signature").ToString();
-            context.LabelInfo = Application.Current.FindResource("ChooseSignature.Label.Info").ToString();
-            context.LabelParent = Application.Current.FindResource("ChooseSignature.Label.Parent").ToString();
-            context.LabelSort = Application.Current.FindResource("ChooseSignature.Label.Sort").ToString();
+            if (main)
+            {
+                context.LabelName = Application.Current.FindResource("ChooseSignature.Label.Signature").ToString();
+                context.LabelInfo = Application.Current.FindResource("ChooseSignature.Label.Info").ToString();
+            }
+            context.LabelSubName = Application.Current.FindResource("ChooseSignature.Label.Signature").ToString();
+            context.LabelSubInfo = Application.Current.FindResource("ChooseSignature.Label.Info").ToString();
+            //context.LabelParent = Application.Current.FindResource("ChooseSignature.Label.Parent").ToString();
+            //context.LabelSort = Application.Current.FindResource("ChooseSignature.Label.Sort").ToString();
         }
 
         private void BtnClear_Click(object sender, RoutedEventArgs e)
@@ -235,7 +246,7 @@ namespace ManagingBooks.Windows
             ChooseSignaturesModel context = this.DataContext as ChooseSignaturesModel;
             if (IsEdit)
             {
-                if (!string.IsNullOrWhiteSpace(context.Name) || !string.IsNullOrWhiteSpace(context.Info) || context.ParentId != 0 || !string.IsNullOrWhiteSpace(context.Sort))
+                if (!string.IsNullOrWhiteSpace(context.Name) || !string.IsNullOrWhiteSpace(context.Info) || !string.IsNullOrWhiteSpace(context.SubName) || !string.IsNullOrWhiteSpace(context.SubInfo))
                 {
                     string message = Application.Current.FindResource("ChooseSignature.CodeBehind.WarningClose.Message").ToString();
                     string caption = Application.Current.FindResource("ChooseSignature.CodeBehind.WarningClose.Caption").ToString();
@@ -357,6 +368,7 @@ namespace ManagingBooks.Windows
                 }
                 BtnClear_Click(null, null);
                 // reset label of main signature
+                ResetLabel(context, main: true);
                 ReadSignature();
                 ReadParentList();
                 context.SubSignatures.Clear();
@@ -373,6 +385,7 @@ namespace ManagingBooks.Windows
                     updateCommand.Parameters.Clear();
                     BtnClear_Click(null, null);
                     // reset label of main signature
+                    ResetLabel(context, main: true);
                     ReadSignature();
                     ReadParentList();
                     context.SubSignatures.Clear();
@@ -490,7 +503,15 @@ namespace ManagingBooks.Windows
         {
             ChooseSignaturesModel context = this.DataContext as ChooseSignaturesModel;
             context.SubSig = null;
-            ClearEntries(context, "Name", "Info", "ParentId");
+            ClearEntries(context, "Name", "Info", "ParentId", main: false);
+            //if (!string.IsNullOrWhiteSpace(context.Name) || !string.IsNullOrWhiteSpace(context.Info))
+            //{
+            //    EditLabel(context, sub: false); 
+            //}
+            //else
+            //{
+            //    ResetLabel(context, main: true);
+            //}
             context.CurrentId = context.ParentId;
         }
 
@@ -550,6 +571,7 @@ namespace ManagingBooks.Windows
                 }
                 BtnClearSub_Click(null, null);
                 // reset label of sub signature
+                ResetLabel(context, main: false);
                 ReadSubSignature(context.ParentId);
             }
             else
@@ -571,6 +593,7 @@ namespace ManagingBooks.Windows
                     }
                     updateCommand.Parameters.Clear();
                     BtnClearSub_Click(null, null);
+                    ResetLabel(context, main: false);
                     ReadSubSignature(context.ParentId);
                 }
                 else

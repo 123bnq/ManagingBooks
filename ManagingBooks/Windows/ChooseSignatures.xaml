@@ -76,8 +76,8 @@
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
-                    <TextBlock Text="{DynamicResource ChooseSignature.Label.Signature}" Margin="5"/>
-                    <TextBlock Text="{DynamicResource ChooseSignature.Label.Info}" Grid.Row="1" Margin="5"/>
+                    <TextBlock Text="{Binding LabelName}" Margin="5"/>
+                    <TextBlock Text="{Binding LabelInfo}" Grid.Row="1" Margin="5"/>
                     <!--<TextBlock Text="{Binding LabelParent}" Grid.Row="2" Margin="5"/>-->
                     <!--<TextBlock Text="{Binding LabelSort}" Grid.Row="3" Margin="5"/>-->
                     <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" Grid.Column="1" Margin="5"/>
@@ -155,8 +155,8 @@
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
-                    <TextBlock Text="{DynamicResource ChooseSignature.Label.Signature}" Margin="5"/>
-                    <TextBlock Text="{DynamicResource ChooseSignature.Label.Info}" Grid.Row="1" Margin="5"/>
+                    <TextBlock Text="{Binding LabelSubName}" Margin="5"/>
+                    <TextBlock Text="{Binding LabelSubInfo}" Grid.Row="1" Margin="5"/>
                     <TextBlock Text="{DynamicResource ChooseSignature.Label.Parent}" Grid.Row="2" Margin="5"/>
                     <TextBlock Text="{DynamicResource ChooseSignature.Label.Sort}" Grid.Row="3" Margin="5"/>
                     <TextBox Text="{Binding SubName, UpdateSourceTrigger=PropertyChanged}" Grid.Column="1" Margin="5"/>
