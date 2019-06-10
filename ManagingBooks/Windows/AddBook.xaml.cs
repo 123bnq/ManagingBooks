@@ -319,7 +319,7 @@ namespace ManagingBooks.Windows
                             var tr = con.BeginTransaction();
                             AddBookToDatabase(ref con, ref tr, book);
                             tr.Commit();
-                            con.Close();
+
                         });
                         message = Application.Current.FindResource("AddBook.CodeBehind.InfoAdd.Message").ToString();
                         caption = Application.Current.FindResource("AddBook.CodeBehind.InfoAdd.Caption").ToString();
@@ -345,6 +345,7 @@ namespace ManagingBooks.Windows
                         ClearEntries();
                     }
                     r.Close();
+                    con.Close();
                 }
                 else
                 {
