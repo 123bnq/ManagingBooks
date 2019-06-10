@@ -5,108 +5,189 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:main="clr-namespace:ManagingBooks"
         xmlns:local="clr-namespace:ManagingBooks.Windows"
+        xmlns:model="clr-namespace:ManagingBooks.Model"
         mc:Ignorable="d"
         Title="{DynamicResource ChooseSignature.Title}" SizeToContent="WidthAndHeight"
         ShowInTaskbar="False" Closing="Window_Closing"
         Background="WhiteSmoke" WindowStartupLocation="Manual">
     <Window.CommandBindings>
-        <CommandBinding Command="main:CustomCommands.RemoveSig" CanExecute="RemoveSigCommand_CanExecute" Executed="RemoveSigCommand_Executed"/>
-        <CommandBinding Command="main:CustomCommands.SaveSig" CanExecute="SaveSigCommand_CanExecute" Executed="SaveSigCommand_Executed"/>
+        <CommandBinding Command="main:CustomCommands.RemoveMainSig" CanExecute="RemoveMainSigCommand_CanExecute" Executed="RemoveMainSigCommand_Executed"/>
+        <CommandBinding Command="main:CustomCommands.RemoveSubSig" CanExecute="RemoveSubSigCommand_CanExecute" Executed="RemoveSubSigCommand_Executed"/>
+        <CommandBinding Command="main:CustomCommands.SaveMainSig" CanExecute="SaveMainSigCommand_CanExecute" Executed="SaveMainSigCommand_Executed"/>
+        <CommandBinding Command="main:CustomCommands.SaveSubSig" CanExecute="SaveSubSigCommand_CanExecute" Executed="SaveSubSigCommand_Executed"/>
     </Window.CommandBindings>
-    <DockPanel>
-        <Menu DockPanel.Dock="Top">
-            <MenuItem Header="_File">
-                <MenuItem Header="_Add..."/>
-                <MenuItem Header="_Edit"/>
-                <MenuItem Header="_Close"/>
-            </MenuItem>
-            <MenuItem Header="Bla"/>
-        </Menu>
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
-            <ListView Name="MainList" MaxHeight="400" Margin="10" ItemsSource="{Binding Signatures}" SelectedItem="{Binding MainSig}" SelectionChanged="MainList_SelectionChanged" SelectionMode="Single">
-                <ListView.Resources>
-                    <Style TargetType="{x:Type GridViewColumnHeader}">
-                        <Setter Property="HorizontalContentAlignment" Value="Left"/>
-                    </Style>
-                    <Style TargetType="ListViewItem">
-                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-                    </Style>
-                </ListView.Resources>
-                <ListView.View>
-                    <GridView>
-                        <GridViewColumn Header="Id" Width="Auto" DisplayMemberBinding="{Binding Id}"/>
-                        <GridViewColumn Header="{DynamicResource ChooseSignature.Signatures.Name}" Width="Auto" DisplayMemberBinding="{Binding Name}"/>
-                        <GridViewColumn Header="{DynamicResource ChooseSignature.Signatures.Info}" Width="Auto" DisplayMemberBinding="{Binding Info}"/>
-                    </GridView>
-                </ListView.View>
-            </ListView>
-            <ListView Name="SubList" Grid.Column="1" MaxHeight="400" Margin="10" ItemsSource="{Binding SubSignatures}" SelectedItem="{Binding SubSig}" SelectionChanged="SubList_SelectionChanged">
-                <ListView.Resources>
-                    <Style TargetType="{x:Type GridViewColumnHeader}">
-                        <Setter Property="HorizontalContentAlignment" Value="Left"/>
-                    </Style>
-                    <Style TargetType="ListViewItem">
-                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-                    </Style>
-                </ListView.Resources>
-                <ListView.View>
-                    <GridView>
-                        <GridViewColumn Header="Id" Width="Auto" DisplayMemberBinding="{Binding Id}"/>
-                        <GridViewColumn Header="{DynamicResource ChooseSignature.SubSignatures.Name}" Width="Auto" DisplayMemberBinding="{Binding Name}"/>
-                        <GridViewColumn Header="{DynamicResource ChooseSignature.SubSignatures.Info}" Width="Auto" DisplayMemberBinding="{Binding Info}"/>
-                        <GridViewColumn Header="{DynamicResource ChooseSignature.SubSignatures.Sort}" Width="Auto" DisplayMemberBinding="{Binding Sort}"/>
-                    </GridView>
-                </ListView.View>
-            </ListView>
-            <Grid Name="EditSig" Grid.Row="1" Grid.ColumnSpan="2" Margin="5">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
+    <!--<Window.DataContext>
+        <model:ChooseSignaturesModel/>
+    </Window.DataContext>-->
+    <Grid Width="900">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <GroupBox Margin="5">
+            <GroupBox.Header>
+                <TextBlock Text="Signature" Padding="1"/>
+            </GroupBox.Header>
+            <Grid>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="auto"/>
                 </Grid.RowDefinitions>
-                <TextBlock Text="{Binding LabelName}" Margin="5"/>
-                <TextBlock Text="{Binding LabelInfo}" Grid.Row="1" Margin="5"/>
-                <TextBlock Text="{Binding LabelParent}" Grid.Row="2" Margin="5"/>
-                <TextBlock Text="{Binding LabelSort}" Grid.Row="3" Margin="5"/>
-                <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" Grid.Column="1" Margin="5"/>
-                <TextBox Text="{Binding Info, UpdateSourceTrigger=PropertyChanged}" Grid.Column="1" Grid.Row="1" Margin="5"/>
-                <ComboBox ItemsSource="{Binding ParentList}" SelectedValuePath="Id" SelectedValue="{Binding ParentId}" IsEnabled="{Binding IsSubSig}" Grid.Column="1" Grid.Row="2" Margin="5"/>
-                <ComboBox Text="{Binding Sort}" Grid.Column="1" Grid.Row="3" Margin="5">
-                    <ComboBox.Style>
-                        <Style TargetType="{x:Type ComboBox}">
-                            <Setter Property="IsEnabled" Value="True"/>
-                            <Setter Property="SelectedIndex" Value="0"/>
+                <ListView Name="MainList" Height="300" Width="400" Margin="10" ItemsSource="{Binding Signatures}" SelectedItem="{Binding MainSig}" SelectionChanged="MainList_SelectionChanged" SelectionMode="Single" VerticalAlignment="Top">
+                    <ListView.Resources>
+                        <ContextMenu x:Key="ItemContextMenu">
+                            <MenuItem Header="{DynamicResource MainWindow.SearchList.ContextMenu.Edit}"/>
+                            <MenuItem Header="{DynamicResource MainWindow.SearchList.ContextMenu.Delete}" Command="main:CustomCommands.RemoveMainSig"/>
+                        </ContextMenu>
+                        <Style TargetType="{x:Type GridViewColumnHeader}">
+                            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+                        </Style>
+                        <Style TargetType="ListViewItem">
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                            
                             <Style.Triggers>
-                                <DataTrigger Binding="{Binding ParentId}" Value="0">
-                                    <Setter Property="IsEnabled" Value="False"/>
-                                    <Setter Property="SelectedIndex" Value="-1"/>
+                                <DataTrigger Binding="{Binding DataContext.IsEdit, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}" Value="True">
+                                    <!--<Setter Property="ContextMenu" Value="{x:Null}"/>-->
+                                    <Setter Property="ContextMenu" Value="{StaticResource ItemContextMenu}"/>
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>
-                    </ComboBox.Style>
-                    <ComboBoxItem Content="A"/>
-                    <ComboBoxItem Content="B"/>
-                </ComboBox>
-                <Button Name="BtnSave" Grid.Column="2" Content="{DynamicResource ChooseSignature.SaveBtn}" MinWidth="75" Margin="5" Command="main:CustomCommands.SaveSig"/>
-                <Button Name="BtnClear" Grid.Column="2" Grid.Row="1" Content="{DynamicResource ChooseSignature.ClearBtn}" MinWidth="75" Margin="5" Click="BtnClear_Click"/>
-                <Button Name="BtnRemove" Grid.Column="2" Grid.Row="2" Content="{DynamicResource ChooseSignature.RemoveBtn}" MinWidth="75" Margin="5" Command="main:CustomCommands.RemoveSig"/>
-                <Button Name="BtnClose" Grid.Column="2" Grid.Row="3" Content="{DynamicResource ChooseSignature.CloseBtn}" MinWidth="75" Margin="5" Click="BtnClose_Click"/>
+                    </ListView.Resources>
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn Header="Id" Width="Auto" DisplayMemberBinding="{Binding Id}"/>
+                            <GridViewColumn Header="{DynamicResource ChooseSignature.Signatures.Name}" Width="Auto" DisplayMemberBinding="{Binding Name}"/>
+                            <GridViewColumn Header="{DynamicResource ChooseSignature.Signatures.Info}" Width="Auto" DisplayMemberBinding="{Binding Info}"/>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+                <Grid Name="EditSig" Grid.Row="1" Margin="5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Text="{Binding LabelName}" Margin="5"/>
+                    <TextBlock Text="{Binding LabelInfo}" Grid.Row="1" Margin="5"/>
+                    <!--<TextBlock Text="{Binding LabelParent}" Grid.Row="2" Margin="5"/>-->
+                    <!--<TextBlock Text="{Binding LabelSort}" Grid.Row="3" Margin="5"/>-->
+                    <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" Grid.Column="1" Margin="5"/>
+                    <TextBox Text="{Binding Info, UpdateSourceTrigger=PropertyChanged}" Grid.Column="1" Grid.Row="1" Margin="5"/>
+                    <!--<ComboBox ItemsSource="{Binding ParentList}" SelectedValuePath="Id" SelectedValue="{Binding ParentId}" IsEnabled="{Binding IsSubSig}" Grid.Column="1" Grid.Row="2" Margin="5"/>-->
+                    <!--<ComboBox Text="{Binding Sort}" Grid.Column="1" Grid.Row="3" Margin="5">
+                        <ComboBox.Style>
+                            <Style TargetType="{x:Type ComboBox}">
+                                <Setter Property="IsEnabled" Value="True"/>
+                                <Setter Property="SelectedIndex" Value="0"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding ParentId}" Value="0">
+                                        <Setter Property="IsEnabled" Value="False"/>
+                                        <Setter Property="SelectedIndex" Value="-1"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </ComboBox.Style>
+                        <ComboBoxItem Content="A"/>
+                        <ComboBoxItem Content="B"/>
+                    </ComboBox>-->
+                    <Button Name="BtnSave" Grid.Column="2" Content="{DynamicResource ChooseSignature.SaveBtn}" MinWidth="75" Margin="5" Command="main:CustomCommands.SaveMainSig"/>
+                    <Button Name="BtnClear" Grid.Column="2" Grid.Row="1" Content="{DynamicResource ChooseSignature.ClearBtn}" MinWidth="75" Margin="5" Click="BtnClear_Click"/>
+                    <!--<Button Name="BtnRemove" Grid.Column="2" Grid.Row="2" Content="{DynamicResource ChooseSignature.RemoveBtn}" MinWidth="75" Margin="5" Command="main:CustomCommands.RemoveSig"/>-->
+                    <!--<Button Name="BtnClose" Grid.Column="2" Grid.Row="3" Content="{DynamicResource ChooseSignature.CloseBtn}" MinWidth="75" Margin="5" Click="BtnClose_Click"/>-->
+                </Grid>
             </Grid>
-
-        </Grid>
-    </DockPanel>
+        </GroupBox>
+        <GroupBox Grid.Column="1" Margin="5">
+            <GroupBox.Header>
+                <TextBlock Text="Sub-signature" Padding="1"/>
+            </GroupBox.Header>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <ListView Name="SubList" Grid.Column="1" Height="300" Width="400" Margin="10" ItemsSource="{Binding SubSignatures}" SelectedItem="{Binding SubSig}" SelectionChanged="SubList_SelectionChanged">
+                    <ListView.Resources>
+                        <ContextMenu x:Key="ItemContextMenu">
+                            <MenuItem Header="{DynamicResource MainWindow.SearchList.ContextMenu.Edit}"/>
+                            <MenuItem Header="{DynamicResource MainWindow.SearchList.ContextMenu.Delete}" Command="main:CustomCommands.RemoveSubSig"/>
+                        </ContextMenu>
+                        <Style TargetType="{x:Type GridViewColumnHeader}">
+                            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+                        </Style>
+                        <Style TargetType="ListViewItem">
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding DataContext.IsEdit, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" Value="True">
+                                    <!--<Setter Property="ContextMenu" Value="{x:Null}"/>-->
+                                    <Setter Property="ContextMenu" Value="{StaticResource ItemContextMenu}"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ListView.Resources>
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn Header="Id" Width="Auto" DisplayMemberBinding="{Binding Id}"/>
+                            <GridViewColumn Header="{DynamicResource ChooseSignature.SubSignatures.Name}" Width="Auto" DisplayMemberBinding="{Binding Name}"/>
+                            <GridViewColumn Header="{DynamicResource ChooseSignature.SubSignatures.Info}" Width="Auto" DisplayMemberBinding="{Binding Info}"/>
+                            <GridViewColumn Header="{DynamicResource ChooseSignature.SubSignatures.Sort}" Width="Auto" DisplayMemberBinding="{Binding Sort}"/>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+                <Grid Name="EditSubSig" Grid.Row="1" Grid.Column="1" Margin="5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Text="{Binding LabelSubName}" Margin="5"/>
+                    <TextBlock Text="{Binding LabelSubInfo}" Grid.Row="1" Margin="5"/>
+                    <TextBlock Text="{DynamicResource ChooseSignature.Label.Parent}" Grid.Row="2" Margin="5"/>
+                    <TextBlock Text="{DynamicResource ChooseSignature.Label.Sort}" Grid.Row="3" Margin="5"/>
+                    <TextBox Text="{Binding SubName, UpdateSourceTrigger=PropertyChanged}" Grid.Column="1" Margin="5"/>
+                    <TextBox Text="{Binding SubInfo, UpdateSourceTrigger=PropertyChanged}" Grid.Column="1" Grid.Row="1" Margin="5"/>
+                    <ComboBox ItemsSource="{Binding ParentList}" SelectedValuePath="Id" SelectedValue="{Binding ParentId}" IsEnabled="False" Grid.Column="1" Grid.Row="2" Margin="5"/>
+                    <!--<ComboBox Text="{Binding Sort}" Grid.Column="1" Grid.Row="3" Margin="5">
+                        <ComboBox.Style>
+                            <Style TargetType="{x:Type ComboBox}">
+                                <Setter Property="IsEnabled" Value="True"/>
+                                <Setter Property="SelectedIndex" Value="0"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding ParentId}" Value="0">
+                                        <Setter Property="IsEnabled" Value="False"/>
+                                        <Setter Property="SelectedIndex" Value="-1"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </ComboBox.Style>
+                        <ComboBoxItem Content="A"/>
+                        <ComboBoxItem Content="B"/>
+                    </ComboBox>-->
+                    <ComboBox Text="{Binding Sort}" Grid.Column="1" Grid.Row="3" Margin="5" SelectedIndex="0">
+                        <ComboBoxItem Content="A"/>
+                        <ComboBoxItem Content="B"/>
+                    </ComboBox>
+                    <Button Grid.Column="2" Content="{DynamicResource ChooseSignature.SaveBtn}" MinWidth="75" Margin="5" Command="main:CustomCommands.SaveSubSig"/>
+                    <Button Grid.Column="2" Grid.Row="1" Content="{DynamicResource ChooseSignature.ClearBtn}" MinWidth="75" Margin="5" Click="BtnClearSub_Click"/>
+                    <!--<Button Grid.Column="2" Grid.Row="2" Content="{DynamicResource ChooseSignature.RemoveBtn}" MinWidth="75" Margin="5" Command="main:CustomCommands.RemoveSig"/>-->
+                    <!--<Button Grid.Column="2" Grid.Row="3" Content="{DynamicResource ChooseSignature.CloseBtn}" MinWidth="75" Margin="5" Click="BtnClose_Click"/>-->
+                </Grid>
+            </Grid>
+        </GroupBox>
+    </Grid>
 </Window>

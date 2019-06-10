@@ -179,6 +179,7 @@ namespace ManagingBooks
                 (sender as BackgroundWorker).ReportProgress(progressPercentage, tempBook);
             }
             e.Result = i;
+            r.Close();
             con.Close();
 
         }
@@ -368,6 +369,7 @@ namespace ManagingBooks
                     context.DisplayBooks.Add(tempBook);
                 }
             }
+            r.Close();
             con.Close();
         }
         // *** not used ***
@@ -543,6 +545,7 @@ namespace ManagingBooks
             SQLiteDataReader r = selectCommand.ExecuteReader();
             r.Read();
             int.TryParse(Convert.ToString(r["max"]), out numBook);
+            r.Close();
             return numBook;
         }
 
@@ -590,14 +593,20 @@ namespace ManagingBooks
                             var tr = con.BeginTransaction();
                             var deleteCommand = con.CreateCommand();
                             deleteCommand.Transaction = tr;
-                            deleteCommand.CommandText = $"DELETE FROM Books_Authors WHERE BookId={bookId}";
+                            deleteCommand.CommandText = $"DELETE FROM Books_Authors WHERE BookId=@BookId";
+                            deleteCommand.Parameters.AddWithValue("BookId", bookId);
                             deleteCommand.ExecuteNonQuery();
+                            deleteCommand.Parameters.Clear();
                             deleteCommand = con.CreateCommand();
-                            deleteCommand.CommandText = $"DELETE FROM Books_Signatures WHERE BookId={bookId}";
+                            deleteCommand.CommandText = $"DELETE FROM Books_Signatures WHERE BookId=@BookId";
+                            deleteCommand.Parameters.AddWithValue("BookId", bookId);
                             deleteCommand.ExecuteNonQuery();
+                            deleteCommand.Parameters.Clear();
                             deleteCommand = con.CreateCommand();
-                            deleteCommand.CommandText = $"DELETE FROM Books WHERE BookId={bookId}";
+                            deleteCommand.CommandText = $"DELETE FROM Books WHERE BookId=@BookId";
+                            deleteCommand.Parameters.AddWithValue("BookId", bookId);
                             deleteCommand.ExecuteNonQuery();
+                            deleteCommand.Parameters.Clear();
                             tr.Commit();
                             progress.Report(Convert.ToInt32((double)(max - i) / max * 100));
                             context.Status = "Deleting";
@@ -1258,6 +1267,7 @@ namespace ManagingBooks
                         transaction.Commit();
                     }
                 });
+                r.Close();
                 connection.Close();
                 int numBook = NumberOfBooks(ref con);
                 Search.RunWorkerAsync(numBook);
@@ -1295,8 +1305,10 @@ namespace ManagingBooks
                 insertCommand.Transaction = tr;
                 foreach (var col in colHeader)
                 {
-                    insertCommand.CommandText = $"INSERT INTO ListViewColVisible (ColName,Boolean) VALUES ('{col}',1)";
+                    insertCommand.CommandText = $"INSERT INTO ListViewColVisible (ColName,Boolean) VALUES (@Column,1)";
+                    insertCommand.Parameters.AddWithValue("Column", col);
                     insertCommand.ExecuteNonQuery();
+                    insertCommand.Parameters.Clear();
                 }
                 tr.Commit();
             }
@@ -1311,6 +1323,7 @@ namespace ManagingBooks
                     i++;
                 }
             }
+            r.Close();
             con.Close();
             context.BookIdColumnVisible = values[0] == 1;
             context.NumberColumnVisible = values[1] == 1;
@@ -1406,7 +1419,9 @@ namespace ManagingBooks
                     break;
             }
             int result = (value) ? 1 : 0;
-            updateCommand.CommandText = $"UPDATE ListViewColVisible SET Boolean={result} WHERE ColName='{colName}'";
+            updateCommand.CommandText = $"UPDATE ListViewColVisible SET Boolean=@Result WHERE ColName=@Column";
+            updateCommand.Parameters.AddWithValue("Result", result);
+            updateCommand.Parameters.AddWithValue("Column", colName);
             updateCommand.ExecuteNonQuery();
             con.Close();
         }
@@ -1443,8 +1458,10 @@ namespace ManagingBooks
         public static readonly RoutedUICommand SaveMedium = new RoutedUICommand("SaveMedium", "SaveMedium", typeof(CustomCommands));
         public static readonly RoutedUICommand RemovePlace = new RoutedUICommand("RemovePlace", "RemovePlace", typeof(CustomCommands));
         public static readonly RoutedUICommand SavePlace = new RoutedUICommand("SavePlace", "SavePlace", typeof(CustomCommands));
-        public static readonly RoutedUICommand RemoveSig = new RoutedUICommand("RemoveSig", "RemoveSig", typeof(CustomCommands));
-        public static readonly RoutedUICommand SaveSig = new RoutedUICommand("SaveSig", "SaveSig", typeof(CustomCommands));
+        public static readonly RoutedUICommand RemoveMainSig = new RoutedUICommand("RemoveMainSig", "RemoveMainSig", typeof(CustomCommands));
+        public static readonly RoutedUICommand RemoveSubSig = new RoutedUICommand("RemoveSubSig", "RemoveSubSig", typeof(CustomCommands));
+        public static readonly RoutedUICommand SaveMainSig = new RoutedUICommand("SaveMainSig", "SaveMainSig", typeof(CustomCommands));
+        public static readonly RoutedUICommand SaveSubSig = new RoutedUICommand("SaveSubSig", "SaveSubSig", typeof(CustomCommands));
 
         public static readonly RoutedUICommand AddToTransfer = new RoutedUICommand("AddToTransfer", "AddToTransfer", typeof(CustomCommands));
         public static readonly RoutedUICommand ExportTransferList = new RoutedUICommand("ExportTransferList", "ExportTransferList", typeof(CustomCommands));

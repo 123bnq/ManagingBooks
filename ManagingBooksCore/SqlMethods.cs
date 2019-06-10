@@ -18,8 +18,8 @@ namespace ManagingBooks
             string databasePath = Path.Combine(AppContext.BaseDirectory, databaseFolder, databaseFile);
             if (!File.Exists(databasePath))
             {
-                string scriptDB = File.ReadAllText(Path.Combine(AppContext.BaseDirectory, databaseFolder, "Database.sql"));
                 Directory.CreateDirectory(Path.Combine(AppContext.BaseDirectory, databaseFolder));
+                string scriptDB = File.ReadAllText(Path.Combine(AppContext.BaseDirectory, databaseFolder, "Database.sql"));
                 SQLiteConnection.CreateFile(databasePath);
                 SQLiteConnection connection = new SQLiteConnection(new SQLiteConnectionStringBuilder { DataSource = Path.Combine(databaseFolder, databaseFile) }.ToString());
                 connection.Open();
@@ -34,6 +34,22 @@ namespace ManagingBooks
             //    DataSource = "Data\\Database.db"
             //});
             con.Open();
+        }
+        public static void LogSqlEditCommand(string sqlCommandText)
+        {
+            string fileName = "edit.log";
+            string folder = Path.Combine(AppContext.BaseDirectory, "Logs");
+            Directory.CreateDirectory(Path.Combine(AppContext.BaseDirectory, folder));
+            string filePath = Path.Combine(folder, fileName);
+            File.AppendAllText(filePath, sqlCommandText + "\r\n");
+        }
+        public static void LogSqlAddCommand(string sqlCommandText)
+        {
+            string fileName = "add.log";
+            string folder = Path.Combine(AppContext.BaseDirectory, "Logs");
+            Directory.CreateDirectory(Path.Combine(AppContext.BaseDirectory, folder));
+            string filePath = Path.Combine(folder, fileName);
+            File.AppendAllText(filePath, sqlCommandText + "\r\n");
         }
     }
 }

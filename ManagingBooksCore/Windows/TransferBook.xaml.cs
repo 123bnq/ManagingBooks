@@ -53,8 +53,10 @@ namespace ManagingBooks.Windows
             {
                 SqlMethods.SqlConnect(out SQLiteConnection con);
                 SQLiteCommand selectCommand = con.CreateCommand();
-                selectCommand.CommandText = $"SELECT BookId,Number,Title FROM Books WHERE Number={bookNumber}";
+                selectCommand.CommandText = $"SELECT BookId,Number,Title FROM Books WHERE Number=@Number";
+                selectCommand.Parameters.AddWithValue("Number", bookNumber);
                 SQLiteDataReader r = selectCommand.ExecuteReader();
+                selectCommand.Parameters.Clear();
                 if (r.Read())
                 {
                     TransferingBook book = new TransferingBook();
@@ -71,6 +73,8 @@ namespace ManagingBooks.Windows
                     string caption = Application.Current.FindResource("TransferBook.CodeBehind.ErrorAdd.NotFound.Caption").ToString();
                     CustomMessageBox.ShowOK(msg, caption, CustomMessageBoxButton.OK, MessageBoxImage.Error);
                 }
+                r.Close();
+                con.Close();
             }
             context.BookNumber = string.Empty;
         }
