@@ -95,7 +95,7 @@ namespace ManagingBooks.Windows
             context.Signatures.Clear();
             SqlMethods.SqlConnect(out SQLiteConnection con);
             SQLiteCommand selectCommand = con.CreateCommand();
-            selectCommand.CommandText = "SELECT SignatureId, Signature, Info FROM Signatures WHERE ParentId IS NULL";
+            selectCommand.CommandText = "SELECT SignatureId, Signature, Info FROM Signatures WHERE ParentId IS NULL ORDER BY Signature";
             SQLiteDataReader r = selectCommand.ExecuteReader();
             while (r.Read())
             {
@@ -284,6 +284,7 @@ namespace ManagingBooks.Windows
                 ReadParentList();
                 context.SubSignatures.Clear();
                 BtnClearSub_Click(null, null);
+                BtnClear_Click(null, null);
             }
             else
             {
