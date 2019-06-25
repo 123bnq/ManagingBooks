@@ -18,6 +18,7 @@ namespace ManagingBooks.Model
         private string m_Name;
         private string m_Info;
 
+        private string m_Title;
         private string m_LabelName;
         private string m_LabelInfo;
         private string m_LabelParent;
@@ -83,6 +84,19 @@ namespace ManagingBooks.Model
                 if (value != m_SubSig)
                 {
                     m_SubSig = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+
+        public string Title
+        {
+            get => m_Title;
+            set
+            {
+                if (m_Title != value)
+                {
+                    m_Title = value;
                     NotifyPropertyChanged();
                 }
             }
