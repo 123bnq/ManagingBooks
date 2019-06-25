@@ -158,8 +158,11 @@
 
 
     <system:String x:Key="ChooseSignature.Title">Signatur Wählen</system:String>
+    <system:String x:Key="ChooseSignature.EditTitle">Signatur Bearbeiten</system:String>
+    <system:String x:Key="ChooseSignature.Signatures.Title">Signaturen</system:String>
     <system:String x:Key="ChooseSignature.Signatures.Name">Signatur</system:String>
     <system:String x:Key="ChooseSignature.Signatures.Info">Informationen</system:String>
+    <system:String x:Key="ChooseSignature.SubSignatures.Title">Untersignaturen</system:String>
     <system:String x:Key="ChooseSignature.SubSignatures.Name">Signatur</system:String>
     <system:String x:Key="ChooseSignature.SubSignatures.Info">Informationen</system:String>
     <system:String x:Key="ChooseSignature.SubSignatures.Sort">Typ</system:String>

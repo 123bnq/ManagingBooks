@@ -7,7 +7,8 @@
         xmlns:local="clr-namespace:ManagingBooks.Windows"
         xmlns:model="clr-namespace:ManagingBooks.Model"
         mc:Ignorable="d"
-        Title="{DynamicResource ChooseSignature.Title}" SizeToContent="WidthAndHeight"
+        Title="{Binding Title}"
+        SizeToContent="WidthAndHeight"
         ShowInTaskbar="False" Closing="Window_Closing"
         Background="WhiteSmoke" WindowStartupLocation="Manual">
     <Window.CommandBindings>
@@ -29,7 +30,7 @@
         </Grid.RowDefinitions>
         <GroupBox Margin="5">
             <GroupBox.Header>
-                <TextBlock Text="Signature" Padding="1"/>
+                <TextBlock Text="{DynamicResource ChooseSignature.Signatures.Title}" Padding="1"/>
             </GroupBox.Header>
             <Grid>
                 <Grid.RowDefinitions>
@@ -39,7 +40,7 @@
                 <ListView Name="MainList" Height="300" Width="400" Margin="10" ItemsSource="{Binding Signatures}" SelectedItem="{Binding MainSig}" SelectionChanged="MainList_SelectionChanged" SelectionMode="Single" VerticalAlignment="Top">
                     <ListView.Resources>
                         <ContextMenu x:Key="ItemContextMenu">
-                            <MenuItem Header="{DynamicResource MainWindow.SearchList.ContextMenu.Edit}"/>
+                            <!--<MenuItem Header="{DynamicResource MainWindow.SearchList.ContextMenu.Edit}"/>-->
                             <MenuItem Header="{DynamicResource MainWindow.SearchList.ContextMenu.Delete}" Command="main:CustomCommands.RemoveMainSig"/>
                         </ContextMenu>
                         <Style TargetType="{x:Type GridViewColumnHeader}">
@@ -108,7 +109,7 @@
         </GroupBox>
         <GroupBox Grid.Column="1" Margin="5">
             <GroupBox.Header>
-                <TextBlock Text="Sub-signature" Padding="1"/>
+                <TextBlock Text="{DynamicResource ChooseSignature.SubSignatures.Title}" Padding="1"/>
             </GroupBox.Header>
             <Grid>
                 <Grid.RowDefinitions>
@@ -118,7 +119,7 @@
                 <ListView Name="SubList" Grid.Column="1" Height="300" Width="400" Margin="10" ItemsSource="{Binding SubSignatures}" SelectedItem="{Binding SubSig}" SelectionChanged="SubList_SelectionChanged">
                     <ListView.Resources>
                         <ContextMenu x:Key="ItemContextMenu">
-                            <MenuItem Header="{DynamicResource MainWindow.SearchList.ContextMenu.Edit}"/>
+                            <!--<MenuItem Header="{DynamicResource MainWindow.SearchList.ContextMenu.Edit}"/>-->
                             <MenuItem Header="{DynamicResource MainWindow.SearchList.ContextMenu.Delete}" Command="main:CustomCommands.RemoveSubSig"/>
                         </ContextMenu>
                         <Style TargetType="{x:Type GridViewColumnHeader}">

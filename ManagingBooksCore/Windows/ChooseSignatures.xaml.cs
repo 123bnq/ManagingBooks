@@ -43,11 +43,11 @@ namespace ManagingBooks.Windows
             context.SubSignatures = new ObservableCollection<Signature>();
             this.DataContext = context;
             ReadSignature();
+            context.Title = Application.Current.FindResource("ChooseSignature.Title").ToString();
             InitializeComponent();
             EditSig.Visibility = Visibility.Collapsed;
             EditSubSig.Visibility = Visibility.Collapsed;
             context.IsEdit = IsEdit;
-            //ClearEntries(context);
         }
 
         public ChooseSignatures(bool isEdit)
@@ -66,6 +66,7 @@ namespace ManagingBooks.Windows
             context.IsEdit = isEdit;
             EditSig.Visibility = Visibility.Visible;
             EditSubSig.Visibility = Visibility.Visible;
+            context.Title = Application.Current.FindResource("ChooseSignature.EditTitle").ToString();
         }
 
         private void ClearEntries(ChooseSignaturesModel context, string name = null, string info = null, string parrentId = null, bool main = true)
@@ -95,7 +96,7 @@ namespace ManagingBooks.Windows
             context.Signatures.Clear();
             SqlMethods.SqlConnect(out SQLiteConnection con);
             SQLiteCommand selectCommand = con.CreateCommand();
-            selectCommand.CommandText = "SELECT SignatureId, Signature, Info FROM Signatures WHERE ParentId IS NULL";
+            selectCommand.CommandText = "SELECT SignatureId, Signature, Info FROM Signatures WHERE ParentId IS NULL ORDER BY Signature";
             SQLiteDataReader r = selectCommand.ExecuteReader();
             while (r.Read())
             {
@@ -284,6 +285,7 @@ namespace ManagingBooks.Windows
                 ReadParentList();
                 context.SubSignatures.Clear();
                 BtnClearSub_Click(null, null);
+                BtnClear_Click(null, null);
             }
             else
             {
@@ -601,7 +603,6 @@ namespace ManagingBooks.Windows
                     string message = Application.Current.FindResource("ChooseSignature.CodeBehind.ErrorSave.Message").ToString();
                     string caption = Application.Current.FindResource("ChooseSignature.CodeBehind.ErrorSave.Caption").ToString();
                     MessageBoxResult result = CustomMessageBox.ShowOK(message, caption, CustomMessageBoxButton.OK, MessageBoxImage.Error);
-
                 }
             }
             r.Close();
