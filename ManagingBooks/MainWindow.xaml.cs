@@ -209,6 +209,9 @@ namespace ManagingBooks
             context.Status = "Search Complete";
             // set number of Book
             context.BookCount = (int)e.Result;
+            SearchList.Items.SortDescriptions.Clear();
+            ListSortDirection newDir = ListSortDirection.Ascending;
+            SearchList.Items.SortDescriptions.Add(new SortDescription("Number", newDir));
             //context.Status = Application.Current.FindResource("MainWindow.CodeBehind.Status.Completed").ToString();
             // focus to the previous chosen book if any
             if (LastIndex != -1)
