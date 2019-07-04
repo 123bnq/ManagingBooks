@@ -33,6 +33,8 @@ namespace ManagingBooks.Windows
         ObservableCollection<string> ListMedium = new ObservableCollection<string>();
         ObservableCollection<string> ListPlace = new ObservableCollection<string>();
 
+        public string Number { get; set; }
+
         string NotAvalable = "N/A";
 
         public AddBook()
@@ -321,23 +323,23 @@ namespace ManagingBooks.Windows
                             tr.Commit();
 
                         });
+                        string number = book.Number.ToString();
+                        string signature = string.Join(" - ", book.Signatures);
+
+                        int length = number.Length;
+                        for (int i = 6; i > length; i--)
+                        {
+                            number = String.Concat("0", number);
+                        }
+                        Number = number;
                         message = Application.Current.FindResource("AddBook.CodeBehind.InfoAdd.Message").ToString();
                         caption = Application.Current.FindResource("AddBook.CodeBehind.InfoAdd.Caption").ToString();
                         var result = CustomMessageBox.ShowYesNo(message, caption, CustomMessageBoxButton.Yes, CustomMessageBoxButton.No, MessageBoxImage.Information);
                         // Generate barcode
                         if (result == MessageBoxResult.Yes)
                         {
-                            string number = book.Number.ToString();
-                            string signature = string.Join(" - ", book.Signatures);
-
-                            int length = number.Length;
-                            for (int i = 6; i > length; i--)
-                            {
-                                number = String.Concat("0", number);
-                            }
-
                             MainWindow.CreateBarcodeImage(number, signature, isOpen: true);
-
+                            
                         }
                         BtnAdd.IsEnabled = true;
                         //MessageBox.Show(message, caption, MessageBoxButton.OK, MessageBoxImage.Information);
@@ -435,6 +437,7 @@ namespace ManagingBooks.Windows
             int i = 20;
             while (r.Read() && i-- > 0)
             {
+                
                 int result;
                 int.TryParse(Convert.ToString(r["Number"]), out result);
                 App.Current.Dispatcher.Invoke((Action)delegate
