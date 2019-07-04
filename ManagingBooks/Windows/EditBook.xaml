@@ -84,7 +84,7 @@
             <Button Name="BtnOk" Content="{DynamicResource EditBook.OkBtn}" MinWidth="75" Margin="0,0,5,0" Click="BtnOk_Click"/>
             <Button Name="BtnCopy" Content="{DynamicResource EditBook.CopyBtn}" MinWidth="75" Margin="5,0,5,0" Click="BtnCopy_Click"/>
             <Button Name="BtnUndo" Content="{DynamicResource EditBook.UndoBtn}" MinWidth="75" Margin="5,0,5,0" Click="BtnUndo_Click"/>
-            <Button Name="BtnCancel" Content="{DynamicResource EditBook.CancelBtn}" MinWidth="75" Margin="5,0,0,0" Click="BtnCancel_Click"/>
+            <Button Name="BtnCancel" IsCancel="True" Content="{DynamicResource EditBook.CancelBtn}" MinWidth="75" Margin="5,0,0,0" Click="BtnCancel_Click"/>
         </StackPanel>
     </StackPanel>
 </Window>

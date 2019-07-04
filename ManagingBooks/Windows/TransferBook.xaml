@@ -59,6 +59,9 @@
                 <KeyBinding Key="Return" Command="main:CustomCommands.AddToTransfer"/>
             </TextBox.InputBindings>
         </TextBox>
-        <Button Name="BtnExport" Content="{DynamicResource TransferBook.Export}" MinWidth="75" HorizontalAlignment="Center" Margin="10" Command="main:CustomCommands.ExportTransferList"/>
+        <WrapPanel HorizontalAlignment="Center" Margin="10">
+            <Button Name="BtnExport" Content="{DynamicResource TransferBook.Export}" MinWidth="75" HorizontalAlignment="Center" Margin="5,0" Command="main:CustomCommands.ExportTransferList"/>
+            <Button Name="CancelBtn" IsCancel="True" Content="Close" HorizontalAlignment="Center" MinWidth="75" Margin="5,0"/>
+        </WrapPanel>
     </StackPanel>
 </Window>

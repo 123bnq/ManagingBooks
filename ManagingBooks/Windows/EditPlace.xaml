@@ -69,6 +69,6 @@
         <Button Grid.Column="2" Name="BtnSave" MinWidth="75" Margin="5" Content="{DynamicResource EditPlace.SaveBtn}" Command="main:CustomCommands.SavePlace"/>
         <Button Grid.Column="2" Grid.Row="1" Name="BtnClear" MinWidth="75" Margin="5" Content="{DynamicResource EditPlace.ClearBtn}" Click="BtnClear_Click"/>
         <Button Grid.Column="2" Grid.Row="2" Name="BtnRemove" MinWidth="75" Margin="5" Content="{DynamicResource EditPlace.RemoveBtn}" Command="main:CustomCommands.RemovePlace"/>
-        <Button Grid.Column="2" Grid.Row="3" VerticalAlignment="Top" Name="BtnClose" MinWidth="75" Margin="5" Content="{DynamicResource EditPlace.CloseBtn}" Click="BtnClose_Click"/>
+        <Button Grid.Column="2" Grid.Row="3" VerticalAlignment="Top" Name="BtnClose" IsCancel="True" MinWidth="75" Margin="5" Content="{DynamicResource EditPlace.CloseBtn}" Click="BtnClose_Click"/>
     </Grid>
 </Window>
