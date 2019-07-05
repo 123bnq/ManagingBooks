@@ -302,7 +302,7 @@ namespace ManagingBooks.Windows
                     //selectCommand.CommandText = $"SELECT * FROM Books WHERE Number = {book.Number} OR Title = '{book.Title}' AND Version = {book.Version} AND Medium = '{book.Medium}' AND DayBought = '{book.DayBought}'";
                     selectCommand.CommandText = $"SELECT * FROM Books WHERE Number = @Number";
                     selectCommand.Parameters.AddWithValue("Number", book.Number);
-                    SqlMethods.LogSqlAddCommand(selectCommand.CommandText);
+                    //SqlMethods.LogSqlAddCommand(selectCommand.CommandText);
                     SQLiteDataReader r = selectCommand.ExecuteReader();
 
                     if (r.Read())
@@ -541,13 +541,13 @@ namespace ManagingBooks.Windows
             insertCommand.Parameters.AddWithValue("Date", book.DayBought);
             insertCommand.Parameters.AddWithValue("Pages", book.Pages);
             insertCommand.Parameters.AddWithValue("Price", book.Price);
-            SqlMethods.LogSqlAddCommand(insertCommand.CommandText);
+            //SqlMethods.LogSqlAddCommand(insertCommand.CommandText);
             string textPara = string.Empty;
             for (int index = 0; index < insertCommand.Parameters.Count; index++)
             {
                 textPara += insertCommand.Parameters[index].Value + ", ";
             }
-            SqlMethods.LogSqlAddCommand(textPara);
+            //SqlMethods.LogSqlAddCommand(textPara);
             insertCommand.ExecuteNonQuery();
             insertCommand.Parameters.Clear();
             Thread.Sleep(TimeSpan.FromTicks(5));
@@ -557,7 +557,7 @@ namespace ManagingBooks.Windows
             selectCommand = con.CreateCommand();
             selectCommand.CommandText = $"SELECT BookId FROM Books WHERE Title = @Title";
             selectCommand.Parameters.AddWithValue("Title", book.Title);
-            SqlMethods.LogSqlAddCommand(selectCommand.CommandText);
+            //SqlMethods.LogSqlAddCommand(selectCommand.CommandText);
             r = selectCommand.ExecuteReader();
             selectCommand.Parameters.Clear();
             while (r.Read())
@@ -570,20 +570,20 @@ namespace ManagingBooks.Windows
                 selectCommand = con.CreateCommand();
                 selectCommand.CommandText = $"SELECT * FROM Authors WHERE Name = @Author";
                 selectCommand.Parameters.AddWithValue("Author", book.Authors[i].Name);
-                SqlMethods.LogSqlAddCommand(selectCommand.CommandText);
+                //SqlMethods.LogSqlAddCommand(selectCommand.CommandText);
                 r = selectCommand.ExecuteReader();
                 selectCommand.Parameters.Clear();
                 if (!r.Read())
                 {
                     insertCommand.CommandText = "INSERT INTO Authors (Name) VALUES (@Name)";
                     insertCommand.Parameters.AddWithValue("Name", book.Authors[i].Name);
-                    SqlMethods.LogSqlAddCommand(insertCommand.CommandText);
+                    //SqlMethods.LogSqlAddCommand(insertCommand.CommandText);
                     textPara = string.Empty;
                     for (int index = 0; index < insertCommand.Parameters.Count; index++)
                     {
                         textPara += insertCommand.Parameters[index].Value + ", ";
                     }
-                    SqlMethods.LogSqlAddCommand(textPara);
+                    //SqlMethods.LogSqlAddCommand(textPara);
                     insertCommand.ExecuteNonQuery();
                     insertCommand.Parameters.Clear();
                 }
@@ -597,7 +597,7 @@ namespace ManagingBooks.Windows
                 insertCommand.Parameters.AddWithValue("maxId", maxId);
                 insertCommand.Parameters.AddWithValue("Author", book.Authors[i].Name);
                 insertCommand.Parameters.AddWithValue("Priority", i + 1);
-                SqlMethods.LogSqlAddCommand(insertCommand.CommandText);
+                //SqlMethods.LogSqlAddCommand(insertCommand.CommandText);
                 insertCommand.ExecuteNonQuery();
                 insertCommand.Parameters.Clear();
                 Thread.Sleep(TimeSpan.FromTicks(50));
@@ -608,7 +608,7 @@ namespace ManagingBooks.Windows
                 selectCommand = con.CreateCommand();
                 selectCommand.CommandText = $"SELECT * FROM Signatures WHERE Signature = @Signature";
                 selectCommand.Parameters.AddWithValue("Signature", book.Signatures[i]);
-                SqlMethods.LogSqlAddCommand(selectCommand.CommandText);
+                //SqlMethods.LogSqlAddCommand(selectCommand.CommandText);
                 r = selectCommand.ExecuteReader();
                 selectCommand.Parameters.Clear();
                 if (!r.Read())
@@ -616,13 +616,13 @@ namespace ManagingBooks.Windows
                     insertCommand.CommandText = "INSERT INTO Signatures (Signature, Info) VALUES (@Signature, @Info)";
                     insertCommand.Parameters.AddWithValue("Signature", book.Signatures[i]);
                     insertCommand.Parameters.AddWithValue("Info", book.Signatures[i]);
-                    SqlMethods.LogSqlAddCommand(insertCommand.CommandText);
+                    //SqlMethods.LogSqlAddCommand(insertCommand.CommandText);
                     textPara = string.Empty;
                     for (int index = 0; index < insertCommand.Parameters.Count; index++)
                     {
                         textPara += insertCommand.Parameters[index].Value + ", ";
                     }
-                    SqlMethods.LogSqlAddCommand(textPara);
+                    //SqlMethods.LogSqlAddCommand(textPara);
                     insertCommand.ExecuteNonQuery();
                     insertCommand.Parameters.Clear();
                 }
@@ -635,7 +635,7 @@ namespace ManagingBooks.Windows
                 insertCommand.Parameters.AddWithValue("maxId", maxId);
                 insertCommand.Parameters.AddWithValue("Signature", book.Signatures[i]);
                 insertCommand.Parameters.AddWithValue("Priority", i + 1);
-                SqlMethods.LogSqlAddCommand(insertCommand.CommandText);
+                //SqlMethods.LogSqlAddCommand(insertCommand.CommandText);
                 insertCommand.ExecuteNonQuery();
                 insertCommand.Parameters.Clear();
                 Thread.Sleep(TimeSpan.FromTicks(50));
