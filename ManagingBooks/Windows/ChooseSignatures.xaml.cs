@@ -48,6 +48,7 @@ namespace ManagingBooks.Windows
             EditSig.Visibility = Visibility.Collapsed;
             EditSubSig.Visibility = Visibility.Collapsed;
             context.IsEdit = IsEdit;
+            context.IdColVisible = false;
         }
 
         public ChooseSignatures(bool isEdit)

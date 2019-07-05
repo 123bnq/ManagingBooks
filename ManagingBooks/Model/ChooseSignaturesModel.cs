@@ -35,6 +35,21 @@ namespace ManagingBooks.Model
 
         private bool m_IsEdit = true;
 
+        private bool m_IdColVisible = true;
+
+        public bool IdColVisible
+        {
+            get => m_IdColVisible;
+            set
+            {
+                if (value != m_IdColVisible)
+                {
+                    m_IdColVisible = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+
         public int CurrentId
         {
             get => m_CurrentId;
