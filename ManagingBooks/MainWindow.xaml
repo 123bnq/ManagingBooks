@@ -277,7 +277,7 @@
                         <KeyBinding Key="Return" Command="local:CustomCommands.Search"/>
                     </TextBox.InputBindings>-->
                 </TextBox>
-                <Button x:Name="BtnImportMDB" Grid.Column="2" MinWidth="75" Content="Import mdb" Margin="5,0,0,5" Click="BtnImportMDB_Click" />
+                <Button x:Name="BtnImportMDB" Grid.Column="2" MinWidth="75" Content="Import mdb" Margin="5,0,0,5" Click="BtnImportMDB_Click" Visibility="Collapsed"/>
                 <TextBlock Grid.Row="1" Text="{DynamicResource MainWindow.SearchBy}" Margin="0,0,10,0"/>
                 <ComboBox Name="BoxSearchBy" Grid.Row="1" Grid.Column="1" Margin="5,0,5,0" Text="{Binding SearchBy}">
                     <ComboBoxItem Content="{DynamicResource MainWindow.SearchBy.Number}"/>

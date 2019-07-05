@@ -17,6 +17,9 @@
         <CommandBinding Command="main:CustomCommands.SaveMainSig" CanExecute="SaveMainSigCommand_CanExecute" Executed="SaveMainSigCommand_Executed"/>
         <CommandBinding Command="main:CustomCommands.SaveSubSig" CanExecute="SaveSubSigCommand_CanExecute" Executed="SaveSubSigCommand_Executed"/>
     </Window.CommandBindings>
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+    </Window.Resources>
     <!--<Window.DataContext>
         <model:ChooseSignaturesModel/>
     </Window.DataContext>-->
@@ -59,7 +62,11 @@
                     </ListView.Resources>
                     <ListView.View>
                         <GridView>
-                            <GridViewColumn Header="Id" Width="Auto" DisplayMemberBinding="{Binding Id}"/>
+                            <GridViewColumn Width="Auto" DisplayMemberBinding="{Binding Id}">
+                                <GridViewColumnHeader Content="Id" Tag="Id"
+                                                          Visibility="{Binding IdColumnVisible, Converter={StaticResource BoolToVisibilityConverter}}"
+                                                          main:GridViewBehaviours.CollapseableColumn="True"/>
+                            </GridViewColumn>
                             <GridViewColumn Header="{DynamicResource ChooseSignature.Signatures.Name}" Width="Auto" DisplayMemberBinding="{Binding Name}"/>
                             <GridViewColumn Header="{DynamicResource ChooseSignature.Signatures.Info}" Width="Auto" DisplayMemberBinding="{Binding Info}"/>
                         </GridView>
@@ -137,7 +144,11 @@
                     </ListView.Resources>
                     <ListView.View>
                         <GridView>
-                            <GridViewColumn Header="Id" Width="Auto" DisplayMemberBinding="{Binding Id}"/>
+                            <GridViewColumn Width="Auto" DisplayMemberBinding="{Binding Id}">
+                                <GridViewColumnHeader Content="Id" Tag="Id"
+                                                          Visibility="{Binding IdColumnVisible, Converter={StaticResource BoolToVisibilityConverter}}"
+                                                          main:GridViewBehaviours.CollapseableColumn="True"/>
+                            </GridViewColumn>
                             <GridViewColumn Header="{DynamicResource ChooseSignature.SubSignatures.Name}" Width="Auto" DisplayMemberBinding="{Binding Name}"/>
                             <GridViewColumn Header="{DynamicResource ChooseSignature.SubSignatures.Info}" Width="Auto" DisplayMemberBinding="{Binding Info}"/>
                             <GridViewColumn Header="{DynamicResource ChooseSignature.SubSignatures.Sort}" Width="Auto" DisplayMemberBinding="{Binding Sort}"/>

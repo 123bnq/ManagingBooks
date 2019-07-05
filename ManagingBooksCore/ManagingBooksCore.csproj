@@ -21,6 +21,9 @@
     <Resource Include="Images\sharon-mccutcheon-532782-unsplash.jpg">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Images\Generic Book File Type_40px.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
 
   <ItemGroup>

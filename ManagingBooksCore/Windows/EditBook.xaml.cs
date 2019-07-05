@@ -326,7 +326,7 @@ namespace ManagingBooks.Windows
                             updateCommand.Parameters.AddWithValue("Pages", tempBook.Pages);
                             updateCommand.Parameters.AddWithValue("Price", tempBook.Price);
                             updateCommand.Parameters.AddWithValue("BookId", tempBook.BookId);
-                            SqlMethods.LogSqlEditCommand(updateCommand.CommandText);
+                            //SqlMethods.LogSqlEditCommand(updateCommand.CommandText);
                             try
                             {
                                 updateCommand.ExecuteNonQuery();
@@ -343,14 +343,14 @@ namespace ManagingBooks.Windows
                             deleteCommand.Transaction = tr;
                             deleteCommand.CommandText = $"DELETE FROM Books_Authors WHERE BookId=@BookId";
                             deleteCommand.Parameters.AddWithValue("BookId", tempBook.BookId);
-                            SqlMethods.LogSqlEditCommand(deleteCommand.CommandText);
+                            //SqlMethods.LogSqlEditCommand(deleteCommand.CommandText);
                             deleteCommand.ExecuteNonQuery();
                             deleteCommand.Parameters.Clear();
 
                             //deleteCommand = con.CreateCommand();
                             deleteCommand.CommandText = $"DELETE FROM Books_Signatures WHERE BookId=@BookId";
                             deleteCommand.Parameters.AddWithValue("BookId", tempBook.BookId);
-                            SqlMethods.LogSqlEditCommand(deleteCommand.CommandText);
+                            //SqlMethods.LogSqlEditCommand(deleteCommand.CommandText);
                             deleteCommand.ExecuteNonQuery();
                             deleteCommand.Parameters.Clear();
 
@@ -364,7 +364,7 @@ namespace ManagingBooks.Windows
                                 selectCommand = con.CreateCommand();
                                 selectCommand.CommandText = $"SELECT * FROM Authors WHERE Name = @Author";
                                 selectCommand.Parameters.AddWithValue("Author", tempBook.Authors[i].Name);
-                                SqlMethods.LogSqlEditCommand(selectCommand.CommandText);
+                                //SqlMethods.LogSqlEditCommand(selectCommand.CommandText);
                                 SQLiteDataReader r;
                                 try
                                 {
@@ -374,13 +374,13 @@ namespace ManagingBooks.Windows
                                     {
                                         insertCommand.CommandText = "INSERT INTO Authors (Name) VALUES (@Name)";
                                         insertCommand.Parameters.AddWithValue("Name", tempBook.Authors[i].Name);
-                                        SqlMethods.LogSqlEditCommand(insertCommand.CommandText);
+                                        //SqlMethods.LogSqlEditCommand(insertCommand.CommandText);
                                         string textPara = string.Empty;
                                         for (int index = 0; index < insertCommand.Parameters.Count; index++)
                                         {   
                                             textPara += insertCommand.Parameters[index].Value + ", ";
                                         }
-                                        SqlMethods.LogSqlEditCommand(textPara);
+                                        //SqlMethods.LogSqlEditCommand(textPara);
                                         try
                                         {
                                             insertCommand.ExecuteNonQuery();
@@ -398,7 +398,7 @@ namespace ManagingBooks.Windows
                                     insertCommand.Parameters.AddWithValue("BookId", tempBook.BookId);
                                     insertCommand.Parameters.AddWithValue("Author", tempBook.Authors[i].Name);
                                     insertCommand.Parameters.AddWithValue("Priority", i + 1);
-                                    SqlMethods.LogSqlEditCommand(insertCommand.CommandText);
+                                    //SqlMethods.LogSqlEditCommand(insertCommand.CommandText);
                                     //insertCommand.CommandText = $"INSERT INTO Books_Authors (BookId, AuthorId, Priority) VALUES ((SELECT BookId FROM Books " +
                                     //    $"WHERE Title = '{book.Title}' AND Version = '{tempBook.Version}' AND Medium = '{tempBook.Medium}')," +
                                     //    $"(SELECT AuthorId FROM Authors WHERE Name = '{tempBook.Authors[i].Name}'),{i + 1})";
@@ -428,7 +428,7 @@ namespace ManagingBooks.Windows
                                 selectCommand = con.CreateCommand();
                                 selectCommand.CommandText = $"SELECT * FROM Signatures WHERE Signature = @Signature";
                                 selectCommand.Parameters.AddWithValue("Signature", tempBook.Signatures[i]);
-                                SqlMethods.LogSqlEditCommand(selectCommand.CommandText);
+                                //SqlMethods.LogSqlEditCommand(selectCommand.CommandText);
                                 SQLiteDataReader r;
                                 try
                                 {
@@ -439,13 +439,13 @@ namespace ManagingBooks.Windows
                                         insertCommand.CommandText = "INSERT INTO Signatures (Signature, Info) VALUES (@Signature, @Info)";
                                         insertCommand.Parameters.AddWithValue("Signature", tempBook.Signatures[i]);
                                         insertCommand.Parameters.AddWithValue("Info", tempBook.Signatures[i]);
-                                        SqlMethods.LogSqlEditCommand(insertCommand.CommandText);
+                                        //SqlMethods.LogSqlEditCommand(insertCommand.CommandText);
                                         string textPara = string.Empty;
                                         for (int index = 0; index < insertCommand.Parameters.Count; index++)
                                         {
                                             textPara += insertCommand.Parameters[index].Value + ", ";
                                         }
-                                        SqlMethods.LogSqlEditCommand(textPara);
+                                        //SqlMethods.LogSqlEditCommand(textPara);
                                         try
                                         {
                                             insertCommand.ExecuteNonQuery();
@@ -463,7 +463,7 @@ namespace ManagingBooks.Windows
                                     insertCommand.Parameters.AddWithValue("BookId", tempBook.BookId);
                                     insertCommand.Parameters.AddWithValue("Signature", tempBook.Signatures[i]);
                                     insertCommand.Parameters.AddWithValue("Priority", i + 1);
-                                    SqlMethods.LogSqlEditCommand(insertCommand.CommandText);
+                                    //SqlMethods.LogSqlEditCommand(insertCommand.CommandText);
                                     //insertCommand.CommandText = $"INSERT INTO Books_Signatures (BookId, SignatureId, Priority) VALUES ((SELECT BookId FROM Books " +
                                     //    $"WHERE Title = '{tempBook.Title}' AND Version = '{tempBook.Version}' AND Medium = '{tempBook.Medium}')," +
                                     //    $"(SELECT SignatureId FROM Signatures WHERE Signature = '{tempBook.Signatures[i]}'), {i + 1})";

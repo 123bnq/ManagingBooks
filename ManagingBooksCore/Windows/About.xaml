@@ -1,0 +1,39 @@
+﻿<Window x:Class="ManagingBooks.Windows.About"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ManagingBooks.Windows"
+        mc:Ignorable="d"
+        Title="About" SizeToContent="WidthAndHeight"
+        Background="WhiteSmoke"
+        WindowStartupLocation="CenterOwner">
+    <StackPanel Margin="20">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Image Grid.RowSpan="2" Source="/Images/Generic Book File Type_40px.ico" Margin="0,0,10,10"/>
+            <TextBlock Grid.Column="1" FontSize="15" Text="{DynamicResource MainWindow.Title}"/>
+            <TextBlock Grid.Column="1" Grid.Row="1" Margin="0,0,0,10">
+                <Run Text="Version "/>
+                <Run Text="{DynamicResource Version}"/>
+            </TextBlock>
+        </Grid>
+        <Separator Height="10" Margin="0"/>
+        <StackPanel Margin="5">
+            <TextBlock Text="Programmed and designed by Bui Nhat Quang, Summer 2019"/>
+            <TextBlock Text="Created for Prof. Dr.Ing., Dr.rer.pol. Herbert Nosko"/>
+            <TextBlock >
+                <Run Text="Email:"/>
+                <Hyperlink NavigateUri="mailto:buinhatquang31011996@gmail.com" RequestNavigate="Hyperlink_RequestNavigate">buinhatquang31011996@gmail.com</Hyperlink>
+            </TextBlock>
+        </StackPanel>
+        <Button IsCancel="True" Content="Close" HorizontalAlignment="Center" MinWidth="75" Margin="0,20,0,0"/>
+    </StackPanel>
+</Window>

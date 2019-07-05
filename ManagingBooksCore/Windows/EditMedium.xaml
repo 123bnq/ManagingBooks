@@ -54,7 +54,7 @@
             <Button Name="BtnSave" MinWidth="75" Content="{DynamicResource EditMedium.SaveBtn}" Margin="0,5" Command="main:CustomCommands.SaveMedium"/>
             <Button Name="BtnClear" MinWidth="75" Content="{DynamicResource EditMedium.ClearBtn}" Margin="0,5" Click="BtnClear_Click"/>
             <Button Name="BtnRemove" MinWidth="75" Content="{DynamicResource EditMedium.RemoveBtn}" Margin="0,5" Command="main:CustomCommands.RemoveMedium"/>
-            <Button Name="BtnClose" MinWidth="75" Content="{DynamicResource EditMedium.CloseBtn}" Margin="0,5" Click="BtnClose_Click"/>
+            <Button Name="BtnClose" IsCancel="True" MinWidth="75" Content="{DynamicResource EditMedium.CloseBtn}" Margin="0,5" Click="BtnClose_Click"/>
         </StackPanel>
     </Grid>
 </Window>

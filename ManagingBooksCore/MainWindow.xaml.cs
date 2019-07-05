@@ -40,6 +40,8 @@ namespace ManagingBooks
 
         BackgroundWorker Search = new BackgroundWorker();
         BackgroundWorker Delete = new BackgroundWorker();
+
+        LibIndices Lib = new LibIndices();
         int LastIndex = -1;
 
         Uri English = new Uri(".\\Resources\\Resources.xaml", UriKind.Relative);
@@ -65,9 +67,11 @@ namespace ManagingBooks
             // start collecting books from DB
             SqlMethods.SqlConnect(out SQLiteConnection con);
             int numBook = NumberOfBooks(ref con);
+            Lib.Amount = numBook;
+            Lib.Number = string.Empty;
             con.Close();
-            Search.RunWorkerAsync(numBook);
-
+            Search.RunWorkerAsync(Lib);
+            
             // hide books which are not relevant to UserFilter
             CollectionView view = CollectionViewSource.GetDefaultView(SearchList.ItemsSource) as CollectionView;
             view.Filter = UserFilter;
@@ -94,7 +98,7 @@ namespace ManagingBooks
         /// <param name="e"></param>
         void Search_DoWork(object sender, DoWorkEventArgs e)
         {
-            int max = (int)e.Argument;
+            int max = (e.Argument as LibIndices).Amount;
             int i = 0;
             int progressPercentage;
 
@@ -106,7 +110,7 @@ namespace ManagingBooks
                 "LEFT JOIN Books_Authors ba ON (b.BookId = ba.BookId) " +
                 "LEFT JOIN Authors a ON (ba.AuthorId = a.AuthorId) " +
                 "LEFT JOIN Books_Signatures bs ON (bs.BookId = b.BookId) " +
-                "LEFT JOIN Signatures s ON (bs.SignatureId = s.SignatureId) ORDER BY b.BookId,ba.Priority,bs.Priority";
+                "LEFT JOIN Signatures s ON (bs.SignatureId = s.SignatureId) ORDER BY b.Number,b.BookId,ba.Priority,bs.Priority";
             SQLiteDataReader r = selectCommand.ExecuteReader();
             int lastBookId = -1;
             int lastAuthorId = -1;
@@ -178,7 +182,7 @@ namespace ManagingBooks
                 progressPercentage = Convert.ToInt32(((double)i / max) * 100);
                 (sender as BackgroundWorker).ReportProgress(progressPercentage, tempBook);
             }
-            e.Result = i;
+            e.Result = e.Argument;
             r.Close();
             con.Close();
 
@@ -208,15 +212,21 @@ namespace ManagingBooks
             // set the status to finished
             context.Status = "Search Complete";
             // set number of Book
-            context.BookCount = (int)e.Result;
+            context.BookCount = (e.Result as LibIndices).Amount;
             //context.Status = Application.Current.FindResource("MainWindow.CodeBehind.Status.Completed").ToString();
             // focus to the previous chosen book if any
             if (LastIndex != -1)
             {
                 SearchList.SelectedIndex = LastIndex;
-                LastIndex = -1;
-                SearchList.ScrollIntoView(SearchList.SelectedItem);
+                LastIndex = -1;                
+                
             }
+            else
+            {
+                var searchBook = SearchList.Items.Cast<SearchBook>().Where(book => book.Number.Equals((e.Result as LibIndices).Number));
+                SearchList.SelectedItem = searchBook.Cast<SearchBook>().FirstOrDefault();
+            }
+            SearchList.ScrollIntoView(SearchList.SelectedItem);
         }
 
         /// <summary>
@@ -258,13 +268,16 @@ namespace ManagingBooks
         private void AddWindow_Click(object sender, RoutedEventArgs e)
         {
             // After closing the window, refresh the display books
-            if (!new AddBook() { Owner = this }.ShowDialog().Value)
+            AddBook window = new AddBook() { Owner = this };
+            if (!window.ShowDialog().Value)
             {
                 (DataContext as SearchBookModel).DisplayBooks.Clear();
                 SqlMethods.SqlConnect(out SQLiteConnection con);
                 int numBook = NumberOfBooks(ref con);
                 con.Close();
-                Search.RunWorkerAsync(numBook);
+                Lib.Amount = numBook;
+                Lib.Number = window.Number;
+                Search.RunWorkerAsync(Lib);
                 ClearEntries(DataContext as SearchBookModel);
             }
         }
@@ -409,7 +422,8 @@ namespace ManagingBooks
                 SqlMethods.SqlConnect(out SQLiteConnection con);
                 int numBook = NumberOfBooks(ref con);
                 con.Close();
-                Search.RunWorkerAsync(numBook);
+                Lib.Amount = numBook;
+                Search.RunWorkerAsync(Lib);
             }
         }
 
@@ -963,7 +977,8 @@ namespace ManagingBooks
             //    }
             //    int numBook = NumberOfBooks(ref con);
             //    con.Close();
-            //    Search.RunWorkerAsync(numBook);
+            //    Lib.Amount = numBook;
+            //    Search.RunWorkerAsync(Lib);
             //}
         }
 
@@ -1270,7 +1285,8 @@ namespace ManagingBooks
                 r.Close();
                 connection.Close();
                 int numBook = NumberOfBooks(ref con);
-                Search.RunWorkerAsync(numBook);
+                Lib.Amount = numBook;
+                Search.RunWorkerAsync(Lib);
                 con.Close();
                 SearchList.IsEnabled = true;
                 BoxSearchText.IsEnabled = true;
@@ -1425,6 +1441,11 @@ namespace ManagingBooks
             updateCommand.ExecuteNonQuery();
             con.Close();
         }
+
+        private void About_Click(object sender, RoutedEventArgs e)
+        {
+            new About() { Owner = this }.ShowDialog();
+        }
     }
 
     public static class CustomCommands
@@ -1473,5 +1494,11 @@ namespace ManagingBooks
         public static string No { get => Application.Current.FindResource("MessageBox.NoBtn").ToString(); }
         public static string Cancel { get => Application.Current.FindResource("MessageBox.CancelBtn").ToString(); }
         public static string OK { get => Application.Current.FindResource("MessageBox.OkBtn").ToString(); }
+    }
+
+    public class LibIndices
+    {
+        public int Amount { get; set; }
+        public string Number { get; set; }
     }
 }

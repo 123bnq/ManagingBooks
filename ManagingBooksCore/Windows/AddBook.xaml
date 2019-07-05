@@ -107,7 +107,7 @@
             <Button Name="BtnAddTest" Content="Add Demo" MinWidth="70" Margin="5" Click="BtnAddTest_Click"/>
             <Button Name="BtnAdd" Content="{DynamicResource AddBook.AddBtn}" MinWidth="70" Margin="5" Click="BtnAdd_Click"/>
             <Button Name="BtnClear" Content="{DynamicResource AddBook.ClearBtn}" MinWidth="70" Margin="5" Click="BtnClear_Click"/>
-            <Button Name="BtnCancel" Content="{DynamicResource AddBook.CancelBtn}" MinWidth="70" Margin="5" Click="BtnCancel_Click"/>
+            <Button Name="BtnCancel" IsCancel="True" Content="{DynamicResource AddBook.CancelBtn}" MinWidth="70" Margin="5" Click="BtnCancel_Click"/>
         </WrapPanel>
     </StackPanel>
 </Window>
