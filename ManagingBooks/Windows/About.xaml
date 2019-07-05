@@ -28,7 +28,7 @@
         <Separator Height="10" Margin="0"/>
         <StackPanel Margin="5">
             <TextBlock Text="Programmed and designed by Bui Nhat Quang, Summer 2019"/>
-            <TextBlock Text="Created for Prof. Dr. Dr. Herbert Nosko"/>
+            <TextBlock Text="Created for Prof. Dr.Ing., Dr.rer.pol. Herbert Nosko"/>
             <TextBlock >
                 <Run Text="Email:"/>
                 <Hyperlink NavigateUri="mailto:buinhatquang31011996@gmail.com" RequestNavigate="Hyperlink_RequestNavigate">buinhatquang31011996@gmail.com</Hyperlink>
