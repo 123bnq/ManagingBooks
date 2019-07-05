@@ -20,9 +20,9 @@
     <system:String x:Key="MainWindow.Menu.Language">_Sprachen</system:String>
     <system:String x:Key="MainWindow.Menu.Language.English">_English</system:String>
     <system:String x:Key="MainWindow.Menu.Language.German">_Deutsch</system:String>
-    <system:String x:Key="MainWindow.Menu.Help">_Hilfen</system:String>
-    <system:String x:Key="MainWindow.Menu.Help.ViewHelp">_Hilfe anzeigen</system:String>
-    <system:String x:Key="MainWindow.Menu.Help.About">_Über uns</system:String>
+    <system:String x:Key="MainWindow.Menu.Info">_Info</system:String>
+    <system:String x:Key="MainWindow.Menu.Info.ViewHelp">_Hilfe anzeigen</system:String>
+    <system:String x:Key="MainWindow.Menu.Info.About">_Über uns</system:String>
 
     <system:String x:Key="MainWindow.SearchList.ContextMenu.Edit">_Bearbeiten...</system:String>
     <system:String x:Key="MainWindow.SearchList.ContextMenu.Delete">En_tfernen</system:String>
@@ -254,6 +254,7 @@
     <system:String x:Key="TransferBook.ListTransfer.BookTitle">Buchtitel</system:String>
     <system:String x:Key="TransferBook.BookNumber">Buchnummer:</system:String>
     <system:String x:Key="TransferBook.Export">List exportieren</system:String>
+    <system:String x:Key="TransferBook.Close">Schließen</system:String>
 
     <system:String x:Key="TransferBook.CodeBehind.WarningAdd.Exist.Message">Buch ist bereits hinzugefügt!</system:String>
     <system:String x:Key="TransferBook.CodeBehind.WarningAdd.Exist.Caption">Warnung</system:String>

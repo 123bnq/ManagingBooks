@@ -1441,6 +1441,11 @@ namespace ManagingBooks
             updateCommand.ExecuteNonQuery();
             con.Close();
         }
+
+        private void About_Click(object sender, RoutedEventArgs e)
+        {
+            new About() { Owner = this }.ShowDialog();
+        }
     }
 
     public static class CustomCommands
