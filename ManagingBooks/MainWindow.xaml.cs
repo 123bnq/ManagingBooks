@@ -28,6 +28,11 @@ using iText.Layout.Borders;
 using iText.Kernel.Geom;
 using System.Windows.Media;
 using System.Data.SQLite;
+using System.Windows.Xps;
+using System.Windows.Xps.Packaging;
+using System.Printing;
+using System.Windows.Media.Imaging;
+
 namespace ManagingBooks
 {
     /// <summary>
@@ -71,7 +76,7 @@ namespace ManagingBooks
             Lib.Number = string.Empty;
             con.Close();
             Search.RunWorkerAsync(Lib);
-            
+
             // hide books which are not relevant to UserFilter
             CollectionView view = CollectionViewSource.GetDefaultView(SearchList.ItemsSource) as CollectionView;
             view.Filter = UserFilter;
@@ -218,8 +223,8 @@ namespace ManagingBooks
             if (LastIndex != -1)
             {
                 SearchList.SelectedIndex = LastIndex;
-                LastIndex = -1;                
-                
+                LastIndex = -1;
+
             }
             else
             {
@@ -1101,11 +1106,77 @@ namespace ManagingBooks
 
         private void BtnBarcode_Click(object sender, RoutedEventArgs e)
         {
-            if (!Directory.Exists(ExportFolder))
+            //if (!Directory.Exists(ExportFolder))
+            //{
+            //    Directory.CreateDirectory(ExportFolder);
+            //}
+            //Process.Start("explorer.exe", ExportFolder);
+            //string fileName = System.IO.Path.GetRandomFileName();
+            ////using (File.Create(fileName)) ;
+
+
+            //using (XpsDocument xpsDocument = new XpsDocument(fileName, FileAccess.ReadWrite))
+            //{
+            //    XpsDocumentWriter writer = XpsDocument.CreateXpsDocumentWriter(xpsDocument);
+            //    System.Windows.Documents.FixedDocument document = new System.Windows.Documents.FixedDocument();
+            //    System.Windows.Documents.FixedPage fixedPage = new System.Windows.Documents.FixedPage();
+            //    fixedPage.RenderSize = new Size(8.27 * 96.0, 11.69 * 96.0);
+            //    System.Windows.Documents.PageContent page = new System.Windows.Documents.PageContent();
+            //    page.Child = fixedPage;
+            //    document.Pages.Add(page);
+            //    writer.Write(document);
+            //    DocumentViewer previewWindow = new DocumentViewer
+            //    {
+            //        Document = xpsDocument.GetFixedDocumentSequence()
+            //    };
+
+            //    Window printpriview = new Window();
+            //    printpriview.Owner = this;
+            //    printpriview.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+            //    printpriview.Content = previewWindow;
+            //    printpriview.Title = fileName;
+            //    printpriview.ShowDialog();
+            //}
+            //File.Delete(fileName);
+
+            string fileName = System.IO.Path.GetRandomFileName();
+            //using (File.Create(fileName)) ;
+            var img = System.IO.Path.Combine(AppContext.BaseDirectory, "Images", "sharon-mccutcheon-532782-unsplash.jpg");
+            var bitImage = new BitmapImage();
+            bitImage.BeginInit();
+            bitImage.StreamSource = new FileStream(img, FileMode.Open, FileAccess.Read);
+            bitImage.DecodePixelWidth = 700;
+            bitImage.CacheOption = BitmapCacheOption.OnLoad;
+            bitImage.CreateOptions = BitmapCreateOptions.IgnoreColorProfile;
+            bitImage.EndInit();
+            bitImage.StreamSource.Seek(0, SeekOrigin.Begin);
+            bitImage.Freeze();
+            var tempImage = new System.Windows.Controls.Image { Source = bitImage };
+            bitImage.StreamSource.Dispose();
+            using (XpsDocument xpsDocument = new XpsDocument(fileName, FileAccess.ReadWrite))
             {
-                Directory.CreateDirectory(ExportFolder);
+                XpsDocumentWriter writer = XpsDocument.CreateXpsDocumentWriter(xpsDocument);
+                System.Windows.Documents.FixedDocument document = new System.Windows.Documents.FixedDocument();
+                System.Windows.Documents.FixedPage fixedPage = new System.Windows.Documents.FixedPage();
+                fixedPage.RenderSize = new Size(8.27 * 96.0, 11.69 * 96.0);
+                fixedPage.Children.Add(tempImage);
+                System.Windows.Documents.PageContent page = new System.Windows.Documents.PageContent();
+                page.Child = fixedPage;
+                document.Pages.Add(page);
+                writer.Write(document);
+                DocumentViewer previewWindow = new DocumentViewer
+                {
+                    Document = xpsDocument.GetFixedDocumentSequence()
+                };
+
+                Window printpriview = new Window();
+                printpriview.Owner = this;
+                printpriview.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+                printpriview.Content = previewWindow;
+                printpriview.Title = fileName;
+                printpriview.ShowDialog();
             }
-            Process.Start("explorer.exe", ExportFolder);
+            File.Delete(fileName);
         }
 
         private async void BtnImportDB_Click(object sender, RoutedEventArgs e)

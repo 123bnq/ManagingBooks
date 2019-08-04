@@ -19,7 +19,7 @@
 
   <ItemGroup>
     <Resource Include="Images\sharon-mccutcheon-532782-unsplash.jpg">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Images\Generic Book File Type_40px.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
@@ -48,6 +48,9 @@
     </None>
     <None Update="Data\ProNoskoDatenbank_160717.mdb">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Hello.xps">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Resources\Language.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
