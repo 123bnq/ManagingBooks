@@ -44,44 +44,107 @@ namespace Demo_iTextDotnetCore
             connection.Close();
             string exportFolder = AppContext.BaseDirectory;
             string exportFile = System.IO.Path.Combine(exportFolder, "Test.pdf");
-            string exportImage = System.IO.Path.Combine(exportFolder, "bc.png");
+            //string exportImage = System.IO.Path.Combine(exportFolder, "bc.png");
 
-            using (PdfWriter pdfWriter = new PdfWriter(exportFile))
+            //using (PdfWriter pdfWriter = new PdfWriter(exportFile))
+            //{
+            //    using (iText.Kernel.Pdf.PdfDocument pdf = new iText.Kernel.Pdf.PdfDocument(pdfWriter))
+            //    {
+            //        Rectangle envelope = new Rectangle(3016, 1327);
+            //        PageSize ps = new PageSize(envelope);
+            //        //ps.ApplyMargins(0, 0, 0, 0, true);
+            //        Document document = new Document(pdf, ps);
+            //        document.SetMargins(0, 0, 0, 0);
+            //        Paragraph text = new Paragraph("Signature").SetTextAlignment(TextAlignment.CENTER).SetFontSize(200);
+            //        Paragraph num = new Paragraph("011120").SetTextAlignment(TextAlignment.CENTER).SetFontSize(200);
+            //        Barcode128 barcode128 = new Barcode128(pdf);
+            //        barcode128.SetCodeType(Barcode128.CODE_C);
+            //        barcode128.SetCode("011120");
+            //        barcode128.FitWidth(2800);
+            //        barcode128.SetBarHeight(700);
+            //        barcode128.SetAltText("");
+
+            //        Image barcodeImage = new Image(barcode128.CreateFormXObject(pdf));
+            //        barcodeImage.SetHorizontalAlignment(HorizontalAlignment.CENTER);
+            //        document.Add(text);
+            //        document.Add(barcodeImage);
+            //        document.Add(num);
+            //    }
+            //}
+            //Spire.Pdf.PdfDocument document1 = new Spire.Pdf.PdfDocument();
+            //document1.LoadFromFile(exportFile);
+            //System.Drawing.Image img = document1.SaveAsImage(0);
+            //img.Save(exportImage);
+            //document1.SaveToFile(System.IO.Path.Combine(exportFolder, "bc.svg"), FileFormat.SVG);
+
+            //Process proc = new Process();
+            //proc.StartInfo.FileName = exportImage;
+            //proc.StartInfo.UseShellExecute = true;
+            //proc.Start();
+            //Process.Start("explorer.exe", "/select, " + exportImage);
+
+            using (PdfWriter writer = new PdfWriter(exportFile))
             {
-                using (iText.Kernel.Pdf.PdfDocument pdf = new iText.Kernel.Pdf.PdfDocument(pdfWriter))
+                using (iText.Kernel.Pdf.PdfDocument pdfDocument = new iText.Kernel.Pdf.PdfDocument(writer))
                 {
-                    Rectangle envelope = new Rectangle(3016, 1327);
-                    PageSize ps = new PageSize(envelope);
-                    //ps.ApplyMargins(0, 0, 0, 0, true);
-                    Document document = new Document(pdf, ps);
-                    document.SetMargins(0, 0, 0, 0);
-                    Paragraph text = new Paragraph("Signature").SetTextAlignment(TextAlignment.CENTER).SetFontSize(200);
-                    Paragraph num = new Paragraph("011120").SetTextAlignment(TextAlignment.CENTER).SetFontSize(200);
-                    Barcode128 barcode128 = new Barcode128(pdf);
-                    barcode128.SetCodeType(Barcode128.CODE_C);
-                    barcode128.SetCode("011120");
-                    barcode128.FitWidth(2800);
-                    barcode128.SetBarHeight(700);
-                    barcode128.SetAltText("");
-
-                    Image barcodeImage = new Image(barcode128.CreateFormXObject(pdf));
+                    float cellMainWidth = 175.5f;
+                    float cellMainHeight = 79.5f;
+                    float cellSpaceWidth = 3;
+                    pdfDocument.SetDefaultPageSize(PageSize.A4);
+                    Document document = new Document(pdfDocument);
+                    document.SetMargins(1.51f*28.33f, 20f, 1.31f * 28.33f, 20f);
+                    Barcode128 barcode = new Barcode128(pdfDocument);
+                    barcode.SetCodeType(Barcode128.CODE_C);
+                    barcode.SetCode("012345");
+                    barcode.SetSize(14);
+                    barcode.SetBaseline(15);
+                    barcode.SetBarHeight(35f);
+                    barcode.FitWidth(160f);
+                    Image barcodeImage = new Image(barcode.CreateFormXObject(pdfDocument));
                     barcodeImage.SetHorizontalAlignment(HorizontalAlignment.CENTER);
-                    document.Add(text);
-                    document.Add(barcodeImage);
-                    document.Add(num);
+                    //barcodeImage.Scale(2.5f, 2f);
+                    Paragraph text = new Paragraph("TEST - TEST - TEST").SetTextAlignment(TextAlignment.CENTER);
+                    Paragraph num = new Paragraph("012345").SetTextAlignment(TextAlignment.CENTER).SetFontSize(14);
+                    Table table = new Table(5);
+                    Cell cellMain = new Cell();
+                    cellMain.SetVerticalAlignment(VerticalAlignment.MIDDLE);
+                    cellMain.SetHeight(cellMainHeight);
+                    cellMain.SetWidth(cellMainWidth);
+                    cellMain.Add(text);
+                    cellMain.Add(barcodeImage);
+                    //cellMain.Add(num);
+                    Cell cellSpace = new Cell();
+                    cellSpace.SetHeight(cellMainHeight);
+                    cellSpace.SetWidth(cellSpaceWidth);
+                    cellSpace.SetMargin(0);
+                    table.AddCell(cellMain);
+                    table.AddCell(cellSpace);
+                    cellMain = new Cell();
+                    cellMain.SetVerticalAlignment(VerticalAlignment.MIDDLE);
+                    cellMain.SetHeight(cellMainHeight);
+                    cellMain.SetWidth(cellMainWidth);
+                    table.AddCell(cellMain);
+                    cellSpace = new Cell();
+                    cellSpace.SetHeight(cellMainHeight);
+                    cellSpace.SetWidth(cellSpaceWidth);
+                    table.AddCell(cellSpace);
+                    cellMain = new Cell();
+                    cellMain.SetVerticalAlignment(VerticalAlignment.MIDDLE);
+                    cellMain.SetHeight(cellMainHeight);
+                    cellMain.SetWidth(cellMainWidth);
+                    table.AddCell(cellMain);
+                    cellMain = new Cell();
+                    cellMain.SetVerticalAlignment(VerticalAlignment.MIDDLE);
+                    cellMain.SetHeight(cellMainHeight);
+                    cellMain.SetWidth(cellMainWidth);
+                    table.AddCell(cellMain);
+                    document.Add(table);
                 }
+                //Process proc = new Process();
+                //proc.StartInfo.FileName = exportFile;
+                //proc.StartInfo.UseShellExecute = true;
+                //proc.Start();
             }
-            Spire.Pdf.PdfDocument document1 = new Spire.Pdf.PdfDocument();
-            document1.LoadFromFile(exportFile);
-            System.Drawing.Image img = document1.SaveAsImage(0);
-            img.Save(exportImage);
-            document1.SaveToFile(System.IO.Path.Combine(exportFolder, "bc.svg"), FileFormat.SVG);
-
-            Process proc = new Process();
-            proc.StartInfo.FileName = exportImage;
-            proc.StartInfo.UseShellExecute = true;
-            proc.Start();
-            Process.Start("explorer.exe", "/select, " + exportImage);
         }
     }
 }
