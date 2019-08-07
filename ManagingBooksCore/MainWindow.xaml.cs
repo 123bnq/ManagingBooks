@@ -1113,11 +1113,11 @@ namespace ManagingBooks
             //Process.Start("explorer.exe", ExportFolder);
             string fileName = System.IO.Path.Combine(AppContext.BaseDirectory, "bla.bla");
             using (File.Create(fileName)) ;
-            var img = System.IO.Path.Combine(AppContext.BaseDirectory, "Images", "sharon-mccutcheon-532782-unsplash.jpg");
+            var img = System.IO.Path.Combine(AppContext.BaseDirectory, "Images", "bc.png");
             var bitImage = new BitmapImage();
             bitImage.BeginInit();
             bitImage.StreamSource = new FileStream(img, FileMode.Open, FileAccess.Read);
-            bitImage.DecodePixelWidth = 500;
+            bitImage.DecodePixelWidth = 795;
             bitImage.CacheOption = BitmapCacheOption.OnLoad;
             bitImage.CreateOptions = BitmapCreateOptions.IgnoreColorProfile;
             bitImage.EndInit();
@@ -1130,7 +1130,9 @@ namespace ManagingBooks
                 XpsDocumentWriter writer = XpsDocument.CreateXpsDocumentWriter(xpsDocument);
                 System.Windows.Documents.FixedDocument document = new System.Windows.Documents.FixedDocument();
                 System.Windows.Documents.FixedPage fixedPage = new System.Windows.Documents.FixedPage();
-                fixedPage.RenderSize = new Size(8.27 * 96.0, 11.69 * 96.0);
+                //fixedPage.RenderSize = new Size(8.27 * 96.0, 11.69 * 96.0);
+                fixedPage.Height = 11.69 * 96.0;
+                fixedPage.Width = 8.27 * 96.0;
                 fixedPage.Children.Add(tempImage);
                 System.Windows.Documents.PageContent page = new System.Windows.Documents.PageContent();
                 page.Child = fixedPage;
@@ -1147,8 +1149,12 @@ namespace ManagingBooks
                 printpriview.Content = previewWindow;
                 printpriview.Title = fileName;
                 printpriview.Show();
+
                 //printpriview.Closing += Printpriview_Closing;
             }
+            string filePath = System.IO.Path.Combine(AppContext.BaseDirectory, "Test.pdf");
+
+
 
             //File.Delete(fileName);
             //var myXpsUri = xpsDocument.Uri; //should point to the same file as tempXpsFile
