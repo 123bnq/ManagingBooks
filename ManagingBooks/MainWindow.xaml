@@ -17,6 +17,7 @@
         <CommandBinding Command="local:CustomCommands.German" CanExecute="GermanCommand_CanExecute" Executed="GermanCommand_Executed"/>
 
         <CommandBinding Command="local:CustomCommands.Print" CanExecute="PrintCommand_CanExecute" Executed="PrintCommand_Executed"/>
+        <CommandBinding Command="local:CustomCommands.PrintBarcode" CanExecute="PrintCommand_CanExecute" Executed="PrintBarcodeCommand_Executed"/>
         <CommandBinding Command="local:CustomCommands.AddToPrint" CanExecute="EditCommand_CanExecute" Executed="AddToPrintCommand_Executed"/>
         <CommandBinding Command="local:CustomCommands.RemoveFromPrint" CanExecute="RemoveFromPrintCommand_CanExecute" Executed="RemoveFromPrint_Executed"/>
         <CommandBinding Command="local:CustomCommands.ClearPrintList" CanExecute="PrintCommand_CanExecute" Executed="ClearPrintListCommand_Executed"/>
@@ -94,7 +95,7 @@
                     <ColumnDefinition Width="213*"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
-                <ListView Name="SearchList" MinHeight="300" MaxHeight="400" Width="1000" Margin="0,0,0,5" SelectionChanged="SearchList_SelectionChanged" MouseDown="SearchList_MouseDown" Grid.ColumnSpan="2">
+                <ListView Name="SearchList" MinHeight="300" MaxHeight="390" Width="1000" Margin="0,0,0,5" SelectionChanged="SearchList_SelectionChanged" MouseDown="SearchList_MouseDown" Grid.ColumnSpan="2">
                     <ListView.ContextMenu>
                         <ContextMenu>
                             <MenuItem Header="{DynamicResource MainWindow.SearchList.ContextMenu.Edit}" Command="local:CustomCommands.Edit"/>
@@ -253,11 +254,12 @@
                 </ListView>
                 <GroupBox Grid.Column="2" Margin="10,0,0,0" Header="{DynamicResource MainWindow.PrintList.Title}">
                     <StackPanel>
-                        <ListBox Name="ListPrint" Width="120" Height="250" ItemsSource="{Binding ListBookPrint}" DisplayMemberPath="Number" Margin="0,5,0,10"/>
+                        <ListBox Name="ListPrint" Width="120" Height="220" ItemsSource="{Binding ListBookPrint}" DisplayMemberPath="Number" Margin="0,5,0,10"/>
                         <Button Name="BtnAddToPrint" Content="{DynamicResource MainWindow.PrintList.AddBtn}" MinWidth="75" HorizontalAlignment="Center" Margin="0,0,0,10" Command="local:CustomCommands.AddToPrint"/>
                         <Button Content="{DynamicResource MainWindow.PrintList.RemoveBtn}" MinWidth="75" HorizontalAlignment="Center" Margin="0,0,0,10" Command="local:CustomCommands.RemoveFromPrint"/>
                         <Button Content="{DynamicResource MainWindow.PrintList.ClearBtn}" MinWidth="75" HorizontalAlignment="Center" Margin="0,0,0,10" Command="local:CustomCommands.ClearPrintList"/>
-                        <Button Name="BtnPrint" Content="{DynamicResource MainWindow.PrintList.PrintBtn}" MinWidth="75" Command="local:CustomCommands.Print" HorizontalAlignment="Center"/>
+                        <Button Name="BtnPrint" Content="{DynamicResource MainWindow.PrintList.PrintBtn}" MinWidth="75" Margin="0,0,0,10" Command="local:CustomCommands.Print" HorizontalAlignment="Center"/>
+                        <Button Content="{DynamicResource MainWindow.PrintList.PrintBarcodeBtn}" HorizontalAlignment="Center" MinWidth="75" Command="local:CustomCommands.PrintBarcode"/>
                     </StackPanel>
                 </GroupBox>
             </Grid>

@@ -16,6 +16,9 @@ namespace Demo_iTextDotnetCore
 {
     class Program
     {
+        static string exportFolder = AppContext.BaseDirectory;
+        static string exportFile = System.IO.Path.Combine(exportFolder, "Test.pdf");
+        static string exportImage = System.IO.Path.Combine(exportFolder, "bc.png");
         static void Main(string[] args)
         {
             SQLiteConnection connection = new SQLiteConnection();
@@ -43,9 +46,7 @@ namespace Demo_iTextDotnetCore
             insertCommand.Parameters.AddWithValue("Price", 15.2);
             insertCommand.ExecuteNonQuery();
             connection.Close();
-            string exportFolder = AppContext.BaseDirectory;
-            string exportFile = System.IO.Path.Combine(exportFolder, "Test.pdf");
-            string exportImage = System.IO.Path.Combine(exportFolder, "bc.png");
+
 
             //using (PdfWriter pdfWriter = new PdfWriter(exportFile))
             //{
@@ -135,7 +136,7 @@ namespace Demo_iTextDotnetCore
 
                     }
 
-                    
+
                     //cellMain.Add(num);
 
                     //table.AddCell(cellMain);
@@ -161,16 +162,25 @@ namespace Demo_iTextDotnetCore
                     //table.AddCell(cellMain);
                     document.Add(table);
                 }
-                //Process proc = new Process();
-                //proc.StartInfo.FileName = exportFile;
-                //proc.StartInfo.UseShellExecute = true;
-                //proc.Start();
+
             }
-            Spire.Pdf.PdfDocument document1 = new Spire.Pdf.PdfDocument();
-            document1.LoadFromFile(exportFile);
-            System.Drawing.Image img = document1.SaveAsImage(0, 300, 300);
-            img.Save(exportImage);
+            Process proc = new Process();
+            proc.StartInfo.FileName = exportFile;
+            proc.StartInfo.UseShellExecute = true;
+            proc.EnableRaisingEvents = true;
+            proc.Start();
+            proc.Exited += Proc_Exited;
             
+            //Spire.Pdf.PdfDocument document1 = new Spire.Pdf.PdfDocument();
+            //document1.LoadFromFile(exportFile);
+            //System.Drawing.Image img = document1.SaveAsImage(0, 300, 300);
+            //img.Save(exportImage);
+
+        }
+
+        private static void Proc_Exited(object sender, EventArgs e)
+        {
+            File.Delete(exportFile);
         }
     }
 }

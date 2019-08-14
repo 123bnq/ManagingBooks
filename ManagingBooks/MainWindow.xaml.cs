@@ -439,6 +439,10 @@ namespace ManagingBooks
         /// <param name="e"></param>
         private void PrintBarcodeCommand_Executed(object sender, ExecutedRoutedEventArgs e)
         {
+            
+
+
+
             SearchBookModel context = this.DataContext as SearchBookModel;
             string pdfPath;
             SaveFileDialog dialog = new SaveFileDialog();
@@ -477,6 +481,61 @@ namespace ManagingBooks
                 proc.StartInfo.UseShellExecute = true;
                 proc.Start();
             }
+
+            //using (PdfWriter writer = new PdfWriter(exportFile))
+            //{
+            //    using (iText.Kernel.Pdf.PdfDocument pdfDocument = new iText.Kernel.Pdf.PdfDocument(writer))
+            //    {
+            //        float cellMainWidth = 176.5f;
+            //        float cellMainHeight = 80f;
+            //        float cellSpaceWidth = 3.2f;
+            //        pdfDocument.SetDefaultPageSize(PageSize.A4);
+            //        Document document = new Document(pdfDocument);
+            //        document.SetMargins(1.51f * 28.33f, 20f, 1.31f * 28.33f, 20f);
+            //        Barcode128 barcode = new Barcode128(pdfDocument);
+            //        barcode.SetCodeType(Barcode128.CODE_C);
+            //        barcode.SetCode("012345");
+            //        barcode.SetSize(14);
+            //        barcode.SetBaseline(15);
+            //        barcode.SetBarHeight(35f);
+            //        barcode.FitWidth(160f);
+            //        iText.Layout.Element.Image barcodeImage = new iText.Layout.Element.Image(barcode.CreateFormXObject(pdfDocument));
+            //        barcodeImage.SetHorizontalAlignment(iText.Layout.Properties.HorizontalAlignment.CENTER);
+            //        //barcodeImage.Scale(2.5f, 2f);
+            //        Paragraph text = new Paragraph("TEST - TEST - TEST").SetTextAlignment(iText.Layout.Properties.TextAlignment.CENTER).SetFontSize(14);
+            //        Paragraph num = new Paragraph("012345").SetTextAlignment(iText.Layout.Properties.TextAlignment.CENTER).SetFontSize(14);
+            //        Paragraph barcodeCombine = new Paragraph().Add(text).Add(barcodeImage);
+            //        Table table = new Table(5);
+            //        int col = 3;
+            //        int row = 8;
+            //        for (int i = 1; i <= 9; i++)
+            //        {
+            //            for (int j = 1; j <= 3; j++)
+            //            {
+            //                Cell cellMain = new Cell().SetBorder(iText.Layout.Borders.Border.NO_BORDER);
+            //                cellMain.SetVerticalAlignment(iText.Layout.Properties.VerticalAlignment.MIDDLE);
+            //                cellMain.SetHeight(cellMainHeight);
+            //                cellMain.SetWidth(cellMainWidth);
+            //                if (i == row && j == col)
+            //                {
+            //                    cellMain.Add(text).Add(barcodeImage);
+            //                }
+            //                table.AddCell(cellMain);
+            //                if (j % 3 != 0)
+            //                {
+            //                    Cell cellSpace = new Cell().SetBorder(iText.Layout.Borders.Border.NO_BORDER);
+            //                    cellSpace.SetHeight(cellMainHeight);
+            //                    cellSpace.SetWidth(cellSpaceWidth);
+            //                    cellSpace.SetMargin(0);
+            //                    table.AddCell(cellSpace);
+            //                }
+            //            }
+
+            //        }
+            //        document.Add(table);
+            //    }
+
+            //}
         }
 
         private void PrintCommand_Executed(object sender, ExecutedRoutedEventArgs e)
@@ -1534,6 +1593,7 @@ namespace ManagingBooks
         public static readonly RoutedUICommand Edit = new RoutedUICommand("Edit", "Edit", typeof(CustomCommands));
         public static readonly RoutedUICommand Delete = new RoutedUICommand("Delete", "Delete", typeof(CustomCommands));
         public static readonly RoutedUICommand Print = new RoutedUICommand("Print", "Print", typeof(CustomCommands));
+        public static readonly RoutedUICommand PrintBarcode = new RoutedUICommand("PrintBarcode", "PrintBarcode", typeof(CustomCommands));
         public static readonly RoutedUICommand AddToPrint = new RoutedUICommand("AddToPrint", "AddToPrint", typeof(CustomCommands));
         public static readonly RoutedUICommand RemoveFromPrint = new RoutedUICommand("RemoveFromPrint", "RemoveFromPrint", typeof(CustomCommands));
         public static readonly RoutedUICommand ClearPrintList = new RoutedUICommand("ClearPrintList", "ClearPrintList", typeof(CustomCommands));

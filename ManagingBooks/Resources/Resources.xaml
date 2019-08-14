@@ -46,7 +46,8 @@
     <system:String x:Key="MainWindow.PrintList.AddBtn">Add</system:String>
     <system:String x:Key="MainWindow.PrintList.RemoveBtn">Remove</system:String>
     <system:String x:Key="MainWindow.PrintList.ClearBtn">Clear List</system:String>
-    <system:String x:Key="MainWindow.PrintList.PrintBtn">Print</system:String>
+    <system:String x:Key="MainWindow.PrintList.PrintBtn">Print List</system:String>
+    <system:String x:Key="MainWindow.PrintList.PrintBarcodeBtn">Print Barcode</system:String>
     <system:String x:Key="MainWindow.PrintList.PDF.Title">List Books</system:String>
     <system:String x:Key="MainWindow.PrintList.PDF.TableHeader.Number">Number</system:String>
     <system:String x:Key="MainWindow.PrintList.PDF.TableHeader.Signature">Signatures</system:String>

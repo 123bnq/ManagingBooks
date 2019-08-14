@@ -46,7 +46,8 @@
     <system:String x:Key="MainWindow.PrintList.AddBtn">Hinzufügen</system:String>
     <system:String x:Key="MainWindow.PrintList.RemoveBtn">Entfernen</system:String>
     <system:String x:Key="MainWindow.PrintList.ClearBtn">Löschen</system:String>
-    <system:String x:Key="MainWindow.PrintList.PrintBtn">Drucken</system:String>
+    <system:String x:Key="MainWindow.PrintList.PrintBtn">Liste Drucken</system:String>
+    <system:String x:Key="MainWindow.PrintList.PrintBarcodeBtn">Barcode Drucken</system:String>
     <system:String x:Key="MainWindow.PrintList.PDF.Title">Listenbücher</system:String>
     <system:String x:Key="MainWindow.PrintList.PDF.TableHeader.Number">Nummer</system:String>
     <system:String x:Key="MainWindow.PrintList.PDF.TableHeader.Signature">Signatur</system:String>
