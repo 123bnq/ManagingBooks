@@ -156,6 +156,7 @@
     <Compile Include="Model\EditPlaceModel.cs" />
     <Compile Include="Model\EditPublisherModel.cs" />
     <Compile Include="Model\SearchBookModel.cs" />
+    <Compile Include="Model\SetBarcodePositionModel.cs" />
     <Compile Include="Model\TransferBookModel.cs" />
     <Compile Include="SortAdorner.cs" />
     <Compile Include="SplashScreen.xaml.cs">
@@ -182,6 +183,9 @@
     </Compile>
     <Compile Include="Windows\EditPublisher.xaml.cs">
       <DependentUpon>EditPublisher.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\SetBarcodePositionWindow.xaml.cs">
+      <DependentUpon>SetBarcodePositionWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Windows\TransferBook.xaml.cs">
       <DependentUpon>TransferBook.xaml</DependentUpon>
@@ -232,6 +236,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Windows\EditPublisher.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\SetBarcodePositionWindow.xaml">
+      <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Windows\TransferBook.xaml">

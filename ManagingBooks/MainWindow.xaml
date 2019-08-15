@@ -289,7 +289,7 @@
                     <ComboBoxItem Content="{DynamicResource MainWindow.SearchBy.Medium}"/>
                     <ComboBoxItem Content="{DynamicResource MainWindow.SearchBy.Place}"/>
                 </ComboBox>
-                <Button Name="BtnBarcode" Grid.Row="1" Grid.Column="2" Content="{DynamicResource MainWindow.BarcodeFolder}" MinWidth="75" Margin="5,0,0,0" HorizontalAlignment="Right" Click="BtnBarcode_Click"/>
+                <Button Name="BtnBarcode" Grid.Row="1" Grid.Column="2" Content="{DynamicResource MainWindow.BarcodeFolder}" MinWidth="75" HorizontalAlignment="Right" Click="BtnBarcode_Click" Height="22" VerticalAlignment="Bottom"/>
             </Grid>
 
             <GroupBox Margin="30,5" FontFamily="Consolas" FontSize="14" Header="{DynamicResource MainWindow.BookInfo}">

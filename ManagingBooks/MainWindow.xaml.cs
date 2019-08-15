@@ -1165,6 +1165,82 @@ namespace ManagingBooks
 
         private void BtnBarcode_Click(object sender, RoutedEventArgs e)
         {
+            var window = new SetBarcodePositionWindow()
+            {
+                Owner = this
+            };
+            window.ShowDialog();
+            
+
+            int row = (window.DataContext as SetBarcodePositionModel).RowNumber;
+            int col = (window.DataContext as SetBarcodePositionModel).ColNumber;
+            BarcodeWithPosiition printBarcode = new BarcodeWithPosiition()
+            {
+                RowNumber = row,
+                ColNumber = col,
+                BarcodeNumber = "012345",
+                Signatures = "TEST - TEST - TEST"
+            };
+
+            string pdfPath = System.IO.Path.Combine(AppContext.BaseDirectory, "PrintBarcode.pdf");
+
+            using (PdfWriter writer = new PdfWriter(pdfPath))
+            {
+                using (PdfDocument pdfDocument = new PdfDocument(writer))
+                {
+                    float cellMainWidth = 176.5f;
+                    float cellMainHeight = 80f;
+                    float cellSpaceWidth = 3.2f;
+                    pdfDocument.SetDefaultPageSize(PageSize.A4);
+                    Document document = new Document(pdfDocument);
+                    document.SetMargins(1.51f * 28.33f, 20f, 1.31f * 28.33f, 20f);
+                    Barcode128 barcode = new Barcode128(pdfDocument);
+                    barcode.SetCodeType(Barcode128.CODE_C);
+                    barcode.SetCode(printBarcode.BarcodeNumber);
+                    barcode.SetSize(14);
+                    barcode.SetBaseline(15);
+                    barcode.SetBarHeight(35f);
+                    barcode.FitWidth(160f);
+                    iText.Layout.Element.Image barcodeImage = new iText.Layout.Element.Image(barcode.CreateFormXObject(pdfDocument));
+                    barcodeImage.SetHorizontalAlignment(iText.Layout.Properties.HorizontalAlignment.CENTER);
+                    //barcodeImage.Scale(2.5f, 2f);
+                    Paragraph text = new Paragraph(printBarcode.Signatures).SetTextAlignment(iText.Layout.Properties.TextAlignment.CENTER).SetFontSize(14);
+                    Paragraph barcodeCombine = new Paragraph().Add(text).Add(barcodeImage);
+                    Table table = new Table(5);
+                    //int col = 3;
+                    //int row = 8;
+                    for (int i = 1; i <= 9; i++)
+                    {
+                        for (int j = 1; j <= 3; j++)
+                        {
+                            Cell cellMain = new Cell().SetBorder(iText.Layout.Borders.Border.NO_BORDER);
+                            cellMain.SetVerticalAlignment(iText.Layout.Properties.VerticalAlignment.MIDDLE);
+                            cellMain.SetHeight(cellMainHeight);
+                            cellMain.SetWidth(cellMainWidth);
+                            if (i == printBarcode.RowNumber && j == printBarcode.ColNumber)
+                            {
+                                cellMain.Add(text).Add(barcodeImage);
+                            }
+                            table.AddCell(cellMain);
+                            if (j % 3 != 0)
+                            {
+                                Cell cellSpace = new Cell().SetBorder(iText.Layout.Borders.Border.NO_BORDER);
+                                cellSpace.SetHeight(cellMainHeight);
+                                cellSpace.SetWidth(cellSpaceWidth);
+                                cellSpace.SetMargin(0);
+                                table.AddCell(cellSpace);
+                            }
+                        }
+
+                    }
+                    document.Add(table);
+                }
+            }
+            Process proc = new Process();
+            proc.StartInfo.FileName = pdfPath;
+            proc.StartInfo.UseShellExecute = true;
+            proc.Start();
+
             //if (!Directory.Exists(ExportFolder))
             //{
             //    Directory.CreateDirectory(ExportFolder);
@@ -1198,44 +1274,44 @@ namespace ManagingBooks
             //}
             //File.Delete(fileName);
 
-            string fileName = System.IO.Path.GetRandomFileName();
-            //using (File.Create(fileName)) ;
-            var img = System.IO.Path.Combine(AppContext.BaseDirectory, "Images", "sharon-mccutcheon-532782-unsplash.jpg");
-            var bitImage = new BitmapImage();
-            bitImage.BeginInit();
-            bitImage.StreamSource = new FileStream(img, FileMode.Open, FileAccess.Read);
-            bitImage.DecodePixelWidth = 700;
-            bitImage.CacheOption = BitmapCacheOption.OnLoad;
-            bitImage.CreateOptions = BitmapCreateOptions.IgnoreColorProfile;
-            bitImage.EndInit();
-            bitImage.StreamSource.Seek(0, SeekOrigin.Begin);
-            bitImage.Freeze();
-            var tempImage = new System.Windows.Controls.Image { Source = bitImage };
-            bitImage.StreamSource.Dispose();
-            using (XpsDocument xpsDocument = new XpsDocument(fileName, FileAccess.ReadWrite))
-            {
-                XpsDocumentWriter writer = XpsDocument.CreateXpsDocumentWriter(xpsDocument);
-                System.Windows.Documents.FixedDocument document = new System.Windows.Documents.FixedDocument();
-                System.Windows.Documents.FixedPage fixedPage = new System.Windows.Documents.FixedPage();
-                fixedPage.RenderSize = new Size(8.27 * 96.0, 11.69 * 96.0);
-                fixedPage.Children.Add(tempImage);
-                System.Windows.Documents.PageContent page = new System.Windows.Documents.PageContent();
-                page.Child = fixedPage;
-                document.Pages.Add(page);
-                writer.Write(document);
-                DocumentViewer previewWindow = new DocumentViewer
-                {
-                    Document = xpsDocument.GetFixedDocumentSequence()
-                };
+            //string fileName = System.IO.Path.GetRandomFileName();
+            ////using (File.Create(fileName)) ;
+            //var img = System.IO.Path.Combine(AppContext.BaseDirectory, "Images", "sharon-mccutcheon-532782-unsplash.jpg");
+            //var bitImage = new BitmapImage();
+            //bitImage.BeginInit();
+            //bitImage.StreamSource = new FileStream(img, FileMode.Open, FileAccess.Read);
+            //bitImage.DecodePixelWidth = 700;
+            //bitImage.CacheOption = BitmapCacheOption.OnLoad;
+            //bitImage.CreateOptions = BitmapCreateOptions.IgnoreColorProfile;
+            //bitImage.EndInit();
+            //bitImage.StreamSource.Seek(0, SeekOrigin.Begin);
+            //bitImage.Freeze();
+            //var tempImage = new System.Windows.Controls.Image { Source = bitImage };
+            //bitImage.StreamSource.Dispose();
+            //using (XpsDocument xpsDocument = new XpsDocument(fileName, FileAccess.ReadWrite))
+            //{
+            //    XpsDocumentWriter writer = XpsDocument.CreateXpsDocumentWriter(xpsDocument);
+            //    System.Windows.Documents.FixedDocument document = new System.Windows.Documents.FixedDocument();
+            //    System.Windows.Documents.FixedPage fixedPage = new System.Windows.Documents.FixedPage();
+            //    fixedPage.RenderSize = new Size(8.27 * 96.0, 11.69 * 96.0);
+            //    fixedPage.Children.Add(tempImage);
+            //    System.Windows.Documents.PageContent page = new System.Windows.Documents.PageContent();
+            //    page.Child = fixedPage;
+            //    document.Pages.Add(page);
+            //    writer.Write(document);
+            //    DocumentViewer previewWindow = new DocumentViewer
+            //    {
+            //        Document = xpsDocument.GetFixedDocumentSequence()
+            //    };
 
-                Window printpriview = new Window();
-                printpriview.Owner = this;
-                printpriview.WindowStartupLocation = WindowStartupLocation.CenterOwner;
-                printpriview.Content = previewWindow;
-                printpriview.Title = fileName;
-                printpriview.ShowDialog();
-            }
-            File.Delete(fileName);
+            //    Window printpriview = new Window();
+            //    printpriview.Owner = this;
+            //    printpriview.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+            //    printpriview.Content = previewWindow;
+            //    printpriview.Title = fileName;
+            //    printpriview.ShowDialog();
+            //}
+            //File.Delete(fileName);
         }
 
         private async void BtnImportDB_Click(object sender, RoutedEventArgs e)

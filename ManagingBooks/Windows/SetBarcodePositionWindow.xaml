@@ -1,0 +1,33 @@
+﻿<Window x:Class="ManagingBooks.Windows.SetBarcodePositionWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ManagingBooks.Windows"
+        xmlns:model="clr-namespace:ManagingBooks.Model"
+        mc:Ignorable="d" Background="WhiteSmoke"
+        Title="Set Barcode Position" SizeToContent="WidthAndHeight" WindowStartupLocation="CenterOwner">
+    <Window.DataContext>
+        <model:SetBarcodePositionModel/>
+    </Window.DataContext>
+    <Grid Margin="5">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <TextBlock Text="Row: " Margin="5"/>
+        <ComboBox Grid.Column="1" Width="75" Margin="5" ItemsSource="{Binding Rows}" SelectedItem="{Binding RowNumber, UpdateSourceTrigger=PropertyChanged}" SelectedIndex="0"/>
+        <TextBlock Grid.Column="2" Text="Column:" Margin="5"/>
+        <ComboBox Grid.Column="3" Width="75" Margin="5" ItemsSource="{Binding Cols}" SelectedItem="{Binding ColNumber, UpdateSourceTrigger=PropertyChanged}" SelectedIndex="0"/>
+        <WrapPanel Margin="5" Grid.ColumnSpan="3" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Right">
+            <Button Name="BtnOK" Content="OK" MinWidth="75" Margin="5" Click="BtnOK_Click"/>
+            <Button Name="BtnCancel" IsCancel="True" Content="Cancel" MinWidth="75" Margin="5"/>
+        </WrapPanel>
+    </Grid>
+</Window>
