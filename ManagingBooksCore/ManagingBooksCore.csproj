@@ -14,6 +14,7 @@
 
   <ItemGroup>
     <None Remove="Generic Book File Type_40px.ico" />
+    <None Remove="Generic Book File Type_40px.png" />
     <None Remove="Images\sharon-mccutcheon-532782-unsplash.jpg" />
   </ItemGroup>
 
@@ -48,8 +49,8 @@
     <None Update="Data\ProNoskoDatenbank_160717.mdb">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Hello.xps">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    <None Update="Images\Generic Book File Type_40px.png">
+      <CopyToOutputDirectory>5</CopyToOutputDirectory>
     </None>
     <None Update="Resources\Language.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
