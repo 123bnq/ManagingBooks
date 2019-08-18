@@ -46,7 +46,8 @@
     <system:String x:Key="MainWindow.PrintList.AddBtn">Add</system:String>
     <system:String x:Key="MainWindow.PrintList.RemoveBtn">Remove</system:String>
     <system:String x:Key="MainWindow.PrintList.ClearBtn">Clear List</system:String>
-    <system:String x:Key="MainWindow.PrintList.PrintBtn">Print</system:String>
+    <system:String x:Key="MainWindow.PrintList.PrintBtn">Print List</system:String>
+    <system:String x:Key="MainWindow.PrintList.PrintBarcodeBtn">Print Barcode</system:String>
     <system:String x:Key="MainWindow.PrintList.PDF.Title">List Books</system:String>
     <system:String x:Key="MainWindow.PrintList.PDF.TableHeader.Number">Number</system:String>
     <system:String x:Key="MainWindow.PrintList.PDF.TableHeader.Signature">Signatures</system:String>
@@ -114,7 +115,7 @@
     <system:String x:Key="AddBook.CodeBehind.WarningCancel.Caption">Warning</system:String>
     <system:String x:Key="AddBook.CodeBehind.WarningAdd.Message">Book is already added.</system:String>
     <system:String x:Key="AddBook.CodeBehind.WarningAdd.Caption">Warning</system:String>
-    <system:String x:Key="AddBook.CodeBehind.InfoAdd.Message">Book is successfully added. Do you want to generate barcode?</system:String>
+    <system:String x:Key="AddBook.CodeBehind.InfoAdd.Message">Book is successfully added.</system:String>
     <system:String x:Key="AddBook.CodeBehind.InfoAdd.Caption">Information</system:String>
     <system:String x:Key="AddBook.CodeBehind.ErrorAdd.IncorrectOrder.Message">Next author or next signature should be put correctly :) :)</system:String>
     <system:String x:Key="AddBook.CodeBehind.ErrorAdd.IncorrectOrder.Caption">Error</system:String>
@@ -258,9 +259,22 @@
 
     <system:String x:Key="TransferBook.CodeBehind.WarningAdd.Exist.Message">Book is already added!</system:String>
     <system:String x:Key="TransferBook.CodeBehind.WarningAdd.Exist.Caption">Warning</system:String>
-    <system:String x:Key="TransferBook.CodeBehind.ErrorAdd.NotFound.Message">Book not found. Please make sure that it is added</system:String>
+    <system:String x:Key="TransferBook.CodeBehind.ErrorAdd.NotFound.Message">Book not found. Please make sure that it is added.</system:String>
     <system:String x:Key="TransferBook.CodeBehind.ErrorAdd.NotFound.Caption">Error</system:String>
-    
+
+
+    <system:String x:Key="SetBarcodePositionWindow.Title.Of">of</system:String>
+    <system:String x:Key="SetBarcodePositionWindow.Row">Row: </system:String>
+    <system:String x:Key="SetBarcodePositionWindow.Column">Column: </system:String>
+    <system:String x:Key="SetBarcodePositionWindow.OKBtn">OK</system:String>
+    <system:String x:Key="SetBarcodePositionWindow.CancelBtn">Cancel</system:String>
+    <system:String x:Key="SetBarcodePositionWindow.CodeBehind.ErrorCreate.Message">Cannot modify opening pdf file. Please close the related file and try again.</system:String>
+    <system:String x:Key="SetBarcodePositionWindow.CodeBehind.ErrorCreate.Caption">Error</system:String>
+    <system:String x:Key="SetBarcodePositionWindow.CodeBehind.WarningCreate.Message">Too much barcode to print. Only the first 10 books will be printed.</system:String>
+    <system:String x:Key="SetBarcodePositionWindow.CodeBehind.WarningCreate.Caption">Warning</system:String>
+    <system:String x:Key="SetBarcodePositionWindow.CodeBehind.ErrorPosition.Message">Position is already occupied. Please choose other position.</system:String>
+    <system:String x:Key="SetBarcodePositionWindow.CodeBehind.ErrorPosition.Caption">Error</system:String>
+
 
 
     <system:String x:Key="MessageBox.YesBtn">Yes</system:String>

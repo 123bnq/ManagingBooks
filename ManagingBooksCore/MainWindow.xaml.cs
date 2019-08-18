@@ -53,6 +53,8 @@ namespace ManagingBooks
         Uri German = new Uri(".\\Resources\\Resources.de.xaml", UriKind.Relative);
 
         string ExportFolder = System.IO.Path.Combine(AppContext.BaseDirectory, "Barcode");
+
+        string PdfPath = System.IO.Path.Combine(AppContext.BaseDirectory, "PrintBarcode.pdf");
         //SearchBook DeleteBook;
 
         public MainWindow()
@@ -66,6 +68,7 @@ namespace ManagingBooks
             SearchList.ItemsSource = context.DisplayBooks;
             context.DisplayBooks.Clear();
             Search.WorkerReportsProgress = true;
+            SearchList.IsEnabled = false;
             Search.DoWork += Search_DoWork;
             Search.ProgressChanged += Search_ProgressChanged;
             Search.RunWorkerCompleted += Search_RunWorkerCompleted;
@@ -224,13 +227,13 @@ namespace ManagingBooks
             {
                 SearchList.SelectedIndex = LastIndex;
                 LastIndex = -1;
-
             }
             else
             {
                 var searchBook = SearchList.Items.Cast<SearchBook>().Where(book => book.Number.Equals((e.Result as LibIndices).Number));
                 SearchList.SelectedItem = searchBook.Cast<SearchBook>().FirstOrDefault();
             }
+            SearchList.IsEnabled = true;
             SearchList.ScrollIntoView(SearchList.SelectedItem);
         }
 
@@ -440,43 +443,7 @@ namespace ManagingBooks
         private void PrintBarcodeCommand_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             SearchBookModel context = this.DataContext as SearchBookModel;
-            string pdfPath;
-            SaveFileDialog dialog = new SaveFileDialog();
-            dialog.FileName = "Barcode";
-            dialog.Filter = "PDF (*.pdf)|*.pdf";
-            dialog.InitialDirectory = AppContext.BaseDirectory;
-            if (dialog.ShowDialog(this) == true)
-            {
-                pdfPath = dialog.FileName;
-                using (PdfWriter writer = new PdfWriter(pdfPath))
-                {
-                    using (PdfDocument pdf = new PdfDocument(writer))
-                    {
-                        Document document = new Document(pdf);
-                        Barcode128 barcode = new Barcode128(pdf);
-                        Table table = new Table(5, false);
-                        table.SetWidth(iText.Layout.Properties.UnitValue.CreatePercentValue(100));
-
-                        //foreach (string codeNr in context.ListBookPrint)
-                        //{
-                        //    barcode.SetCode(codeNr);
-                        //    iText.Layout.Element.Image barcodeImage = new iText.Layout.Element.Image(barcode.CreateFormXObject(pdf));
-                        //    barcodeImage.SetHorizontalAlignment(iText.Layout.Properties.HorizontalAlignment.CENTER);
-                        //    //barcodeImage.Scale(1.5F, 1.5F);
-                        //    Cell cell = new Cell();
-                        //    //cell.Add(new Paragraph("Code 128").SetTextAlignment(iText.Layout.Properties.TextAlignment.CENTER));
-                        //    cell.Add(barcodeImage);
-                        //    table.AddCell(cell);
-                        //}
-                        //document.Add(table);
-                    }
-                }
-                // open the pdf file for reviewing and printing
-                Process proc = new Process();
-                proc.StartInfo.FileName = pdfPath;
-                proc.StartInfo.UseShellExecute = true;
-                proc.Start();
-            }
+            CreateBarcodePdfAvery(context.ListBookPrint.ToList(), PdfPath);
         }
 
         private void PrintCommand_Executed(object sender, ExecutedRoutedEventArgs e)
@@ -1011,165 +978,133 @@ namespace ManagingBooks
             window.ShowDialog();
         }
 
-        public static void CreateBarcodeImage(string number, string signature, bool isOpen)
+        private void CreateBarcodeCommand_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            string exportFolder = System.IO.Path.Combine(AppContext.BaseDirectory, "Barcode");
-            string tempFile = System.IO.Path.Combine(exportFolder, "temp.pdf");
-            string exportImage = System.IO.Path.Combine(exportFolder, String.Concat(number, ".png"));
-            int imageWidth = 757;
-            int imageHeight = 332;
-            int textSize = 50;
-            int barcodeWidth = 700;
-            int barcodeHeight = 166;
-
-
-            if (!Directory.Exists(exportFolder))
-            {
-                Directory.CreateDirectory(exportFolder);
-            }
-
-            using (PdfWriter pdfWriter = new PdfWriter(tempFile))
-            {
-                using (PdfDocument pdf = new PdfDocument(pdfWriter))
-                {
-                    Rectangle envelope = new Rectangle(imageWidth, imageHeight);
-                    PageSize ps = new PageSize(envelope);
-                    Document document = new Document(pdf, ps);
-                    document.SetMargins(0, 0, 0, 0);
-                    Paragraph text = new Paragraph(signature)
-                        .SetTextAlignment(iText.Layout.Properties.TextAlignment.CENTER)
-                        .SetFontSize(textSize);
-                    Paragraph num = new Paragraph(number)
-                        .SetTextAlignment(iText.Layout.Properties.TextAlignment.CENTER)
-                        .SetFontSize(textSize);
-                    Barcode128 barcode128 = new Barcode128(pdf);
-                    barcode128.SetCodeType(Barcode128.CODE_C);
-                    barcode128.SetCode(number);
-                    barcode128.FitWidth(barcodeWidth);
-                    barcode128.SetBarHeight(barcodeHeight);
-                    barcode128.SetAltText("");
-
-                    iText.Layout.Element.Image barcodeImage = new iText.Layout.Element.Image(barcode128.CreateFormXObject(pdf));
-                    barcodeImage.SetHorizontalAlignment(iText.Layout.Properties.HorizontalAlignment.CENTER);
-                    document.Add(text);
-                    document.Add(barcodeImage);
-                    document.Add(num);
-                }
-            }
-            Spire.Pdf.PdfDocument document1 = new Spire.Pdf.PdfDocument();
-            document1.LoadFromFile(tempFile);
-            System.Drawing.Image img = document1.SaveAsImage(0);
-            img.Save(exportImage);
-
-            if (File.Exists(tempFile))
-            {
-                File.Delete(tempFile);
-            }
-            if (isOpen)
-            {
-                Process proc = new Process();
-                proc.StartInfo.FileName = exportImage;
-                proc.StartInfo.UseShellExecute = true;
-                proc.Start();
-            }
-        }
-
-        private async void CreateBarcodeCommand_Executed(object sender, ExecutedRoutedEventArgs e)
-        {
-
-            string exportImage;
             var books = SearchList.SelectedItems;
+            List<SearchBook> booksPrintBarcode = new List<SearchBook>();
             if (books != null)
             {
-                await Task.Run(() =>
+                foreach (var book in books)
                 {
-                    foreach (var book in books)
-                    {
-                        CreateBarcodeImage((book as SearchBook).Number, (book as SearchBook).Signatures, isOpen: false);
-                        exportImage = System.IO.Path.Combine(ExportFolder, string.Concat((book as SearchBook).Number, ".png"));
-                        if (books.Count == 1)
-                        {
-                            Process proc = new Process();
-                            proc.StartInfo.FileName = exportImage;
-                            proc.StartInfo.UseShellExecute = true;
-                            proc.Start();
-                        }
-                        Thread.Sleep(5);
-                    }
-                    if (books.Count > 1)
-                    {
-                        Process.Start("explorer.exe", ExportFolder);
-                    }
-                });
+                    booksPrintBarcode.Add(book as SearchBook);
+                }
+                CreateBarcodePdfAvery(booksPrintBarcode, PdfPath);
             }
         }
 
         private void BtnBarcode_Click(object sender, RoutedEventArgs e)
         {
-            //if (!Directory.Exists(ExportFolder))
-            //{
-            //    Directory.CreateDirectory(ExportFolder);
-            //}
-            //Process.Start("explorer.exe", ExportFolder);
-            string fileName = System.IO.Path.Combine(AppContext.BaseDirectory, "bla.bla");
-            using (File.Create(fileName)) ;
-            var img = System.IO.Path.Combine(AppContext.BaseDirectory, "Images", "bc.png");
-            var bitImage = new BitmapImage();
-            bitImage.BeginInit();
-            bitImage.StreamSource = new FileStream(img, FileMode.Open, FileAccess.Read);
-            bitImage.DecodePixelWidth = 795;
-            bitImage.CacheOption = BitmapCacheOption.OnLoad;
-            bitImage.CreateOptions = BitmapCreateOptions.IgnoreColorProfile;
-            bitImage.EndInit();
-            bitImage.StreamSource.Seek(0, SeekOrigin.Begin);
-            bitImage.Freeze();
-            var tempImage = new System.Windows.Controls.Image { Source = bitImage };
-            bitImage.StreamSource.Dispose();
-            using (XpsDocument xpsDocument = new XpsDocument(fileName, FileAccess.ReadWrite))
-            {
-                XpsDocumentWriter writer = XpsDocument.CreateXpsDocumentWriter(xpsDocument);
-                System.Windows.Documents.FixedDocument document = new System.Windows.Documents.FixedDocument();
-                System.Windows.Documents.FixedPage fixedPage = new System.Windows.Documents.FixedPage();
-                //fixedPage.RenderSize = new Size(8.27 * 96.0, 11.69 * 96.0);
-                fixedPage.Height = 11.69 * 96.0;
-                fixedPage.Width = 8.27 * 96.0;
-                fixedPage.Children.Add(tempImage);
-                System.Windows.Documents.PageContent page = new System.Windows.Documents.PageContent();
-                page.Child = fixedPage;
-                document.Pages.Add(page);
-                writer.Write(document);
-                DocumentViewer previewWindow = new DocumentViewer
-                {
-                    Document = xpsDocument.GetFixedDocumentSequence()
-                };
-
-                Window printpriview = new Window();
-                printpriview.Owner = this;
-                printpriview.WindowStartupLocation = WindowStartupLocation.CenterOwner;
-                printpriview.Content = previewWindow;
-                printpriview.Title = fileName;
-                printpriview.Show();
-
-                //printpriview.Closing += Printpriview_Closing;
-            }
-            string filePath = System.IO.Path.Combine(AppContext.BaseDirectory, "Test.pdf");
-
-
-
-            //File.Delete(fileName);
-            //var myXpsUri = xpsDocument.Uri; //should point to the same file as tempXpsFile
-            //var theXpsPackage = System.IO.Packaging.PackageStore.GetPackage(myXpsUri);
-            //theXpsPackage.Close();
-            //System.IO.Packaging.PackageStore.RemovePackage(myXpsUri);
-
-
+            SearchBookModel context = this.DataContext as SearchBookModel;
+            CreateBarcodePdfAvery(context.ListBookPrint.ToList(), PdfPath);
         }
 
-        //private void Printpriview_Closing(object sender, CancelEventArgs e)
-        //{
-        //    string fileName = System.IO.Path.Combine(AppContext.BaseDirectory, "bla.bla");
-        //    File.Delete(fileName);
-        //}
+        private void CreateBarcodePdfAvery(List<SearchBook> books, string pdfPath)
+        {
+            try
+            {
+                using (PdfWriter writer = new PdfWriter(PdfPath))
+                { }
+            }
+            catch (Exception)
+            {
+                string caption = App.Current.FindResource("SetBarcodePositionWindow.CodeBehind.ErrorCreate.Caption").ToString();
+                string message = App.Current.FindResource("SetBarcodePositionWindow.CodeBehind.ErrorCreate.Message").ToString();
+                CustomMessageBox.ShowOK(message, caption, App.Current.FindResource("SetBarcodePositionWindow.OKBtn").ToString(), MessageBoxImage.Error);
+                return;
+            }
+            List<SearchBook> barcodePrintList;
+            if (books.Count > 9)
+            {
+                string caption = App.Current.FindResource("SetBarcodePositionWindow.CodeBehind.WarningCreate.Caption").ToString();
+                string message = App.Current.FindResource("SetBarcodePositionWindow.CodeBehind.WarningCreate.Message").ToString();
+                CustomMessageBox.ShowOK(message, caption, CustomMessageBoxButton.OK, MessageBoxImage.Warning);
+                barcodePrintList =books.ToList().Take(10).ToList();
+            }
+            else
+                barcodePrintList = books.ToList();
+            List<BarcodeWithPosiition> barcodes = new List<BarcodeWithPosiition>();
+            foreach (var book in barcodePrintList)
+            {
+                barcodes.Add(new BarcodeWithPosiition() { BarcodeNumber = book.Number, Signatures = book.Signatures });
+            }
+            List<int> rowValues = new List<int>() { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+            List<int> colValues = new List<int>() { 1, 2, 3 };
+            SetBarcodePositionWindow.CountWindow = 0;
+            SetBarcodePositionWindow.MaxNoWindow = barcodePrintList.Count;
+            SetBarcodePositionWindow.OccupyPositions.Clear();
+            foreach (var barcode in barcodes)
+            {
+                var window = new SetBarcodePositionWindow(rowValues, colValues) { Owner = this };
+                window.ShowDialog();
+                if (!window.IsConfirmed)
+                    return;
+
+                barcode.RowNumber = (window.DataContext as SetBarcodePositionModel).RowNumber;
+                barcode.ColNumber = (window.DataContext as SetBarcodePositionModel).ColNumber;
+                SetBarcodePositionWindow.OccupyPositions.Add(new Tuple<int, int>(barcode.RowNumber, barcode.ColNumber));
+
+            }
+            using (PdfWriter writer = new PdfWriter(pdfPath))
+            {
+                using (PdfDocument pdfDocument = new PdfDocument(writer))
+                {
+                    float cellMainWidth = 176.5f;
+                    float cellMainHeight = 80f;
+                    float cellSpaceWidth = 3.2f;
+                    pdfDocument.SetDefaultPageSize(PageSize.A4);
+                    Document document = new Document(pdfDocument);
+                    document.SetMargins(1.51f * 28.33f, 20f, 1.31f * 28.33f, 20f);
+                    foreach (var barcode in barcodes)
+                    {
+                        Barcode128 barcode128 = new Barcode128(pdfDocument);
+                        barcode128.SetCodeType(Barcode128.CODE_C);
+                        barcode128.SetCode(barcode.BarcodeNumber);
+                        barcode128.SetSize(14);
+                        barcode128.SetBaseline(15);
+                        barcode128.SetBarHeight(35f);
+                        barcode128.FitWidth(160f);
+                        barcode.BarcodeImage = new iText.Layout.Element.Image(barcode128.CreateFormXObject(pdfDocument))
+                            .SetHorizontalAlignment(iText.Layout.Properties.HorizontalAlignment.CENTER);
+                        barcode.Text = new Paragraph(barcode.Signatures).SetTextAlignment(iText.Layout.Properties.TextAlignment.CENTER).SetFontSize(14);
+                    }
+                    Table table = new Table(5);
+
+                    for (int i = 1; i <= 9; i++)
+                    {
+                        for (int j = 1; j <= 3; j++)
+                        {
+                            Cell cellMain = new Cell().SetBorder(iText.Layout.Borders.Border.NO_BORDER);
+                            cellMain.SetVerticalAlignment(iText.Layout.Properties.VerticalAlignment.MIDDLE);
+                            cellMain.SetHeight(cellMainHeight);
+                            cellMain.SetWidth(cellMainWidth);
+                            foreach (var barcode in barcodes)
+                            {
+                                if (i == barcode.RowNumber && j == barcode.ColNumber)
+                                {
+                                    cellMain.Add(barcode.Text).Add(barcode.BarcodeImage);
+                                }
+                            }
+                            table.AddCell(cellMain);
+
+                            // Add cell for spacing between each label
+                            if (j % 3 != 0)
+                            {
+                                Cell cellSpace = new Cell().SetBorder(iText.Layout.Borders.Border.NO_BORDER);
+                                cellSpace.SetHeight(cellMainHeight);
+                                cellSpace.SetWidth(cellSpaceWidth);
+                                cellSpace.SetMargin(0);
+                                table.AddCell(cellSpace);
+                            }
+                        }
+                    }
+                    document.Add(table);
+                }
+            }
+            Process proc = new Process();
+            proc.StartInfo.FileName = pdfPath;
+            proc.StartInfo.UseShellExecute = true;
+            proc.Start();
+        }
 
         private async void BtnImportDB_Click(object sender, RoutedEventArgs e)
         {
@@ -1526,6 +1461,7 @@ namespace ManagingBooks
         public static readonly RoutedUICommand Edit = new RoutedUICommand("Edit", "Edit", typeof(CustomCommands));
         public static readonly RoutedUICommand Delete = new RoutedUICommand("Delete", "Delete", typeof(CustomCommands));
         public static readonly RoutedUICommand Print = new RoutedUICommand("Print", "Print", typeof(CustomCommands));
+        public static readonly RoutedUICommand PrintBarcode = new RoutedUICommand("PrintBarcode", "PrintBarcode", typeof(CustomCommands));
         public static readonly RoutedUICommand AddToPrint = new RoutedUICommand("AddToPrint", "AddToPrint", typeof(CustomCommands));
         public static readonly RoutedUICommand RemoveFromPrint = new RoutedUICommand("RemoveFromPrint", "RemoveFromPrint", typeof(CustomCommands));
         public static readonly RoutedUICommand ClearPrintList = new RoutedUICommand("ClearPrintList", "ClearPrintList", typeof(CustomCommands));

@@ -46,7 +46,8 @@
     <system:String x:Key="MainWindow.PrintList.AddBtn">Hinzufügen</system:String>
     <system:String x:Key="MainWindow.PrintList.RemoveBtn">Entfernen</system:String>
     <system:String x:Key="MainWindow.PrintList.ClearBtn">Löschen</system:String>
-    <system:String x:Key="MainWindow.PrintList.PrintBtn">Drucken</system:String>
+    <system:String x:Key="MainWindow.PrintList.PrintBtn">Liste Drucken</system:String>
+    <system:String x:Key="MainWindow.PrintList.PrintBarcodeBtn">Barcode Drucken</system:String>
     <system:String x:Key="MainWindow.PrintList.PDF.Title">Listenbücher</system:String>
     <system:String x:Key="MainWindow.PrintList.PDF.TableHeader.Number">Nummer</system:String>
     <system:String x:Key="MainWindow.PrintList.PDF.TableHeader.Signature">Signatur</system:String>
@@ -114,7 +115,7 @@
     <system:String x:Key="AddBook.CodeBehind.WarningCancel.Caption">Warnung</system:String>
     <system:String x:Key="AddBook.CodeBehind.WarningAdd.Message">Buch ist bereits hinzugefügt.</system:String>
     <system:String x:Key="AddBook.CodeBehind.WarningAdd.Caption">Warnung</system:String>
-    <system:String x:Key="AddBook.CodeBehind.InfoAdd.Message">Buch wurde erfolgreich hinzugefügt. Möchten Sie Barcode generieren?</system:String>
+    <system:String x:Key="AddBook.CodeBehind.InfoAdd.Message">Buch wurde erfolgreich hinzugefügt.</system:String>
     <system:String x:Key="AddBook.CodeBehind.InfoAdd.Caption">Information</system:String>
     <system:String x:Key="AddBook.CodeBehind.ErrorAdd.IncorrectOrder.Message">Nächster Autor oder nächste Signatur sollte korrekt platziert werden :) :)</system:String>
     <system:String x:Key="AddBook.CodeBehind.ErrorAdd.IncorrectOrder.Caption">Fehler</system:String>
@@ -258,8 +259,21 @@
 
     <system:String x:Key="TransferBook.CodeBehind.WarningAdd.Exist.Message">Buch ist bereits hinzugefügt!</system:String>
     <system:String x:Key="TransferBook.CodeBehind.WarningAdd.Exist.Caption">Warnung</system:String>
-    <system:String x:Key="TransferBook.CodeBehind.ErrorAdd.NotFound.Message">Buch wurde nicht gefunden. Bitte stellen Sie sicher, dass es hinzufügt wird</system:String>
+    <system:String x:Key="TransferBook.CodeBehind.ErrorAdd.NotFound.Message">Buch wurde nicht gefunden. Bitte stellen Sie sicher, dass es hinzufügt wird.</system:String>
     <system:String x:Key="TransferBook.CodeBehind.ErrorAdd.NotFound.Caption">Fehler</system:String>
+
+
+    <system:String x:Key="SetBarcodePositionWindow.Title.Of">auf</system:String>
+    <system:String x:Key="SetBarcodePositionWindow.Row">Reihe: </system:String>
+    <system:String x:Key="SetBarcodePositionWindow.Column">Spalte: </system:String>
+    <system:String x:Key="SetBarcodePositionWindow.OKBtn">OK</system:String>
+    <system:String x:Key="SetBarcodePositionWindow.CancelBtn">Abbrechen</system:String>
+    <system:String x:Key="SetBarcodePositionWindow.CodeBehind.ErrorCreate.Message">Die öffnende pdf-Datei kann nicht geändert werden. Bitte schließen Sie die zugehörige Datei und versuchen Sie es erneut.</system:String>
+    <system:String x:Key="SetBarcodePositionWindow.CodeBehind.ErrorCreate.Caption">Fehler</system:String>
+    <system:String x:Key="SetBarcodePositionWindow.CodeBehind.WarningCreate.Message">Zu viel Barcode zum Drucken. Es werden nur die ersten 10 Bücher gedruckt.</system:String>
+    <system:String x:Key="SetBarcodePositionWindow.CodeBehind.WarningCreate.Caption">Warnung</system:String>
+    <system:String x:Key="SetBarcodePositionWindow.CodeBehind.ErrorPosition.Message">Die Position ist bereits besetzt. Bitte wählen Sie eine andere Position.</system:String>
+    <system:String x:Key="SetBarcodePositionWindow.CodeBehind.ErrorPosition.Caption">Fehler</system:String>
 
 
 

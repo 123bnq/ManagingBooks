@@ -167,77 +167,6 @@ namespace ManagingBooks.Windows
                 || context.Date != "01/01/1970"
                 || context.Pages != 0
                 || context.Price != 0;
-            //foreach (var ctrl in WindowToBeClear.Children)
-            //{
-            //    if (ctrl.GetType() == typeof(TextBox))
-            //    {
-            //        if (!string.IsNullOrWhiteSpace((ctrl as TextBox).Text))
-            //        {
-            //            containData |= true;
-            //            break;
-            //        }
-            //    }
-            //    if (ctrl.GetType() == typeof(ComboBox))
-            //    {
-            //        if ((ctrl as ComboBox).SelectedItem != null)
-            //        {
-            //            containData |= true;
-            //            break;
-            //        }
-            //    }
-            //    if (ctrl.GetType().IsSubclassOf(typeof(Panel)))
-            //    {
-            //        foreach (var childCtrl in (ctrl as Panel).Children)
-            //        {
-            //            if (childCtrl.GetType() == typeof(TextBox))
-            //            {
-            //                if (!string.IsNullOrWhiteSpace((childCtrl as TextBox).Text))
-            //                {
-            //                    containData |= true;
-            //                    break;
-            //                }
-            //            }
-            //            if (childCtrl.GetType() == typeof(ComboBox))
-            //            {
-            //                if ((childCtrl as ComboBox).SelectedItem != null)
-            //                {
-            //                    containData |= true;
-            //                    break;
-            //                }
-            //            }
-            //            if (childCtrl.GetType() == typeof(DatePicker))
-            //            {
-            //                if ((childCtrl as DatePicker).SelectedDate != null)
-            //                {
-            //                    containData |= true;
-            //                    break;
-            //                }
-            //            }
-            //            if (childCtrl.GetType().IsSubclassOf(typeof(Panel)))
-            //            {
-            //                foreach (var ccCtrl in (childCtrl as Panel).Children)
-            //                {
-            //                    if (ccCtrl.GetType() == typeof(ComboBox))
-            //                    {
-            //                        if ((ccCtrl as ComboBox).SelectedItem != null)
-            //                        {
-            //                            containData |= true;
-            //                            break;
-            //                        }
-            //                    }
-            //                }
-            //            }
-            //            if (containData)
-            //            {
-            //                break;
-            //            }
-            //        }
-            //        if (containData)
-            //        {
-            //            break;
-            //        }
-            //    }
-            //}
 
             if (containData)
             {
@@ -334,15 +263,13 @@ namespace ManagingBooks.Windows
                         Number = number;
                         message = Application.Current.FindResource("AddBook.CodeBehind.InfoAdd.Message").ToString();
                         caption = Application.Current.FindResource("AddBook.CodeBehind.InfoAdd.Caption").ToString();
-                        var result = CustomMessageBox.ShowYesNo(message, caption, CustomMessageBoxButton.Yes, CustomMessageBoxButton.No, MessageBoxImage.Information);
-                        // Generate barcode
-                        if (result == MessageBoxResult.Yes)
-                        {
-                            MainWindow.CreateBarcodeImage(number, signature, isOpen: true);
-                            
-                        }
+                        var result = CustomMessageBox.ShowOK(message, caption, CustomMessageBoxButton.OK, MessageBoxImage.Information);
+
+                        //if (result == MessageBoxResult.Yes)
+                        //{
+                        //    MainWindow.CreateBarcodeImage(number, signature, isOpen: true);
+                        //}
                         BtnAdd.IsEnabled = true;
-                        //MessageBox.Show(message, caption, MessageBoxButton.OK, MessageBoxImage.Information);
                         UpdateListBook(context);
                         ClearEntries();
                     }
