@@ -99,6 +99,11 @@ namespace ManagingBooks
             context.SearchBy = Application.Current.FindResource("MainWindow.SearchBy.Number").ToString();
         }
 
+        public MainWindow(int bla)
+        {
+            InitializeComponent();
+        }
+
         /// <summary>
         /// Access DB and fetch the books
         /// </summary>
@@ -110,90 +115,218 @@ namespace ManagingBooks
             int i = 0;
             int progressPercentage;
 
-            SQLiteConnection con;
-            SqlMethods.SqlConnect(out con);
-            var selectCommand = con.CreateCommand();
-            selectCommand.CommandText = "SELECT b.BookId,b.Number,b.Title,b.Version,b.Medium,a.AuthorId,a.Name,s.Signature,b.Publisher,b.Place,b.Year,b.DayBought,b.Pages,b.Price " +
-                "FROM Books b " +
-                "LEFT JOIN Books_Authors ba ON (b.BookId = ba.BookId) " +
-                "LEFT JOIN Authors a ON (ba.AuthorId = a.AuthorId) " +
-                "LEFT JOIN Books_Signatures bs ON (bs.BookId = b.BookId) " +
-                "LEFT JOIN Signatures s ON (bs.SignatureId = s.SignatureId) ORDER BY b.Number,b.BookId,ba.Priority,bs.Priority";
-            SQLiteDataReader r = selectCommand.ExecuteReader();
-            int lastBookId = -1;
-            int lastAuthorId = -1;
-            bool finishedBook = false;
-            SearchBook tempBook = new SearchBook();
+            //SQLiteConnection con;
+            //SqlMethods.SqlConnect(out con);
+            //var selectCommand = con.CreateCommand();
+            //selectCommand.CommandText = "SELECT b.BookId,b.Number,b.Title,b.Version,b.Medium,a.AuthorId,a.Name,s.Signature,b.Publisher,b.Place,b.Year,b.DayBought,b.Pages,b.Price " +
+            //    "FROM Books b " +
+            //    "LEFT JOIN Books_Authors ba ON (b.BookId = ba.BookId) " +
+            //    "LEFT JOIN Authors a ON (ba.AuthorId = a.AuthorId) " +
+            //    "LEFT JOIN Books_Signatures bs ON (bs.BookId = b.BookId) " +
+            //    "LEFT JOIN Signatures s ON (bs.SignatureId = s.SignatureId) ORDER BY b.Number,b.BookId,ba.Priority,bs.Priority";
+            //SQLiteDataReader r = selectCommand.ExecuteReader();
+            //int lastBookId = -1;
+            //int lastAuthorId = -1;
+            //bool finishedBook = false;
+            //SearchBook tempBook = new SearchBook();
 
-            // read  DB and forming a book object
-            while (r.Read())
+            //// read  DB and forming a book object
+            //while (r.Read())
+            //{
+            //    int result;
+            //    int.TryParse(Convert.ToString(r["BookId"]), out result);
+            //    if (result == lastBookId)
+            //    {
+            //        int result1;
+            //        int.TryParse(Convert.ToString(r["AuthorId"]), out result1);
+            //        if (result1 == lastAuthorId)
+            //        {
+            //            string temp = Convert.ToString(r["Signature"]);
+            //            if (!tempBook.Signatures.Contains(temp))
+            //            {
+            //                tempBook.Signatures += "-" + Convert.ToString(r["Signature"]);
+            //            }
+            //        }
+            //        if (result1 != lastAuthorId)
+            //        {
+            //            tempBook.Authors += ", " + Convert.ToString(r["Name"]);
+            //            lastAuthorId = result1;
+            //        }
+            //    }
+            //    else
+            //    {
+            //        finishedBook = true;
+            //        if (finishedBook && (!string.IsNullOrEmpty(tempBook.Title)))
+            //        {
+            //            // report progress change
+            //            progressPercentage = Convert.ToInt32(((double)i / max) * 100);
+            //            (sender as BackgroundWorker).ReportProgress(progressPercentage, tempBook);
+
+            //            finishedBook = false;
+            //        }
+            //        tempBook = new SearchBook();
+            //        tempBook.BookId = result;
+            //        lastBookId = result;
+            //        //int.TryParse(Convert.ToString(r["Number"]), out result);
+            //        tempBook.Number = Convert.ToString(r["Number"]);
+            //        tempBook.Title = Convert.ToString(r["Title"]);
+            //        tempBook.Publishers = Convert.ToString(r["Publisher"]);
+            //        int.TryParse(Convert.ToString(r["Year"]), out result);
+            //        tempBook.Year = result;
+            //        int.TryParse(Convert.ToString(r["Version"]), out result);
+            //        tempBook.Version = result;
+            //        tempBook.Medium = Convert.ToString(r["Medium"]);
+            //        tempBook.Place = Convert.ToString(r["Place"]);
+            //        tempBook.Date = Convert.ToString(r["DayBought"]);
+            //        int.TryParse(Convert.ToString(r["Pages"]), out result);
+            //        tempBook.Pages = result;
+            //        double.TryParse(Convert.ToString(r["Price"]), out double result_d);
+            //        tempBook.Price = result_d;
+            //        int.TryParse(Convert.ToString(r["AuthorId"]), out result);
+            //        lastAuthorId = result;
+            //        tempBook.Authors = Convert.ToString(r["Name"]);
+            //        tempBook.Signatures = Convert.ToString(r["Signature"]);
+            //        i++;
+            //    }
+            //    Thread.Sleep(TimeSpan.FromTicks(500));
+            //}
+            //if (i != 0)
+            //{
+            //    progressPercentage = Convert.ToInt32(((double)i / max) * 100);
+            //    (sender as BackgroundWorker).ReportProgress(progressPercentage, tempBook);
+            //}
+            //e.Result = e.Argument;
+            //r.Close();
+            //con.Close();
+
+            SqlMethods.SqlConnect(out SQLiteConnection con);
+            //List<SearchBook> books = new List<SearchBook>();
+            using (var cmd = con.CreateCommand())
             {
-                int result;
-                int.TryParse(Convert.ToString(r["BookId"]), out result);
-                if (result == lastBookId)
+                cmd.CommandText = "SELECT BookId, Number, Title, Publisher, Version, Year, Medium, Place, DayBought, Pages, Price FROM Books ORDER BY Number ASC";
+                using (var reader = cmd.ExecuteReader())
                 {
-                    int result1;
-                    int.TryParse(Convert.ToString(r["AuthorId"]), out result1);
-                    if (result1 == lastAuthorId)
+                    while (reader.Read())
                     {
-                        string temp = Convert.ToString(r["Signature"]);
-                        if (!tempBook.Signatures.Contains(temp))
+                        SearchBook tempBook = new SearchBook();
+                        int.TryParse(Convert.ToString(reader["BookId"]), out int result);
+                        tempBook.BookId = result;
+                        tempBook.Number = Convert.ToString(reader["Number"]);
+                        tempBook.Title = Convert.ToString(reader["Title"]);
+                        tempBook.Publishers = Convert.ToString(reader["Publisher"]);
+                        int.TryParse(Convert.ToString(reader["Year"]), out result);
+                        tempBook.Year = result;
+                        int.TryParse(Convert.ToString(reader["Version"]), out result);
+                        tempBook.Version = result;
+                        tempBook.Medium = Convert.ToString(reader["Medium"]);
+                        tempBook.Place = Convert.ToString(reader["Place"]);
+                        tempBook.Date = Convert.ToString(reader["DayBought"]);
+                        int.TryParse(Convert.ToString(reader["Pages"]), out result);
+                        tempBook.Pages = result;
+                        double.TryParse(Convert.ToString(reader["Price"]), out double result_d);
+                        tempBook.Price = result_d;
+                        using (var cmdAuthors = con.CreateCommand())
                         {
-                            tempBook.Signatures += "-" + Convert.ToString(r["Signature"]);
+                            cmdAuthors.CommandText = "SELECT a.name FROM Authors a, Books_Authors ba, Books b WHERE b.BookId = ba.BookId AND a.AuthorId = ba.AuthorId AND b.BookId=@BookId ORDER BY ba.Priority ASC";
+                            cmdAuthors.Parameters.AddWithValue("@BookId", tempBook.BookId);
+                            using (var readerAuthors = cmdAuthors.ExecuteReader())
+                            {
+                                List<string> authors = new List<string>();
+                                while (readerAuthors.Read())
+                                {
+                                    authors.Add(Convert.ToString(readerAuthors["Name"]));
+                                }
+                                tempBook.Authors = string.Join(", ", authors);
+                            }
                         }
-                    }
-                    if (result1 != lastAuthorId)
-                    {
-                        tempBook.Authors += ", " + Convert.ToString(r["Name"]);
-                        lastAuthorId = result1;
-                    }
-                }
-                else
-                {
-                    finishedBook = true;
-                    if (finishedBook && (!string.IsNullOrEmpty(tempBook.Title)))
-                    {
-                        // report progress change
+                        using (var cmdSignatures = con.CreateCommand())
+                        {
+                            cmdSignatures.CommandText = "SELECT s.Signature FROM Signatures s, Books_Signatures bs, Books b WHERE b.BookId = bs.BookId AND s.SignatureId = bs.SignatureId AND b.BookId = @BookId ORDER BY bs.Priority ASC";
+                            cmdSignatures.Parameters.AddWithValue("@BookId", tempBook.BookId);
+                            using (var readerSignatures = cmdSignatures.ExecuteReader())
+                            {
+                                List<string> signatures = new List<string>();
+                                while (readerSignatures.Read())
+                                {
+                                    signatures.Add(Convert.ToString(readerSignatures["Signature"]));
+                                }
+                                tempBook.Signatures = string.Join("-", signatures);
+                            }
+                        }
+                        //books.Add(tempBook);
+                        Thread.Sleep(TimeSpan.FromTicks(500));
+                        i++;
                         progressPercentage = Convert.ToInt32(((double)i / max) * 100);
                         (sender as BackgroundWorker).ReportProgress(progressPercentage, tempBook);
 
-                        finishedBook = false;
                     }
-                    tempBook = new SearchBook();
-                    tempBook.BookId = result;
-                    lastBookId = result;
-                    //int.TryParse(Convert.ToString(r["Number"]), out result);
-                    tempBook.Number = Convert.ToString(r["Number"]);
-                    tempBook.Title = Convert.ToString(r["Title"]);
-                    tempBook.Publishers = Convert.ToString(r["Publisher"]);
-                    int.TryParse(Convert.ToString(r["Year"]), out result);
-                    tempBook.Year = result;
-                    int.TryParse(Convert.ToString(r["Version"]), out result);
-                    tempBook.Version = result;
-                    tempBook.Medium = Convert.ToString(r["Medium"]);
-                    tempBook.Place = Convert.ToString(r["Place"]);
-                    tempBook.Date = Convert.ToString(r["DayBought"]);
-                    int.TryParse(Convert.ToString(r["Pages"]), out result);
-                    tempBook.Pages = result;
-                    double.TryParse(Convert.ToString(r["Price"]), out double result_d);
-                    tempBook.Price = result_d;
-                    int.TryParse(Convert.ToString(r["AuthorId"]), out result);
-                    lastAuthorId = result;
-                    tempBook.Authors = Convert.ToString(r["Name"]);
-                    tempBook.Signatures = Convert.ToString(r["Signature"]);
-                    i++;
                 }
-                Thread.Sleep(TimeSpan.FromTicks(500));
-            }
-            if (i != 0)
-            {
-                progressPercentage = Convert.ToInt32(((double)i / max) * 100);
-                (sender as BackgroundWorker).ReportProgress(progressPercentage, tempBook);
             }
             e.Result = e.Argument;
-            r.Close();
             con.Close();
+        }
 
+        public void SearchBook()
+        {
+            SqlMethods.SqlConnect(out SQLiteConnection con);
+            List<SearchBook> books = new List<SearchBook>();
+            using (var cmd = con.CreateCommand())
+            {
+                cmd.CommandText = "SELECT BookId, Number, Title, Publisher, Version, Year, Medium, Place, DayBought, Pages, Price FROM Books ORDER BY BookId ASC";
+                using (var reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        SearchBook tempBook = new SearchBook();
+                        int.TryParse(Convert.ToString(reader["BookId"]), out int result);
+                        tempBook.BookId = result;
+                        tempBook.Number = Convert.ToString(reader["Number"]);
+                        tempBook.Title = Convert.ToString(reader["Title"]);
+                        tempBook.Publishers = Convert.ToString(reader["Publisher"]);
+                        int.TryParse(Convert.ToString(reader["Year"]), out result);
+                        tempBook.Year = result;
+                        int.TryParse(Convert.ToString(reader["Version"]), out result);
+                        tempBook.Version = result;
+                        tempBook.Medium = Convert.ToString(reader["Medium"]);
+                        tempBook.Place = Convert.ToString(reader["Place"]);
+                        tempBook.Date = Convert.ToString(reader["DayBought"]);
+                        int.TryParse(Convert.ToString(reader["Pages"]), out result);
+                        tempBook.Pages = result;
+                        double.TryParse(Convert.ToString(reader["Price"]), out double result_d);
+                        tempBook.Price = result_d;
+                        using (var cmdAuthors = con.CreateCommand())
+                        {
+                            cmdAuthors.CommandText = "SELECT a.name FROM Authors a, Books_Authors ba, Books b WHERE b.BookId = ba.BookId AND a.AuthorId = ba.AuthorId AND b.BookId=@BookId ORDER BY ba.Priority ASC";
+                            cmdAuthors.Parameters.AddWithValue("@BookId", tempBook.BookId);
+                            using (var readerAuthors = cmdAuthors.ExecuteReader())
+                            {
+                                List<string> authors = new List<string>();
+                                while (readerAuthors.Read())
+                                {
+                                    authors.Add(Convert.ToString(readerAuthors["Name"]));
+                                }
+                                tempBook.Authors = string.Join(", ", authors);
+                            }
+                        }
+                        using (var cmdSignatures = con.CreateCommand())
+                        {
+                            cmdSignatures.CommandText = "SELECT s.Signature FROM Signatures s, Books_Signatures bs, Books b WHERE b.BookId = bs.BookId AND s.SignatureId = bs.SignatureId AND b.BookId = @BookId ORDER BY bs.Priority ASC";
+                            cmdSignatures.Parameters.AddWithValue("@BookId", tempBook.BookId);
+                            using (var readerSignatures = cmdSignatures.ExecuteReader())
+                            {
+                                List<string> signatures = new List<string>();
+                                while (readerSignatures.Read())
+                                {
+                                    signatures.Add(Convert.ToString(readerSignatures["Signature"]));
+                                }
+                                tempBook.Signatures = string.Join("-", signatures);
+                            }
+                        }
+                        books.Add(tempBook);
+                    }
+                }
+            }
+            con.Close();
         }
 
         /// <summary>
@@ -1018,7 +1151,7 @@ namespace ManagingBooks
                 string caption = App.Current.FindResource("SetBarcodePositionWindow.CodeBehind.WarningCreate.Caption").ToString();
                 string message = App.Current.FindResource("SetBarcodePositionWindow.CodeBehind.WarningCreate.Message").ToString();
                 CustomMessageBox.ShowOK(message, caption, CustomMessageBoxButton.OK, MessageBoxImage.Warning);
-                barcodePrintList =books.ToList().Take(10).ToList();
+                barcodePrintList = books.ToList().Take(10).ToList();
             }
             else
                 barcodePrintList = books.ToList();
@@ -1124,168 +1257,260 @@ namespace ManagingBooks
                 con.Open();
                 SqlMethods.SqlConnect(out SQLiteConnection connection);
 
+                SearchList.IsEnabled = false;
+                BoxSearchText.IsEnabled = false;
+                BtnClearBookInfo.IsEnabled = false;
+                BtnAddToPrint.IsEnabled = false;
+
                 var selectCommand = con.CreateCommand();
                 selectCommand.CommandText = "SELECT COUNT(*) AS max FROM Books";
                 SQLiteDataReader r = selectCommand.ExecuteReader();
                 r.Read();
                 int.TryParse(Convert.ToString(r["max"]), out max);
                 r.Close();
-                selectCommand.CommandText = "SELECT b.BookId,b.Number,b.Title,b.Version,b.Medium,a.AuthorId,a.Name,s.Signature,b.Publisher,b.Place,b.Year,b.DayBought,b.Pages,b.Price " +
-                    "FROM Books b " +
-                    "LEFT JOIN Books_Authors ba ON (b.BookId = ba.BookId) " +
-                    "LEFT JOIN Authors a ON (ba.AuthorId = a.AuthorId) " +
-                    "LEFT JOIN Books_Signatures bs ON (bs.BookId = b.BookId) " +
-                    "LEFT JOIN Signatures s ON (bs.SignatureId = s.SignatureId) ORDER BY b.BookId,ba.Priority,bs.Priority";
-                r = selectCommand.ExecuteReader();
-                int lastBookId = -1;
-                int lastAuthorId = -1;
-                bool finishedBook = false;
-                Book tempBook = new Book();
-                List<string> authors = new List<string>();
-                List<string> signatures = new List<string>();
-                // read  DB and forming a book object
-                SearchList.IsEnabled = false;
-                BoxSearchText.IsEnabled = false;
-                BtnClearBookInfo.IsEnabled = false;
-                BtnAddToPrint.IsEnabled = false;
-                await Task.Run(() =>
+
+                //SqlMethods.SqlConnect(out SQLiteConnection con);
+                using (var cmd = con.CreateCommand())
                 {
-
-                    while (r.Read())
+                    cmd.CommandText = "SELECT BookId, Number, Title, Publisher, Version, Year, Medium, Place, DayBought, Pages, Price FROM Books ORDER BY BookId ASC";
+                    using (var reader = cmd.ExecuteReader())
                     {
-                        int result;
-                        int.TryParse(Convert.ToString(r["BookId"]), out result);
-                        if (result == lastBookId)
+                        await Task.Run(() =>
                         {
-                            int result1;
-                            int.TryParse(Convert.ToString(r["AuthorId"]), out result1);
-                            if (result1 == lastAuthorId)
+                            while (reader.Read())
                             {
-                                string temp = Convert.ToString(r["Signature"]);
-                                if (!signatures.Contains(temp))
+                                Book tempBook = new Book();
+                                int.TryParse(Convert.ToString(reader["BookId"]), out int result);
+                                tempBook.BookId = result;
+                                int.TryParse(Convert.ToString(reader["Number"]), out result);
+                                tempBook.Number = result;
+                                tempBook.Title = Convert.ToString(reader["Title"]);
+                                tempBook.Publisher = Convert.ToString(reader["Publisher"]);
+                                int.TryParse(Convert.ToString(reader["Year"]), out result);
+                                tempBook.Year = result;
+                                int.TryParse(Convert.ToString(reader["Version"]), out result);
+                                tempBook.Version = result;
+                                tempBook.Medium = Convert.ToString(reader["Medium"]);
+                                tempBook.Place = Convert.ToString(reader["Place"]);
+                                tempBook.DayBought = Convert.ToString(reader["DayBought"]);
+                                int.TryParse(Convert.ToString(reader["Pages"]), out result);
+                                tempBook.Pages = result;
+                                double.TryParse(Convert.ToString(reader["Price"]), out double result_d);
+                                tempBook.Price = result_d;
+                                using (var cmdAuthors = con.CreateCommand())
                                 {
-                                    signatures.Add(Convert.ToString(r["Signature"]));
+                                    cmdAuthors.CommandText = "SELECT a.name FROM Authors a, Books_Authors ba, Books b WHERE b.BookId = ba.BookId AND a.AuthorId = ba.AuthorId AND b.BookId=@BookId ORDER BY ba.Priority ASC";
+                                    cmdAuthors.Parameters.AddWithValue("@BookId", tempBook.BookId);
+                                    using (var readerAuthors = cmdAuthors.ExecuteReader())
+                                    {
+                                        List<string> authors = new List<string>();
+                                        while (readerAuthors.Read())
+                                        {
+                                            authors.Add(Convert.ToString(readerAuthors["Name"]));
+                                        }
+                                        tempBook.NoAuthor = authors.Count;
+                                        tempBook.Authors = new Author[tempBook.NoAuthor];
+                                        for (int j = 0; j < tempBook.NoAuthor; j++)
+                                        {
+                                            tempBook.Authors[j] = new Author();
+                                            tempBook.Authors[j].Name = authors[j];
+                                        }
+                                    }
                                 }
-                                //if (!tempBook.Signatures.Contains(temp))
-                                //{
-                                //    tempBook.Signatures += "-" + Convert.ToString(r["Signature"]);
-                                //}
-                            }
-                            if (result1 != lastAuthorId)
-                            {
-                                authors.Add(Convert.ToString(r["Name"]));
-                                //tempBook.Authors += ", " + Convert.ToString(r["Name"]);
-                                lastAuthorId = result1;
-                            }
-                        }
-                        else
-                        {
-                            finishedBook = true;
-                            if (finishedBook && (!string.IsNullOrEmpty(tempBook.Title)))
-                            {
-                                authors = authors.Distinct().ToList();
-                                signatures = signatures.Distinct().ToList();
-                                tempBook.NoAuthor = authors.Count;
-                                tempBook.Authors = new Author[tempBook.NoAuthor];
+                                using (var cmdSignatures = con.CreateCommand())
+                                {
+                                    cmdSignatures.CommandText = "SELECT s.Signature FROM Signatures s, Books_Signatures bs, Books b WHERE b.BookId = bs.BookId AND s.SignatureId = bs.SignatureId AND b.BookId = @BookId ORDER BY bs.Priority ASC";
+                                    cmdSignatures.Parameters.AddWithValue("@BookId", tempBook.BookId);
+                                    using (var readerSignatures = cmdSignatures.ExecuteReader())
+                                    {
+                                        List<string> signatures = new List<string>();
+                                        while (readerSignatures.Read())
+                                        {
+                                            signatures.Add(Convert.ToString(readerSignatures["Signature"]));
+                                        }
+                                        tempBook.NoSignature = signatures.Count;
+                                        tempBook.Signatures = new string[tempBook.NoSignature];
+                                        for (int j = 0; j < tempBook.NoSignature; j++)
+                                        {
+                                            tempBook.Signatures[j] = signatures[j];
+                                        }
+                                    }
+                                }
+                                Thread.Sleep(TimeSpan.FromTicks(5));
+                                count++;
+                                context.Progress = Convert.ToInt32((double)(count) / max * 100);
+                                context.Status = "Importing";
 
-                                for (int j = 0; j < tempBook.Authors.Length; j++)
-                                {
-                                    tempBook.Authors[j] = new Author();
-                                }
-                                int k = 0;
-                                foreach (var a in authors)
-                                {
-                                    tempBook.Authors[k++].Name = a;
-                                }
-                                k = 0;
-
-                                tempBook.NoSignature = signatures.Count;
-                                tempBook.Signatures = new string[tempBook.NoSignature];
-
-                                foreach (var s in signatures)
-                                {
-                                    tempBook.Signatures[k++] = s;
-                                }
                                 var transaction = connection.BeginTransaction();
                                 AddBook.AddBookToDatabase(ref connection, ref transaction, tempBook);
-                                count++;
-                                context.Status = "Importing";
-                                context.Progress = Convert.ToInt32((double)(count) / max * 100);
-                                authors.Clear();
-                                signatures.Clear();
                                 transaction.Commit();
-                                finishedBook = false;
                             }
-                            tempBook = new Book();
-                            tempBook.BookId = result;
-                            lastBookId = result;
-                            int.TryParse(Convert.ToString(r["Number"]), out result);
-                            tempBook.Number = result;
-                            tempBook.Title = Convert.ToString(r["Title"]);
-                            tempBook.Publisher = Convert.ToString(r["Publisher"]);
-                            int.TryParse(Convert.ToString(r["Year"]), out result);
-                            tempBook.Year = result;
-                            int.TryParse(Convert.ToString(r["Version"]), out result);
-                            tempBook.Version = result;
-                            tempBook.Medium = Convert.ToString(r["Medium"]);
-                            tempBook.Place = Convert.ToString(r["Place"]);
-                            tempBook.DayBought = Convert.ToString(r["DayBought"]);
-                            int.TryParse(Convert.ToString(r["Pages"]), out result);
-                            tempBook.Pages = result;
-                            double.TryParse(Convert.ToString(r["Price"]), out double result_d);
-                            tempBook.Price = result_d;
-                            int.TryParse(Convert.ToString(r["AuthorId"]), out result);
-                            lastAuthorId = result;
-                            authors.Add(Convert.ToString(r["Name"]));
-                            signatures.Add(Convert.ToString(r["Signature"]));
-                            //tempBook.Authors = Convert.ToString(r["Name"]);
-                            //tempBook.Signatures = Convert.ToString(r["Signature"]);
-                            i++;
-                        }
-                        Thread.Sleep(TimeSpan.FromTicks(5));
-                        //progress.Report(Convert.ToInt32((double)(max - i) / max * 100));
+                        });
                     }
-                    if (i != 0)
-                    {
-                        authors = authors.Distinct().ToList();
-                        signatures = signatures.Distinct().ToList();
-                        tempBook.NoAuthor = authors.Count;
-                        tempBook.Authors = new Author[tempBook.NoAuthor];
+                }
+                context.Status = "Import Finished";
+                //var selectCommand = con.CreateCommand();
+                //selectCommand.CommandText = "SELECT COUNT(*) AS max FROM Books";
+                //SQLiteDataReader r = selectCommand.ExecuteReader();
+                //r.Read();
+                //int.TryParse(Convert.ToString(r["max"]), out max);
+                //r.Close();
+                //selectCommand.CommandText = "SELECT b.BookId,b.Number,b.Title,b.Version,b.Medium,a.AuthorId,a.Name,s.Signature,b.Publisher,b.Place,b.Year,b.DayBought,b.Pages,b.Price " +
+                //    "FROM Books b " +
+                //    "LEFT JOIN Books_Authors ba ON (b.BookId = ba.BookId) " +
+                //    "LEFT JOIN Authors a ON (ba.AuthorId = a.AuthorId) " +
+                //    "LEFT JOIN Books_Signatures bs ON (bs.BookId = b.BookId) " +
+                //    "LEFT JOIN Signatures s ON (bs.SignatureId = s.SignatureId) ORDER BY b.BookId,ba.Priority,bs.Priority";
+                //r = selectCommand.ExecuteReader();
+                //int lastBookId = -1;
+                //int lastAuthorId = -1;
+                //bool finishedBook = false;
+                //Book tempBook = new Book();
+                //List<string> authors = new List<string>();
+                //List<string> signatures = new List<string>();
+                //// read  DB and forming a book object
+                //SearchList.IsEnabled = false;
+                //BoxSearchText.IsEnabled = false;
+                //BtnClearBookInfo.IsEnabled = false;
+                //BtnAddToPrint.IsEnabled = false;
+                //await Task.Run(() =>
+                //{
 
-                        for (int j = 0; j < tempBook.Authors.Length; j++)
-                        {
-                            tempBook.Authors[j] = new Author();
-                        }
-                        int k = 0;
-                        foreach (var a in authors)
-                        {
-                            tempBook.Authors[k++].Name = a;
-                        }
-                        k = 0;
+                //    while (r.Read())
+                //    {
+                //        int result;
+                //        int.TryParse(Convert.ToString(r["BookId"]), out result);
+                //        if (result == lastBookId)
+                //        {
+                //            int result1;
+                //            int.TryParse(Convert.ToString(r["AuthorId"]), out result1);
+                //            if (result1 == lastAuthorId)
+                //            {
+                //                string temp = Convert.ToString(r["Signature"]);
+                //                if (!signatures.Contains(temp))
+                //                {
+                //                    signatures.Add(Convert.ToString(r["Signature"]));
+                //                }
+                //                //if (!tempBook.Signatures.Contains(temp))
+                //                //{
+                //                //    tempBook.Signatures += "-" + Convert.ToString(r["Signature"]);
+                //                //}
+                //            }
+                //            if (result1 != lastAuthorId)
+                //            {
+                //                authors.Add(Convert.ToString(r["Name"]));
+                //                //tempBook.Authors += ", " + Convert.ToString(r["Name"]);
+                //                lastAuthorId = result1;
+                //            }
+                //        }
+                //        else
+                //        {
+                //            finishedBook = true;
+                //            if (finishedBook && (!string.IsNullOrEmpty(tempBook.Title)))
+                //            {
+                //                authors = authors.Distinct().ToList();
+                //                signatures = signatures.Distinct().ToList();
+                //                tempBook.NoAuthor = authors.Count;
+                //                tempBook.Authors = new Author[tempBook.NoAuthor];
 
-                        tempBook.NoSignature = signatures.Count;
-                        tempBook.Signatures = new string[tempBook.NoSignature];
+                //                for (int j = 0; j < tempBook.Authors.Length; j++)
+                //                {
+                //                    tempBook.Authors[j] = new Author();
+                //                }
+                //                int k = 0;
+                //                foreach (var a in authors)
+                //                {
+                //                    tempBook.Authors[k++].Name = a;
+                //                }
+                //                k = 0;
 
-                        foreach (var s in signatures)
-                        {
-                            tempBook.Signatures[k++] = s;
-                        }
-                        var transaction = connection.BeginTransaction();
-                        AddBook.AddBookToDatabase(ref connection, ref transaction, tempBook);
-                        count++;
-                        context.Progress = Convert.ToInt32((double)(count) / max * 100);
-                        context.Status = "Import Finished";
-                        authors.Clear();
-                        signatures.Clear();
-                        transaction.Commit();
-                    }
-                });
-                r.Close();
+                //                tempBook.NoSignature = signatures.Count;
+                //                tempBook.Signatures = new string[tempBook.NoSignature];
+
+                //                foreach (var s in signatures)
+                //                {
+                //                    tempBook.Signatures[k++] = s;
+                //                }
+                //                var transaction = connection.BeginTransaction();
+                //                AddBook.AddBookToDatabase(ref connection, ref transaction, tempBook);
+                //                count++;
+                //                context.Status = "Importing";
+                //                context.Progress = Convert.ToInt32((double)(count) / max * 100);
+                //                authors.Clear();
+                //                signatures.Clear();
+                //                transaction.Commit();
+                //                finishedBook = false;
+                //            }
+                //            tempBook = new Book();
+                //            tempBook.BookId = result;
+                //            lastBookId = result;
+                //            int.TryParse(Convert.ToString(r["Number"]), out result);
+                //            tempBook.Number = result;
+                //            tempBook.Title = Convert.ToString(r["Title"]);
+                //            tempBook.Publisher = Convert.ToString(r["Publisher"]);
+                //            int.TryParse(Convert.ToString(r["Year"]), out result);
+                //            tempBook.Year = result;
+                //            int.TryParse(Convert.ToString(r["Version"]), out result);
+                //            tempBook.Version = result;
+                //            tempBook.Medium = Convert.ToString(r["Medium"]);
+                //            tempBook.Place = Convert.ToString(r["Place"]);
+                //            tempBook.DayBought = Convert.ToString(r["DayBought"]);
+                //            int.TryParse(Convert.ToString(r["Pages"]), out result);
+                //            tempBook.Pages = result;
+                //            double.TryParse(Convert.ToString(r["Price"]), out double result_d);
+                //            tempBook.Price = result_d;
+                //            int.TryParse(Convert.ToString(r["AuthorId"]), out result);
+                //            lastAuthorId = result;
+                //            authors.Add(Convert.ToString(r["Name"]));
+                //            signatures.Add(Convert.ToString(r["Signature"]));
+                //            //tempBook.Authors = Convert.ToString(r["Name"]);
+                //            //tempBook.Signatures = Convert.ToString(r["Signature"]);
+                //            i++;
+                //        }
+                //        Thread.Sleep(TimeSpan.FromTicks(5));
+                //        //progress.Report(Convert.ToInt32((double)(max - i) / max * 100));
+                //    }
+                //    if (i != 0)
+                //    {
+                //        authors = authors.Distinct().ToList();
+                //        signatures = signatures.Distinct().ToList();
+                //        tempBook.NoAuthor = authors.Count;
+                //        tempBook.Authors = new Author[tempBook.NoAuthor];
+
+                //        for (int j = 0; j < tempBook.Authors.Length; j++)
+                //        {
+                //            tempBook.Authors[j] = new Author();
+                //        }
+                //        int k = 0;
+                //        foreach (var a in authors)
+                //        {
+                //            tempBook.Authors[k++].Name = a;
+                //        }
+                //        k = 0;
+
+                //        tempBook.NoSignature = signatures.Count;
+                //        tempBook.Signatures = new string[tempBook.NoSignature];
+
+                //        foreach (var s in signatures)
+                //        {
+                //            tempBook.Signatures[k++] = s;
+                //        }
+                //        var transaction = connection.BeginTransaction();
+                //        AddBook.AddBookToDatabase(ref connection, ref transaction, tempBook);
+                //        count++;
+                //        context.Progress = Convert.ToInt32((double)(count) / max * 100);
+                //        context.Status = "Import Finished";
+                //        authors.Clear();
+                //        signatures.Clear();
+                //        transaction.Commit();
+                //    }
+                //});
+                //r.Close();
                 connection.Close();
                 int numBook = NumberOfBooks(ref con);
+                con.Close();
                 Lib.Amount = numBook;
                 Search.RunWorkerAsync(Lib);
-                con.Close();
                 SearchList.IsEnabled = true;
                 BoxSearchText.IsEnabled = true;
                 BtnClearBookInfo.IsEnabled = true;

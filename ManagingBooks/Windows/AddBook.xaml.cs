@@ -469,11 +469,11 @@ namespace ManagingBooks.Windows
             insertCommand.Parameters.AddWithValue("Pages", book.Pages);
             insertCommand.Parameters.AddWithValue("Price", book.Price);
             //SqlMethods.LogSqlAddCommand(insertCommand.CommandText);
-            string textPara = string.Empty;
-            for (int index = 0; index < insertCommand.Parameters.Count; index++)
-            {
-                textPara += insertCommand.Parameters[index].Value + ", ";
-            }
+            //string textPara = string.Empty;
+            //for (int index = 0; index < insertCommand.Parameters.Count; index++)
+            //{
+            //    textPara += insertCommand.Parameters[index].Value + ", ";
+            //}
             //SqlMethods.LogSqlAddCommand(textPara);
             insertCommand.ExecuteNonQuery();
             insertCommand.Parameters.Clear();
@@ -505,11 +505,11 @@ namespace ManagingBooks.Windows
                     insertCommand.CommandText = "INSERT INTO Authors (Name) VALUES (@Name)";
                     insertCommand.Parameters.AddWithValue("Name", book.Authors[i].Name);
                     //SqlMethods.LogSqlAddCommand(insertCommand.CommandText);
-                    textPara = string.Empty;
-                    for (int index = 0; index < insertCommand.Parameters.Count; index++)
-                    {
-                        textPara += insertCommand.Parameters[index].Value + ", ";
-                    }
+                    //textPara = string.Empty;
+                    //for (int index = 0; index < insertCommand.Parameters.Count; index++)
+                    //{
+                    //    textPara += insertCommand.Parameters[index].Value + ", ";
+                    //}
                     //SqlMethods.LogSqlAddCommand(textPara);
                     insertCommand.ExecuteNonQuery();
                     insertCommand.Parameters.Clear();
@@ -544,11 +544,11 @@ namespace ManagingBooks.Windows
                     insertCommand.Parameters.AddWithValue("Signature", book.Signatures[i]);
                     insertCommand.Parameters.AddWithValue("Info", book.Signatures[i]);
                     //SqlMethods.LogSqlAddCommand(insertCommand.CommandText);
-                    textPara = string.Empty;
-                    for (int index = 0; index < insertCommand.Parameters.Count; index++)
-                    {
-                        textPara += insertCommand.Parameters[index].Value + ", ";
-                    }
+                    //textPara = string.Empty;
+                    //for (int index = 0; index < insertCommand.Parameters.Count; index++)
+                    //{
+                    //    textPara += insertCommand.Parameters[index].Value + ", ";
+                    //}
                     //SqlMethods.LogSqlAddCommand(textPara);
                     insertCommand.ExecuteNonQuery();
                     insertCommand.Parameters.Clear();
