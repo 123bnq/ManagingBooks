@@ -16,7 +16,11 @@
         <CommandBinding Command="main:CustomCommands.RemoveSubSig" CanExecute="RemoveSubSigCommand_CanExecute" Executed="RemoveSubSigCommand_Executed"/>
         <CommandBinding Command="main:CustomCommands.SaveMainSig" CanExecute="SaveMainSigCommand_CanExecute" Executed="SaveMainSigCommand_Executed"/>
         <CommandBinding Command="main:CustomCommands.SaveSubSig" CanExecute="SaveSubSigCommand_CanExecute" Executed="SaveSubSigCommand_Executed"/>
+        <CommandBinding Command="main:CustomCommands.CloseWindowEsc" CanExecute="CloseWindowEscCommand_CanExecute" Executed="CloseWindowEscCommand_Executed"/>
     </Window.CommandBindings>
+    <Window.InputBindings>
+        <KeyBinding Key="Esc" Command="main:CustomCommands.CloseWindowEsc"/>
+    </Window.InputBindings>
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
     </Window.Resources>

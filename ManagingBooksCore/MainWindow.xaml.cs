@@ -1340,7 +1340,7 @@ namespace ManagingBooks
                                 count++;
                                 context.Progress = Convert.ToInt32((double)(count) / max * 100);
                                 context.Status = "Importing";
-
+                                
                                 var transaction = connection.BeginTransaction();
                                 AddBook.AddBookToDatabase(ref connection, ref transaction, tempBook);
                                 transaction.Commit();
@@ -1710,6 +1710,7 @@ namespace ManagingBooks
 
         public static readonly RoutedUICommand AddToTransfer = new RoutedUICommand("AddToTransfer", "AddToTransfer", typeof(CustomCommands));
         public static readonly RoutedUICommand ExportTransferList = new RoutedUICommand("ExportTransferList", "ExportTransferList", typeof(CustomCommands));
+        public static readonly RoutedUICommand CloseWindowEsc = new RoutedUICommand("CloseWindowEsc", "CloseWindowEsc", typeof(CustomCommands));
     }
 
     public static class CustomMessageBoxButton

@@ -1710,6 +1710,7 @@ namespace ManagingBooks
 
         public static readonly RoutedUICommand AddToTransfer = new RoutedUICommand("AddToTransfer", "AddToTransfer", typeof(CustomCommands));
         public static readonly RoutedUICommand ExportTransferList = new RoutedUICommand("ExportTransferList", "ExportTransferList", typeof(CustomCommands));
+        public static readonly RoutedUICommand CloseWindowEsc = new RoutedUICommand("CloseWindowEsc", "CloseWindowEsc", typeof(CustomCommands));
     }
 
     public static class CustomMessageBoxButton

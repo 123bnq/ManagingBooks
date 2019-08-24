@@ -610,5 +610,15 @@ namespace ManagingBooks.Windows
             con.Close();
 
         }
+
+        private void CloseWindowEscCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = true;
+        }
+
+        private void CloseWindowEscCommand_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            this.Close();
+        }
     }
 }
