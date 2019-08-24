@@ -30,6 +30,9 @@ namespace ManagingBooks.Windows
         private Signature MainSig = new Signature();
         private Signature SubSig = new Signature();
 
+        private GridViewColumnHeader listViewSortCol = null;
+        private SortAdorner listViewSortAdorner = null;
+
         public ChooseSignatures()
         {
             InitializeComponent();
@@ -619,6 +622,16 @@ namespace ManagingBooks.Windows
         private void CloseWindowEscCommand_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             this.Close();
+        }
+
+        private void MainSignatureHeader_Click(object sender, RoutedEventArgs e)
+        {
+            SortAdorner.SortClick(sender, e, ref listViewSortCol, ref listViewSortAdorner, ref MainList);
+        }
+
+        private void SubSignatureHeader_Click(object sender, RoutedEventArgs e)
+        {
+            SortAdorner.SortClick(sender, e, ref listViewSortCol, ref listViewSortAdorner, ref SubList);
         }
     }
 }

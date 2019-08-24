@@ -10,6 +10,7 @@
     <PublishSingleFile>true</PublishSingleFile>
     <ApplicationIcon>Images\Generic Book File Type_40px.ico</ApplicationIcon>
     <PublishSingleFile>false</PublishSingleFile>
+    <Platforms>AnyCPU;x86</Platforms>
   </PropertyGroup>
 
   <ItemGroup>

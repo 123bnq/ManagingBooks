@@ -71,8 +71,12 @@
                                                           Visibility="{Binding IdColumnVisible, Converter={StaticResource BoolToVisibilityConverter}}"
                                                           main:GridViewBehaviours.CollapseableColumn="True"/>
                             </GridViewColumn>
-                            <GridViewColumn Header="{DynamicResource ChooseSignature.Signatures.Name}" Width="Auto" DisplayMemberBinding="{Binding Name}"/>
-                            <GridViewColumn Header="{DynamicResource ChooseSignature.Signatures.Info}" Width="Auto" DisplayMemberBinding="{Binding Info}"/>
+                            <GridViewColumn Width="Auto" DisplayMemberBinding="{Binding Name}">
+                                <GridViewColumnHeader Content="{DynamicResource ChooseSignature.Signatures.Name}" Tag="Name" Click="MainSignatureHeader_Click"/>
+                            </GridViewColumn>
+                            <GridViewColumn Width="Auto" DisplayMemberBinding="{Binding Info}">
+                                <GridViewColumnHeader Content="{DynamicResource ChooseSignature.Signatures.Info}" Tag="Info" Click="MainSignatureHeader_Click"/>
+                            </GridViewColumn>
                         </GridView>
                     </ListView.View>
                 </ListView>
@@ -153,9 +157,15 @@
                                                           Visibility="{Binding IdColumnVisible, Converter={StaticResource BoolToVisibilityConverter}}"
                                                           main:GridViewBehaviours.CollapseableColumn="True"/>
                             </GridViewColumn>
-                            <GridViewColumn Header="{DynamicResource ChooseSignature.SubSignatures.Name}" Width="Auto" DisplayMemberBinding="{Binding Name}"/>
-                            <GridViewColumn Header="{DynamicResource ChooseSignature.SubSignatures.Info}" Width="Auto" DisplayMemberBinding="{Binding Info}"/>
-                            <GridViewColumn Header="{DynamicResource ChooseSignature.SubSignatures.Sort}" Width="Auto" DisplayMemberBinding="{Binding Sort}"/>
+                            <GridViewColumn Width="Auto" DisplayMemberBinding="{Binding Name}">
+                                <GridViewColumnHeader Content="{DynamicResource ChooseSignature.SubSignatures.Name}" Tag="Name" Click="SubSignatureHeader_Click"/>
+                            </GridViewColumn>
+                            <GridViewColumn Width="Auto" DisplayMemberBinding="{Binding Info}">
+                                <GridViewColumnHeader  Content="{DynamicResource ChooseSignature.SubSignatures.Info}" Tag="Info" Click="SubSignatureHeader_Click"/>
+                            </GridViewColumn>
+                            <GridViewColumn Width="Auto" DisplayMemberBinding="{Binding Sort}">
+                                <GridViewColumnHeader Content="{DynamicResource ChooseSignature.SubSignatures.Sort}" Tag="Sort" Click="SubSignatureHeader_Click"/>
+                            </GridViewColumn>
                         </GridView>
                     </ListView.View>
                 </ListView>
