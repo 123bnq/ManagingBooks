@@ -7,7 +7,7 @@
         xmlns:main="clr-namespace:ManagingBooks"
         mc:Ignorable="d"
         Title="{DynamicResource EditPublisher.Title}" Background="WhiteSmoke" SizeToContent="WidthAndHeight"
-        ShowInTaskbar="False"
+        ShowInTaskbar="False" ResizeMode="NoResize"
         WindowStartupLocation="CenterOwner" Closing="Window_Closing">
     <Window.CommandBindings>
         <CommandBinding Command="main:CustomCommands.RemovePub" CanExecute="RemovePubCommand_CanExecute" Executed="RemovePubCommand_Executed"/>

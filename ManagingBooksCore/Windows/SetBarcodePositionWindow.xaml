@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:ManagingBooks.Windows"
         xmlns:model="clr-namespace:ManagingBooks.Model"
         mc:Ignorable="d" Background="WhiteSmoke"
-        SizeToContent="WidthAndHeight" WindowStartupLocation="CenterOwner" Closing="Window_Closing" ResizeMode="NoResize">
+        SizeToContent="WidthAndHeight" WindowStartupLocation="CenterOwner" Closing="Window_Closing" ResizeMode="NoResize" ShowInTaskbar="False">
     <Window.Title>
         <MultiBinding StringFormat="{}{0} {1} {2}">
             <Binding Source="{x:Static local:SetBarcodePositionWindow.CountWindow}"/>

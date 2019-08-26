@@ -7,7 +7,7 @@
         xmlns:main="clr-namespace:ManagingBooks"
         mc:Ignorable="d"
         Title="{DynamicResource TransferBook.Title}" SizeToContent="WidthAndHeight" Background="WhiteSmoke"
-        ShowInTaskbar="False"
+        ShowInTaskbar="False" ResizeMode="NoResize"
         WindowStartupLocation="CenterOwner">
     <Window.CommandBindings>
         <CommandBinding Command="main:CustomCommands.AddToTransfer" CanExecute="AddToTransferCommand_CanExecute" Executed="AddToTransferCommand_Executed"/>

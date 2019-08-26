@@ -8,7 +8,7 @@
         xmlns:model="clr-namespace:ManagingBooks.Model"
         mc:Ignorable="d"
         Title="{DynamicResource AddBook.Title}" SizeToContent="WidthAndHeight" Background="WhiteSmoke"
-        ShowInTaskbar="False"
+        ShowInTaskbar="False" ResizeMode="NoResize"
         WindowStartupLocation="CenterOwner"
         Closing="AddBook_Closing">
     <StackPanel Margin="10" >

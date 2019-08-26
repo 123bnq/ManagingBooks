@@ -1365,7 +1365,7 @@ namespace ManagingBooks
             SearchBookModel context = this.DataContext as SearchBookModel;
             OpenFileDialog dialog = new OpenFileDialog();
             dialog.Filter = "SQLite Database (*.db)|*.db";
-            dialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            dialog.InitialDirectory = System.IO.Path.Combine(AppContext.BaseDirectory, "Data");
             if (dialog.ShowDialog(this) == true)
             {
                 int count = 0;

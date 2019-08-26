@@ -7,7 +7,7 @@
         xmlns:main="clr-namespace:ManagingBooks"
         mc:Ignorable="d"
         WindowStartupLocation="CenterOwner"  Background="WhiteSmoke"
-        Closing="Window_Closing" ShowInTaskbar="False"
+        Closing="Window_Closing" ShowInTaskbar="False" ResizeMode="NoResize"
         Title="{DynamicResource EditPlace.Title}" SizeToContent="WidthAndHeight">
     <Window.CommandBindings>
         <CommandBinding Command="main:CustomCommands.RemovePlace" CanExecute="RemovePlaceCommand_CanExecute" Executed="RemovePlaceCommand_Executed"/>

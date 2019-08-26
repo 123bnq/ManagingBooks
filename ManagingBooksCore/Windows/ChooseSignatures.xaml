@@ -8,7 +8,7 @@
         xmlns:model="clr-namespace:ManagingBooks.Model"
         mc:Ignorable="d"
         Title="{Binding Title}"
-        SizeToContent="WidthAndHeight"
+        SizeToContent="WidthAndHeight" ResizeMode="NoResize"
         ShowInTaskbar="False" Closing="Window_Closing"
         Background="WhiteSmoke" WindowStartupLocation="Manual">
     <Window.CommandBindings>

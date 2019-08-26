@@ -8,7 +8,7 @@
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d"
         Title="{DynamicResource EditBook.Title}"
-        ShowInTaskbar="False"
+        ShowInTaskbar="False" ResizeMode="NoResize"
         Background="WhiteSmoke" WindowStartupLocation="CenterOwner" SizeToContent="WidthAndHeight"
         Closing="Window_Closing">
     <StackPanel Name="WindowToBeClear" Width="500" Margin="10">

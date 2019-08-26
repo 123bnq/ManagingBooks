@@ -22,7 +22,7 @@
     <system:String x:Key="MainWindow.Menu.Language.German">_Deutsch</system:String>
     <system:String x:Key="MainWindow.Menu.Info">_Info</system:String>
     <system:String x:Key="MainWindow.Menu.Info.ViewHelp">_Hilfe anzeigen</system:String>
-    <system:String x:Key="MainWindow.Menu.Info.About">_Über uns</system:String>
+    <system:String x:Key="MainWindow.Menu.Info.About">_Über das Programm</system:String>
 
     <system:String x:Key="MainWindow.SearchList.ContextMenu.Edit">_Bearbeiten...</system:String>
     <system:String x:Key="MainWindow.SearchList.ContextMenu.Delete">En_tfernen</system:String>

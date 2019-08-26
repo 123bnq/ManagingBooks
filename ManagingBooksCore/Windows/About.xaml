@@ -5,8 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ManagingBooks.Windows"
         mc:Ignorable="d"
-        Title="About" SizeToContent="WidthAndHeight"
-        Background="WhiteSmoke"
+        Title="About" SizeToContent="WidthAndHeight" ResizeMode="NoResize"
+        Background="WhiteSmoke" ShowInTaskbar="False"
         WindowStartupLocation="CenterOwner">
     <StackPanel Margin="20">
         <Grid>
