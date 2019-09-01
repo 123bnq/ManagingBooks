@@ -33,6 +33,7 @@ using System.Windows.Xps.Packaging;
 using System.Printing;
 using System.Windows.Media.Imaging;
 using System.Data.Odbc;
+using iText.Kernel.Pdf.Action;
 
 namespace ManagingBooks
 {
@@ -1300,8 +1301,13 @@ namespace ManagingBooks
             }
             using (PdfWriter writer = new PdfWriter(pdfPath))
             {
+                PdfAction printAction = new PdfAction();
+                printAction.Put(PdfName.S, PdfName.JavaScript);
+                printAction.Put(PdfName.JS, new PdfString("pp = this.getPrintParams();fv = pp.constants.flagValues;pp.flags |= fv.setPageSize;this.print(pp);\r"));
+                
                 using (PdfDocument pdfDocument = new PdfDocument(writer))
                 {
+                    pdfDocument.GetCatalog().SetOpenAction(printAction);
                     float cellMainWidth = 176.5f;
                     float cellMainHeight = 80f;
                     float cellSpaceWidth = 3.2f;
