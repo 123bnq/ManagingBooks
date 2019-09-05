@@ -33,6 +33,7 @@ using System.Windows.Xps.Packaging;
 using System.Printing;
 using System.Windows.Media.Imaging;
 using System.Data.Odbc;
+using iText.Kernel.Pdf.Action;
 
 namespace ManagingBooks
 {
@@ -981,111 +982,126 @@ namespace ManagingBooks
             {
                 mdbPath = dialog.FileName;
                 SqlMethods.SqlConnect(out SQLiteConnection con);
-                using (var conn = new OdbcConnection($"Driver={{Microsoft Access Driver (*.mdb)}};Dbq={mdbPath};"))
-                {
-                    SQLiteTransaction tr = con.BeginTransaction();
 
-                    conn.Open();
-                    using (var cmd = conn.CreateCommand())
+                OdbcConnectionStringBuilder builder = new OdbcConnectionStringBuilder()
+                {
+                    Driver = "Microsoft Access Driver (*.mdb)"
+                };
+                builder.Add("Dbq", mdbPath);
+                //using (var conn = new OdbcConnection(builder.ConnectionString))
+                try
+                {
+                    using (var conn = new OdbcConnection("Driver={Microsoft Access Driver (*.mdb)};DBQ=" + mdbPath))
                     {
-                        cmd.CommandText = "SELECT books.Id,books.Nr,books.Signatur,books.Autor,books.Autor2,books.Autor3,books.Titel,verlag.Name,books.Auflage,books.Jahr,books.Medium,books.Standort,books.Einkauf,books.Seiten,books.Preis FROM books INNER JOIN verlag ON books.Verlag = verlag.id ORDER BY books.Id asc";
-                        using (var reader = cmd.ExecuteReader())
+                        SQLiteTransaction tr = con.BeginTransaction();
+
+                        conn.Open();
+                        using (var cmd = conn.CreateCommand())
                         {
-                            while (reader.Read())
+                            cmd.CommandText = "SELECT books.Id,books.Nr,books.Signatur,books.Autor,books.Autor2,books.Autor3,books.Titel,verlag.Name,books.Auflage,books.Jahr,books.Medium,books.Standort,books.Einkauf,books.Seiten,books.Preis FROM books INNER JOIN verlag ON books.Verlag = verlag.id ORDER BY books.Id asc";
+                            using (var reader = cmd.ExecuteReader())
                             {
-                                Book book = new Book();
-                                int temp;
-                                int.TryParse(reader["Nr"].ToString(), out temp);
-                                book.Number = temp;
-                                string text = reader["Signatur"].ToString();
-                                string[] textArray = text.Split('-');
-                                book.NoSignature = textArray.Length;
-                                book.Signatures = new string[book.NoSignature];
-                                for (int i = 0; i < book.NoSignature; i++)
+                                while (reader.Read())
                                 {
-                                    if (string.IsNullOrEmpty(textArray[i]))
+                                    Book book = new Book();
+                                    int temp;
+                                    int.TryParse(reader["Nr"].ToString(), out temp);
+                                    book.Number = temp;
+                                    string text = reader["Signatur"].ToString();
+                                    string[] textArray = text.Split('-');
+                                    book.NoSignature = textArray.Length;
+                                    book.Signatures = new string[book.NoSignature];
+                                    for (int i = 0; i < book.NoSignature; i++)
                                     {
-                                        book.Signatures[i] = "N/A";
+                                        if (string.IsNullOrEmpty(textArray[i]))
+                                        {
+                                            book.Signatures[i] = "N/A";
+                                        }
+                                        else
+                                        {
+                                            book.Signatures[i] = textArray[i].Trim();
+                                        }
+                                    }
+                                    if (!string.IsNullOrEmpty(reader["Autor3"].ToString()))
+                                    {
+                                        book.NoAuthor = 3;
+                                    }
+                                    else if (!string.IsNullOrEmpty(reader["Autor2"].ToString()))
+                                    {
+                                        book.NoAuthor = 2;
                                     }
                                     else
                                     {
-                                        book.Signatures[i] = textArray[i].Trim();
+                                        book.NoAuthor = 1;
                                     }
-                                }
-                                if (!string.IsNullOrEmpty(reader["Autor3"].ToString()))
-                                {
-                                    book.NoAuthor = 3;
-                                }
-                                else if (!string.IsNullOrEmpty(reader["Autor2"].ToString()))
-                                {
-                                    book.NoAuthor = 2;
-                                }
-                                else
-                                {
-                                    book.NoAuthor = 1;
-                                }
-                                book.Authors = new Author[book.NoAuthor];
-                                for (int i = 0; i < book.Authors.Length; i++)
-                                {
-                                    book.Authors[i] = new Author();
-                                }
-                                if (book.NoAuthor > 0)
-                                {
-                                    book.Authors[0].Name = reader["Autor"].ToString().Trim();
-                                }
-                                if (book.NoAuthor > 1)
-                                {
-                                    book.Authors[1].Name = reader["Autor2"].ToString().Trim();
-                                }
-                                if (book.NoAuthor > 2)
-                                {
-                                    book.Authors[2].Name = reader["Autor3"].ToString().Trim();
-                                }
-                                book.Title = reader["Titel"].ToString().Trim();
-                                book.Publisher = reader["Name"].ToString().Trim();
-                                int.TryParse(reader["Auflage"].ToString(), out temp);
-                                book.Version = temp;
-                                int.TryParse(reader["Jahr"].ToString(), out temp);
-                                book.Year = temp;
-                                book.Medium = reader["Medium"].ToString();
-                                if (!string.IsNullOrEmpty(reader["Standort"].ToString()))
-                                {
-                                    book.Place = reader["Standort"].ToString().Trim();
-                                }
-                                else
-                                {
-                                    book.Place = "N/A";
-                                }
-                                int.TryParse(reader["Seiten"].ToString(), out temp);
-                                book.Pages = temp;
-                                double dec;
-                                double.TryParse(reader["Preis"].ToString().Replace(',', '.'), out dec);
-                                book.Price = dec;
-                                int.TryParse(reader["Einkauf"].ToString(), out temp);
-                                if (temp == 0)
-                                {
-                                    book.DayBought = new DateTime(1970, 1, 1).ToString("d", dtfi);
-                                }
-                                else
-                                {
-                                    int year = temp % 10000;
-                                    temp /= 10000;
-                                    int month = temp % 100;
-                                    temp /= 100;
-                                    int day = temp;
-                                    book.DayBought = new DateTime(year, month, day).ToString("d", dtfi);
-                                }
+                                    book.Authors = new Author[book.NoAuthor];
+                                    for (int i = 0; i < book.Authors.Length; i++)
+                                    {
+                                        book.Authors[i] = new Author();
+                                    }
+                                    if (book.NoAuthor > 0)
+                                    {
+                                        book.Authors[0].Name = reader["Autor"].ToString().Trim();
+                                    }
+                                    if (book.NoAuthor > 1)
+                                    {
+                                        book.Authors[1].Name = reader["Autor2"].ToString().Trim();
+                                    }
+                                    if (book.NoAuthor > 2)
+                                    {
+                                        book.Authors[2].Name = reader["Autor3"].ToString().Trim();
+                                    }
+                                    book.Title = reader["Titel"].ToString().Trim();
+                                    book.Publisher = reader["Name"].ToString().Trim();
+                                    int.TryParse(reader["Auflage"].ToString(), out temp);
+                                    book.Version = temp;
+                                    int.TryParse(reader["Jahr"].ToString(), out temp);
+                                    book.Year = temp;
+                                    book.Medium = reader["Medium"].ToString();
+                                    if (!string.IsNullOrEmpty(reader["Standort"].ToString()))
+                                    {
+                                        book.Place = reader["Standort"].ToString().Trim();
+                                    }
+                                    else
+                                    {
+                                        book.Place = "N/A";
+                                    }
+                                    int.TryParse(reader["Seiten"].ToString(), out temp);
+                                    book.Pages = temp;
+                                    double dec;
+                                    double.TryParse(reader["Preis"].ToString().Replace(',', '.'), out dec);
+                                    book.Price = dec;
+                                    int.TryParse(reader["Einkauf"].ToString(), out temp);
+                                    if (temp == 0)
+                                    {
+                                        book.DayBought = new DateTime(1970, 1, 1).ToString("d", dtfi);
+                                    }
+                                    else
+                                    {
+                                        int year = temp % 10000;
+                                        temp /= 10000;
+                                        int month = temp % 100;
+                                        temp /= 100;
+                                        int day = temp;
+                                        book.DayBought = new DateTime(year, month, day).ToString("d", dtfi);
+                                    }
 
-                                AddBook.AddBookToDatabase(ref con, ref tr, book);
+                                    AddBook.AddBookToDatabase(ref con, ref tr, book);
+                                }
+                                tr.Commit();
                             }
-                            tr.Commit();
                         }
                     }
+                    int numBook = NumberOfBooks(ref con);
+                    con.Close();
+                    Lib.Amount = numBook;
+                    Search.RunWorkerAsync(Lib);
                 }
-                int numBook = NumberOfBooks(ref con);
-                con.Close();
-                Lib.Amount = numBook;
-                Search.RunWorkerAsync(Lib);
+                catch (Exception ex)
+                {
+                    MessageBox.Show("No Microsoft Access Driver is found.");
+                    
+                }
 
                 //using (var conection = new OleDbConnection($"Provider=Microsoft.JET.OLEDB.4.0;data source={mdbPath};"))
                 //{
@@ -1285,8 +1301,13 @@ namespace ManagingBooks
             }
             using (PdfWriter writer = new PdfWriter(pdfPath))
             {
+                PdfAction printAction = new PdfAction();
+                printAction.Put(PdfName.S, PdfName.JavaScript);
+                printAction.Put(PdfName.JS, new PdfString("pp = this.getPrintParams();fv = pp.constants.flagValues;pp.flags |= (fv.setPageSize | fv.suppressCropClip);this.print(pp);\r"));
+                
                 using (PdfDocument pdfDocument = new PdfDocument(writer))
                 {
+                    pdfDocument.GetCatalog().SetOpenAction(printAction);
                     float cellMainWidth = 176.5f;
                     float cellMainHeight = 80f;
                     float cellSpaceWidth = 3.2f;
@@ -1350,7 +1371,7 @@ namespace ManagingBooks
             SearchBookModel context = this.DataContext as SearchBookModel;
             OpenFileDialog dialog = new OpenFileDialog();
             dialog.Filter = "SQLite Database (*.db)|*.db";
-            dialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            dialog.InitialDirectory = System.IO.Path.Combine(AppContext.BaseDirectory, "Data");
             if (dialog.ShowDialog(this) == true)
             {
                 int count = 0;
