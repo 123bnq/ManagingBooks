@@ -1303,7 +1303,11 @@ namespace ManagingBooks
             {
                 PdfAction printAction = new PdfAction();
                 printAction.Put(PdfName.S, PdfName.JavaScript);
-                printAction.Put(PdfName.JS, new PdfString("pp = this.getPrintParams();fv = pp.constants.flagValues;pp.flags |= (fv.setPageSize | fv.suppressCropClip);this.print(pp);\r"));
+                printAction.Put(PdfName.JS, new PdfString("pp = this.getPrintParams();" +
+                    "fv = pp.constants.flagValues;" +
+                    "pp.flags |= fv.setPageSize;" +
+                    "pp.pageHandling = pp.constants.handling.actualSize;" +
+                    "this.print(pp);"));
 
                 using (PdfDocument pdfDocument = new PdfDocument(writer))
                 {
