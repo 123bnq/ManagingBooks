@@ -457,7 +457,7 @@ namespace ManagingBooks.Windows
             var insertCommand = con.CreateCommand();
             insertCommand.Transaction = tr;
             insertCommand.CommandText = "INSERT INTO Books (Number, Title, Publisher, Version, Year, Medium, Place, DayBought, Pages, Price) " +
-                "VALUES (@Number,@Title,@Publisher,@Version,@Year,@Medium,@Place,@Date,@Pages,@Price)";
+                "VALUES (@Number,@Title,@Publisher,@Version,@Year,@Medium,@Place,@Date,@Pages,@Price);";
             insertCommand.Parameters.AddWithValue("Number", book.Number);
             insertCommand.Parameters.AddWithValue("Title", book.Title);
             insertCommand.Parameters.AddWithValue("Publisher", book.Publisher);
@@ -476,22 +476,25 @@ namespace ManagingBooks.Windows
             //}
             //SqlMethods.LogSqlAddCommand(textPara);
             insertCommand.ExecuteNonQuery();
+            
             insertCommand.Parameters.Clear();
             Thread.Sleep(TimeSpan.FromTicks(5));
             SQLiteCommand selectCommand;
             SQLiteDataReader r;
-            int maxId = 0;
+            long maxId = 0;
             selectCommand = con.CreateCommand();
-            selectCommand.CommandText = $"SELECT BookId FROM Books WHERE Title = @Title";
-            selectCommand.Parameters.AddWithValue("Title", book.Title);
-            //SqlMethods.LogSqlAddCommand(selectCommand.CommandText);
-            r = selectCommand.ExecuteReader();
-            selectCommand.Parameters.Clear();
-            while (r.Read())
-            {
-                int.TryParse(Convert.ToString(r["BookId"]), out maxId);
-            }
-            r.Close();
+            selectCommand.CommandText = "SELECT last_insert_rowid();";
+            maxId = (long)selectCommand.ExecuteScalar();
+            //selectCommand.CommandText = $"SELECT BookId FROM Books WHERE Title = @Title";
+            //selectCommand.Parameters.AddWithValue("Title", book.Title);
+            ////SqlMethods.LogSqlAddCommand(selectCommand.CommandText);
+            //r = selectCommand.ExecuteReader();
+            //selectCommand.Parameters.Clear();
+            //while (r.Read())
+            //{
+            //    int.TryParse(Convert.ToString(r["BookId"]), out maxId);
+            //}
+            //r.Close();
             for (int i = 0; i < book.NoAuthor; i++)
             {
                 selectCommand = con.CreateCommand();

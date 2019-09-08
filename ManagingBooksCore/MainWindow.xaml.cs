@@ -1095,6 +1095,7 @@ namespace ManagingBooks
                     int numBook = NumberOfBooks(ref con);
                     con.Close();
                     Lib.Amount = numBook;
+                    (DataContext as SearchBookModel).DisplayBooks.Clear();
                     Search.RunWorkerAsync(Lib);
                 }
                 catch (Exception ex)
@@ -1641,6 +1642,7 @@ namespace ManagingBooks
                 int numBook = NumberOfBooks(ref con);
                 con.Close();
                 Lib.Amount = numBook;
+                (DataContext as SearchBookModel).DisplayBooks.Clear();
                 Search.RunWorkerAsync(Lib);
                 SearchList.IsEnabled = true;
                 BoxSearchText.IsEnabled = true;
